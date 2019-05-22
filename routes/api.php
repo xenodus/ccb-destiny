@@ -24,3 +24,4 @@ Route::get('/nightfall', 'ApiController@get_nightfall')->name('get_nightfall');
 Route::get('/sales-item-perks/{vendor_id}', 'ApiController@get_sales_item_perks')->name('get_sales_item_perks');
 Route::get('/xur', 'ApiController@get_xur_location')->name('get_xur_location ');
 Route::get('/levi', 'ApiController@get_leviathan_rotation')->name('get_leviathan_rotation ');
+Route::get('/activity', 'ApiController@activity')->name('activity');

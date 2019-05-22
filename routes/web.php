@@ -15,8 +15,6 @@ Route::get('/test', 'HomeController@test')->name('test');
 
 Route::get('/', 'HomeController@home')->name('home');
 
-Route::get('/activity', 'HomeController@activity')->name('activity');
-
 // Stats Display
 Route::redirect('/stats', '/stats/raid', 301);
 Route::get('/stats/raid', 'StatsController@index')->name('stats_raid');

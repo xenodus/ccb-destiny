@@ -206,13 +206,16 @@ section#members-online {
   position: fixed;
   top: 0;
   background: rgba(0,0,0,0.9);
-  font-size: 85%;
 }
 
 #members-online-toggle-icon {
   position: fixed;
   right: 0;
   padding-top: 3px;
+}
+
+#members-online-text {
+  font-size: 0.9rem;
 }
 
 #members-online-table {

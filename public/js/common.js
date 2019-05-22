@@ -1,7 +1,7 @@
 $(document).ready(function(){
   checkMembersOnline();
 
-  setInterval(checkMembersOnline, 10000);
+  setInterval(checkMembersOnline, 30000);
 
   $( "section#members-online" ).on("click", function() {
     if( $("small#members-online-toggle-icon").data("status") == "up" ) {
@@ -23,7 +23,7 @@ $(document).ready(function(){
 });
 
 function checkMembersOnline() {
-  $.get('/activity', function(data){
+  $.get('/api/activity', function(data){
 
     console.log(data);
 
@@ -39,16 +39,16 @@ function checkMembersOnline() {
 
       $("span#member-count").text( data.length + " member" + (data.length>1?"s":"") );
 
-      var tableHtml = '<table><thead class="text-success"><tr><th>Name</th><th>Activity</th><th>Last Seen</th></tr></thead>';
+      var tableHtml = '<table><thead class="text-success"><tr><th class="pl-1 pr-1">Name</th><th class="pl-1 pr-1">Activity</th><th class="pl-1 pr-1">Last Seen</th></tr></thead>';
 
       for(var i=0; i<data.length; i++) {
         var member_activity = {
           name: data[i].displayName,
-          lastSeen: data[i].lastSeen,
-          latestActivity: data[i].latestActivity.originalDisplayProperties.name,
+          lastSeen: data[i].lastSeen ? data[i].lastSeen : '',
+          latestActivity: data[i].latestActivity.originalDisplayProperties.name ? data[i].latestActivity.originalDisplayProperties.name : '',
           activityDescription: data[i].latestActivity.originalDisplayProperties.description ? data[i].latestActivity.originalDisplayProperties.description : '',
-          activityIcon: data[i].latestActivity.originalDisplayProperties.icon,
-          activityStarted: data[i].latestActivityTime
+          activityIcon: data[i].latestActivity.originalDisplayProperties.icon ? data[i].latestActivity.originalDisplayProperties.icon : '',
+          activityStarted: data[i].latestActivityTime ? data[i].latestActivityTime : data[i].latestActivityTime
         }
 
         tableHtml += '<tr><td class="pl-1 pr-1">'+data[i].displayName+'</td><td class="pl-1 pr-1">'+member_activity.latestActivity+'</td><td class="pl-1 pr-1">'+member_activity.lastSeen+'</td></tr>';

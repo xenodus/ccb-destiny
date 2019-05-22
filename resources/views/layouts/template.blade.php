@@ -99,7 +99,7 @@
     </main>
 
     <section id="members-online" class="w-100 text-center" data-show="0">
-      <div class="pt-2 pb-2 pl-2 pr-2">
+      <div class="pt-2 pb-2 pl-2 pr-2" id="members-online-text">
         <i class="fas fa-circle fa-sm text-success mr-1" style="font-size: 0.6rem;position: relative; bottom: 1px;"></i> <span id="member-count">2 members</span> online
         <small id="members-online-toggle-icon" data-status="up" class="pr-3"><i class="fas fa-chevron-down fa-lg animated rotateIn delay-0.5s"></i></small>
       </div>
