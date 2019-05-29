@@ -1,3 +1,5 @@
+var queueStatus = 0;
+
 var valorRanks = [
   'Guardian',
   'Brave',
@@ -31,19 +33,33 @@ $(document).ready(function(){
   $(document).on('click', 'button.refresh-btn', function(){
     refreshBtn = $(this);
     refreshBtn.prop('disabled', true);
-
-    $('.loader').show();
-    $('.loader-text').show();
-    $('.loader-text').text('Refreshing data. Go grab a drink...');
-    $('.stats-container').empty();
-
-    $.get('/bungie/pvp/update', function(res){
-      refreshBtn.prop('disabled', false);
-      print_pvp_stats();
-    });
+    update_pvp_stats();
   });
 
   print_pvp_stats();
+
+  function update_pvp_stats() {
+
+    $('.loader').show();
+    $('.loader-text').show();
+    if( queueStatus == 0 )
+      $('.loader-text').text('Refreshing data. Go grab a drink...');
+    $('.stats-container').empty();
+
+    $.get('/bungie/pvp/update', function(res){
+      if(res.status == 2) {
+        $('.loader-text').text('Resync already in progress. Queueing...');
+        queueStatus = 1;
+        setTimeout(update_pvp_stats, 5000);
+      }
+      else {
+        queueStatus = 0;
+        refreshBtn = $('button.refresh-btn');
+        refreshBtn.prop('disabled', false);
+        print_pvp_stats();
+      }
+    });
+  }
 
   function print_pvp_stats() {
     $.get('/bungie/members/get', function(memberData){

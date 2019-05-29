@@ -29,6 +29,11 @@ mix.styles([
     'public/css/style.css',
 ], 'public/css/compiled/common.css').version();
 
+// GUIDES CSS
+mix.styles([
+    'public/css/post.css',
+], 'public/css/compiled/post.css').version();
+
 // COMMON JS
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
@@ -44,6 +49,11 @@ mix.scripts([
 mix.scripts([
     'public/js/index.js',
 ], 'public/js/compiled/index.js').version();
+
+// POST PAGE
+mix.scripts([
+    'public/js/mtg/mtgtooltip.js'
+], 'public/js/compiled/post.js').version();
 
 // STATS PAGES
 mix.scripts([

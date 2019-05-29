@@ -11,7 +11,11 @@
 |
 */
 
-Route::get('/test', 'HomeController@test')->name('test');
+// Route::get('/test', 'HomeController@test')->name('test');
+
+Route::get('/guides', 'GuideController@index')->name('guide_index');
+Route::get('/guides/category/{slug}/{id}', 'GuideController@category')->name('guide_category');
+Route::get('/guides/{slug}/{id}', 'GuideController@post')->name('guide_post');
 
 Route::get('/', 'HomeController@home')->name('home');
 

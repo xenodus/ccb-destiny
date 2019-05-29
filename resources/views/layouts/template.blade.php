@@ -34,14 +34,20 @@
     <meta name="theme-color" content="#ffffff">
 
     <meta name="author" content="name">
-    <meta name="description" content="{{ isset($site_description) ? $site_description : env('SITE_DESCRIPTION') }}">
-    <meta name="keywords" content="{{ isset($site_keywords) ? $site_keywords : env('SITE_KEYWORDS') }}">
+    <meta name="description" content="{{ $site_description ?? env('SITE_DESCRIPTION') }}">
+    <meta name="keywords" content="{{ $site_keywords ?? env('SITE_KEYWORDS') }}">
 
-    <meta property="og:title" content="{{ isset($site_title) ? $site_title : env('SITE_NAME') }}"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="{{ Illuminate\Support\Facades\URL::current() }}"/>
-    <meta property="og:image" content="{{ secure_url('/images/og-banner-ccb.jpg') }}"/>
-    <meta property="og:description" content="{{ isset($site_description) ? $site_description : env('SITE_DESCRIPTION') }}"/>
+    <meta property="og:site_name" content="{{ env('SITE_NAME') }}">
+    <meta property="og:title" content="{{ $site_title ?? env('SITE_NAME') }}"/>
+    <meta property="og:type" content="{{ $site_type ?? 'website' }}"/>
+    <meta property="og:url" content="{{ $site_url ?? Illuminate\Support\Facades\URL::current() }}"/>
+    <meta property="og:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb.jpg') }}"/>
+    <meta property="og:description" content="{{ $site_description ?? env('SITE_DESCRIPTION') }}"/>
+
+    <meta name="twitter:title" content="{{ $site_title ?? env('SITE_NAME') }}">
+    <meta name="twitter:description" content="{{ $site_description ?? env('SITE_DESCRIPTION') }}">
+    <meta name="twitter:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
     <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i" rel="stylesheet">
@@ -70,12 +76,12 @@
                   <div>Stats</div>
                 </a>
               </li>
-              <!--li class="nav-item">
-                <a class="nav-link text-md-center" href="#">
+              <li class="nav-item {{ (isset($active_page) && $active_page == 'guides') ? 'active' : ''  }}">
+                <a class="nav-link text-md-center" href="/guides">
                   <i class="fas fa-book"></i>
                   <div>Guides</div>
                 </a>
-              </li-->
+              </li>
               <li class="nav-item">
                 <a class="nav-link text-md-center" href="https://discord.gg/Xx6DVJq" target="_blank">
                   <i class="fab fa-discord animated pulse slower infinite delay-0.5s"></i>

@@ -166,6 +166,8 @@ return [
          * Package Service Providers...
          */
 
+        Corcel\Laravel\CorcelServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

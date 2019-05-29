@@ -25,8 +25,6 @@ $(document).ready(function(){
 function checkMembersOnline() {
   $.get('/api/activity', function(data){
 
-    console.log(data);
-
     if( data.length > 0 ) {
       if( $("section#members-online").data("show") == "0" ) {
         $("section#members-online").slideToggle();

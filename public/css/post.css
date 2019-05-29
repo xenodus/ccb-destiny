@@ -1,0 +1,244 @@
+#guide-post-breadcrumbs {
+  margin-top: 2rem;
+}
+
+li.breadcrumb-item.active a span {
+  font-style: italic;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f054";
+  font-size: 0.8rem;
+}
+
+.children-item+.children-item::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "/";
+  font-size: 0.8rem;
+}
+
+#guide-post-content {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  text-align: left;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+#guide-post-content img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #fff;
+  padding: 5px;
+}
+
+#guide-post-content figure {
+  text-align: center;
+}
+
+#guide-post-content figcaption {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+#guide-post-content h2 {
+  margin-bottom: 10px;
+}
+
+#post-meta {
+  margin-top: 1rem;
+}
+
+#post-meta h1 {
+  letter-spacing: 2px;
+  font-size: 3rem;
+}
+
+.author-avatar {
+  width: 18px;
+  height: 18px;
+  margin-right: 1px;
+  position: relative;
+  bottom: 1px;
+  border: 1px solid #fff;
+}
+
+.post-date,
+.author-name {
+  font-size: 0.8rem;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+.post-tn {
+  height: 200px;
+}
+
+.post-destiny {
+  border-bottom: 8px solid #DB4437;
+}
+
+.post-magic {
+  border-bottom: 8px solid #0F9D58;
+}
+
+#guide-listing .categories-img a,
+#guide-listing .categories-img a:hover,
+#guide-listing .categories-img a:active,
+#guide-listing .categories-img a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+#guide-listing .categories-img .item {
+  position: relative;
+  border-radius: 10px;
+  height: 125px;
+}
+
+#guide-listing .categories-img .item-destiny {
+  border: 1px solid #DB4437;
+  background: url('/images/categories/destiny2.jpg') no-repeat center 10%/cover;
+}
+
+#guide-listing .categories-img .item-mtg {
+  border: 1px solid #0F9D58;
+  background: url('/images/categories/mtg.jpg') no-repeat center 40%/cover;
+}
+
+#guide-listing .categories-img .item-overlay {
+  z-index: 1;
+  position: absolute;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+#guide-listing .categories-img .item-overlay:hover {
+  background: rgba(0,0,0,0.4);
+}
+
+#guide-listing .categories-img .item-name {
+  z-index: 3;
+  letter-spacing: 3px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#guide-listing h1 {
+  font-size: 1.3rem;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+#latest-post-header-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url(/images/icons/xur.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#guide-listing .post {
+  background: #fff;
+  color: #000;
+}
+
+#guide-listing .post-item-date {
+  background: #000;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  border-radius: 120px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  line-height: 14px;
+  justify-content: center;
+  position: relative;
+  bottom: 45px;
+  margin-bottom: -40px;
+}
+
+#guide-listing .post-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+#guide-listing .post-overlay {
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.1);
+}
+
+#guide-listing .grid-item a,
+#guide-listing .grid-item a:hover,
+#guide-listing .grid-item a:focus,
+#guide-listing .grid-item a:active {
+  color: #000;
+  text-decoration: none;
+}
+
+#guide-listing .post {
+  border: 1px solid #000;
+}
+
+#guide-listing .featured-post {
+  border: 1px solid #ffca00;
+}
+
+#guide-listing .post:hover {
+  animation-name: pulse;
+}
+
+#guide-listing .post-excerpt {
+  font-size: 0.8rem;
+  text-align: left;
+  word-wrap: break-word;
+  white-space: initial;
+}
+
+#guide-listing .post-categories a {
+  color: #800000;
+  font-size: 0.8rem;
+}
+
+#guide-listing .post-categories a:hover,
+#guide-listing .post-categories a:active,
+#guide-listing .post-categories a:focus {
+  color: #C32148;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  #post-meta h1  {
+    font-size: 2rem;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+}

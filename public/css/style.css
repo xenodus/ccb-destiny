@@ -226,6 +226,7 @@ section#members-online {
 #members-online-table table {
   font-size: 80%;
   margin: 0 auto;
+  z-index: 999;
 }
 
 /* Extra small devices (portrait phones, less than 576px) */

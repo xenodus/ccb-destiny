@@ -12,9 +12,12 @@
         "fabpot/goutte": "^3.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "jgrossi/corcel": "^2.8",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "nesbot/carbon": "^2.18"
+        "nesbot/carbon": "^2.18",
+        "spatie/laravel-sitemap": "^5.3",
+        "thunderer/shortcode": "^0.6.5"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

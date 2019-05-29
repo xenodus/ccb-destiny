@@ -1,3 +1,5 @@
+var queueStatus = 0;
+
 var infamyRanks = [
   'Guardian I',
   'Guardian II',
@@ -40,19 +42,33 @@ $(document).ready(function(){
   $(document).on('click', 'button.refresh-btn', function(){
     refreshBtn = $(this);
     refreshBtn.prop('disabled', true);
-
-    $('.loader').show();
-    $('.loader-text').show();
-    $('.loader-text').text('Refreshing data. Go grab a drink...');
-    $('.stats-container').empty();
-
-    $.get('/bungie/gambit/update', function(res){
-      refreshBtn.prop('disabled', false);
-      print_gambit_stats();
-    });
+    update_gambit_stats();
   });
 
   print_gambit_stats();
+
+  function update_gambit_stats() {
+
+    $('.loader').show();
+    $('.loader-text').show();
+    if( queueStatus == 0 )
+      $('.loader-text').text('Refreshing data. Go grab a drink...');
+    $('.stats-container').empty();
+
+    $.get('/bungie/gambit/update', function(res){
+      if(res.status == 2) {
+        $('.loader-text').text('Resync already in progress. Queueing...');
+        queueStatus = 1;
+        setTimeout(update_gambit_stats, 5000);
+      }
+      else {
+        queueStatus = 0;
+        refreshBtn = $('button.refresh-btn');
+        refreshBtn.prop('disabled', false);
+        print_gambit_stats();
+      }
+    });
+  }
 
   function print_gambit_stats() {
     $.get('/bungie/members/get', function(memberData){
@@ -126,7 +142,8 @@ $(document).ready(function(){
           initialSort: [
             {column:"name", dir:"asc"}
           ],
-          layout:"fitDataFill"
+          layout:"fitDataFill",
+          height:"350px",
         });
 
         $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+gambitData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
