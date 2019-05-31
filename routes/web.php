@@ -11,7 +11,9 @@
 |
 */
 
-// Route::get('/test', 'HomeController@test')->name('test');
+Route::get('/test', 'HomeController@test')->name('test');
+
+Route::get('/sitemap/crawl', 'SitemapController@crawl')->name('sitemap_crawl');
 
 Route::get('/guides', 'GuideController@index')->name('guide_index');
 Route::get('/guides/category/{slug}/{id}', 'GuideController@category')->name('guide_category');

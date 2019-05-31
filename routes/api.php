@@ -25,3 +25,7 @@ Route::get('/sales-item-perks/{vendor_id}', 'ApiController@get_sales_item_perks'
 Route::get('/xur', 'ApiController@get_xur_location')->name('get_xur_location ');
 Route::get('/levi', 'ApiController@get_leviathan_rotation')->name('get_leviathan_rotation ');
 Route::get('/activity', 'ApiController@activity')->name('activity');
+Route::get('/mtg/top_decks', 'ApiController@get_mtg_top_decks')->name('top_decks');
+
+Route::get('/news/get/{category?}', 'ApiController@get_news')->name('get_news');
+Route::get('/news/update', 'ApiController@update_news')->name('update_news');

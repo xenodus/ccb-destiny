@@ -5,11 +5,14 @@
 @endsection
 
 @section('body')
-<section id="guide-post" class="text-center container-fluid mt-4 mb-4">
+<section id="guide-post" class="text-center container-fluid mt-3 mb-4">
   <div class="container">
-    <div id="post-meta" class="text-center">
+    <div id="guide-post-breadcrumbs">
+    {!! $post->makeBreadcrumbs() !!}
+    </div>
+    <div id="post-meta" class="text-left mt-2 mb-4">
       <h1>{{ $post->post_title }}</h1>
-      <div>
+      <div class="ml-1 mt-1">
         <span class="author-name">
         @if( $post->getAuthorAvatar() )
         <img src="{{ $post->getAuthorAvatar() }}" class="author-avatar">
@@ -20,9 +23,6 @@
         </span>
         <span class="post-date"><i class="fas fa-calendar-alt ml-3 mr-1"></i> {{ $post->getPostDate() }}</span>
       </div>
-    </div>
-    <div id="guide-post-breadcrumbs">
-    {!! $post->makeBreadcrumbs() !!}
     </div>
     <div id="guide-post-content">
       {!! $post->content !!}

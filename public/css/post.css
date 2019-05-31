@@ -1,7 +1,3 @@
-#guide-post-breadcrumbs {
-  margin-top: 2rem;
-}
-
 li.breadcrumb-item.active a span {
   font-style: italic;
 }
@@ -24,19 +20,22 @@ li.breadcrumb-item.active a span {
   margin-top: 1rem;
   margin-bottom: 3rem;
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 1rem;
   letter-spacing: 0.5px;
+  word-break: break-word;
 }
 
 #guide-post-content img {
-  width: 100%;
+  width: auto;
   height: auto;
+  max-height: 100vh;
+  max-width: 100%;
   border: 1px solid #fff;
   padding: 5px;
 }
 
 #guide-post-content figure {
-  text-align: center;
+  text-align: left;
 }
 
 #guide-post-content figcaption {
@@ -47,6 +46,7 @@ li.breadcrumb-item.active a span {
 
 #guide-post-content h2 {
   margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
 #post-meta {
@@ -80,12 +80,87 @@ li.breadcrumb-item.active a span {
   height: 200px;
 }
 
+.post-tn-horizontal {
+  height: auto;
+  min-width: 150px;
+}
+
+#guide-listing .post-overlay {
+  overflow: hidden;
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  right: 100%;
+  transition: .3s ease;
+}
+
+#guide-listing .post:hover .post-overlay {
+  width: 100%!important;
+  right: 0!important;
+}
+
 .post-destiny {
-  border-bottom: 8px solid #DB4437;
+  border-bottom: 5px solid #DB4437;
 }
 
 .post-magic {
-  border-bottom: 8px solid #0F9D58;
+  border-bottom: 5px solid #0F9D58;
+}
+
+.post-division {
+  border-bottom: 5px solid #4285F4;
+}
+
+.post-destiny-horizontal {
+  background: #DB4437;
+  display: block!important;
+}
+
+.post-magic-horizontal {
+  background: #0F9D58;
+  display: block!important;
+}
+
+.post-division-horizontal {
+  background: #4285F4;
+  display: block!important;
+}
+
+#news-widget-destiny {
+  border: 1px solid #DB4437;
+}
+
+#news-widget-magic-the-gathering {
+  border: 1px solid #0F9D58;
+}
+
+#news-widget-the-division-2 {
+  border: 1px solid #4285F4;
+}
+
+#news-widget-destiny-header {
+  border-bottom: 1px solid #DB4437;
+}
+
+#news-widget-magic-the-gathering-header {
+  border-bottom: 1px solid #0F9D58;
+}
+
+#news-widget-the-division-2-header {
+  border-bottom: 1px solid #4285F4;
+}
+
+#guide-listing .news-widget a,
+#guide-listing .news-widget a:hover,
+#guide-listing .news-widget a:active,
+#guide-listing .news-widget a:focus {
+  color: #fff;
+}
+
+#guide-listing .news-widget a:hover,
+#guide-listing .news-widget a:active,
+#guide-listing .news-widget a:focus {
+  text-decoration: underline;
 }
 
 #guide-listing .categories-img a,
@@ -98,37 +173,41 @@ li.breadcrumb-item.active a span {
 
 #guide-listing .categories-img .item {
   position: relative;
-  border-radius: 10px;
   height: 125px;
 }
 
 #guide-listing .categories-img .item-destiny {
   border: 1px solid #DB4437;
-  background: url('/images/categories/destiny2.jpg') no-repeat center 10%/cover;
+  background: url('/images/categories/destiny2-tn.jpg') no-repeat center 10%/cover;
 }
 
 #guide-listing .categories-img .item-mtg {
   border: 1px solid #0F9D58;
-  background: url('/images/categories/mtg.jpg') no-repeat center 40%/cover;
+  background: url('/images/categories/mtg-tn.jpg') no-repeat center 40%/cover;
+}
+
+#guide-listing .categories-img .item-division {
+  border: 1px solid #4285F4;
+  background: url('/images/categories/division-tn.jpg') no-repeat center 40%/cover;
 }
 
 #guide-listing .categories-img .item-overlay {
   z-index: 1;
   position: absolute;
-  border-radius: 10px;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
 }
 
 #guide-listing .categories-img .item-overlay:hover {
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.2);
 }
 
 #guide-listing .categories-img .item-name {
   z-index: 3;
   letter-spacing: 3px;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
   font-weight: bold;
   pointer-events: none;
 }
@@ -153,8 +232,24 @@ li.breadcrumb-item.active a span {
 }
 
 #guide-listing .post {
+  position: relative;
+}
+
+#guide-listing .post-info {
   background: #fff;
   color: #000;
+}
+
+#guide-listing .post-category {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 10px;
+  color: #fff;
+  min-width: 100px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  display: none;
 }
 
 #guide-listing .post-item-date {
@@ -178,12 +273,7 @@ li.breadcrumb-item.active a span {
 #guide-listing .post-title {
   font-weight: 700;
   font-size: 1rem;
-}
-
-#guide-listing .post-overlay {
-  height: 100%;
-  width: 100%;
-  background: rgba(0,0,0,0.1);
+  line-height: 1.4rem;
 }
 
 #guide-listing .grid-item a,
@@ -192,14 +282,6 @@ li.breadcrumb-item.active a span {
 #guide-listing .grid-item a:active {
   color: #000;
   text-decoration: none;
-}
-
-#guide-listing .post {
-  border: 1px solid #000;
-}
-
-#guide-listing .featured-post {
-  border: 1px solid #ffca00;
 }
 
 #guide-listing .post:hover {
@@ -213,15 +295,27 @@ li.breadcrumb-item.active a span {
   white-space: initial;
 }
 
-#guide-listing .post-categories a {
-  color: #800000;
-  font-size: 0.8rem;
+#guide-listing a,
+#guide-listing a:hover,
+#guide-listing a:active,
+#guide-listing a:focus {
+  text-decoration: none;
 }
 
-#guide-listing .post-categories a:hover,
-#guide-listing .post-categories a:active,
-#guide-listing .post-categories a:focus {
-  color: #C32148;
+#top-decks {
+  line-height: 1rem;
+}
+
+#top-decks a:hover {
+  text-decoration: underline;
+}
+
+#top-decks button,
+#top-decks button:hover,
+#top-decks button:active,
+#top-decks button:focus {
+  color: #ffca00;
+  font-size: 0.7rem;
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
@@ -237,6 +331,15 @@ li.breadcrumb-item.active a span {
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
+  .post-tn-horizontal {
+    height: 180px;
+    width: 100%;
+  }
+
+  #guide-listing .post-category {
+    width: 100%;
+    position: relative;
+  }
 }
 
 /* Large devices (desktops, less than 1200px) */

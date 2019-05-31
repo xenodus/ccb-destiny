@@ -49,8 +49,8 @@
     <meta name="twitter:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb.jpg') }}">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
-    <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ mix('/css/compiled/common.css') }}"/>
     @yield('header')
   </head>

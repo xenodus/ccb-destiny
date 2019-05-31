@@ -1,5 +1,5 @@
 body {
-  font-family: 'Arimo', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #fff;
 }
 
@@ -148,7 +148,7 @@ footer {
 .loader {
   width:100px; /*width of your image*/
   height:100px; /*height of your image*/
-  background-image:url('/images/ghost-loader.gif');
+  background-image:url('/images/ghost-loader-sm.gif?ver=1');
   background-repeat: no-repeat;
   background-size: contain;
   margin: 0 auto;
@@ -206,6 +206,7 @@ section#members-online {
   position: fixed;
   top: 0;
   background: rgba(0,0,0,0.9);
+  z-index: 999;
 }
 
 #members-online-toggle-icon {

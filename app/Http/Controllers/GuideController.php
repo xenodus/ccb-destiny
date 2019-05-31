@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Post as WP_Post;
-use Corcel\Model\Taxonomy as WP_Post_Taxonomy;
+use App\Classes\Post_Taxonomy as WP_Post_Taxonomy;
 use Illuminate\Http\Request;
 
 class GuideController extends Controller
@@ -42,18 +42,18 @@ class GuideController extends Controller
 
         if( !$posts->count() ) return redirect()->route('guide_index'); // category don't exists
 
-        $data['children_categories'] = WP_Post_Taxonomy::where('parent', $id)->get();
-
         $data['category'] = WP_Post_Taxonomy::find($id);
 
         if( $data['category']->term->slug != $slug )
             return redirect()->route('guide_category', ['slug' => $data['category']->term->slug,'id' => $id]); // wrong slug
 
+        $data['top_category'] = $data['category']->getTopLevelCategory();
+
         // featured first
         $data['posts'] = $posts->paginate( 9 );
         $data['site_title'] = $data['category']->term->name . ' | Guides | ' . env('SITE_NAME');
         $data['active_page'] = 'guides';
-        $data['breadcrumb'] = WP_Post::makeBreadCrumbsFromCategory($data['category']);
+        $data['breadcrumb'] = $data['category']->makeBreadcrumbsFromCategory();
 
         return view('guides.category', $data);
     }
@@ -62,9 +62,7 @@ class GuideController extends Controller
     {
         $data['destiny_category'] = WP_Post_Taxonomy::find(3);
         $data['magic_category'] = WP_Post_Taxonomy::find(4);
-
-        $data['destiny_category_post_count'] = WP_Post::taxonomy('category', $data['destiny_category']->term->slug)->count();
-        $data['magic_category_post_count'] = WP_Post::taxonomy('category', $data['magic_category']->term->slug)->count();
+        $data['division_category'] = WP_Post_Taxonomy::find(33);
 
         // featured
         $featured_posts = WP_Post::published()
@@ -109,19 +107,7 @@ class GuideController extends Controller
         if( !$request->query('preview') )
             if( $post->slug != $slug  ) return redirect()->route('guide_post', ['slug' => $post->slug,'id' => $id]);
 
-        //dd( $post->taxonomies('post_tag')->first() );
-        //dd($post->getExcerpt());
-        //dd($post->post_status);
-        //dd($post->thumbnail);
-        //dd($post->post_title);
-        //dd($post->post_excerpt);
-        //dd($post->author->nickname);
-        //dd($post->attachment);
-        //dd($post->post_content);
-
         $post->customParseContent();
-
-        $post->getJSONLD();
 
         $data['post'] = $post;
         $data['active_page'] = 'guides';

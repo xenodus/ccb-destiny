@@ -2,11 +2,11 @@
 
 namespace App\Classes;
 
-use Corcel\Model\Post as Corcel;
-use Corcel\Model\Taxonomy as WP_Post_Taxonomy;
+use Corcel\Model\Post as WP_Post;
+use App\Classes\Post_Taxonomy as WP_Post_Taxonomy;
 use Carbon\Carbon;
 
-class Post extends Corcel
+class Post extends WP_Post
 {
   //protected $connection = 'wordpress';
 
@@ -180,13 +180,16 @@ class Post extends Corcel
     $this->post_content = $post_content;
   }
 
-  function getColorCodedPostBorderCSS() {
+  function getColorCodedPostBorderCSS($horizontal=false) {
 
     if( $this->getCategories()->filter(function($value, $key){ return $value->term->slug == 'destiny'; })->count() ) {
-      return 'post-destiny';
+      return $horizontal ? 'post-destiny-horizontal' : 'post-destiny';
     }
     else if( $this->getCategories()->filter(function($value, $key){ return $value->term->slug == 'magic-the-gathering'; })->count() ) {
-      return 'post-magic';
+      return $horizontal ? 'post-magic-horizontal' : 'post-magic';
+    }
+    else if( $this->getCategories()->filter(function($value, $key){ return $value->term->slug == 'the-division-2'; })->count() ) {
+      return $horizontal ? 'post-division-horizontal' : 'post-division';
     }
     return '';
   }
@@ -213,82 +216,13 @@ class Post extends Corcel
     }
   }
 
-  public static function makeBreadCrumbsFromCategory($category) {
-    $parent_category = WP_Post_Taxonomy::find($category->parent);
-    $children_categories = WP_Post_Taxonomy::where('parent', $category->term_taxonomy_id)->get();
-    $category_post_count = Post::published()->taxonomy('category', $category->term->slug)->count();
-    $i = 1;
+  function getMainCategory() {
+    $cat = $this->getCategories()->first();
 
-    // Opening
-    $html = '
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent pl-0" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
-              href="'.route('guide_index').'">
-            <span property="name">Guides</span></a>
-          <meta property="position" content="'.$i.'">
-        </li>';
-
-    // Parents
-    $parent_categories = [];
-    if( $parent_category ) {
-      while( $parent_category ) {
-        $parent_categories[] = $parent_category;
-        $parent_category = WP_Post_Taxonomy::find($parent_category->parent);
-      }
-    }
-
-    if($parent_categories) {
-      $parent_categories = array_reverse($parent_categories);
-
-      foreach($parent_categories as $cat) {
-        $category_post_count = Post::published()->taxonomy('category', $cat->term->slug)->count();
-
-        if( $category_post_count ) {
-          $html .= '
-            <li class="breadcrumb-item children-item" property="itemListElement" typeof="ListItem">
-              <a property="item" typeof="WebPage"
-                  href="'.route('guide_category', ['slug' => $cat->term->slug, 'id' => $cat->term_taxonomy_id]).'">
-                <span property="name">'.$cat->term->name.' ('.$category_post_count.')</span></a>
-              <meta property="position" content="'.++$i.'">
-            </li>';
-        }
-      }
-    }
-
-    // Self
-    $html .= '
-        <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
-              href="'.route('guide_category', ['slug' => $category->term->slug, 'id' => $category->term_taxonomy_id]).'">
-            <span property="name">'.$category->term->name.' ('.$category_post_count.')</span></a>
-          <meta property="position" content="'.++$i.'">
-        </li>';
-
-    // Children
-
-    foreach($children_categories as $cat) {
-
-      $category_post_count = Post::published()->taxonomy('category', $cat->term->slug)->count();
-
-      if( $category_post_count ) {
-        $html .= '
-          <li class="breadcrumb-item children-item" property="itemListElement" typeof="ListItem">
-            <a property="item" typeof="WebPage"
-                href="'.route('guide_category', ['slug' => $cat->term->slug, 'id' => $cat->term_taxonomy_id]).'">
-              <span property="name">'.$cat->term->name.' ('.$category_post_count.')</span></a>
-            <meta property="position" content="'.++$i.'">
-          </li>';
-      }
-    }
-
-    // Closing
-    $html .= '
-      </ol>
-    </nav>';
-
-    return $html;
+    if( $cat )
+      return $cat->getTopLevelCategory();
+    else
+      return null;
   }
 
   function makeBreadcrumbs() {
@@ -316,7 +250,7 @@ class Post extends Corcel
         <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
           <a property="item" typeof="WebPage"
               href="'.route('guide_category', ['slug' => $cat->term->slug, 'id' => $cat->term_taxonomy_id]).'">
-            <span property="name">'.$cat->term->name.' ('.$category_post_count.')</span></a>
+            <span property="name">'.$cat->term->name.'</span></a>
           <meta property="position" content="'.++$i.'">
         </li>';
     }
@@ -368,7 +302,7 @@ class Post extends Corcel
     $post->taxonomies = $post->taxonomies->where('taxonomy', 'category')->all();
 
     foreach($post->taxonomies as $taxonomy) {
-      $categories[] = $taxonomy;
+      $categories[] = WP_Post_Taxonomy::find($taxonomy->term_taxonomy_id);
     }
 
     return collect($categories);
@@ -383,7 +317,7 @@ class Post extends Corcel
     $post->taxonomies = $post->taxonomies->where('taxonomy', 'post_tag')->all();
 
     foreach($post->taxonomies as $taxonomy) {
-      $tags[] = $taxonomy;
+      $tags[] = WP_Post_Taxonomy::find($taxonomy->term_taxonomy_id);
     }
 
     return collect($tags);

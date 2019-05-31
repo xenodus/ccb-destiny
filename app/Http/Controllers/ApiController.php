@@ -11,6 +11,88 @@ use Carbon\Carbon;
 
 class ApiController extends Controller
 {
+    const NEWS_CATEGORIES = [
+        'destiny' => 'Destiny 2 Bungie',
+        'division' => 'Tom Clancy\'s The Division 2',
+        'magic' => 'mtg arena magic'
+    ];
+
+    function get_mtg_top_decks() {
+        $decks = [];
+        $client = new Goutte\Client();
+        $crawler = $client->request('GET', 'https://www.mtggoldfish.com/metagame/standard#paper');
+
+        if( $crawler->filter('table.table.table-condensed.sample_deck')->count() ) {
+            $t = $crawler->filter('table.sample_deck')->each(function($node) use (&$decks) {
+                $deck_set['event_name'] = str_replace("\n", " ", trim($node->previousAll()->filter('h4')->first()->text()));
+                $deck_set['event_link'] = $node->previousAll()->filter('h4 a')->first()->link()->getUri();
+
+                $node->filter('td.col-deck > span.deck-price-paper')->each(function ($node) use (&$deck_set) {
+                    $html = trim(str_replace('<a href="/deck/', '<a target="_blank" href="https://www.mtggoldfish.com/deck/', $node->html()));
+
+                    $deck_set['decks'][] = [
+                        'link' => $node->filter('a')->first()->link()->getUri(),
+                        'name' => trim($node->text())
+                    ];
+                });
+
+                if( count($deck_set) ) $decks[] = $deck_set;
+            });
+        }
+
+        return response()->json($decks);
+    }
+
+    function get_news($category='') {
+        if( in_array($category, array_keys(self::NEWS_CATEGORIES)) )
+            $news = App\Classes\News_Feed::where('status', 'active')->where('category', $category)->take(5)->get();
+        else
+            $news = App\Classes\News_Feed::where('status', 'active')->get();
+
+        return response()->json($news);
+    }
+
+    function update_news() {
+        $topics = self::NEWS_CATEGORIES;
+
+        foreach($topics as $key => $topic) {
+            $url = 'https://newsapi.org/v2/everything?q='.urlencode($topic).'&language=en&sortBy=publishedAt&apiKey='.env('NEWS_API');
+
+            $client = new Client(); //GuzzleHttp\Client
+            $news_response = $client->get($url);
+
+            if( $news_response->getStatusCode() == 200 ) {
+                $news = json_decode($news_response->getBody()->getContents());
+                $news = collect($news);
+
+                if( count($news['articles']) ) {
+
+                    DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->update(['status' => 'expired']);
+                    DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->whereRaw('date_added <= now() - INTERVAL 3 HOUR')->delete();
+
+                    foreach($news['articles'] as $article) {
+                        $news = new App\Classes\News_Feed;
+                        $news->author = $article->author ?? '';
+                        $news->category = $key;
+                        $news->status = 'active';
+                        $news->source = $article->source->name;
+                        $news->date_added = Carbon::now()->format('Y-m-d H:i:s');
+                        $news->title = $article->title;
+                        $news->description = $article->description;
+                        $news->url = $article->url;
+                        $news->thumbnail = $article->urlToImage ?? '';
+                        $news->date_published = Carbon::parse($article->publishedAt)->format('Y-m-d');
+                        $news->save();
+                    }
+                }
+            }
+        }
+
+        $news = App\Classes\News_Feed::where('status', 'active')->get();
+
+        return response()->json($news);
+    }
+
     function get_leviathan_rotation() {
 
         $leviOrders = [
@@ -32,12 +114,15 @@ class ApiController extends Controller
 
             foreach($leviOrders as $key => $val) {
 
-                $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v, $k) use ($key) {
-                    return $v->activityHash == $key;
-                });
+                if( isset($character['Response']) ) {
 
-                if( $search->count() > 0 ) {
-                    return response()->json(['order' => $val]);
+                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v, $k) use ($key) {
+                        return $v->activityHash == $key;
+                    });
+
+                    if( $search->count() > 0 ) {
+                        return response()->json(['order' => $val]);
+                    }
                 }
             }
 
