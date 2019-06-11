@@ -23,19 +23,19 @@
         </div>
       </div>
       <div class="col-md-3 col-sm-12">
+        @include('guides.widgets.sidebarNav')
         @if($top_category->term->slug == 'magic-the-gathering')
           @include('guides.widgets.mtgTopDecks')
         @endif
-
         @include('guides.widgets.news')
       </div>
     </div>
     <div class="pagination-container text-center mt-2">
       @if( !$posts->onFirstPage() )
-        <a href="{{ $posts->previousPageUrl()  }}"> <i class="fas fa-angle-double-left"></i> Prev Page</a>
+        <a href="{{ $posts->previousPageUrl() }}" class="mr-2"><i class="fas fa-angle-double-left"></i> Prev Page</a>
       @endif
       @if( $posts->hasMorePages()  )
-        <a href="{{ $posts->nextPageUrl()  }}">Next Page <i class="fas fa-angle-double-right"></i></a>
+        <a href="{{ $posts->nextPageUrl() }}" class="ml-2">Next Page <i class="fas fa-angle-double-right"></i></a>
       @endif
     </div>
   </div>
@@ -43,32 +43,8 @@
 @endsection
 
 @section('footer')
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="/js/post_listing.js"></script>
-@if($top_category->term->slug == 'magic-the-gathering')
-<script src="/js/mtg_top_decks.js?<?=time()?>"></script>
-@endif
 <script type="text/javascript">
-$(document).ready(function(){
-  var category_map = {
-    'magic-the-gathering': 'magic',
-    'the-division-2': 'division',
-    'destiny': 'destiny',
-  };
-
-  $.get('/api/news/get/' + category_map['{{$top_category->term->slug}}'], function(res){
-
-    $("#news-listing-{{$top_category->term->slug}} .loader").hide();
-
-    if( res.length ) {
-      for(var i=0; i<res.length; i++) {
-        $("#news-listing-{{$top_category->term->slug}}").append("<div class='mb-2'>"+(i+1)+". <a href='"+res[i].url+"' target='_blank'>"+res[i].title+"</a> | "+res[i].source+"</div>");
-      }
-    }
-    else {
-      $("#news-widget-{{$top_category->term->slug}}").remove();
-    }
-  });
-})
+  var news_listing_category_slug = "{{$top_category->term->slug ?? ''}}";
 </script>
+<script src="{{ mix('/js/compiled/post.js') }}"></script>
 @endsection

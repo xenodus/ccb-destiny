@@ -5,14 +5,18 @@ use App\Http\Controllers\Controller;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
+use DB;
 
 class StatsController extends Controller
 {
   private $bungie_api_root_path = 'https://www.bungie.net/Platform';
   private $raid_report_root_path = 'https://b9bv2wd97h.execute-api.us-west-2.amazonaws.com/prod/api/player/';
+  private $clan_id = '3717919';
 
+  // raid
   private $petra_run_hash = '4177910003';
   private $diamond_run_hash = '2648109757';
+  private $crown_run_hash = '1558682416';
   private $raid_activity_hash = [
     'levi'  => [2693136600, 2693136601, 2693136602, 2693136603, 2693136604, 2693136605],
     'levip' => [417231112, 757116822, 1685065161, 2449714930, 3446541099, 3879860661],
@@ -21,21 +25,165 @@ class StatsController extends Controller
     'sos'   => [119944200],
     'sosp'  => [3213556450],
     'lw'    => [2122313384],
-    'sotp'  => [548750096]
+    'sotp'  => [548750096],
+    'cos'   => [3333172150]
   ];
-  private $clan_id = '3717919';
 
+  // characters
+  private $class_hash = [
+    671679327 => 'hunter',
+    3655393761 => 'titan',
+    2271682572 => 'warlock'
+  ];
+
+  private $race_hash = [
+    3887404748 => 'human',
+    2803282938 => 'awoken',
+    898834093 => 'exo'
+  ];
+
+  // pvp
   private $glory_hash = 2000925172; // competitive
   private $valor_hash = 3882308435; // quickplay
   private $valor_reset_hash = 115001349;
   private $gold_medals_hash = [4230088036, 1371679603, 3882642308, 1413337742, 2857093873, 1271667367, 3324094091];
 
+  // gambit
   private $infamy_hash = 2772425241;
   private $infamy_reset_hash = 3901785488;
 
-  public function index()
+  public function test()
   {
-      $data['site_title'] = env('SITE_NAME');
+    $client = new Client(); //GuzzleHttp\Client
+
+    $member_gambit_stats_response = $client->get('https://stats.bungie.net/Platform/Destiny2/4/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+    ]);
+
+    // Character/2305843009300583068/Stats/AggregateActivityStats/
+
+    if( $member_gambit_stats_response->getStatusCode() == 200 ) {
+      $member_gambit_stats = json_decode($member_gambit_stats_response->getBody()->getContents());
+      $member_gambit_stats = collect($member_gambit_stats);
+
+      dd($member_gambit_stats);
+      dd(collect($member_gambit_stats['Response']->activities)->where('activityHash', '3333172150'));
+    }
+  }
+
+  public function clan_raid_lockout() {
+    $raid_lockouts = \App\Classes\Raid_Lockouts::get();
+
+    $result = [];
+
+    foreach($raid_lockouts as $raid_lockout) {
+      $result[] = [
+        'name' => $raid_lockout->member->display_name,
+        'data' => json_decode($raid_lockout->data)
+      ];
+    }
+
+    $data['site_title'] = 'Raid lockouts for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+    $data['active_page'] = 'tools';
+    $data['raid_lockouts'] = $result;
+
+    return view('clan.raidLockouts', $data);
+  }
+
+  public function update_clan_raid_lockout() {
+
+    // Get weekly start / end dates (GMT+8)
+    $start_of_week = new \Carbon\Carbon('last wednesday');
+    $start_of_week->hour = 1;
+
+    $end_of_week = clone $start_of_week;
+    $end_of_week->addDays(7);
+    $end_of_week->hour = 0;
+    $end_of_week->minute = 59;
+    $end_of_week->second = 59;
+
+    $results = [];
+
+    $clan_members = \App\Classes\Clan_Member::get();
+
+    DB::connection('ccb_mysql')->table('raid_lockouts')->truncate();
+
+    foreach($clan_members as $member) {
+
+      $member_raid_lockout = $this->get_default_lockout();
+
+      if( $member->characters->count() ) {
+
+        foreach( $member->characters as $character ) {
+
+          $client = new Client(); //GuzzleHttp\Client
+          $characters_activities_response = $client->get(
+            $this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
+            ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
+          );
+
+          if( $characters_activities_response->getStatusCode() == 200 ) {
+            $characters_activities = json_decode($characters_activities_response->getBody()->getContents());
+            $characters_activities = collect($characters_activities);
+
+            if( isset($characters_activities['Response']->activities) ) {
+
+              foreach($characters_activities['Response']->activities as $activity) {
+                $activity_date = \Carbon\Carbon::parse($activity->period, 'UTC');
+                $activity_date->setTimezone('Asia/Singapore');
+
+                if( $activity_date->gte($start_of_week) ) {
+                  foreach($this->raid_activity_hash as $raid => $raid_hashes) {
+                    // Is a raid activity!
+                    if( in_array($activity->activityDetails->referenceId, $raid_hashes) ) {
+                      if( $activity->values->completed->basic->displayValue == 'Yes' ) {
+                        $member_raid_lockout[$character->class][$raid] = 1;
+                      }
+                    }
+                  }
+                }
+                else {
+                  // stop iterating if date already passed last reset
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      $raid_lockout = new App\Classes\Raid_Lockouts();
+      $raid_lockout->id = $member->id;
+      $raid_lockout->data = json_encode($member_raid_lockout);
+      $raid_lockout->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+      $raid_lockout->save();
+
+      $results[] = [
+        'member' => $member->display_name,
+        'lockouts' =>  $member_raid_lockout
+      ];
+    }
+
+    return response()->json($results); // default
+  }
+
+  private function get_default_lockout() {
+    $member_raid_lockout = [];
+
+    foreach( array_values($this->class_hash) as $class ) {
+
+      $member_raid_lockout[ $class ] = [];
+
+      foreach( array_keys($this->raid_activity_hash) as $raid ) {
+        $member_raid_lockout[ $class ][ $raid ] = 0;
+      }
+    }
+
+    return $member_raid_lockout;
+  }
+
+  public function raid()
+  {
+      $data['site_title'] = 'Raid stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'stats';
 
       return view('stats.index', $data);
@@ -43,7 +191,7 @@ class StatsController extends Controller
 
   public function weapons()
   {
-      $data['site_title'] = env('SITE_NAME');
+      $data['site_title'] = 'Weapon usage stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'weapons';
 
       return view('stats.weapons', $data);
@@ -51,7 +199,7 @@ class StatsController extends Controller
 
   public function pve()
   {
-      $data['site_title'] = env('SITE_NAME');
+      $data['site_title'] = 'PvE stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'pve';
 
       return view('stats.pve', $data);
@@ -59,7 +207,7 @@ class StatsController extends Controller
 
   public function pvp()
   {
-      $data['site_title'] = env('SITE_NAME');
+      $data['site_title'] = 'PvP stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'pvp';
 
       return view('stats.pvp', $data);
@@ -67,7 +215,7 @@ class StatsController extends Controller
 
   public function gambit()
   {
-      $data['site_title'] = env('SITE_NAME');
+      $data['site_title'] = 'Gambit stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'gambit';
 
       return view('stats.gambit', $data);
@@ -349,61 +497,84 @@ class StatsController extends Controller
   // Update raid data
   public function update_raid_stats()
   {
-    $petra_run_hash = $this->petra_run_hash;
-    $diamond_run_hash = $this->diamond_run_hash;
+    App\Classes\Work_Progress::whereRaw('start < NOW() - INTERVAL 1 HOUR')->delete(); // cleanup db
 
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $members_response = $client->get( route('bungie_get_members') );
+    if( App\Classes\Work_Progress::where('type', 'raid')->where('status', 'running')
+          ->whereRaw('start > NOW() - INTERVAL 5 MINUTE')
+          ->count() == 0 )
+    {
+      $work_progress = new App\Classes\Work_Progress();
+      $work_progress->type = 'raid';
+      $work_progress->start = date('Y-m-d H:i:s');
+      $work_progress->status = 'running';
+      $work_progress->save();
 
-    if( $members_response->getStatusCode() == 200 ) {
+      $petra_run_hash = $this->petra_run_hash;
+      $diamond_run_hash = $this->diamond_run_hash;
+      $crown_run_hash = $this->crown_run_hash;
 
-      $members = json_decode($members_response->getBody()->getContents());
-      $members = collect($members);
+      $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
+      $members_response = $client->get( route('bungie_get_members') );
 
-      foreach($members as $member) {
+      if( $members_response->getStatusCode() == 200 ) {
 
-        // Check Triumphs for flawless runs
-        $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
-        ]);
+        $members = json_decode($members_response->getBody()->getContents());
+        $members = collect($members);
 
-        if( $member_profile_response->getStatusCode() == 200 ) {
-          $member_profile = json_decode($member_profile_response->getBody()->getContents());
-          $member_profile = collect($member_profile);
+        foreach($members as $member) {
 
-          $member->raidClears['petra'] = $member_profile['Response']->profileRecords->data->records->$petra_run_hash->objectives[0]->progress;
+          // Check Triumphs for flawless runs
+          $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+          ]);
 
-          $member->raidClears['diamond'] = $member_profile['Response']->profileRecords->data->records->$diamond_run_hash->objectives[0]->progress;
-        }
+          if( $member_profile_response->getStatusCode() == 200 ) {
+            $member_profile = json_decode($member_profile_response->getBody()->getContents());
+            $member_profile = collect($member_profile);
 
-        // Check raid.report
-        $url = $this->raid_report_root_path . $member->destinyUserInfo->membershipId;
-        $raid_report_response = $client->get( $url );
+            $member->raidClears['petra'] = $member_profile['Response']->profileRecords->data->records->$petra_run_hash->objectives[0]->progress;
 
-        $member->rr_url = $url;
+            $member->raidClears['diamond'] = $member_profile['Response']->profileRecords->data->records->$diamond_run_hash->objectives[0]->progress;
 
-        if( $raid_report_response->getStatusCode() == 200 ) {
-          $raid_report = json_decode($raid_report_response->getBody()->getContents());
-          $raid_report = collect($raid_report);
-          $activities = $raid_report['response']->activities;
+            $member->raidClears['crown'] = $member_profile['Response']->profileRecords->data->records->$crown_run_hash->objectives[0]->progress;
+          }
 
-          foreach($activities as $activity) {
-            foreach($this->raid_activity_hash as $name => $hash_arr) {
-              if( in_array($activity->activityHash, $hash_arr) ) {
-                if( isset($member->raidClears[$name]) )
-                  $member->raidClears[$name] += $activity->values->clears;
-                else
-                  $member->raidClears[$name] = $activity->values->clears;
+          // Check raid.report
+          $url = $this->raid_report_root_path . $member->destinyUserInfo->membershipId;
+          $raid_report_response = $client->get( $url );
+
+          $member->rr_url = $url;
+
+          if( $raid_report_response->getStatusCode() == 200 ) {
+            $raid_report = json_decode($raid_report_response->getBody()->getContents());
+            $raid_report = collect($raid_report);
+            $activities = $raid_report['response']->activities;
+
+            foreach($activities as $activity) {
+              foreach($this->raid_activity_hash as $name => $hash_arr) {
+                if( in_array($activity->activityHash, $hash_arr) ) {
+                  if( isset($member->raidClears[$name]) )
+                    $member->raidClears[$name] += $activity->values->clears;
+                  else
+                    $member->raidClears[$name] = $activity->values->clears;
+                }
               }
             }
           }
+          //App\Classes\Raid_Stats::update_members($members);
+          //dd($member);
         }
-        //App\Classes\Raid_Stats::update_members($members);
-        //dd($member);
+
+        App\Classes\Raid_Stats::update_members($members);
+
+        $work_progress->end = date('Y-m-d H:i:s');
+        $work_progress->status = 'completed';
+        $work_progress->save();
+
+        return response()->json(['status' => 1]);
       }
-
-      App\Classes\Raid_Stats::update_members($members);
-
-      return response()->json(['status' => 1]);
+    }
+    else {
+      return response()->json(['status' => 2]); // already in progress
     }
 
     return response()->json(['status' => 0]);
@@ -437,6 +608,63 @@ class StatsController extends Controller
     return response()->json([]);
   }
 
+  public function update_member_characters() {
+    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
+    $member_response = $client->get( route('bungie_get_members') );
+
+    if( $member_response->getStatusCode() == 200 ) {
+      $members = json_decode($member_response->getBody()->getContents());
+      $members = collect($members);
+
+      DB::connection('ccb_mysql')->table('clan_member_characters')->truncate();
+
+      foreach($members as $member) {
+
+        $member_characters_response = $client->get( route('bungie_get_member_characters', [$member->destinyUserInfo->membershipId]) );
+
+        if( $member_characters_response->getStatusCode() == 200 ) {
+          $member_characters = json_decode($member_characters_response->getBody()->getContents());
+          $member_characters = collect($member_characters);
+
+          foreach($member_characters['characters']->data as $character_id => $character) {
+            //dd($character);
+            $clan_member_character = new \App\Classes\Clan_Member_Character();
+            $clan_member_character->id = $character_id;
+            $clan_member_character->user_id = $member->destinyUserInfo->membershipId;
+            $clan_member_character->light = $character->light;
+            $clan_member_character->class = $this->class_hash[$character->classHash];
+            $clan_member_character->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+            $clan_member_character->save();
+          }
+        }
+      }
+
+      return response()->json(['status' => 1]);
+    }
+
+    return response()->json(['status' => 0]);
+  }
+
+  // Component definition: https://bungie-net.github.io/multi/schema_Destiny-DestinyComponentType.html#schema_Destiny-DestinyComponentType
+  public function get_member_characters($member_id)
+  {
+    $url = $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member_id.'?components=200,204';
+
+    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
+    $response = $client->get($url, [
+      'headers' => [
+        'X-API-Key' => env('BUNGIE_API')
+      ]
+    ]);
+
+    if( $response->getStatusCode() == 200 ) {
+      $payload = json_decode($response->getBody()->getContents());
+      return response()->json( $payload->Response );
+    }
+
+    return response()->json([]);
+  }
+
   public function get_members()
   {
     $url = $this->bungie_api_root_path.'/GroupV2/'.$this->clan_id.'/Members/';
@@ -450,6 +678,20 @@ class StatsController extends Controller
 
     if( $response->getStatusCode() == 200 ) {
       $payload = json_decode($response->getBody()->getContents());
+
+      DB::connection('ccb_mysql')->table('clan_members')->truncate();
+
+      foreach($payload->Response->results as $result) {
+        $clan_member = new \App\Classes\Clan_Member();
+        $clan_member->id = $result->destinyUserInfo->membershipId;
+        $clan_member->display_name = $result->destinyUserInfo->displayName;
+        $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
+        $last_online->setTimezone('Asia/Singapore');
+        $clan_member->last_online = $last_online->format('Y-m-d H:i:s');
+        $clan_member->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+        $clan_member->save();
+      }
+
       return response()->json( $payload->Response->results );
     }
 

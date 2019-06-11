@@ -1,3 +1,7 @@
+main {
+  background: rgba(0,0,0,0.7);
+}
+
 li.breadcrumb-item.active a span {
   font-style: italic;
 }
@@ -17,12 +21,22 @@ li.breadcrumb-item.active a span {
 }
 
 #guide-post-content {
-  margin-top: 1rem;
-  margin-bottom: 3rem;
   text-align: left;
   font-size: 1rem;
   letter-spacing: 0.5px;
   word-break: break-word;
+}
+
+#guide-post-content .mtgtooltip {
+  text-decoration: underline;
+}
+
+#guide-post-content ol {
+  padding-left: 30px;
+}
+
+#guide-post-content ul {
+  padding-inline-start: 25px;
 }
 
 #guide-post-content img {
@@ -38,10 +52,14 @@ li.breadcrumb-item.active a span {
   text-align: left;
 }
 
+#guide-post-content figure.aligncenter {
+  text-align: center!important;
+}
+
 #guide-post-content figcaption {
   margin-top: 5px;
   font-style: italic;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 #guide-post-content h2 {
@@ -50,12 +68,16 @@ li.breadcrumb-item.active a span {
 }
 
 #post-meta {
-  margin-top: 1rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 20%;
 }
 
 #post-meta h1 {
-  letter-spacing: 2px;
-  font-size: 3rem;
+  letter-spacing: 1px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: capitalize;
 }
 
 .author-avatar {
@@ -100,19 +122,19 @@ li.breadcrumb-item.active a span {
 }
 
 .post-destiny {
-  border-bottom: 5px solid #DB4437;
+  border-top: 5px solid #b78c25!important;
 }
 
 .post-magic {
-  border-bottom: 5px solid #0F9D58;
+  border-top: 5px solid #0F9D58!important;
 }
 
 .post-division {
-  border-bottom: 5px solid #4285F4;
+  border-top: 5px solid #4285F4!important;
 }
 
 .post-destiny-horizontal {
-  background: #DB4437;
+  background: #b78c25;
   display: block!important;
 }
 
@@ -127,7 +149,7 @@ li.breadcrumb-item.active a span {
 }
 
 #news-widget-destiny {
-  border: 1px solid #DB4437;
+  border: 1px solid #b78c25;
 }
 
 #news-widget-magic-the-gathering {
@@ -139,7 +161,7 @@ li.breadcrumb-item.active a span {
 }
 
 #news-widget-destiny-header {
-  border-bottom: 1px solid #DB4437;
+  border-bottom: 1px solid #b78c25;
 }
 
 #news-widget-magic-the-gathering-header {
@@ -148,13 +170,6 @@ li.breadcrumb-item.active a span {
 
 #news-widget-the-division-2-header {
   border-bottom: 1px solid #4285F4;
-}
-
-#guide-listing .news-widget a,
-#guide-listing .news-widget a:hover,
-#guide-listing .news-widget a:active,
-#guide-listing .news-widget a:focus {
-  color: #fff;
 }
 
 #guide-listing .news-widget a:hover,
@@ -177,7 +192,7 @@ li.breadcrumb-item.active a span {
 }
 
 #guide-listing .categories-img .item-destiny {
-  border: 1px solid #DB4437;
+  border: 1px solid #b78c25;
   background: url('/images/categories/destiny2-tn.jpg') no-repeat center 10%/cover;
 }
 
@@ -274,6 +289,7 @@ li.breadcrumb-item.active a span {
   font-weight: 700;
   font-size: 1rem;
   line-height: 1.4rem;
+  text-transform: capitalize;
 }
 
 #guide-listing .grid-item a,
@@ -318,19 +334,91 @@ li.breadcrumb-item.active a span {
   font-size: 0.7rem;
 }
 
+#related-post-header-icon {
+  width: 45px;
+  height: 45px;
+  background-image: url(/images/icons/related-news.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#related-posts-container a,
+#related-posts-container a:hover,
+#related-posts-container a:active,
+#related-posts-container a:focus {
+  text-decoration: none;
+}
+
+#related-posts-container .related-posts-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+#related-posts-container .related-posts-item .related-posts-tn {
+  height: 100px;
+  position: relative;
+}
+
+#related-posts-container .related-posts-item:hover {
+  opacity: 0.9;
+}
+
+#related-posts-container .related-posts-item .related-posts-title {
+  border-top: 5px solid #0F9D58;
+  position: relative;
+  text-transform: capitalize;
+}
+
+#related-posts-container .related-posts-item .related-posts-title small {
+  font-weight: 700;
+  line-height: 1rem;
+  position: relative;
+}
+
+.sidebar-destiny {
+  border: 1px solid #b78c25;
+}
+
+.sidebar-destiny .sidebar-nav-header {
+  border-bottom: 1px solid #b78c25;
+}
+
+.sidebar-division {
+  border: 1px solid #4285F4;
+}
+
+.sidebar-division .sidebar-nav-header {
+  border-bottom: 1px solid #4285F4;
+}
+
+.sidebar-nav-header h2 {
+  font-size: 1rem; font-weight: bold;
+}
+
+.sidebar-nav-content {
+  font-size: 0.8rem;
+}
+
+.sidebar-nav-content a:hover,
+.sidebar-nav-content a:focus,
+.sidebar-nav-content a:active {
+  text-decoration: underline!important;
+}
+
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
-  #post-meta h1  {
-    font-size: 2rem;
-  }
 }
 
 /* Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) {
-}
+  #post-meta h1  {
+    font-size: 2rem;
+  }
 
-/* Medium devices (tablets, less than 992px) */
-@media (max-width: 991.98px) {
   .post-tn-horizontal {
     height: 180px;
     width: 100%;
@@ -340,6 +428,15 @@ li.breadcrumb-item.active a span {
     width: 100%;
     position: relative;
   }
+
+  #related-posts-container .related-posts-item .related-posts-tn {
+    height: 140px;
+    position: relative;
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
 }
 
 /* Large devices (desktops, less than 1200px) */

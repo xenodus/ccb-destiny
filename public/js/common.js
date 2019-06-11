@@ -1,3 +1,5 @@
+window.ccbNS = {};
+
 $(document).ready(function(){
   checkMembersOnline();
 

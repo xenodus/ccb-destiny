@@ -37,7 +37,7 @@ mix.styles([
 // COMMON JS
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
-    //'node_modules/popper.js/dist/popper.js',
+    'node_modules/lodash/lodash.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
     'node_modules/moment/moment.js',
     'node_modules/lightbox2/src/js/lightbox.js',
@@ -48,11 +48,14 @@ mix.scripts([
 // HOME PAGE
 mix.scripts([
     'public/js/index.js',
+    'public/js/index_news.js',
 ], 'public/js/compiled/index.js').version();
 
-// POST PAGE
+// POST + LISTING PAGE
 mix.scripts([
-    'public/js/mtg/mtgtooltip.js'
+    'public/js/mtg/mtgtooltip.js',
+    'public/js/mtg_top_decks.js',
+    'public/js/post_listing.js',
 ], 'public/js/compiled/post.js').version();
 
 // STATS PAGES

@@ -12,18 +12,22 @@
 */
 
 Route::get('/test', 'HomeController@test')->name('test');
+Route::get('/test2', 'StatsController@test')->name('test2');
 
 Route::get('/sitemap/crawl', 'SitemapController@crawl')->name('sitemap_crawl');
+Route::get('/sitemap/generate', 'SitemapController@generate')->name('sitemap_generate');
 
 Route::get('/guides', 'GuideController@index')->name('guide_index');
 Route::get('/guides/category/{slug}/{id}', 'GuideController@category')->name('guide_category');
 Route::get('/guides/{slug}/{id}', 'GuideController@post')->name('guide_post');
 
 Route::get('/', 'HomeController@home')->name('home');
+Route::get('/milestones/refresh/{status?}', 'HomeController@setMilestoneRefresh')->name('setMilestoneRefresh');
+Route::get('/lightmode/{status?}', 'HomeController@setLightmode')->name('lightmode');
 
 // Stats Display
 Route::redirect('/stats', '/stats/raid', 301);
-Route::get('/stats/raid', 'StatsController@index')->name('stats_raid');
+Route::get('/stats/raid', 'StatsController@raid')->name('stats_raid');
 Route::get('/stats/weapons', 'StatsController@weapons')->name('stats_weapons');
 Route::get('/stats/pve', 'StatsController@pve')->name('stats_pve');
 Route::get('/stats/pvp', 'StatsController@pvp')->name('stats_pvp');
@@ -34,6 +38,15 @@ Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
 // Members & Currently Online Members
 Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');
 Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
+
+Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
+
+// Update Member Characters
+Route::get('/bungie/members/characters/update', 'StatsController@update_member_characters')->name('update_member_characters');
+
+// Raid Lockouts
+Route::get('/clan/lockouts', 'StatsController@clan_raid_lockout')->name('clan_raid_lockout');
+Route::get('/bungie/lockouts/update', 'StatsController@update_clan_raid_lockout')->name('update_clan_raid_lockout');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');

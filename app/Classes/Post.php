@@ -8,18 +8,68 @@ use Carbon\Carbon;
 
 class Post extends WP_Post
 {
-  //protected $connection = 'wordpress';
+  const RELATED_POST_COUNT = 6;
 
-  public function __construct(array $attributes = array())
+  // Mutator
+  public function getContentAttribute()
   {
-      parent::__construct($attributes);
+    $this->replaceOriginalImages();
+    $this->convertBootstrapEmbed();
+    $this->replaceYoutubeEmbed();
+    $this->applyLightbox();
+    $this->applyMTG();
+
+    return $this->stripShortcodes($this->post_content);
+  }
+
+  // Related posts - same child category first
+  public function related() {
+    $post_categories = $this->getCategories();
+
+    if( $post_categories->count() > 0 ) {
+
+      $posts = self::published()
+        ->taxonomy('category', $post_categories->last()->term->slug)
+        ->where('id', '!=', $this->ID)
+        ->take( self::RELATED_POST_COUNT )
+        ->get();
+
+      if( $post_categories->count() > 1 && $post_categories->count() < self::RELATED_POST_COUNT ) {
+        $parent_category_posts = self::published()
+          ->taxonomy('category', $post_categories->first()->term->slug)
+          ->where('id', '!=', $this->ID)
+          ->whereNotIn('id', $posts->map(function($value, $key){ return $value->ID; })->toArray())
+          ->take( self::RELATED_POST_COUNT - $posts->map(function($value, $key){ return $value->ID; })->count() )
+          ->get();
+
+        $posts = $posts->merge($parent_category_posts);
+      }
+
+      return $posts;
+    }
+
+    return null;
+  }
+
+  // Next post from the same category
+  public function next() {
+    $category = $this->getMainCategory();
+    $next_post = self::published()->taxonomy('category', $category->term->slug)->where('id', '>', $this->ID)->first();
+    return $next_post;
+  }
+
+  // Prev post from the same category
+  public function prev() {
+    $category = $this->getMainCategory();
+    $prev_post = self::published()->taxonomy('category', $category->term->slug)->where('id', '<', $this->ID)->orderBy('id', 'desc')->first();
+    return $prev_post;
   }
 
   public function isFeatured() {
     if ( $this->getTags()->filter(function($value, $key){ return $value->term->slug == 'featured'; })->count() )
       return true;
-    else
-      return false;
+
+    return false;
   }
 
   public function getAuthorAvatar() {
@@ -34,12 +84,16 @@ class Post extends WP_Post
   }
 
   public function getPostDate() {
-    return Carbon::parse($this->post_date)->format('d M Y');
+    return Carbon::parse($this->post_date)->format('j M Y');
+  }
+
+  public function getModifiedDate() {
+    return Carbon::parse($this->post_modified)->format('j M Y');
   }
 
   function getJSONLD() {
 
-    $post = $this::with('attachment')
+    $post = self::with('attachment')
           ->find($this->ID);
 
     $images = '';
@@ -83,14 +137,6 @@ class Post extends WP_Post
       "description": "'.$this->getExcerpt().'"
     }
     </script>';
-  }
-
-  function customParseContent() {
-    $this->replaceOriginalImages();
-    $this->convertBootstrapEmbed();
-    $this->replaceYoutubeEmbed();
-    $this->applyLightbox();
-    $this->applyMTG();
   }
 
   function applyMTG() {

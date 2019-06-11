@@ -13,7 +13,7 @@ class ApiController extends Controller
 {
     const NEWS_CATEGORIES = [
         'destiny' => 'Destiny 2 Bungie',
-        'division' => 'Tom Clancy\'s The Division 2',
+        'division' => 'Ubisoft Division 2',
         'magic' => 'mtg arena magic'
     ];
 
@@ -46,8 +46,12 @@ class ApiController extends Controller
     function get_news($category='') {
         if( in_array($category, array_keys(self::NEWS_CATEGORIES)) )
             $news = App\Classes\News_Feed::where('status', 'active')->where('category', $category)->take(5)->get();
-        else
-            $news = App\Classes\News_Feed::where('status', 'active')->get();
+        else {
+            $destiny_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'destiny')->take(5)->get();
+            $division_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'division')->take(5)->get();
+            $magic_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'magic')->take(5)->get();
+            $news = $destiny_news->merge($division_news)->merge($magic_news);
+        }
 
         return response()->json($news);
     }
@@ -56,7 +60,10 @@ class ApiController extends Controller
         $topics = self::NEWS_CATEGORIES;
 
         foreach($topics as $key => $topic) {
-            $url = 'https://newsapi.org/v2/everything?q='.urlencode($topic).'&language=en&sortBy=publishedAt&apiKey='.env('NEWS_API');
+            // top-headlines | everything
+            // category: business entertainment general health science sports technology
+            // language: ar de en es fr he it nl no pt ru se ud zh
+            $url = 'https://newsapi.org/v2/everything?q='.urlencode($topic).'&language=en&sortBy=publishedAt&sortBy=popularity&sortBy=relevancy&apiKey='.env('NEWS_API');
 
             $client = new Client(); //GuzzleHttp\Client
             $news_response = $client->get($url);
@@ -65,24 +72,31 @@ class ApiController extends Controller
                 $news = json_decode($news_response->getBody()->getContents());
                 $news = collect($news);
 
+                //dd($news);
+
                 if( count($news['articles']) ) {
 
                     DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->update(['status' => 'expired']);
                     DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->whereRaw('date_added <= now() - INTERVAL 3 HOUR')->delete();
 
                     foreach($news['articles'] as $article) {
-                        $news = new App\Classes\News_Feed;
-                        $news->author = $article->author ?? '';
-                        $news->category = $key;
-                        $news->status = 'active';
-                        $news->source = $article->source->name;
-                        $news->date_added = Carbon::now()->format('Y-m-d H:i:s');
-                        $news->title = $article->title;
-                        $news->description = $article->description;
-                        $news->url = $article->url;
-                        $news->thumbnail = $article->urlToImage ?? '';
-                        $news->date_published = Carbon::parse($article->publishedAt)->format('Y-m-d');
-                        $news->save();
+
+                        $n = App\Classes\News_Feed::where('url', $article->url)->where('status', 'active')->count();
+
+                        if($n == 0 && self::is_english($article->title)) {
+                            $news = new App\Classes\News_Feed;
+                            $news->author = $article->author ?? '';
+                            $news->category = $key;
+                            $news->status = 'active';
+                            $news->source = $article->source->name;
+                            $news->date_added = Carbon::now()->format('Y-m-d H:i:s');
+                            $news->title = $article->title;
+                            $news->description = $article->description;
+                            $news->url = $article->url;
+                            $news->thumbnail = $article->urlToImage ?? '';
+                            $news->date_published = Carbon::parse($article->publishedAt)->format('Y-m-d');
+                            $news->save();
+                        }
                     }
                 }
             }
@@ -91,6 +105,15 @@ class ApiController extends Controller
         $news = App\Classes\News_Feed::where('status', 'active')->get();
 
         return response()->json($news);
+    }
+
+    public static function is_english($str)
+    {
+        if (strlen($str) != strlen(utf8_decode($str))) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     function get_leviathan_rotation() {
@@ -146,19 +169,20 @@ class ApiController extends Controller
 
         $result = [];
 
+        $result = DB::table('vendor_sales');
+
         if($vendor_id) {
-            $result = DB::table('vendor_sales')
-            ->where('vendor_hash', $vendor_id)
-            ->orderBy('vendor_hash')
-            ->orderBy('itemTypeDisplayName')
-            ->get();
+            $result = $result->where('vendor_hash', $vendor_id);
         }
-        else {
-            $result = DB::table('vendor_sales')
-            ->orderBy('vendor_hash')
-            ->orderBy('itemTypeDisplayName')
-            ->get();
-        }
+
+        $result = $result->orderBy('vendor_hash');
+
+        if($vendor_id=='672118013')
+            $result = $result->orderBy('cost_name');
+        else
+            $result = $result->orderBy('itemTypeDisplayName');
+
+        $result = $result->get();
 
         return response()->json($result);
     }

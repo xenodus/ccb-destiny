@@ -52,7 +52,7 @@ $(document).ready(function(){
     $('.loader').show();
     $('.loader-text').show();
     if( queueStatus == 0 )
-      $('.loader-text').text('Refreshing data. Go grab a drink...');
+      $('.loader-text').text('Refreshing data (~1 min). Go grab a drink...');
     $('.stats-container').empty();
 
     $.get('/bungie/gambit/update', function(res){

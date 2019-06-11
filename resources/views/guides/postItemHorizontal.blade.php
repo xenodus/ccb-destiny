@@ -1,5 +1,5 @@
 <div class="col-md-12">
-  <a href="{{ route('guide_post', ['slug' => $post->slug, 'id' => $post->ID]) }}">
+  <a href="{{ route('guide_post', ['slug' => $post->slug, 'id' => $post->ID]) }}" title="{{$post->title}}">
     <div class="post mb-4 d-flex flex-md-row flex-column align-items-stretch bg-white">
       <div class="post-overlay {{ $post->getColorCodedPostBorderCSS() }}"></div>
       <div class="text-center post-category {{ $post->getColorCodedPostBorderCSS(true) }}">{{ $post->getMainCategory() ? $post->getMainCategory()->term->name : '' }}</div>

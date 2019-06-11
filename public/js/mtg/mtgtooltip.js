@@ -45,7 +45,7 @@ mtgTooltip.prototype = {
       if (!multiverseid && !specialimg) {
         //case of using forced name and/or set
         if (typeof name != "undefined" && name.length > 0) { cardName = '&name=' + encodeURI(name); }
-        else cardName = '&name=' + encodeURI(contents);
+        else cardName = '&name=' + encodeURI(contents).replace(/'/g, "%27");
         //set is equals to the wotc set code designation
         if (typeof set != "undefined" && set.length > 0) { setName = '&set=' + set; }
         // special land types
@@ -157,7 +157,7 @@ mtgTooltip.prototype = {
     left = p_left + 25;
     top = p_top + 25;
     // tooltip over right edge
-    if (p_left + width > w_width + h_scroll) { left = h_scroll + w_width - width; }
+    if (p_left + width > w_width + h_scroll) { left = h_scroll + w_width - width; top = p_top - height - 50; }
     // tooltip over left (this never happens, i hope)
     // tooltip over the bottom
     if (top + height > w_height + v_scroll) { top = p_top - height; }

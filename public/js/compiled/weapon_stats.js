@@ -1,1 +1,110 @@
-var queueStatus=0;$(document).ready(function(){function e(){$(".loader").show(),$(".loader-text").show(),0==queueStatus&&$(".loader-text").text("Refreshing data. Go grab a drink..."),$(".stats-container").empty(),$.get("/bungie/pve/update",function(t){2==t.status?($(".loader-text").text("Resync already in progress. Queueing..."),queueStatus=1,setTimeout(e,5e3)):(queueStatus=0,refreshBtn=$("button.refresh-btn"),refreshBtn.prop("disabled",!1),a())})}function a(){$.get("/bungie/members/get",function(e){$(".loader-text").text("Fetching Weapon Stats..."),$.get("/bungie/weapon/get",function(a){for(var t=[],n=0;n<e.length;n++)$(".loader-text").text("Processing "+(n+1)+" of "+e.length+"..."),weaponData=a.filter(function(a){return a.user_id==e[n].destinyUserInfo.membershipId})[0],t.push({name:e[n].destinyUserInfo.displayName,weaponKillsAutoRifle:weaponData.weaponKillsAutoRifle,weaponKillsBow:weaponData.weaponKillsBow,weaponKillsFusionRifle:weaponData.weaponKillsFusionRifle,weaponKillsHandCannon:weaponData.weaponKillsHandCannon,weaponKillsTraceRifle:weaponData.weaponKillsTraceRifle,weaponKillsPulseRifle:weaponData.weaponKillsPulseRifle,weaponKillsRocketLauncher:weaponData.weaponKillsRocketLauncher,weaponKillsScoutRifle:weaponData.weaponKillsScoutRifle,weaponKillsShotgun:weaponData.weaponKillsShotgun,weaponKillsSniper:weaponData.weaponKillsSniper,weaponKillsSubmachinegun:weaponData.weaponKillsSubmachinegun,weaponKillsSideArm:weaponData.weaponKillsSideArm,weaponKillsSword:weaponData.weaponKillsSword,weaponKillsGrenadeLauncher:weaponData.weaponKillsGrenadeLauncher});$(".loader-text").text("Generating Table..."),$(".stats-container").append('<div id="weapon-stats-table"></div>'),$(".loader").hide(),$(".loader-text").hide();var o={precision:0};new Tabulator("#weapon-stats-table",{data:t,layout:"fitColumns",columns:[{title:"Name",field:"name",frozen:!0},{title:"Auto Rifle",field:"weaponKillsAutoRifle",formatter:"money",formatterParams:o},{title:"Bow",field:"weaponKillsBow",formatter:"money",formatterParams:o},{title:"Fusion Rifle",field:"weaponKillsFusionRifle",formatter:"money",formatterParams:o},{title:"Hand Cannon",field:"weaponKillsHandCannon",formatter:"money",formatterParams:o},{title:"Trace Rifle",field:"weaponKillsTraceRifle",formatter:"money",formatterParams:o},{title:"Pulse Rifle",field:"weaponKillsPulseRifle",formatter:"money",formatterParams:o},{title:"Rocket Launcher",field:"weaponKillsRocketLauncher",formatter:"money",formatterParams:o},{title:"Scout Rifle",field:"weaponKillsScoutRifle",formatter:"money",formatterParams:o},{title:"Shotgun",field:"weaponKillsShotgun",formatter:"money",formatterParams:o},{title:"Sniper",field:"weaponKillsSniper",formatter:"money",formatterParams:o},{title:"SMG",field:"weaponKillsSubmachinegun",formatter:"money",formatterParams:o},{title:"Sidearm",field:"weaponKillsSideArm",formatter:"money",formatterParams:o},{title:"Sword",field:"weaponKillsSword",formatter:"money",formatterParams:o},{title:"Grenade Launcher",field:"weaponKillsGrenadeLauncher",formatter:"money",formatterParams:o}],layout:"fitDataFill",height:"350px"});$(".stats-container").append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+weaponData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>')})})}$(document).on("click","button.refresh-btn",function(){refreshBtn=$(this),refreshBtn.prop("disabled",!0),e()}),a()});
+var queueStatus = 0;
+
+$(document).ready(function(){
+
+  $(document).on('click', 'button.refresh-btn', function(){
+    refreshBtn = $(this);
+    refreshBtn.prop('disabled', true);
+    update_weapon_stats();
+  });
+
+  print_weapon_stats();
+
+  function update_weapon_stats() {
+    $('.loader').show();
+    $('.loader-text').show();
+    if( queueStatus == 0 )
+      $('.loader-text').text('Refreshing data (~1 min). Go grab a drink...');
+    $('.stats-container').empty();
+
+    $.get('/bungie/pve/update', function(res){
+      if(res.status == 2) {
+        $('.loader-text').text('Resync already in progress. Queueing...');
+        queueStatus = 1;
+        setTimeout(update_weapon_stats, 5000);
+      }
+      else {
+        queueStatus = 0;
+        refreshBtn = $('button.refresh-btn');
+        refreshBtn.prop('disabled', false);
+        print_weapon_stats();
+      }
+    });
+  }
+
+  function print_weapon_stats() {
+    $.get('/bungie/members/get', function(memberData){
+
+      $('.loader-text').text('Fetching Weapon Stats...');
+
+      $.get('/bungie/weapon/get', function(memberWeaponData){
+
+        var tableData = [];
+
+        for(var i=0; i<memberData.length; i++) {
+
+          $('.loader-text').text('Processing ' + (i+1) + ' of ' + memberData.length + '...');
+
+          weaponData = memberWeaponData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
+
+          tableData.push({
+            name: memberData[i].destinyUserInfo.displayName,
+            weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
+            //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
+            weaponKillsBow: weaponData.weaponKillsBow,
+            weaponKillsFusionRifle: weaponData.weaponKillsFusionRifle,
+            weaponKillsHandCannon: weaponData.weaponKillsHandCannon,
+            weaponKillsTraceRifle: weaponData.weaponKillsTraceRifle,
+            weaponKillsPulseRifle: weaponData.weaponKillsPulseRifle,
+            weaponKillsRocketLauncher: weaponData.weaponKillsRocketLauncher,
+            weaponKillsScoutRifle: weaponData.weaponKillsScoutRifle,
+            weaponKillsShotgun: weaponData.weaponKillsShotgun,
+            weaponKillsSniper: weaponData.weaponKillsSniper,
+            weaponKillsSubmachinegun: weaponData.weaponKillsSubmachinegun,
+            //weaponKillsRelic: weaponData.weaponKillsRelic,
+            weaponKillsSideArm: weaponData.weaponKillsSideArm,
+            weaponKillsSword: weaponData.weaponKillsSword,
+            weaponKillsGrenadeLauncher: weaponData.weaponKillsGrenadeLauncher,
+          });
+        }
+
+        $('.loader-text').text('Generating Table...');
+
+        $('.stats-container').append('<div id="weapon-stats-table"></div>');
+
+        $('.loader').hide();
+        $('.loader-text').hide();
+
+        var format = {precision: 0};
+
+        var table = new Tabulator("#weapon-stats-table", {
+          data:tableData, //assign data to table
+          layout:"fitColumns", //fit columns to width of table (optional)
+          columns:[ //Define Table Columns
+            {title:"Name", field:"name", frozen:true},
+            {title:"Auto Rifle", field:"weaponKillsAutoRifle", formatter:"money", formatterParams: format},
+            //{title:"Beam Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
+            {title:"Bow", field:"weaponKillsBow", formatter:"money", formatterParams: format},
+            {title:"Fusion Rifle", field:"weaponKillsFusionRifle", formatter:"money", formatterParams: format},
+            {title:"Hand Cannon", field:"weaponKillsHandCannon", formatter:"money", formatterParams: format},
+            {title:"Trace Rifle", field:"weaponKillsTraceRifle", formatter:"money", formatterParams: format},
+            {title:"Pulse Rifle", field:"weaponKillsPulseRifle", formatter:"money", formatterParams: format},
+            {title:"Rocket Launcher", field:"weaponKillsRocketLauncher", formatter:"money", formatterParams: format},
+            {title:"Scout Rifle", field:"weaponKillsScoutRifle", formatter:"money", formatterParams: format},
+            {title:"Shotgun", field:"weaponKillsShotgun", formatter:"money", formatterParams: format},
+            {title:"Sniper", field:"weaponKillsSniper", formatter:"money", formatterParams: format},
+            {title:"SMG", field:"weaponKillsSubmachinegun", formatter:"money", formatterParams: format},
+            //{title:"Relic", field:"weaponKillsRelic", formatter:"money", formatterParams: format},
+            {title:"Sidearm", field:"weaponKillsSideArm", formatter:"money", formatterParams: format},
+            {title:"Sword", field:"weaponKillsSword", formatter:"money", formatterParams: format},
+            {title:"Grenade Launcher", field:"weaponKillsGrenadeLauncher", formatter:"money", formatterParams: format},
+          ],
+          layout:"fitDataFill",
+          height:"350px",
+        });
+
+        $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+weaponData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
+      });
+    });
+  }
+});

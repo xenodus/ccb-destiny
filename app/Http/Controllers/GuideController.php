@@ -107,7 +107,7 @@ class GuideController extends Controller
         if( !$request->query('preview') )
             if( $post->slug != $slug  ) return redirect()->route('guide_post', ['slug' => $post->slug,'id' => $id]);
 
-        $post->customParseContent();
+        $data['top_category'] = $post->getMainCategory();
 
         $data['post'] = $post;
         $data['active_page'] = 'guides';

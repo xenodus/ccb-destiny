@@ -1,0 +1,127 @@
+body:after {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9)), url(/images/traveler-bg.jpg);
+}
+
+footer,
+header {
+  background-color: #3a4368;
+}
+
+header.border-bottom {
+  border-bottom: 0!important;
+}
+
+footer .text-white {
+  color: #fff!important;
+}
+
+footer a {
+  text-decoration: underline;
+}
+
+section#members-online {
+  background: rgba(255,255,255,0.95);
+  border-bottom: 1px solid #3a4368;
+}
+
+a, a:hover, a:active, a:focus {
+  color: #266bb5;
+}
+
+.bg-dark {
+  background-color: #fafafa!important;
+}
+
+.text-white {
+  color: #000 !important;
+}
+
+.text-yellow {
+  color: #000;
+}
+
+#headerNav > ul > li.nav-item.active > a {
+  color: #fff!important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,0.4);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+  color: #f7f7f7!important;
+}
+
+.traits-title {
+  background: #3a4368;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px;
+  font-weight: normal;
+}
+
+.border-yellow {
+  border: 1px solid #3a4368!important;
+}
+
+#destiny-news-container, #division-news-container, #magic-news-container,
+.grid-item > div, .traits-box {
+  background: #fff;
+  color: #000;
+}
+
+.border-warning {
+  border-color: #3a4368!important;
+}
+
+
+/***********
+    Stats
+************/
+
+#stats-sub-menu li > a.active {
+  color: #000;
+}
+
+#stats-sub-menu li > a {
+  color: rgba(0,0,0,0.5);
+}
+
+.badge-info {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: rgba(0,0,0,0.7);
+  border: none;
+}
+
+/***********
+    Guides
+************/
+
+main {
+  background: none!important;
+}
+
+#guide-listing .post {
+  -webkit-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.5);
+  box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.5);
+}
+
+.news-widget,
+#mtg-top-decks-widget {
+  background: #fff!important;
+}
+
+#top-decks button, #top-decks button:hover, #top-decks button:active, #top-decks button:focus {
+  color: #000!important;
+}
+
+.related-posts-header {
+  border-bottom: 2px solid #a8ead8!important;
+}

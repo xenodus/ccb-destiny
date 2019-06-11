@@ -52,6 +52,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ mix('/css/compiled/common.css') }}"/>
+    @if( isset($_GET['light']) )
+    <link rel="stylesheet" href="/css/light-mode.css?<?=time()?>"/>
+    @endif
     @yield('header')
   </head>
   <body class="bg-dark text-white" data-scroll="1">
@@ -113,7 +116,7 @@
     </section>
 
     <footer class="border-top border-dark">
-      <div id="footer" class="text-center mt-4 mb-4 pl-3 pr-3">
+      <div id="footer" class="text-center pt-4 pb-4 pl-3 pr-3">
         <div>
           <small class="text-white">&copy; 2019 ccboys.xyz</small>
         </div>

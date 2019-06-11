@@ -1,1 +1,444 @@
-li.breadcrumb-item.active a span{font-style:italic}.breadcrumb-item+.breadcrumb-item::before{font-family:"Font Awesome 5 Free";font-weight:900;content:"\f054";font-size:.8rem}.children-item+.children-item::before{font-family:"Font Awesome 5 Free";font-weight:900;content:"/";font-size:.8rem}#guide-post-content{margin-top:1rem;margin-bottom:3rem;text-align:left;font-size:1rem;letter-spacing:.5px;word-break:break-word}#guide-post-content img{width:auto;height:auto;max-height:100vh;max-width:100%;border:1px solid #fff;padding:5px}#guide-post-content figure{text-align:left}#guide-post-content figcaption{margin-top:5px;font-style:italic;font-size:1rem}#guide-post-content h2{margin-bottom:10px;font-size:1.5rem}#post-meta{margin-top:1rem}#post-meta h1{letter-spacing:2px;font-size:3rem}.author-avatar{width:18px;height:18px;margin-right:1px;position:relative;bottom:1px;border:1px solid #fff}.author-name,.post-date{font-size:.8rem}.pagination{justify-content:center}.post-tn{height:200px}.post-tn-horizontal{height:auto;min-width:150px}#guide-listing .post-overlay{overflow:hidden;width:0;position:absolute;bottom:0;right:100%;transition:.3s ease}#guide-listing .post:hover .post-overlay{width:100%!important;right:0!important}.post-destiny{border-bottom:5px solid #db4437}.post-magic{border-bottom:5px solid #0f9d58}.post-division{border-bottom:5px solid #4285f4}.post-destiny-horizontal{background:#db4437;display:block!important}.post-magic-horizontal{background:#0f9d58;display:block!important}.post-division-horizontal{background:#4285f4;display:block!important}#news-widget-destiny{border:1px solid #db4437}#news-widget-magic-the-gathering{border:1px solid #0f9d58}#news-widget-the-division-2{border:1px solid #4285f4}#news-widget-destiny-header{border-bottom:1px solid #db4437}#news-widget-magic-the-gathering-header{border-bottom:1px solid #0f9d58}#news-widget-the-division-2-header{border-bottom:1px solid #4285f4}#guide-listing .news-widget a,#guide-listing .news-widget a:active,#guide-listing .news-widget a:focus,#guide-listing .news-widget a:hover{color:#fff}#guide-listing .news-widget a:active,#guide-listing .news-widget a:focus,#guide-listing .news-widget a:hover{text-decoration:underline}#guide-listing .categories-img a,#guide-listing .categories-img a:active,#guide-listing .categories-img a:focus,#guide-listing .categories-img a:hover{color:#fff;text-decoration:none}#guide-listing .categories-img .item{position:relative;height:125px}#guide-listing .categories-img .item-destiny{border:1px solid #db4437;background:url(/images/categories/destiny2-tn.jpg) no-repeat center 10%/cover}#guide-listing .categories-img .item-mtg{border:1px solid #0f9d58;background:url(/images/categories/mtg-tn.jpg) no-repeat center 40%/cover}#guide-listing .categories-img .item-division{border:1px solid #4285f4;background:url(/images/categories/division-tn.jpg) no-repeat center 40%/cover}#guide-listing .categories-img .item-overlay{z-index:1;position:absolute;width:100%;height:100%;background:rgba(0,0,0,.5)}#guide-listing .categories-img .item-overlay:hover{background:rgba(0,0,0,.2)}#guide-listing .categories-img .item-name{z-index:3;letter-spacing:3px;font-size:1.4rem;line-height:1.8rem;font-weight:700;pointer-events:none}#guide-listing h1{font-size:1.3rem;text-align:left;font-weight:700;letter-spacing:2px;position:relative}#latest-post-header-icon{width:50px;height:50px;background-image:url(/images/icons/xur.png);background-repeat:no-repeat;background-size:contain;position:relative;bottom:5px;right:5px}#guide-listing .post{position:relative}#guide-listing .post-info{background:#fff;color:#000}#guide-listing .post-category{position:absolute;top:0;right:0;padding:4px 10px;color:#fff;min-width:100px;font-size:.7rem;letter-spacing:1px;display:none}#guide-listing .post-item-date{background:#000;font-size:.7rem;font-weight:700;width:45px;height:45px;text-align:center;border-radius:120px;color:#fff;display:flex;flex-direction:column;line-height:14px;justify-content:center;position:relative;bottom:45px;margin-bottom:-40px}#guide-listing .post-title{font-weight:700;font-size:1rem;line-height:1.4rem}#guide-listing .grid-item a,#guide-listing .grid-item a:active,#guide-listing .grid-item a:focus,#guide-listing .grid-item a:hover{color:#000;text-decoration:none}#guide-listing .post:hover{animation-name:pulse}#guide-listing .post-excerpt{font-size:.8rem;text-align:left;word-wrap:break-word;white-space:initial}#guide-listing a,#guide-listing a:active,#guide-listing a:focus,#guide-listing a:hover{text-decoration:none}#top-decks{line-height:1rem}#top-decks a:hover{text-decoration:underline}#top-decks button,#top-decks button:active,#top-decks button:focus,#top-decks button:hover{color:#ffca00;font-size:.7rem}@media (max-width:575.98px){#post-meta h1{font-size:2rem}}@media (max-width:991.98px){.post-tn-horizontal{height:180px;width:100%}#guide-listing .post-category{width:100%;position:relative}}
+main {
+  background: rgba(0,0,0,0.7);
+}
+
+li.breadcrumb-item.active a span {
+  font-style: italic;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f054";
+  font-size: 0.8rem;
+}
+
+.children-item+.children-item::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "/";
+  font-size: 0.8rem;
+}
+
+#guide-post-content {
+  text-align: left;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  word-break: break-word;
+}
+
+#guide-post-content .mtgtooltip {
+  text-decoration: underline;
+}
+
+#guide-post-content ol {
+  padding-left: 30px;
+}
+
+#guide-post-content ul {
+  padding-inline-start: 25px;
+}
+
+#guide-post-content img {
+  width: auto;
+  height: auto;
+  max-height: 100vh;
+  max-width: 100%;
+  border: 1px solid #fff;
+  padding: 5px;
+}
+
+#guide-post-content figure {
+  text-align: left;
+}
+
+#guide-post-content figure.aligncenter {
+  text-align: center!important;
+}
+
+#guide-post-content figcaption {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+#guide-post-content h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+#post-meta {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 20%;
+}
+
+#post-meta h1 {
+  letter-spacing: 1px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.author-avatar {
+  width: 18px;
+  height: 18px;
+  margin-right: 1px;
+  position: relative;
+  bottom: 1px;
+  border: 1px solid #fff;
+}
+
+.post-date,
+.author-name {
+  font-size: 0.8rem;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+.post-tn {
+  height: 200px;
+}
+
+.post-tn-horizontal {
+  height: auto;
+  min-width: 150px;
+}
+
+#guide-listing .post-overlay {
+  overflow: hidden;
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  right: 100%;
+  transition: .3s ease;
+}
+
+#guide-listing .post:hover .post-overlay {
+  width: 100%!important;
+  right: 0!important;
+}
+
+.post-destiny {
+  border-top: 5px solid #b78c25!important;
+}
+
+.post-magic {
+  border-top: 5px solid #0F9D58!important;
+}
+
+.post-division {
+  border-top: 5px solid #4285F4!important;
+}
+
+.post-destiny-horizontal {
+  background: #b78c25;
+  display: block!important;
+}
+
+.post-magic-horizontal {
+  background: #0F9D58;
+  display: block!important;
+}
+
+.post-division-horizontal {
+  background: #4285F4;
+  display: block!important;
+}
+
+#news-widget-destiny {
+  border: 1px solid #b78c25;
+}
+
+#news-widget-magic-the-gathering {
+  border: 1px solid #0F9D58;
+}
+
+#news-widget-the-division-2 {
+  border: 1px solid #4285F4;
+}
+
+#news-widget-destiny-header {
+  border-bottom: 1px solid #b78c25;
+}
+
+#news-widget-magic-the-gathering-header {
+  border-bottom: 1px solid #0F9D58;
+}
+
+#news-widget-the-division-2-header {
+  border-bottom: 1px solid #4285F4;
+}
+
+#guide-listing .news-widget a:hover,
+#guide-listing .news-widget a:active,
+#guide-listing .news-widget a:focus {
+  text-decoration: underline;
+}
+
+#guide-listing .categories-img a,
+#guide-listing .categories-img a:hover,
+#guide-listing .categories-img a:active,
+#guide-listing .categories-img a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+#guide-listing .categories-img .item {
+  position: relative;
+  height: 125px;
+}
+
+#guide-listing .categories-img .item-destiny {
+  border: 1px solid #b78c25;
+  background: url('/images/categories/destiny2-tn.jpg') no-repeat center 10%/cover;
+}
+
+#guide-listing .categories-img .item-mtg {
+  border: 1px solid #0F9D58;
+  background: url('/images/categories/mtg-tn.jpg') no-repeat center 40%/cover;
+}
+
+#guide-listing .categories-img .item-division {
+  border: 1px solid #4285F4;
+  background: url('/images/categories/division-tn.jpg') no-repeat center 40%/cover;
+}
+
+#guide-listing .categories-img .item-overlay {
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+#guide-listing .categories-img .item-overlay:hover {
+  background: rgba(0,0,0,0.2);
+}
+
+#guide-listing .categories-img .item-name {
+  z-index: 3;
+  letter-spacing: 3px;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#guide-listing h1 {
+  font-size: 1.3rem;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+#latest-post-header-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url(/images/icons/xur.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#guide-listing .post {
+  position: relative;
+}
+
+#guide-listing .post-info {
+  background: #fff;
+  color: #000;
+}
+
+#guide-listing .post-category {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 10px;
+  color: #fff;
+  min-width: 100px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  display: none;
+}
+
+#guide-listing .post-item-date {
+  background: #000;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  border-radius: 120px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  line-height: 14px;
+  justify-content: center;
+  position: relative;
+  bottom: 45px;
+  margin-bottom: -40px;
+}
+
+#guide-listing .post-title {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  text-transform: capitalize;
+}
+
+#guide-listing .grid-item a,
+#guide-listing .grid-item a:hover,
+#guide-listing .grid-item a:focus,
+#guide-listing .grid-item a:active {
+  color: #000;
+  text-decoration: none;
+}
+
+#guide-listing .post:hover {
+  animation-name: pulse;
+}
+
+#guide-listing .post-excerpt {
+  font-size: 0.8rem;
+  text-align: left;
+  word-wrap: break-word;
+  white-space: initial;
+}
+
+#guide-listing a,
+#guide-listing a:hover,
+#guide-listing a:active,
+#guide-listing a:focus {
+  text-decoration: none;
+}
+
+#top-decks {
+  line-height: 1rem;
+}
+
+#top-decks a:hover {
+  text-decoration: underline;
+}
+
+#top-decks button,
+#top-decks button:hover,
+#top-decks button:active,
+#top-decks button:focus {
+  color: #ffca00;
+  font-size: 0.7rem;
+}
+
+#related-post-header-icon {
+  width: 45px;
+  height: 45px;
+  background-image: url(/images/icons/related-news.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#related-posts-container a,
+#related-posts-container a:hover,
+#related-posts-container a:active,
+#related-posts-container a:focus {
+  text-decoration: none;
+}
+
+#related-posts-container .related-posts-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+#related-posts-container .related-posts-item .related-posts-tn {
+  height: 100px;
+  position: relative;
+}
+
+#related-posts-container .related-posts-item:hover {
+  opacity: 0.9;
+}
+
+#related-posts-container .related-posts-item .related-posts-title {
+  border-top: 5px solid #0F9D58;
+  position: relative;
+  text-transform: capitalize;
+}
+
+#related-posts-container .related-posts-item .related-posts-title small {
+  font-weight: 700;
+  line-height: 1rem;
+  position: relative;
+}
+
+.sidebar-destiny {
+  border: 1px solid #b78c25;
+}
+
+.sidebar-destiny .sidebar-nav-header {
+  border-bottom: 1px solid #b78c25;
+}
+
+.sidebar-division {
+  border: 1px solid #4285F4;
+}
+
+.sidebar-division .sidebar-nav-header {
+  border-bottom: 1px solid #4285F4;
+}
+
+.sidebar-nav-header h2 {
+  font-size: 1rem; font-weight: bold;
+}
+
+.sidebar-nav-content {
+  font-size: 0.8rem;
+}
+
+.sidebar-nav-content a:hover,
+.sidebar-nav-content a:focus,
+.sidebar-nav-content a:active {
+  text-decoration: underline!important;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  #post-meta h1  {
+    font-size: 2rem;
+  }
+
+  .post-tn-horizontal {
+    height: 180px;
+    width: 100%;
+  }
+
+  #guide-listing .post-category {
+    width: 100%;
+    position: relative;
+  }
+
+  #related-posts-container .related-posts-item .related-posts-tn {
+    height: 140px;
+    position: relative;
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+}

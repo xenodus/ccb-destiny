@@ -1,21 +1,36 @@
+var queueStatus = 0;
+
 $(document).ready(function(){
 
   $(document).on('click', 'button.refresh-btn', function(){
     refreshBtn = $(this);
     refreshBtn.prop('disabled', true);
-
-    $('.loader').show();
-    $('.loader-text').show();
-    $('.loader-text').text('Refreshing data. Go grab a drink...');
-    $('.stats-container').empty();
-
-    $.get('/bungie/raid/update', function(res){
-      refreshBtn.prop('disabled', false);
-      print_raid_stats();
-    });
+    update_raid_stats();
   });
 
   print_raid_stats();
+
+  function update_raid_stats() {
+    $('.loader').show();
+    $('.loader-text').show();
+    if( queueStatus == 0 )
+      $('.loader-text').text('Refreshing data (~1 min). Go grab a drink...');
+    $('.stats-container').empty();
+
+    $.get('/bungie/raid/update', function(res){
+      if(res.status == 2) {
+        $('.loader-text').text('Resync already in progress. Queueing...');
+        queueStatus = 1;
+        setTimeout(update_raid_stats, 5000);
+      }
+      else {
+        queueStatus = 0;
+        refreshBtn = $('button.refresh-btn');
+        refreshBtn.prop('disabled', false);
+        print_raid_stats();
+      }
+    });
+  }
 
   function print_raid_stats() {
     $.get('/bungie/members/get', function(memberData){
@@ -35,6 +50,7 @@ $(document).ready(function(){
           raidData = memberRaidData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
           tableData.push({
+            membershipId: memberData[i].destinyUserInfo.membershipId,
             name: memberData[i].destinyUserInfo.displayName,
             levi: raidData.levi,
             levip: raidData.levip,
@@ -46,7 +62,9 @@ $(document).ready(function(){
             petra: raidData.petra > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
             sotp: raidData.sotp,
             diamond: raidData.diamond > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
-            total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp),
+            cos: raidData.cos,
+            crown: raidData.crown > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+            total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp+raidData.cos),
           });
         }
 
@@ -64,16 +82,19 @@ $(document).ready(function(){
           layout:"fitColumns", //fit columns to width of table (optional)
           columns:[ //Define Table Columns
             {title:"Name", field:"name", formatter:"money", formatterParams: format, frozen:true},
+            {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
             {title:"Levi", field:"levi", formatter:"money", formatterParams: format},
             {title:"P Levi", field:"levip", formatter:"money", formatterParams: format},
             {title:"EOW", field:"eow", formatter:"money", formatterParams: format},
             {title:"P EOW", field:"eowp", formatter:"money", formatterParams: format},
             {title:"SOS", field:"sos", formatter:"money", formatterParams: format},
             {title:"P SOS", field:"sosp", formatter:"money", formatterParams: format},
-            {title:"Last Wish", field:"lw", formatter:"money", formatterParams: format},
-            {title:"Petra", field:"petra", formatter:"html"},
+            {title:"LW", field:"lw", formatter:"money", formatterParams: format},
+            {title:"Flawless LW", field:"petra", formatter:"html"},
             {title:"SoTP", field:"sotp", formatter:"money", formatterParams: format},
-            {title:"Diamond", field:"diamond", formatter:"html"},
+            {title:"Flawless SoTP", field:"diamond", formatter:"html"},
+            {title:"CoS", field:"cos", formatter:"money", formatterParams: format},
+            {title:"Flawless CoS", field:"crown", formatter:"html"},
             {title:"Total", field:"total", formatter:"money", formatterParams: format},
           ],
           initialSort: [

@@ -11,7 +11,7 @@ body:after {
   right: 0;
   height: 100vh;
   z-index: -1;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url(/images/traveler-bg.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url(/images/traveler-bg.jpg);
   background-position: center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -52,7 +52,8 @@ main {
 
 #outbreak-solution h1,
 #about-us-header h1,
-#milestones-header h1 {
+#milestones-header h1,
+#news-header h1 {
   font-size: 1.3rem;
   text-align: left;
   font-weight: 700;
@@ -65,6 +66,17 @@ main {
   width:50px; /*width of your image*/
   height:50px; /*height of your image*/
   background-image:url('/images/icons/cayde.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#news-header-icon {
+  width:45px; /*width of your image*/
+  height:45px; /*height of your image*/
+  background-image:url('/images/icons/news.png');
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
@@ -120,7 +132,7 @@ main {
   line-height: 14px;
 }
 .tooltip.show {
-  opacity: 0.95;
+  opacity: 1;
 }
 .tooltip-icon {
   width: 50px;
@@ -187,7 +199,7 @@ footer {
 }
 
 .topBarMargin {
-  margin-top: 2.2rem!important;
+  margin-top: 2.3rem!important;
 }
 
 .no-scroll {
@@ -230,6 +242,103 @@ section#members-online {
   z-index: 999;
 }
 
+#destiny-news-container,
+#division-news-container,
+#magic-news-container {
+  font-size: 0.8rem;
+}
+
+#destiny-news-container h2,
+#division-news-container h2,
+#magic-news-container h2 {
+  font-size: 1rem;
+}
+
+/* auto refresh toggle */
+
+.switch {
+  position: relative;
+  height: 26px;
+  width: 120px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 58px;
+  line-height: 26px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+.switch-label:active {
+  font-weight: bold;
+}
+
+.switch-label-off {
+  padding-left: 2px;
+}
+
+.switch-label-on {
+  padding-right: 2px;
+}
+
+
+.switch-input {
+  display: none;
+}
+.switch-input:checked + .switch-label {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.65);
+  text-shadow: 0 1px rgba(255, 255, 255, 0.25);
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -ms-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+  -webkit-transition-property: color, text-shadow;
+  -moz-transition-property: color, text-shadow;
+  -ms-transition-property: color, text-shadow;
+  -o-transition-property: color, text-shadow;
+  transition-property: color, text-shadow;
+}
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+  left: 60px;
+  /* Note: left: 50%; doesn't transition in WebKit */
+}
+
+.switch-selection {
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  left: 2px;
+  display: block;
+  width: 58px;
+  height: 22px;
+  border-radius: 3px;
+  background-color: #65bd63;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9dd993), color-stop(100%, #65bd63));
+  background-image: -webkit-linear-gradient(top, #9dd993, #65bd63);
+  background-image: -moz-linear-gradient(top, #9dd993, #65bd63);
+  background-image: -ms-linear-gradient(top, #9dd993, #65bd63);
+  background-image: -o-linear-gradient(top, #9dd993, #65bd63);
+  background-image: linear-gradient(top, #9dd993, #65bd63);
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: left 0.15s ease-out;
+  -moz-transition: left 0.15s ease-out;
+  -ms-transition: left 0.15s ease-out;
+  -o-transition: left 0.15s ease-out;
+  transition: left 0.15s ease-out;
+}
+
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
 }
@@ -248,6 +357,9 @@ section#members-online {
   }
   header .navbar-brand {
     display: block;
+  }
+  .mobile-hide {
+    display: none!important;
   }
 }
 
