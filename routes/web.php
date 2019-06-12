@@ -45,8 +45,9 @@ Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_
 Route::get('/bungie/members/characters/update', 'StatsController@update_member_characters')->name('update_member_characters');
 
 // Raid Lockouts
-Route::get('/clan/lockouts', 'StatsController@clan_raid_lockout')->name('clan_raid_lockout');
-Route::get('/bungie/lockouts/update', 'StatsController@update_clan_raid_lockout')->name('update_clan_raid_lockout');
+Route::get('/clan/lockouts', 'ClanController@clan_raid_lockout')->name('clan_raid_lockout');
+Route::get('/clan/lockouts/get', 'ClanController@get_clan_raid_lockout')->name('get_clan_raid_lockout');
+Route::get('/bungie/lockouts/update', 'ClanController@update_clan_raid_lockout')->name('update_clan_raid_lockout');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');

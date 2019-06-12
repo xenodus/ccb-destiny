@@ -91,7 +91,8 @@ $(document).ready(function(){
             {column:"name", dir:"asc"}
           ],
           layout:"fitDataFill",
-          height:"350px",
+          //height:"350px",
+          resizableColumns:false,
         });
 
         $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+pveData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');

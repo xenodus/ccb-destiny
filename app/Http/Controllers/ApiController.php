@@ -81,7 +81,10 @@ class ApiController extends Controller
 
                     foreach($news['articles'] as $article) {
 
-                        $n = App\Classes\News_Feed::where('url', $article->url)->where('status', 'active')->count();
+                        $n = App\Classes\News_Feed::where('status', 'active')->where(function($query) use ($article){
+                          $query->where('url', $article->url)->orWhere('title', $article->title);
+                        })->count();
+
 
                         if($n == 0 && self::is_english($article->title)) {
                             $news = new App\Classes\News_Feed;

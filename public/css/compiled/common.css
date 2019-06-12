@@ -22404,10 +22404,6 @@ header .navbar-brand {
   color: #ffca00!important;
 }
 
-main {
-  min-height: 50vh;
-}
-
 #outbreak-solution h1,
 #about-us-header h1,
 #milestones-header h1,
@@ -22543,6 +22539,10 @@ footer {
   color: rgba(255, 202, 0, 1);
 }
 
+.tabulator {
+  border-bottom: 5px solid #ffca00;
+}
+
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort="asc"] .tabulator-col-content .tabulator-arrow {
   border-top: none;
   border-bottom: 6px solid #ffca00;
@@ -22553,7 +22553,7 @@ footer {
 }
 
 .tabulator .tabulator-header {
-  border-bottom: 3px solid #ffca00;
+  border-bottom: 5px solid #ffca00;
 }
 
 .topBarMargin {

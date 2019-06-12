@@ -101,7 +101,8 @@ $(document).ready(function(){
             {column:"total", dir:"desc"}
           ],
           layout:"fitDataFill",
-          height:"350px",
+          // height:"350px",
+          resizableColumns:false,
         });
 
         $('.stats-container').append('<div id="raid-stats-info" class="text-center"><small>Last checked: '+raidData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
