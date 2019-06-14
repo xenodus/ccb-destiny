@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('body')
-<section class="stats text-center container mb-4">
+<section class="stats text-center container-fluid mb-4">
 
   @include('stats.submenu')
 

@@ -23,6 +23,10 @@ a, a:hover, a:active, a:focus {
   color: #ffca00;
 }
 
+smaller, .smaller {
+  font-size: 70%;
+}
+
 #headerNav {
  font-size: 1.2rem;
  letter-spacing: 1.5px;
@@ -46,6 +50,7 @@ header .navbar-brand {
   color: #ffca00!important;
 }
 
+#guides-header h1,
 #outbreak-solution h1,
 #about-us-header h1,
 #milestones-header h1,
@@ -73,6 +78,17 @@ header .navbar-brand {
   width:45px; /*width of your image*/
   height:45px; /*height of your image*/
   background-image:url('/images/icons/news.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+}
+
+#latest-post-header-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url(/images/icons/xur.png);
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
@@ -252,6 +268,44 @@ section#members-online {
 #division-news-container h2,
 #magic-news-container h2 {
   font-size: 1rem;
+}
+
+#guides .post-category {
+  top: 0;
+  right: 0;
+  padding: 4px 10px;
+  color: #fff;
+  width: 100%;
+  font-size: .7rem;
+  letter-spacing: 1px;
+}
+
+#guides .guides-posts-tn {
+  height: 140px;
+  position: relative;
+}
+
+#guides a,
+#guides a:hover,
+#guides a:active,
+#guides a:focus {
+  text-decoration: none;
+}
+
+#guides .guides-posts-item:hover {
+  opacity: 0.9;
+}
+
+#guides .guides-posts-item .guides-posts-title {
+  border-top: 5px solid #b78c25;
+  position: relative;
+  text-transform: capitalize;
+}
+
+#guides .guides-posts-item .guides-posts-title small {
+  font-weight: 700;
+  line-height: 1rem;
+  position: relative;
 }
 
 /* auto refresh toggle */

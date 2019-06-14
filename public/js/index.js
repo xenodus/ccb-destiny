@@ -30,13 +30,10 @@ $(document).ready(function(){
   });
 
   function updateTimer() {
-
-    if( ccbNS["timer"] > 0 ) {
+    if( ccbNS["timer"] > 0 )
       ccbNS["timer"] = ccbNS["timer"] - 1;
-    }
-    else {
+    else
       ccbNS["timer"] = ccbNS["refreshInterval"] / 1000;
-    }
 
     $('.auto-refresh-timer').attr('data-timer', ccbNS["timer"]);
     $('.auto-refresh-timer').html('('+ccbNS["timer"]+')');

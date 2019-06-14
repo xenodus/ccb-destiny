@@ -28,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
         /**
          * Paginate a standard Laravel Collection.
          *

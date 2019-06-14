@@ -39,13 +39,36 @@ class ClanController extends Controller
   }
 
   public function get_clan_raid_lockout() {
-    $raid_lockouts = \App\Classes\Raid_Lockouts::get();
+    // Get weekly start / end dates (GMT+8)
+    $today = \Carbon\Carbon::now();
 
-    return response()->json($raid_lockouts);
+    if( $today->dayOfWeek == 3 )
+      $start_of_week = $today;
+    else
+      $start_of_week = new \Carbon\Carbon('last wednesday');
+
+    $start_of_week->hour = 1;
+    $start_of_week->minute = 0;
+    $start_of_week->second = 0;
+
+    //dd($start_of_week);
+
+    $end_of_week = clone $start_of_week;
+    $end_of_week->addDays(7);
+    $end_of_week->hour = 0;
+    $end_of_week->minute = 59;
+    $end_of_week->second = 59;
+
+    $data['start_of_week'] = $start_of_week->format('j M Y');
+    $data['end_of_week'] = $end_of_week->format('j M Y');
+    $data['raid_lockouts'] = \App\Classes\Raid_Lockouts::get();
+
+    return response()->json($data);
   }
 
   public function update_clan_raid_lockout() {
 
+    $error = false;
     // Get weekly start / end dates (GMT+8)
     $today = \Carbon\Carbon::now();
 
@@ -111,6 +134,8 @@ class ClanController extends Controller
               }
             }
           }
+          else
+            $error = true;
         }
       }
 
@@ -122,7 +147,7 @@ class ClanController extends Controller
       $results[] = $raid_lockout;
     }
 
-    if( count($results) ) {
+    if( count($results) && $error == false ) {
 
       DB::connection('ccb_mysql')->table('raid_lockouts')->truncate();
 

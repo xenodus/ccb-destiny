@@ -2,6 +2,13 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ mix('/css/compiled/post.css') }}"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2393161407259792",
+    enable_page_level_ads: true
+});
+</script>
 @endsection
 
 @section('body')
@@ -46,13 +53,21 @@
   </div>
   <div class="mb-4 text-yellow d-flex justify-content-start align-items-center">
     <div id="latest-post-header-icon"></div>
-    <h1>Latest Posts</h1>
+    <h1>Latest Guides</h1>
   </div>
   <div class="row">
     <div class="col-md-9">
       <div class="row">
         @foreach($posts as $post)
           @include('guides.postItemHorizontal')
+
+          @if($posts->count() >= 6 && $loop->iteration == round($posts->count() / 2))
+          <div class="col-md-12 mb-4">
+            <div class="overflow-hidden">
+              @include('ads.horizontal')
+            </div>
+          </div>
+          @endif
         @endforeach
       </div>
     </div>

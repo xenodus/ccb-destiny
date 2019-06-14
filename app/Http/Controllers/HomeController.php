@@ -50,6 +50,23 @@ class HomeController extends Controller
         return response()->json(['status' => 1])->withCookie(Cookie::forever('autoRefreshMilestones', 1));
     }
 
+    public function chalice()
+    {
+      $data['site_title'] = env('SITE_NAME');
+      $data['active_page'] = 'Chalice Recipes';
+
+      return view('chalice', $data);
+    }
+
+    public function raidReport($memberID)
+    {
+      $data['site_title'] = env('SITE_NAME');
+      $data['active_page'] = 'Raid Report';
+      $data['memberID'] = $memberID;
+
+      return view('raidReport', $data);
+    }
+
     public function outbreak()
     {
       $data['site_title'] = env('SITE_NAME');

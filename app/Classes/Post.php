@@ -10,6 +10,10 @@ class Post extends WP_Post
 {
   const RELATED_POST_COUNT = 6;
 
+  const DESTINY_COLOR_CODE = '#b78c25';
+  const MTG_COLOR_CODE = '#0F9D58';
+  const DIVISION_COLOR_CODE = '#4285F4';
+
   // Mutator
   public function getContentAttribute()
   {

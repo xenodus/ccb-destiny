@@ -28,6 +28,7 @@
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://raid.report/" target="_blank">Raid.Report</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://www.light.gg/" target="_blank">Light.GG</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://www.d2checklist.com/home" target="_blank">D2Checklist</a></div>
+      <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="http://chalice.recipes/" target="_blank">Chalice Recipe Simulator</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/outbreak">Outbreak Perfected Catalyst Solution Generator</a></div>
     </div>
   </div>

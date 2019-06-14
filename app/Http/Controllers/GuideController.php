@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Corcel;
 use App\Classes\Post as WP_Post;
 use App\Classes\Post_Taxonomy as WP_Post_Taxonomy;
 use Illuminate\Http\Request;
@@ -50,12 +51,71 @@ class GuideController extends Controller
         $data['top_category'] = $data['category']->getTopLevelCategory();
 
         // featured first
-        $data['posts'] = $posts->paginate( 9 );
+        $data['posts'] = $posts->paginate( 10 );
         $data['site_title'] = $data['category']->term->name . ' | Guides | ' . env('SITE_NAME');
         $data['active_page'] = 'guides';
         $data['breadcrumb'] = $data['category']->makeBreadcrumbsFromCategory();
 
         return view('guides.category', $data);
+    }
+
+    public function get_latest()
+    {
+        // featured
+        $featured_posts = WP_Post::published()
+            ->whereDoesntHave('taxonomies', function($q) {
+                $q->where('taxonomy', 'category')->whereHas('term', function($q) {
+                    $q->where('slug', 'clan');
+                });
+            })
+            ->taxonomy('post_tag', 'featured')
+            //->orderBy('post_modified', 'desc')
+            ->newest()
+            ->get();
+
+        $non_featured_posts = WP_Post::published()
+            ->whereDoesntHave('taxonomies', function($q) {
+                $q->where('taxonomy', 'category')->whereHas('term', function($q) {
+                    $q->where('slug', 'clan');
+                });
+            })
+            ->whereDoesntHave('taxonomies', function($q) {
+                $q->where('taxonomy', 'post_tag')->whereHas('term', function($q) {
+                    $q->where('slug', 'featured');
+                });
+            })
+            //->orderBy('post_modified', 'desc')
+            ->newest()
+            ->get();
+
+        $posts = $featured_posts->merge($non_featured_posts)->take(3);;
+
+        $payload = [];
+
+        foreach($posts as $post) {
+
+            if( $post->getCategories()->filter(function($value, $key){ return $value->term->slug == 'destiny'; })->count() )
+                $color_code = $post::DESTINY_COLOR_CODE;
+            else if( $post->getCategories()->filter(function($value, $key){ return $value->term->slug == 'magic-the-gathering'; })->count() )
+                $color_code = $post::MTG_COLOR_CODE;
+            else if( $post->getCategories()->filter(function($value, $key){ return $value->term->slug == 'the-division-2'; })->count() )
+                $color_code = $post::DIVISION_COLOR_CODE;
+            else
+                $color_code = '#ffc107';
+
+            $payload[] = [
+                'id' => $post->ID,
+                'title' => $post->post_title,
+                'image' => $post->image,
+                'thumbnail' => $post->thumbnail->size('large')['url'] ?? '',
+                'url' => route('guide_post', ['slug' => $post->slug, 'id' => $post->ID]),
+                'excerpt' => $post->getExcerpt(),
+                'color_code' => $color_code,
+                'category' => $post->getMainCategory()->term->name
+            ];
+        }
+
+        return response()->json($payload);
     }
 
     public function index()
@@ -66,12 +126,22 @@ class GuideController extends Controller
 
         // featured
         $featured_posts = WP_Post::published()
+            ->whereDoesntHave('taxonomies', function($q) {
+                $q->where('taxonomy', 'category')->whereHas('term', function($q) {
+                    $q->where('slug', 'clan');
+                });
+            })
             ->taxonomy('post_tag', 'featured')
             ->newest()
             ->get();
 
         // non featured
         $non_featured_posts = WP_Post::published()
+            ->whereDoesntHave('taxonomies', function($q) {
+                $q->where('taxonomy', 'category')->whereHas('term', function($q) {
+                    $q->where('slug', 'clan');
+                });
+            })
             ->whereDoesntHave('taxonomies', function($q) {
                 $q->where('taxonomy', 'post_tag')->whereHas('term', function($q) {
                     $q->where('slug', 'featured');
@@ -81,7 +151,7 @@ class GuideController extends Controller
             ->get();
 
         // featured first
-        $data['posts'] = $featured_posts->merge($non_featured_posts)->paginate( 9 );
+        $data['posts'] = $featured_posts->merge($non_featured_posts)->paginate( 10 );
         $data['site_title'] = 'Guides | ' . env('SITE_NAME');
         $data['active_page'] = 'guides';
 

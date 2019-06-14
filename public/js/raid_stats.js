@@ -51,7 +51,7 @@ $(document).ready(function(){
 
           tableData.push({
             membershipId: memberData[i].destinyUserInfo.membershipId,
-            name: memberData[i].destinyUserInfo.displayName,
+            name: '<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark">'+memberData[i].destinyUserInfo.displayName+'</a>',
             levi: raidData.levi,
             levip: raidData.levip,
             eow: raidData.eow,
@@ -81,7 +81,7 @@ $(document).ready(function(){
           data:tableData, //assign data to table
           layout:"fitColumns", //fit columns to width of table (optional)
           columns:[ //Define Table Columns
-            {title:"Name", field:"name", formatter:"money", formatterParams: format, frozen:true},
+            {title:"Name", field:"name", formatter:"html", formatterParams: format, frozen:true},
             {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
             {title:"Levi", field:"levi", formatter:"money", formatterParams: format},
             {title:"P Levi", field:"levip", formatter:"money", formatterParams: format},

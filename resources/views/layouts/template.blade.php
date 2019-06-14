@@ -3,23 +3,12 @@
   <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-35918300-6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-35918300-6');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-2393161407259792",
-              enable_page_level_ads: true
-         });
-    </script>
     <meta name="google-site-verification" content="D9-BceHdaxycglc0RlAFxr_nlEh5GGiNgdK8pT7Y1PY" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{ isset($site_title) ? $site_title : env('SITE_NAME') }}</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -98,7 +87,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-md-center" href="https://discord.gg/Xx6DVJq" target="_blank">
+                <a class="nav-link text-md-center" href="https://discord.gg/5u2RYc9" target="_blank">
                   <i class="fab fa-discord animated pulse slower infinite delay-0.5s"></i>
                   <div>Discord</div>
                 </a>

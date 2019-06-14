@@ -2,6 +2,13 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ mix('/css/compiled/post.css') }}"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2393161407259792",
+    enable_page_level_ads: true
+});
+</script>
 @endsection
 
 @section('body')
@@ -38,7 +45,9 @@
         {!! $post->content !!}
       </div>
 
-      @if( $post->related() )
+      @include('ads.horizontal')
+
+      @if( $post->related()->count() )
       <div id="related-posts-container" class="pt-3 mt-md-3 mt-4">
         <div class="row no-gutters">
           <div class="col-md-12">

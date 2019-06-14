@@ -1,20 +1,6 @@
 const mix = require('laravel-mix');
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
-
-/*
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
- */
+// mix.copy('resources/assets/fonts', 'public/fonts', false);
 
 // COMMON CSS
 mix.styles([
@@ -27,12 +13,22 @@ mix.styles([
     'node_modules/tabulator-tables/dist/css/tabulator.css',
     'node_modules/tabulator-tables/dist/css/tabulator_site.css',
     'public/css/style.css',
-], 'public/css/compiled/common.css').version();
+], 'public/css/compiled/common.css');
 
 // GUIDES CSS
 mix.styles([
     'public/css/post.css',
-], 'public/css/compiled/post.css').version();
+], 'public/css/compiled/post.css');
+
+// STORE CSS
+mix.styles([
+    'public/css/store.css',
+], 'public/css/compiled/store.css');
+
+// RAID LOCKOUTS CSS
+mix.styles([
+    'public/css/lockouts.css',
+], 'public/css/compiled/lockouts.css');
 
 // COMMON JS
 mix.scripts([
@@ -43,38 +39,46 @@ mix.scripts([
     'node_modules/lightbox2/src/js/lightbox.js',
     'node_modules/tabulator-tables/dist/js/tabulator.js',
     'public/js/common.js',
-], 'public/js/compiled/common.js').version();
+], 'public/js/compiled/common.js');
 
 // HOME PAGE
 mix.scripts([
     'public/js/index.js',
     'public/js/index_news.js',
-], 'public/js/compiled/index.js').version();
+    'public/js/index_guides.js',
+], 'public/js/compiled/index.js');
+
+// RAID LOCKOUTS PAGE
+mix.scripts([
+    'public/js/lockouts.js',
+], 'public/js/compiled/lockouts.js');
 
 // POST + LISTING PAGE
 mix.scripts([
     'public/js/mtg/mtgtooltip.js',
     'public/js/mtg_top_decks.js',
     'public/js/post_listing.js',
-], 'public/js/compiled/post.js').version();
+], 'public/js/compiled/post.js');
 
 // STATS PAGES
 mix.scripts([
     'public/js/raid_stats.js',
-], 'public/js/compiled/raid_stats.js').version();
+], 'public/js/compiled/raid_stats.js');
 
 mix.scripts([
     'public/js/weapon_stats.js',
-], 'public/js/compiled/weapon_stats.js').version();
+], 'public/js/compiled/weapon_stats.js');
 
 mix.scripts([
     'public/js/pve_stats.js',
-], 'public/js/compiled/pve_stats.js').version();
+], 'public/js/compiled/pve_stats.js');
 
 mix.scripts([
     'public/js/pvp_stats.js',
-], 'public/js/compiled/pvp_stats.js').version();
+], 'public/js/compiled/pvp_stats.js');
 
 mix.scripts([
     'public/js/gambit_stats.js',
-], 'public/js/compiled/gambit_stats.js').version();
+], 'public/js/compiled/gambit_stats.js');
+
+mix.version();

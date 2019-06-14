@@ -14,13 +14,25 @@
 Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/test2', 'StatsController@test')->name('test2');
 
+// Store
+Route::any('/stripe/webhook', 'StoreController@stripeWebhook')->name('stripe_webhook');
+
+// CoS Jacket
+Route::get('/store/product/1/{slug?}', 'StoreController@cos')->name('product_cos_code');
+Route::get('/store/success/{id}', 'StoreController@success')->name('product_purchase_cos_success');
+Route::get('/store/cancelled/{id}', 'StoreController@failure')->name('product_purchase_cos_failure');
+
+// Sitemap
 Route::get('/sitemap/crawl', 'SitemapController@crawl')->name('sitemap_crawl');
 Route::get('/sitemap/generate', 'SitemapController@generate')->name('sitemap_generate');
 
+// Guides / Articles
 Route::get('/guides', 'GuideController@index')->name('guide_index');
+Route::get('/guides/get/latest', 'GuideController@get_latest')->name('get_latest_guides');
 Route::get('/guides/category/{slug}/{id}', 'GuideController@category')->name('guide_category');
 Route::get('/guides/{slug}/{id}', 'GuideController@post')->name('guide_post');
 
+// Home / Static Pages / iFrames
 Route::get('/', 'HomeController@home')->name('home');
 Route::get('/milestones/refresh/{status?}', 'HomeController@setMilestoneRefresh')->name('setMilestoneRefresh');
 Route::get('/lightmode/{status?}', 'HomeController@setLightmode')->name('lightmode');
@@ -33,7 +45,10 @@ Route::get('/stats/pve', 'StatsController@pve')->name('stats_pve');
 Route::get('/stats/pvp', 'StatsController@pvp')->name('stats_pvp');
 Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
 
+// Static / iFrames
 Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
+// Route::get('/chalice', 'HomeController@chalice')->name('chalice_recipes');
+Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_report');
 
 // Members & Currently Online Members
 Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');

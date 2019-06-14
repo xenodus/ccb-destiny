@@ -18,6 +18,10 @@ h2.stats-container-header {
   display: none;
 }
 
-.nav-item {
+#sub-menu .nav-item {
   text-align: left;
+}
+
+#sub-menu .nav-link:hover, .nav-link:focus {
+  text-decoration: underline;
 }
