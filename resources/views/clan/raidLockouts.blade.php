@@ -3,11 +3,11 @@
 @section('body')
 <section id="raid-lockouts" class="container text-center mb-4">
   <div class="mt-4 mb-4">
-    <h1 class="text-yellow">Weekly Raid Lockouts</h1>
-    <div class="text-secondary">
-      <!--smaller>- Updated every 3 mins -</smaller-->
+    @include('clan.nav')
+    <!--h1 class="text-yellow text-left">Weekly Raid Lockouts</h1-->
+    <!--div class="text-secondary text-left">
       <smaller id="weekly-lockout-dates"></smaller>
-    </div>
+    </div-->
   </div>
   <div class="loader"></div>
   <div class="loader-text mb-4">Fetching Members...</div>
@@ -28,7 +28,7 @@
 @endsection
 
 @section('header')
-<link rel="stylesheet" href="{{ mix('/css/compiled/lockouts.css') }}"/>
+<link rel="stylesheet" href="{{ mix('/css/compiled/clan.css') }}"/>
 @endsection
 
 @section('footer')

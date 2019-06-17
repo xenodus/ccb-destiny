@@ -1,6 +1,9 @@
 const mix = require('laravel-mix');
 
-// mix.copy('resources/assets/fonts', 'public/fonts', false);
+// RPG AWESOME
+mix.copy('node_modules/rpg-awesome/fonts/*', 'public/css/fonts/');
+// FONT AWESOME
+mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/*', 'public/css/webfonts/');
 
 // COMMON CSS
 mix.styles([
@@ -27,8 +30,8 @@ mix.styles([
 
 // RAID LOCKOUTS CSS
 mix.styles([
-    'public/css/lockouts.css',
-], 'public/css/compiled/lockouts.css');
+    'public/css/clan.css',
+], 'public/css/compiled/clan.css');
 
 // COMMON JS
 mix.scripts([
@@ -50,8 +53,13 @@ mix.scripts([
 
 // RAID LOCKOUTS PAGE
 mix.scripts([
-    'public/js/lockouts.js',
+    'public/js/clan/lockouts.js',
 ], 'public/js/compiled/lockouts.js');
+
+// SEAL COMPLETIONS PAGE
+mix.scripts([
+    'public/js/clan/seals.js',
+], 'public/js/compiled/seals.js');
 
 // POST + LISTING PAGE
 mix.scripts([

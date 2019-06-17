@@ -54,15 +54,24 @@ Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_re
 Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');
 Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
 
+// Get Members' Characters
 Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
+
+// Get Members' Triumph Completion Records
+Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
 
 // Update Member Characters
 Route::get('/bungie/members/characters/update', 'StatsController@update_member_characters')->name('update_member_characters');
 
-// Raid Lockouts
+// Clan Raid Lockouts
 Route::get('/clan/lockouts', 'ClanController@clan_raid_lockout')->name('clan_raid_lockout');
 Route::get('/clan/lockouts/get', 'ClanController@get_clan_raid_lockout')->name('get_clan_raid_lockout');
 Route::get('/bungie/lockouts/update', 'ClanController@update_clan_raid_lockout')->name('update_clan_raid_lockout');
+
+// Clan Seal Triumph Completions
+Route::get('/clan/seals', 'ClanController@clan_seal_progression')->name('clan_seal_progression');
+Route::get('/clan/seals/get', 'ClanController@get_clan_seal_progression')->name('get_clan_seal_progression');
+Route::get('/bungie/seals/update', 'ClanController@update_clan_seal_progression')->name('update_clan_seal_progression');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');

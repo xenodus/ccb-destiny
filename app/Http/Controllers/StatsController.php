@@ -561,6 +561,26 @@ class StatsController extends Controller
     return response()->json([]);
   }
 
+  // https://bungie-net.github.io/multi/schema_Destiny-DestinyRecordState.html#schema_Destiny-DestinyRecordState
+  public function get_member_triumphs($member_id)
+  {
+    $url = $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member_id.'?components=900';
+
+    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
+    $response = $client->get($url, [
+      'headers' => [
+        'X-API-Key' => env('BUNGIE_API')
+      ]
+    ]);
+
+    if( $response->getStatusCode() == 200 ) {
+      $payload = json_decode($response->getBody()->getContents());
+      return response()->json( $payload->Response );
+    }
+
+    return response()->json([]);
+  }
+
   public function get_members()
   {
     $url = $this->bungie_api_root_path.'/GroupV2/'.$this->clan_id.'/Members/';

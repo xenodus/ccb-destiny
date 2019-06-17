@@ -25,3 +25,21 @@ h2.stats-container-header {
 #sub-menu .nav-link:hover, .nav-link:focus {
   text-decoration: underline;
 }
+
+i.fa-times {
+  opacity: 0.7;
+}
+
+#clan-sub-menu li>a {
+  color: rgba(255,255,255,.5);
+}
+
+#clan-sub-menu li>a.active {
+  color: rgba(255,202,0,1);
+}
+
+#clan-sub-menu h1 {
+  font-size: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}

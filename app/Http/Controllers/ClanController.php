@@ -30,10 +30,83 @@ class ClanController extends Controller
     2271682572 => 'warlock'
   ];
 
+  // Seals
+  private $seal_hash = [
+    'Rivensbane' => 2182090828,
+    'Cursebreaker' => 1693645129,
+    'Chronicle' => 1754983323,
+    'Unbroken' => 3369119720,
+    'Dredgen' => 3798931976,
+    'Wayfarer' => 1693645129,
+    'Blacksmith' => 2053985130,
+    'Shadow' => 1883929036
+  ];
+
+  public function clan_seal_progression() {
+    $data['site_title'] = 'Seal Completions for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+    $data['active_page'] = 'seals';
+
+    return view('clan.sealCompletions', $data);
+  }
+
+  public function get_clan_seal_progression() {
+    $seal_completions = App\Classes\Seal_Completions::get();
+    return response()->json($seal_completions);
+  }
+
+  public function update_clan_seal_progression() {
+
+    $error = false;
+    $failures = [];
+    $results = [];
+
+    $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
+    $clan_members = \App\Classes\Clan_Member::get();
+
+    foreach($clan_members as $member) {
+
+      $response = $client->get( str_replace('https://', 'http://', route('bungie_get_member_triumphs', [$member->id])) );
+
+      if( $response->getStatusCode() == 200 ) {
+        $payload = json_decode($response->getBody()->getContents());
+        $payload = collect($payload);
+
+        $seal_completion = [];
+
+        foreach($this->seal_hash as $title => $id) {
+          $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
+        }
+
+        $member->seal_completion = $seal_completion;
+      }
+      else {
+        $error = true;
+        $failures[] = $member;
+      }
+    }
+
+    if( $error == false ) {
+
+      DB::connection('ccb_mysql')->table('seal_completions')->truncate();
+
+      foreach($clan_members as $member) {
+        $seal_completion = new App\Classes\Seal_Completions();
+        $seal_completion->id = $member->id;
+        $seal_completion->data = json_encode($member->seal_completion);
+        $seal_completion->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+        $seal_completion->save();
+      }
+
+      return response()->json(['status' => 1]); // success
+    }
+
+    return response()->json(['status' => 0]); // failure
+  }
+
   public function clan_raid_lockout() {
 
     $data['site_title'] = 'Raid lockouts for the ' . env('SITE_NAME') .' Clan in Destiny 2';
-    $data['active_page'] = 'clan';
+    $data['active_page'] = 'lockouts';
 
     return view('clan.raidLockouts', $data);
   }
@@ -70,6 +143,7 @@ class ClanController extends Controller
 
     $error = false;
     $failures = [];
+    $results = [];
 
     // Get weekly start / end dates (GMT+8)
     $today = \Carbon\Carbon::now();
@@ -90,8 +164,6 @@ class ClanController extends Controller
     $end_of_week->hour = 0;
     $end_of_week->minute = 59;
     $end_of_week->second = 59;
-
-    $results = [];
 
     $clan_members = \App\Classes\Clan_Member::get();
 
@@ -162,9 +234,7 @@ class ClanController extends Controller
       return response()->json(['status' => 1]); // success
     }
 
-    dd($failures);
-
-    return response()->json(['status' => 0]); // success
+    return response()->json(['status' => 0]); // failure
   }
 
   private function get_default_lockout() {
