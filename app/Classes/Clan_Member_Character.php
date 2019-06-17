@@ -12,6 +12,8 @@ class Clan_Member_Character extends Model
   protected $primaryKey = 'id';
   public $timestamps = false;
 
+  protected $fillable = ['id', 'user_id', 'light', 'class', 'date_added'];
+
   public function member()
   {
       return $this->belongsTo('App\Classes\Clan_Member', 'user_id');

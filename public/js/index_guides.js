@@ -12,7 +12,7 @@ $(document).ready(function(){
                                 '<div class="text-center post-category" style="background: '+res[i].color_code+';">'+res[i].category+'</div>' +
                                 '<div class="guides-posts-tn d-flex flex-column justify-content-center" style="background: url('+(res[i].image?res[i].image:'https://ccboys.xyz/images/og-banner-ccb.jpg')+') no-repeat center 20%/cover;"></div>' +
                                 '<div class="guides-posts-title bg-white text-dark" style="border-top: 5px solid '+res[i].color_code+'!important;">' +
-                                  '<div class="p-2">'+
+                                  '<div class="p-3">'+
                                     '<small>'+res[i].title+'</small>'+
                                   '</div>' +
                                 '</div>' +

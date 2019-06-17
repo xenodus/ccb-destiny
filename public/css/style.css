@@ -48,6 +48,7 @@ header .navbar-brand {
 
 #headerNav > ul > li.nav-item.active > a {
   color: #ffca00!important;
+  text-decoration: none;
 }
 
 #guides-header h1,
@@ -234,7 +235,7 @@ section#members-online {
   position: fixed;
   top: 0;
   background: rgba(0,0,0,0.9);
-  z-index: 999;
+  z-index: 1080;
 }
 
 #members-online-toggle-icon {

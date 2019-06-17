@@ -500,12 +500,11 @@ class StatsController extends Controller
   public function update_member_characters() {
     $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
     $member_response = $client->get( route('bungie_get_members') );
+    $char_ids = [];
 
     if( $member_response->getStatusCode() == 200 ) {
       $members = json_decode($member_response->getBody()->getContents());
       $members = collect($members);
-
-      DB::connection('ccb_mysql')->table('clan_member_characters')->truncate();
 
       foreach($members as $member) {
 
@@ -517,16 +516,24 @@ class StatsController extends Controller
 
           foreach($member_characters['characters']->data as $character_id => $character) {
             //dd($character);
-            $clan_member_character = new \App\Classes\Clan_Member_Character();
-            $clan_member_character->id = $character_id;
-            $clan_member_character->user_id = $member->destinyUserInfo->membershipId;
-            $clan_member_character->light = $character->light;
-            $clan_member_character->class = $this->class_hash[$character->classHash];
-            $clan_member_character->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-            $clan_member_character->save();
+
+            $char_ids[] = $character_id;
+
+            $clan_member_character = \App\Classes\Clan_Member_Character::updateOrCreate(
+              ['id' => $character_id],
+              [
+                'user_id' => $member->destinyUserInfo->membershipId,
+                'light' => $character->light,
+                'class' => $this->class_hash[$character->classHash],
+                'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
+              ]
+            );
           }
         }
       }
+
+      // delete character data that does not belong to members anymore
+      DB::connection('ccb_mysql')->table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
 
       return response()->json(['status' => 1]);
     }
@@ -568,17 +575,25 @@ class StatsController extends Controller
     if( $response->getStatusCode() == 200 ) {
       $payload = json_decode($response->getBody()->getContents());
 
-      DB::connection('ccb_mysql')->table('clan_members')->truncate();
+      // Get all current member ids and delete those are ain't in clan anymore
+      $ids = collect($payload->Response->results)->map(function($member){
+        return $member->destinyUserInfo->membershipId;
+      })->toArray();
+
+      DB::connection('ccb_mysql')->table('clan_members')->whereNotIn('id', $ids)->delete();
 
       foreach($payload->Response->results as $result) {
-        $clan_member = new \App\Classes\Clan_Member();
-        $clan_member->id = $result->destinyUserInfo->membershipId;
-        $clan_member->display_name = $result->destinyUserInfo->displayName;
         $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
         $last_online->setTimezone('Asia/Singapore');
-        $clan_member->last_online = $last_online->format('Y-m-d H:i:s');
-        $clan_member->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-        $clan_member->save();
+
+        $clan_member = \App\Classes\Clan_Member::updateOrCreate(
+          ['id' => $result->destinyUserInfo->membershipId],
+          [
+            'display_name' => $result->destinyUserInfo->displayName,
+            'last_online' => $last_online->format('Y-m-d H:i:s'),
+            'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+          ]
+        );
       }
 
       return response()->json( $payload->Response->results );

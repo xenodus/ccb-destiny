@@ -87,7 +87,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-md-center" href="https://discord.gg/5u2RYc9" target="_blank">
+                <a class="nav-link text-md-center" href="{{ env('DISCORD_LINK') }}" target="_blank">
                   <i class="fab fa-discord animated pulse slower infinite delay-0.5s"></i>
                   <div>Discord</div>
                 </a>

@@ -141,7 +141,7 @@ $(document).ready(function(){
         }
 
         if( raid_bounties.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(raid_bounties, 'Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
+          $('#weeklies-item-container').append( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
         }
 
         if( spider_powerful_bounty.length > 0 ) {
@@ -150,7 +150,7 @@ $(document).ready(function(){
 
         if( banshee_wares.length > 0 ) {
           banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
-          $('#weeklies-item-container').append( getVendorStr(banshee_wares, 'Banshee-44\'s Mods') );
+          $('#weeklies-item-container').append( getVendorStr(banshee_wares, 'Banshee-44') );
         }
 
         if( spider_wares.length > 0 ) {
@@ -180,48 +180,11 @@ $(document).ready(function(){
         reckoning = getReckoning();
 
         if( reckoning.length > 0  ) {
-          $('#weeklies-item-container').append( getVendorStr( reckoning, 'The Reckoning\'s Loot Pool') );
+          $('#weeklies-item-container').append( getVendorStr( reckoning, 'The Reckoning') );
         }
 
         if( saladin_bounties.length > 0 ) {
           // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
-        }
-
-        raid_lair_modifiers = {
-          'Gladiator': {
-            'name': 'Prestige: Gladiator',
-            'description': 'Melee kills buff weapon damage, and weapon kills buff melee damage.',
-            'icon': 'https://bungie.net/common/destiny2_content/icons/8d4cc5b8420f2a647c877610b9f286ed.png'
-          },
-          'Arsenal': {
-            'name': 'Prestige: Arsenal',
-            'description': 'Weapons have no reserve ammo. Emptying the clip of a weapon refills the clips of your holstered weapons.',
-            'icon': 'https://bungie.net/common/destiny2_content/icons/5e870c7f571cf35554183a9b330cbf23.png'
-          },
-          'Prism': {
-            'name': 'Prism',
-            'description': 'Attacks matching the periodically rotating focused element do more damage. Other elemental damage is reduced. Incoming damage is unaffected.',
-            'icon': 'https://bungie.net/common/destiny2_content/icons/7cd52fc7131a02c6b03544df779cb8c6.png'
-          }
-        };
-
-        current_raid_lair_modifiers = {
-          loadouts: {
-            primary: 'SMG',
-            energy: 'Anything',
-            power: 'Grenade Launcher'
-          },
-          modifier: {
-            name: raid_lair_modifiers['Prism'].name,
-            description: raid_lair_modifiers['Prism'].description,
-            icon: raid_lair_modifiers['Prism'].icon
-          },
-          expiry: moment('2019-02-13 01:00:00', 'YYYY-MM-DD H:mm:ss'),
-          updated: '2019-02-07 02:00:00'
-        };
-
-        if( current_raid_lair_modifiers.expiry.diff() > 0 ) {
-          $('#weeklies-item-container').append( getRaidLairModifiers(current_raid_lair_modifiers) );
         }
 
         if( tess_wares.length > 0 ) {
@@ -357,7 +320,7 @@ $(document).ready(function(){
       'name': 'Warden\'s Law',
       'icon': '/common/destiny2_content/icons/89a68f864854dd80155eb194ee8f5cb7.jpg',
       'description': 'Fight. Win. Li- Li- Li- Li- Li- FATAL EXCEPTION HAS OCCURRED AT 0028:C001E36',
-      'type': ' '
+      'type': 'Legendary Hand Cannon'
     },
     'Nightfall: The Corrupted': {
       'name': 'Horror\'s Least',

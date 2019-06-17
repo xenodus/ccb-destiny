@@ -45,7 +45,9 @@
         {!! $post->content !!}
       </div>
 
-      @include('ads.horizontal')
+      <div class="overflow-hidden">
+        @include('ads.horizontal')
+      </div>
 
       @if( $post->related()->count() )
       <div id="related-posts-container" class="pt-3 mt-md-3 mt-4">

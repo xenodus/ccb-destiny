@@ -69,6 +69,8 @@ class ClanController extends Controller
   public function update_clan_raid_lockout() {
 
     $error = false;
+    $failures = [];
+
     // Get weekly start / end dates (GMT+8)
     $today = \Carbon\Carbon::now();
 
@@ -134,8 +136,10 @@ class ClanController extends Controller
               }
             }
           }
-          else
+          else {
             $error = true;
+            $failures = $characters_activities_response;
+          }
         }
       }
 
@@ -157,6 +161,8 @@ class ClanController extends Controller
 
       return response()->json(['status' => 1]); // success
     }
+
+    dd($failures);
 
     return response()->json(['status' => 0]); // success
   }
