@@ -596,25 +596,36 @@ class StatsController extends Controller
       $payload = json_decode($response->getBody()->getContents());
 
       // Get all current member ids and delete those are ain't in clan anymore
-      $ids = collect($payload->Response->results)->map(function($member){
+      $ids = collect($payload->Response->results)->filter(function($member){
+        return $member->destinyUserInfo->membershipType == 4;
+      })
+      ->map(function($member){
         return $member->destinyUserInfo->membershipId;
       })->toArray();
 
       DB::connection('ccb_mysql')->table('clan_members')->whereNotIn('id', $ids)->delete();
 
-      foreach($payload->Response->results as $result) {
-        $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
-        $last_online->setTimezone('Asia/Singapore');
+      foreach($payload->Response->results as $key => $result) {
+        if( $result->destinyUserInfo->membershipType == 4 ) {
+          $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
+          $last_online->setTimezone('Asia/Singapore');
 
-        $clan_member = \App\Classes\Clan_Member::updateOrCreate(
-          ['id' => $result->destinyUserInfo->membershipId],
-          [
-            'display_name' => $result->destinyUserInfo->displayName,
-            'last_online' => $last_online->format('Y-m-d H:i:s'),
-            'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
-          ]
-        );
+          $clan_member = \App\Classes\Clan_Member::updateOrCreate(
+            ['id' => $result->destinyUserInfo->membershipId],
+            [
+              'display_name' => $result->destinyUserInfo->displayName,
+              'last_online' => $last_online->format('Y-m-d H:i:s'),
+              'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+            ]
+          );
+        }
+        else {
+          unset( $payload->Response->results[$key] );
+        }
       }
+
+      // Reset array keys
+      $payload->Response->results = array_values($payload->Response->results);
 
       return response()->json( $payload->Response->results );
     }

@@ -190,6 +190,10 @@ footer {
   border: 0;
 }
 
+.tabulator a {
+  text-decoration: underline;
+}
+
 #stats-sub-menu li > a {
   color: rgba(255, 255, 255, 0.5);
 }

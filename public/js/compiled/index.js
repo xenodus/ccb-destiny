@@ -1,1 +1,962 @@
-$(document).ready(function(){s(),ccbNS.timer=parseInt($(".auto-refresh-timer").attr("data-timer")),ccbNS.refreshInterval=3e4;var e=null,n=null;function t(){ccbNS.timer>0?ccbNS.timer=ccbNS.timer-1:ccbNS.timer=ccbNS.refreshInterval/1e3,$(".auto-refresh-timer").attr("data-timer",ccbNS.timer),$(".auto-refresh-timer").html("("+ccbNS.timer+")")}function i(){n=setInterval(s,ccbNS.refreshInterval,!0),e=setInterval(t,1e3)}function o(){clearInterval(n),clearInterval(e)}function a(){ccbNS.timer=ccbNS.refreshInterval/1e3,$(".auto-refresh-timer").attr("data-timer",ccbNS.refreshInterval/1e3)}function s(e=!1){a(),$("section#weeklies > div.loader, section#weeklies > div.loader-text").show(),$("#weeklies-item-container").empty(),$("#weeklies-item-container").append('<div class="grid-sizer"></div><div class="gutter-sizer"></div>'),$("#weeklies-item-container").hide(),$(".tooltip").remove(),e&&$(".grid").masonry("destroy"),$.get("/api/vendor",function(e){var n="3347378076",t="2917531897",i="672118013",o="863940356",a="248695599",s="895295461",r="2190858386",d="3361454721",l="1265988377",m=["Gambit Bounty","Weekly Drifter Bounty"],p=["Emote","Ghost Shell","Ship","Transmat Effect","Vehicle","Weapon Ornament","Armor Ornament","Multiplayer Emote"],h=["WANTED: Combustor Valus","WANTED: Arcadian Chord","WANTED: The Eye in the Dark","WANTED: Gravetide Summoner","WANTED: Silent Fang","WANTED: Blood Cleaver"];e.length>0&&(raid_bounties=e.filter(function(e){return e.vendor_hash==n&&"Weekly Bounty"==e.itemTypeDisplayName}),benedict_bounties=e.filter(function(e){return e.vendor_hash==l&&"Weekly Bounty"==e.itemTypeDisplayName}),gambit_bounties=e.filter(function(e){return e.vendor_hash==a&&m.includes(e.itemTypeDisplayName)}),power_surge_bounties=e.filter(function(e){return e.vendor_hash==a&&"Power Surge Bounty"==e.itemTypeDisplayName}),spider_wares=e.filter(function(e){return e.vendor_hash==o&&e.name.includes("Purchase")&&""==e.itemTypeDisplayName}),spider_powerful_bounty=e.filter(function(e){return e.vendor_hash==o&&"Weekly Bounty"==e.itemTypeDisplayName&&h.includes(e.name)}),banshee_wares=e.filter(function(e){return e.vendor_hash==i&&""!=e.icon}),xur_wares=e.filter(function(e){return e.vendor_hash==r&&"Challenge Card"!=e.itemTypeDisplayName&&"Invitation of the Nine"!=e.itemTypeDisplayName}),tess_wares=e.filter(function(e){return e.vendor_hash==d&&"Silver"!=e.cost_name&&p.includes(e.itemTypeDisplayName)}),saladin_bounties=e.filter(function(e){return e.vendor_hash==s&&"Iron Banner Bounty"==e.itemTypeDisplayName}),ada_frames=e.filter(function(e){return e.vendor_hash==t&&"Ballistics Log"==e.cost_name}),benedict_bounties.length>0&&$("#weeklies-item-container").append(c(benedict_bounties,"Benedict 99-40's Bounties")),raid_bounties.length>0&&$("#weeklies-item-container").append(c(raid_bounties,"Hawthorne's Raid "+(raid_bounties.length>1?"Bounties":"Bounty"))),spider_powerful_bounty.length>0&&$("#weeklies-item-container").append(c(spider_powerful_bounty,"Spider's Powerful Bounty")),banshee_wares.length>0&&(banshee_wares=_.orderBy(banshee_wares,["cost_name"],["desc"]),$("#weeklies-item-container").append(c(banshee_wares,"Banshee-44"))),spider_wares.length>0&&$("#weeklies-item-container").append(c(spider_wares,"Spider's Wares")),ascendant_challenge=function(){var e={"Gardens of Esila":"At the overlook's edge, the garden grows onward.","Spine of Keres":"Climb the bones and you'll find your ruin.","Harbinger’s Seclude":"Crush the first queen's crown beneath your bootheel.","Bay of Drowned Wishes":"Drown in your wishes, dear squanderer.","Chamber of Starlight":"Starlight, star bright, first untruth she'll craft tonight...","Aphelion’s Rest":"They call it a 'rest,' but it is more truly a haunt."},n=moment("2019-01-16 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);return[{name:"Ascendant: "+Object.keys(e)[i],icon:"/common/destiny2_content/icons/2f9e7dd03c415eb158c16bb59cc24c84.jpg",description:e[Object.keys(e)[i]]}]}(),weekly_dc_mission=function(){var e={"Broken Courier":"Respond to a distress call in the Strand.","Oracle Engine":"The Taken threaten to take control of an irreplaceable Awoken communications device.","Dark Monastery ":"Provide recon for Petra's forces by investigating strange enemy activity in Rheasilvia."},n=moment("2019-01-16 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);return[{name:"Mission: "+Object.keys(e)[i],icon:"/common/destiny2_content/icons/a6ce21a766375f5bcfb6cc01b093a383.png",description:e[Object.keys(e)[i]]}]}(),curse_level=function(){var e=["Low","Medium","High"],n=moment("2019-01-16 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);var a="The curse level is <u>"+e[i].toLowerCase()+"</u> in the Dreaming City.";2==i&&(a+=" Shattered Throne is up.");return[{name:"Curse Level: "+e[i],icon:"/common/destiny2_content/icons/8f755eb3a9109ed7adfc4a8b27871e7a.png",description:a}]}(),ascendant_challenge.length>0&&weekly_dc_mission.length>0&&curse_level.length>0&&$("#weeklies-item-container").append(c(ascendant_challenge.concat(weekly_dc_mission).concat(curse_level),'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>')),outbreak_config=function(){var e=["Void","Arc","Solar"],n=moment("2019-05-08 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);var a="The configuration type is <u>"+e[i].toUpperCase()+"</u> for Zero Hour (Heroic).";return[{name:"Singe Config: "+e[i].toUpperCase(),icon:"/common/destiny2_content/icons/c013e41cdb32779bc2322337614ea06b.jpg",description:a}]}(),outbreak_config.length>0&&$("#weeklies-item-container").append(c(outbreak_config,'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>')),escalation_protocol=function(){var e={"Kathok, Roar of Xol":{name:"IKELOS_SMG_v1.0.1",icon:"/common/destiny2_content/icons/85ad82abdfc13537325b45a85d6f4462.jpg"},"Damkath, The Mask":{name:"IKELOS_SR_v1.0.1",icon:"/common/destiny2_content/icons/52630df015ef0e839555982c478d78f3.jpg"},"Naksud, the Famine":{name:"All 3 Weapons",icon:"/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg"},"Bok Litur, Hunger of Xol":{name:"All 3 Weapons",icon:"/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg"},"Nur Abath, Crest of Xol":{name:"IKELOS_SG_v1.0.1",icon:"/common/destiny2_content/icons/edfdd807c9d604e80b48ad8fe39c8f36.jpg"}},n=moment("2019-01-16 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);return[{name:e[Object.keys(e)[i]].name,icon:e[Object.keys(e)[i]].icon,description:"Boss: "+Object.keys(e)[i]}]}(),escalation_protocol.length>0&&$("#weeklies-item-container").append(c(escalation_protocol,"Escalation Protocol")),reckoning=function(){var e=["Sword Knights","Likeness of Oryx"],n=moment("2019-05-29 01:00:00","YYYY-MM-DD H:mm:ss"),t=moment(),i=0,o=!1;for(;0==o;)i==Object.keys(e).length&&(i=0),nextWeek=moment(n.format("YYYY-MM-DD H:mm:ss"),"YYYY-MM-DD H:mm:ss").add(7,"days"),t.isBetween(n,nextWeek)?o=!0:(n=nextWeek,i++);if(0==i)var a="The bosses for this week's reckoning activity are the <u>"+e[i]+"</u>.";else var a="The boss for this week's reckoning activity is the <u>"+e[i]+"</u>.";var s=[{name:"Tier 2/3 Boss: "+e[i],icon:"/common/destiny2_content/icons/fc31e8ede7cc15908d6e2dfac25d78ff.png",description:a}];if(0==i)var r=[{name:"Lonesome",description:"Weapon Type: Kinetic Sidearm<br/><br/>Am I the only one who sees?",icon:"/common/destiny2_content/icons/abd91ac904ddb37308898c9a5fd38b02.jpg"},{name:"Night Watch",description:"Weapon Type: Kinetic Scout Rifle<br/><br/>Sleep with both eyes open.",icon:"/common/destiny2_content/icons/f32f6b8896ca5b2684c6e02d447f5182.jpg"},{name:"Sole Survivor",description:"Weapon Type: Arc Sniper Rifle<br/><br/>Names mean nothing to the dead.",icon:"/common/destiny2_content/icons/0ae824a841009f28327d905c0610b03c.jpg"},{name:"Last Man Standing",description:"Weapon Type: Solar Shotgun<br/><br/>Call me Ozymandias.",icon:"/common/destiny2_content/icons/d39006fe5498ec8720622da5a31dd066.jpg"},{name:"Just in Case (T3 Only)",description:"Weapon Type: Solar Sword<br/><br/>Even contingencies need contingencies.",icon:"/common/destiny2_content/icons/c32e9275a505a1e39bfc146dca3702b6.jpg"}];else var r=[{name:"Spare Rations",description:"Weapon Type: Kinetic Hand Cannon<br/><br/>Whether times are lean or fat.",icon:"/common/destiny2_content/icons/7106d949c81a1b2b281964ae2184d6b2.jpg"},{name:"Bug-Out Bag",description:"Weapon Type: Solar SMG<br/><br/>Grab and go.",icon:"/common/destiny2_content/icons/870aa58f8314ca60ec3075f937735885.jpg"},{name:"Outlast",description:"Weapon Type: Solar Pulse Rifle<br/><br/>No such word as extinction.",icon:"/common/destiny2_content/icons/7967ce5273a19ca50fe3ec1fd1b1b375.jpg"},{name:"Gnawing Hunger",description:"Weapon Type: Void Auto Rifle<br/><br/>Don't let pride keep you from a good meal.",icon:"/common/destiny2_content/icons/48037e6416c3c9da07030a72931e0ca9.jpg"},{name:"Doomsday (T3 Only)",description:"Weapon Type: Arc Grenade Launcher<br/><br/>The age-old chant: The end of days draws nigh.",icon:"/common/destiny2_content/icons/f689eb2328e786599701352b9c01b64d.jpg"}];return s=s.concat(r)}(),reckoning.length>0&&$("#weeklies-item-container").append(c(reckoning,"The Reckoning")),saladin_bounties.length,tess_wares.length>0&&$("#weeklies-item-container").append(c(tess_wares,"Tess's Dust Stash")),$('[data-toggle="tooltip"]').tooltip({html:!0}),$("section#weeklies > div.loader, section#weeklies > div.loader-text").hide(),$("#weeklies-item-container").fadeIn(),$(".grid").masonry({itemSelector:".grid-item",gutter:0,columnWidth:".grid-sizer",gutter:".gutter-sizer",percentPosition:!0})),$.get("/api/nightfall",function(e){if(e.length>0){var n=$(c(e,"Nightfalls"));$(".grid").append(n).masonry("appended",n),$('[data-toggle="tooltip"]').tooltip({html:!0})}}),$.get("/api/levi",function(e){if(e.order){var n=$(c([{icon:"/common/destiny2_content/icons/b8177e166f01c2cd914fc3e925ae902d.png",name:e.order}],"Leviathan"));$(".grid").append(n).masonry("appended",n)}}),$.get("/api/sales-item-perks/"+r,function(e){if(xur_wares.length>1){var n=$(function(e,n,t="vertical",i){str='\n    <div class="grid-item col-md-4">\n      <div class="mb-3 border-warning border">\n        <div class="border-warning border-bottom p-2 text-left">'+n+'</div>\n        <div class="pl-2 pr-2 pt-2 pb-1 '+("vertical"==t?"":"d-md-flex flex-md-wrap justify-content-md-around")+'">\n    ';for(var o=0;o<e.length;o++){var a="",s="",r="",c=i.filter(function(n){return n.vendor_sales_id==e[o].id});if(e[o].description){if(e[o].cost&&(s="<div class='mt-2'>Price: "+e[o].cost+" "+e[o].cost_name+"</div>"),c.length>0){r="<div class='mt-2'>",prev_perk_group="",roll=1;for(var d=0;d<c.length;d++)0==d?r+="<div class='mb-1'>Perk "+roll+"</div><div class='mb-2 border border-secondary rounded'>":prev_perk_group!=c[d].perk_group&&(roll++,r+="</div><div class='mt-1 mb-1'>Perk "+roll+"</div><div class='mb-2 border border-secondary rounded'>"),r+="<div class='d-flex align-items-center pt-1 pb-2 pl-2 pr-2 "+(prev_perk_group==c[d].perk_group&&0!=d?"border-top border-secondary":"")+"'>\n                        <div>\n                          <img src='https://bungie.net"+c[d].icon+"' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 30px; height: 30px;'/>\n                        </div>\n                        <div>\n                          <div class='font-weight-bold'>"+c[d].name.replace(/"/g,"'")+"</div>\n                          <div class='perk-description mt-1'>"+c[d].description.replace(/"/g,"'").replace(/•/g,"<br>• ")+"</div>\n                        </div>\n                      </div>",d+1==c.length&&(r+="</div>"),prev_perk_group=c[d].perk_group;r+="</div>"}a="\n        <div>\n          <h6 class='font-weight-bold mb-1'>"+e[o].name+"</h6>\n          <div class='d-flex align-items-start'>\n            <div>\n              <img src='https://bungie.net"+e[o].icon+"' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>\n            </div>\n            <div>"+e[o].description.replace(/"/g,"'")+"</div>\n          </div>\n          "+s+"\n          "+r+"\n        </div>\n        "}str+='\n      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="'+a+'">\n        <img class="img-fluid" src="https://bungie.net'+e[o].icon+'" style="width: 20px; height: 20px; margin-right: 5px;"/>'+e[o].name+"\n      </div>\n      "}return str+="\n        </div>\n      </div>\n    </div>\n    ",str}(xur_wares,'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>',"vertical",e));$(".grid").append(n).masonry("appended",n),$('[data-toggle="tooltip"]').tooltip({html:!0})}$.get("/api/xur",function(e){e.location&&($("a#xur-link").text(e.location),$(".grid").masonry("layout"))})})})}1==ccbNS.autoRefreshMilestones&&i(),$("#autoRefreshOn").on("click",function(){$.get("/milestones/refresh/1"),ccbNS.autoRefreshMilestones=1,$(this).prop("checked",!0),a(),o(),i()}),$("#autoRefreshOff").on("click",function(){$.get("/milestones/refresh/0"),ccbNS.autoRefreshMilestones=0,$(this).prop("checked",!0),$(".auto-refresh-timer").html(""),o()});var r={"Nightfall: Tree of Probabilities":{name:"D.F.A.",icon:"/common/destiny2_content/icons/6e692a14162839d0489e11cf9d84746e.jpg",description:'"Osiris said that he started to pity the Red Legion, getting trapped in here for infinite eternities. I think they\'re getting exactly what they deserve." —Sagira',type:"Legendary Hand Cannon"},"Nightfall: Strange Terrain":{name:"BrayTech Osprey",icon:"/common/destiny2_content/icons/659ebe95206951d7c97022b47a93c459.jpg",description:"Expected Use Timeframe: UNKNOWN.",type:"Legendary Rocket Launcher"},"Nightfall: Savathûn's Song":{name:"Duty Bound",icon:"/common/destiny2_content/icons/0497af906c184a43fa7e2accae899c35.jpg",description:'"Due respect, Commander? I was there when the Hive found us on Earth. I was there when we stopped them on Titan. And I\'ll be there when we wipe them out." —Sloane',type:"Legendary Auto Rifle"},"Nightfall: The Pyramidion":{name:"Silicon Neuroma",icon:"/common/destiny2_content/icons/77364d95fdc16bb1d23f6f00817dc6ab.jpg",description:'"My future is concurrently irreversible and unknowable. Before it overtakes me, I desire a more abrupt end to those responsible." —Asher Mir',type:"Legendary Sniper Rifle"},"Nightfall: The Arms Dealer":{name:"Tilt Fuse",icon:"/common/destiny2_content/icons/a2dd642b18b15f764db069f845f5173c.jpg",description:'"[whistle] With a few more revs, Zahn woulda turned this thing into the fastest bomb you never saw. Good thing for all of us he never got the chance." —Amanda Holliday',type:"Exotic Sparrow"},"Nightfall: Exodus Crash":{name:"Impact Velocity",icon:"/common/destiny2_content/icons/4d0ecd27dd8a6d02a8a0f3b2618a097e.jpg",description:'"Captain, this conveyance\'s top speed is a fraction of the Exodus Black\'s when it crashed into Nessus!" "Try not to find out for yourself." —Failsafe',type:"Exotic Sparrow"},"Nightfall: The Inverted Spire":{name:"Trichromatica",icon:"/common/destiny2_content/icons/bb72e6b7b2a7ac6165431d4a47171b2f.jpg",description:"\"Void, Solar, then Arc. Hmm. We're not naive enough to think the order is a coincidence. But we've got bigger things to worry about.\" —Zavala",type:"Exotic Ghost Shell"},"Nightfall: A Garden World":{name:"Universal Wavefunction",icon:"/common/destiny2_content/icons/d6c77755df5761e5626b052d440cf5c7.jpg",description:'"I believed your presence at the genesis of the Infinite Forest would lead to a comprehensive understanding of the Vex. When will I learn that things are never so simple?" —Ikora',type:"Exotic Ship"},"Nightfall: Lake of Shadows":{name:"The Militia's Birthright",icon:"/common/destiny2_content/icons/39b67dae56153d70e935bfad21faecc7.jpg",description:'"Earth is our home. Not Mars, not Venus, not even the Reef. We must ensure it is a place we can continue to live for many generations to come." —Devrim Kay',type:"Legendary Grenade Launcher"},"Nightfall: Will of the Thousands":{name:"Worm God Incarnation",icon:"/common/destiny2_content/icons/2d6ff9e9e65253a82ec0856f310e2b94.jpg",description:"Modifications for your ship's transmat systems, so you'll always arrive in style.",type:"Legendary Transmat Effect"},"Nightfall: The Insight Terminus":{name:"The Long Goodbye",icon:"/common/destiny2_content/icons/fe07633a2ee87f0c00d5b0c0f3838a7d.jpg",description:'Yeah… I lost a lot of these out on Nessus. Long story. Lots of dead Vex." —The Drifter',type:"Legendary Sniper Rifle"},"Nightfall: The Hollowed Lair":{name:"Mindbender's Ambition",icon:"/common/destiny2_content/icons/0d39a47ea705e188a3674fa5f41b99a5.jpg",description:'"Hiraks always did like to leave an impression." —The Spider',type:"Legendary Shotgun"},"Nightfall: Warden of Nothing":{name:"Warden's Law",icon:"/common/destiny2_content/icons/89a68f864854dd80155eb194ee8f5cb7.jpg",description:"Fight. Win. Li- Li- Li- Li- Li- FATAL EXCEPTION HAS OCCURRED AT 0028:C001E36",type:"Legendary Hand Cannon"},"Nightfall: The Corrupted":{name:"Horror's Least",icon:"/common/destiny2_content/icons/c5454c80b15ecb3b3abf2d69d4bfe5ff.jpg",description:'"Some things should not be saved." —Techeun Sedia',type:"Legendary Pulse Rifle"}};function c(e,n,t="vertical"){str='\n    <div class="grid-item col-md-4">\n      <div class="mb-3 border-warning border">\n        <div class="border-warning border-bottom p-2 text-left">'+n+'</div>\n        <div class="pl-2 pr-2 pt-2 pb-1 '+("vertical"==t?"":"d-md-flex flex-md-wrap justify-content-md-around")+'">\n    ';for(var i=0;i<e.length;i++){var o="",a="";e[i].description&&(e[i].cost&&(a="<div class='mt-2'>Price: "+e[i].cost+" "+e[i].cost_name+"</div>"),o="Nightfalls"==n&&Object.keys(r).includes(e[i].name)?"\n          <div>\n            <h6 class='font-weight-bold mb-1'>"+e[i].name+"</h6>\n            <div class='mb-1'>\n              "+e[i].description.replace(/"/g,"'")+"\n            </div>\n            <div class='d-flex align-items-start mt-2'>\n              <div>\n                <img src='https://bungie.net"+r[e[i].name].icon+"' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>\n              </div>\n              <div>\n                <div class='text-weight-bold'><h6 class='mb-1'>"+r[e[i].name].name+"</h6></div>\n                <div>"+r[e[i].name].type.replace(/"/g,"'")+"</div>\n              </div>\n            </div>\n          </div>\n          ":"\n          <div>\n            <h6 class='font-weight-bold mb-1'>"+e[i].name+"</h6>\n            <div class='d-flex align-items-start'>\n              <div>\n                <img src='https://bungie.net"+e[i].icon+"' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>\n              </div>\n              <div>"+e[i].description.replace(/"/g,"'")+"</div>\n            </div>\n            "+a+"\n          </div>\n          "),str+='\n      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="'+o+'">\n        <img class="img-fluid" src="https://bungie.net'+e[i].icon+'" style="width: 20px; height: 20px; margin-right: 5px;"/>'+e[i].name+"\n      </div>\n      "}return str+="\n        </div>\n      </div>\n    </div>\n    ",str}}),$(document).ready(function(){$("#news-item-container").hide(),$.get("/api/news/get",function(e){if(e.length){for(var n=[],t=[],i=[],o=0;o<e.length;o++)switch(e[o].category){case"destiny":n.push(e[o]);break;case"division":t.push(e[o]);break;case"magic":i.push(e[o])}if(n.length>0){$("#news-item-container").append('<div class="col-md-4"><div id="destiny-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Destiny 2</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');for(o=0;o<n.length;o++)$("#destiny-news-container .news-listing-container").append("<div class='mb-2'>"+(o+1)+". <a href='"+n[o].url+"' target='_blank'>"+n[o].title+"</a> | "+n[o].source+"</div>")}if(i.length>0){$("#news-item-container").append('<div class="col-md-4"><div id="magic-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Magic: The Gathering Arena</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');for(o=0;o<i.length;o++)$("#magic-news-container .news-listing-container").append("<div class='mb-2'>"+(o+1)+". <a href='"+i[o].url+"' target='_blank'>"+i[o].title+"</a> | "+i[o].source+"</div>")}if(t.length>0){$("#news-item-container").append('<div class="col-md-4"><div id="division-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Tom Clancy\'s The Division 2</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');for(o=0;o<t.length;o++)$("#division-news-container .news-listing-container").append("<div class='mb-2'>"+(o+1)+". <a href='"+t[o].url+"' target='_blank'>"+t[o].title+"</a> | "+t[o].source+"</div>")}$("section#news > div.loader, section#news > div.loader-text").hide(),$("#news-item-container").fadeIn()}else $("section#news > div.loader, section#news > div.loader-text").hide(),$("#news-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve news :(</div>'),$("#news-item-container").fadeIn()}).fail(function(){$("section#news > div.loader, section#news > div.loader-text").hide(),$("#news-item-container").append('<div class="col-md-12 text-center p-4 mb-2">Unable to retrieve news :(</div>'),$("#news-item-container").fadeIn()})}),$(document).ready(function(){$("#guides-item-container").hide(),$.get("/guides/get/latest",function(e){if(e.length){for(var n=0;n<e.length;n++){var t='<a href="'+e[n].url+'" title="'+e[n].title+'"><div class="guides-posts-item mb-3"><div class="text-center post-category" style="background: '+e[n].color_code+';">'+e[n].category+'</div><div class="guides-posts-tn d-flex flex-column justify-content-center" style="background: url('+(e[n].image?e[n].image:"https://ccboys.xyz/images/og-banner-ccb.jpg")+') no-repeat center 20%/cover;"></div><div class="guides-posts-title bg-white text-dark" style="border-top: 5px solid '+e[n].color_code+'!important;"><div class="p-3"><small>'+e[n].title+"</small></div></div></div></a>";$("#guides-item-container").append('<div class="col-md-4">'+t+"</div>")}$("section#guides > div.loader, section#guides > div.loader-text").hide(),$("#guides-item-container").fadeIn()}else $("section#guides > div.loader, section#guides > div.loader-text").hide(),$("#guides-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve guides :(</div>'),$("#guides-item-container").fadeIn()}).fail(function(){$("section#guides > div.loader, section#guides > div.loader-text").hide(),$("#guides-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve guides :(</div>'),$("#guides-item-container").fadeIn()})});
+$(document).ready(function(){
+
+  fetchMilestones();
+
+  ccbNS["timer"] = parseInt( $('.auto-refresh-timer').attr('data-timer') );
+  ccbNS["refreshInterval"] = 30000;
+
+  var refreshTimerInterval = null;
+  var refreshMilestonesInterval = null;
+
+  if( ccbNS["autoRefreshMilestones"] == 1 ) {
+    setIntervals();
+  }
+
+  $("#autoRefreshOn").on("click", function(){
+    $.get('/milestones/refresh/1');
+    ccbNS["autoRefreshMilestones"] = 1;
+    $(this).prop('checked', true);
+    resetTimer();
+    clearIntervals();
+    setIntervals();
+  });
+
+  $("#autoRefreshOff").on("click", function(){
+    $.get('/milestones/refresh/0');
+    ccbNS["autoRefreshMilestones"] = 0;
+    $(this).prop('checked', true);
+    $('.auto-refresh-timer').html('');
+    clearIntervals();
+  });
+
+  function updateTimer() {
+    if( ccbNS["timer"] > 0 )
+      ccbNS["timer"] = ccbNS["timer"] - 1;
+    else
+      ccbNS["timer"] = ccbNS["refreshInterval"] / 1000;
+
+    $('.auto-refresh-timer').attr('data-timer', ccbNS["timer"]);
+    $('.auto-refresh-timer').html('('+ccbNS["timer"]+')');
+  }
+
+  function setIntervals() {
+    refreshMilestonesInterval = setInterval(fetchMilestones, ccbNS["refreshInterval"], true);
+    refreshTimerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function clearIntervals() {
+    clearInterval(refreshMilestonesInterval);
+    clearInterval(refreshTimerInterval);
+  }
+
+  function resetTimer() {
+    ccbNS["timer"] = ccbNS["refreshInterval"] / 1000;
+    $('.auto-refresh-timer').attr('data-timer', (ccbNS.refreshInterval/1000));
+  }
+
+  function fetchMilestones(refresh=false) {
+    resetTimer();
+    $('section#weeklies > div.loader, section#weeklies > div.loader-text').show();
+    $('#weeklies-item-container').empty();
+    $('#weeklies-item-container').append('<div class="grid-sizer"></div><div class="gutter-sizer"></div>');
+    $('#weeklies-item-container').hide();
+    $('.tooltip').remove();
+
+    if( refresh ) $('.grid').masonry('destroy');
+
+    $.get('/api/vendor', function(data){
+
+      var vendorHash = {
+        'Suraya Hawthorne': '3347378076',
+        'Ada-1': '2917531897',
+        'Banshee-44': '672118013',
+        'Spider': '863940356',
+        'Lord Shaxx': '3603221665',
+        'The Drifter': '248695599',
+        'Lord Saladin': '895295461',
+        'Commander Zavala': '69482069',
+        'Xur': '2190858386',
+        'Tess Everis': '3361454721',
+        'Benedict 99-40': '1265988377'
+      };
+
+      var gambitBountiesFilter = [
+        'Gambit Bounty',
+        'Weekly Drifter Bounty'
+      ];
+
+      // includes
+      var tessFilter = [
+        'Emote',
+        'Ghost Shell',
+        'Ship',
+        'Transmat Effect',
+        'Vehicle',
+        'Weapon Ornament',
+        'Armor Ornament',
+        'Multiplayer Emote'
+      ];
+
+      // excludes
+      var benedictFilter = [
+        'Buff',
+        'Armor Set',
+        'Quest Step',
+      ];
+
+      var spiderRareBounty = [
+        'WANTED: Combustor Valus',
+        'WANTED: Arcadian Chord',
+        'WANTED: The Eye in the Dark',
+        'WANTED: Gravetide Summoner',
+        'WANTED: Silent Fang',
+        'WANTED: Blood Cleaver'
+      ];
+
+      if( data.length > 0 ) {
+        raid_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Suraya Hawthorne'] && item.itemTypeDisplayName == 'Weekly Bounty' });
+
+        benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
+
+        gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
+
+        power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
+
+        spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
+
+        spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
+
+        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
+
+        xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
+
+        tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
+
+        saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
+
+        ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
+
+        if( benedict_bounties.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
+        }
+
+        if( raid_bounties.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
+        }
+
+        if( spider_powerful_bounty.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(spider_powerful_bounty, 'Spider\'s Powerful Bounty') );
+        }
+
+        if( banshee_wares.length > 0 ) {
+          banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
+          $('#weeklies-item-container').append( getVendorStr(banshee_wares, 'Banshee-44') );
+        }
+
+        if( spider_wares.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(spider_wares, 'Spider\'s Wares') );
+        }
+
+        ascendant_challenge = getAscendantChallenge();
+        weekly_dc_mission = getWeeklyDCMission();
+        curse_level = getCurseLevel();
+
+        if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>') );
+        }
+
+        outbreak_config = getOutbreakSinge();
+
+        if( outbreak_config.length > 0  ) {
+          $('#weeklies-item-container').append( getVendorStr( outbreak_config, 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>') );
+        }
+
+        escalation_protocol = getEscalationProtocol();
+
+        if( escalation_protocol.length > 0  ) {
+          $('#weeklies-item-container').append( getVendorStr( escalation_protocol, 'Escalation Protocol') );
+        }
+
+        reckoning = getReckoning();
+
+        if( reckoning.length > 0  ) {
+          $('#weeklies-item-container').append( getVendorStr( reckoning, 'The Reckoning') );
+        }
+
+        if( saladin_bounties.length > 0 ) {
+          // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
+        }
+
+        if( tess_wares.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
+        }
+
+        $('[data-toggle="tooltip"]').tooltip({
+          html: true
+        });
+
+        $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
+        $('#weeklies-item-container').fadeIn();
+
+        $('.grid').masonry({
+          itemSelector: '.grid-item',
+          gutter: 0,
+          columnWidth: '.grid-sizer',
+          gutter: '.gutter-sizer',
+          percentPosition: true
+        });
+      }
+
+      $.get('/api/nightfall', function(data){
+
+        if( data.length > 0 ) {
+          var $items = $(getVendorStr(data, 'Nightfalls'));
+          $('.grid').append( $items ).masonry( 'appended', $items );
+
+          $('[data-toggle="tooltip"]').tooltip({
+            html: true
+          });
+        }
+      });
+
+      $.get('/api/levi', function(data){
+        if( data.order ) {
+          var $items = $(getVendorStr([{icon: '/common/destiny2_content/icons/b8177e166f01c2cd914fc3e925ae902d.png', name: data.order}], 'Leviathan'));
+          $('.grid').append( $items ).masonry( 'appended', $items );
+        }
+      });
+
+      // XUR
+      $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(data){
+
+        if( xur_wares.length > 1 ) {
+          var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', data));
+          $('.grid').append( $items ).masonry( 'appended', $items );
+
+          $('[data-toggle="tooltip"]').tooltip({
+            html: true
+          });
+        }
+
+        get_xur_location();
+      });
+    });
+  }
+
+  var nightfall_loot = {
+    'Nightfall: Tree of Probabilities': {
+      'name': 'D.F.A.',
+      'icon': '/common/destiny2_content/icons/6e692a14162839d0489e11cf9d84746e.jpg',
+      'description': '"Osiris said that he started to pity the Red Legion, getting trapped in here for infinite eternities. I think they\'re getting exactly what they deserve." —Sagira',
+      'type': 'Legendary Hand Cannon'
+    },
+    'Nightfall: Strange Terrain': {
+      'name': 'BrayTech Osprey',
+      'icon': '/common/destiny2_content/icons/659ebe95206951d7c97022b47a93c459.jpg',
+      'description': 'Expected Use Timeframe: UNKNOWN.',
+      'type': 'Legendary Rocket Launcher'
+    },
+    'Nightfall: Savathûn\'s Song': {
+      'name': 'Duty Bound',
+      'icon': '/common/destiny2_content/icons/0497af906c184a43fa7e2accae899c35.jpg',
+      'description': '"Due respect, Commander? I was there when the Hive found us on Earth. I was there when we stopped them on Titan. And I\'ll be there when we wipe them out." —Sloane',
+      'type': 'Legendary Auto Rifle'
+    },
+    'Nightfall: The Pyramidion': {
+      'name': 'Silicon Neuroma',
+      'icon': '/common/destiny2_content/icons/77364d95fdc16bb1d23f6f00817dc6ab.jpg',
+      'description': '"My future is concurrently irreversible and unknowable. Before it overtakes me, I desire a more abrupt end to those responsible." —Asher Mir',
+      'type': 'Legendary Sniper Rifle'
+    },
+    'Nightfall: The Arms Dealer': {
+      'name': 'Tilt Fuse',
+      'icon': '/common/destiny2_content/icons/a2dd642b18b15f764db069f845f5173c.jpg',
+      'description': '"[whistle] With a few more revs, Zahn woulda turned this thing into the fastest bomb you never saw. Good thing for all of us he never got the chance." —Amanda Holliday',
+      'type': 'Exotic Sparrow'
+    },
+    'Nightfall: Exodus Crash': {
+      'name': 'Impact Velocity',
+      'icon': '/common/destiny2_content/icons/4d0ecd27dd8a6d02a8a0f3b2618a097e.jpg',
+      'description': '"Captain, this conveyance\'s top speed is a fraction of the Exodus Black\'s when it crashed into Nessus!" "Try not to find out for yourself." —Failsafe',
+      'type': 'Exotic Sparrow'
+    },
+    'Nightfall: The Inverted Spire': {
+      'name': 'Trichromatica',
+      'icon': '/common/destiny2_content/icons/bb72e6b7b2a7ac6165431d4a47171b2f.jpg',
+      'description': '"Void, Solar, then Arc. Hmm. We\'re not naive enough to think the order is a coincidence. But we\'ve got bigger things to worry about." —Zavala',
+      'type': 'Exotic Ghost Shell'
+    },
+    'Nightfall: A Garden World': {
+      'name': 'Universal Wavefunction',
+      'icon': '/common/destiny2_content/icons/d6c77755df5761e5626b052d440cf5c7.jpg',
+      'description': '"I believed your presence at the genesis of the Infinite Forest would lead to a comprehensive understanding of the Vex. When will I learn that things are never so simple?" —Ikora',
+      'type': 'Exotic Ship'
+    },
+    'Nightfall: Lake of Shadows': {
+      'name': 'The Militia\'s Birthright',
+      'icon': '/common/destiny2_content/icons/39b67dae56153d70e935bfad21faecc7.jpg',
+      'description': '"Earth is our home. Not Mars, not Venus, not even the Reef. We must ensure it is a place we can continue to live for many generations to come." —Devrim Kay',
+      'type': 'Legendary Grenade Launcher'
+    },
+    'Nightfall: Will of the Thousands': {
+      'name': 'Worm God Incarnation',
+      'icon': '/common/destiny2_content/icons/2d6ff9e9e65253a82ec0856f310e2b94.jpg',
+      'description': 'Modifications for your ship\'s transmat systems, so you\'ll always arrive in style.',
+      'type': 'Legendary Transmat Effect'
+    },
+    'Nightfall: The Insight Terminus': {
+      'name': 'The Long Goodbye',
+      'icon': '/common/destiny2_content/icons/fe07633a2ee87f0c00d5b0c0f3838a7d.jpg',
+      'description': 'Yeah… I lost a lot of these out on Nessus. Long story. Lots of dead Vex." —The Drifter',
+      'type': 'Legendary Sniper Rifle'
+    },
+    'Nightfall: The Hollowed Lair': {
+      'name': 'Mindbender\'s Ambition',
+      'icon': '/common/destiny2_content/icons/0d39a47ea705e188a3674fa5f41b99a5.jpg',
+      'description': '"Hiraks always did like to leave an impression." —The Spider',
+      'type': 'Legendary Shotgun'
+    },
+    'Nightfall: Warden of Nothing': {
+      'name': 'Warden\'s Law',
+      'icon': '/common/destiny2_content/icons/89a68f864854dd80155eb194ee8f5cb7.jpg',
+      'description': 'Fight. Win. Li- Li- Li- Li- Li- FATAL EXCEPTION HAS OCCURRED AT 0028:C001E36',
+      'type': 'Legendary Hand Cannon'
+    },
+    'Nightfall: The Corrupted': {
+      'name': 'Horror\'s Least',
+      'icon': '/common/destiny2_content/icons/c5454c80b15ecb3b3abf2d69d4bfe5ff.jpg',
+      'description': '"Some things should not be saved." —Techeun Sedia',
+      'type': 'Legendary Pulse Rifle'
+    }
+  };
+
+  function getVendorStr(data, title, type="vertical") {
+    str = `
+    <div class="grid-item col-md-4">
+      <div class="mb-3 border-warning border">
+        <div class="border-warning border-bottom p-2 text-left">`+title+`</div>
+        <div class="pl-2 pr-2 pt-2 pb-1 `+(type=='vertical'?'':'d-md-flex flex-md-wrap justify-content-md-around')+`">
+    `;
+
+    for(var i=0; i<data.length; i++) {
+
+      var tooltip = '';
+      var cost = '';
+
+      if( data[i].description ) {
+
+        if( data[i].cost ) {
+          cost = `<div class='mt-2'>Price: `+data[i].cost+` `+data[i].cost_name+`</div>`;
+        }
+
+        if( title == 'Nightfalls' && Object.keys(nightfall_loot).includes(data[i].name) )
+        {
+          tooltip = `
+          <div>
+            <h6 class='font-weight-bold mb-1'>`+data[i].name+`</h6>
+            <div class='mb-1'>
+              `+data[i].description.replace(/"/g, "'")+`
+            </div>
+            <div class='d-flex align-items-start mt-2'>
+              <div>
+                <img src='https://bungie.net`+nightfall_loot[data[i].name].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+              </div>
+              <div>
+                <div class='text-weight-bold'><h6 class='mb-1'>`+nightfall_loot[data[i].name].name+`</h6></div>
+                <div>`+nightfall_loot[data[i].name].type.replace(/"/g, "'")+`</div>
+              </div>
+            </div>
+          </div>
+          `;
+        }
+        else {
+          tooltip = `
+          <div>
+            <h6 class='font-weight-bold mb-1'>`+data[i].name+`</h6>
+            <div class='d-flex align-items-start'>
+              <div>
+                <img src='https://bungie.net`+data[i].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+              </div>
+              <div>`+data[i].description.replace(/"/g, "'")+`</div>
+            </div>
+            `+cost+`
+          </div>
+          `;
+        }
+      }
+
+      str += `
+      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+        <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
+      </div>
+      `;
+    }
+
+    str += `
+        </div>
+      </div>
+    </div>
+    `
+    return str;
+  }
+
+  function getXurVendorStr(data, title, type="vertical", xur_item_perks) {
+
+    str = `
+    <div class="grid-item col-md-4">
+      <div class="mb-3 border-warning border">
+        <div class="border-warning border-bottom p-2 text-left">`+title+`</div>
+        <div class="pl-2 pr-2 pt-2 pb-1 `+(type=='vertical'?'':'d-md-flex flex-md-wrap justify-content-md-around')+`">
+    `;
+
+    for(var i=0; i<data.length; i++) {
+
+      var tooltip = '';
+      var cost = '';
+      var perks = '';
+      var item_perks = xur_item_perks.filter(function(perks){ return perks.vendor_sales_id == data[i].id  });
+
+      if( data[i].description ) {
+
+        if( data[i].cost ) {
+          cost = `<div class='mt-2'>Price: `+data[i].cost+` `+data[i].cost_name+`</div>`;
+        }
+
+        if( item_perks.length > 0 ) {
+          perks = `<div class='mt-2'>`;
+
+          prev_perk_group = '';
+          roll = 1;
+
+          for(var j=0; j<item_perks.length; j++) {
+            if( j == 0 ) {
+              perks += `<div class='mb-1'>Perk `+roll+`</div><div class='mb-2 border border-secondary rounded'>`;
+            }
+            else if( prev_perk_group != item_perks[j].perk_group ) {
+              roll++;
+              perks += `</div><div class='mt-1 mb-1'>Perk `+roll+`</div><div class='mb-2 border border-secondary rounded'>`;
+            }
+
+            perks += `<div class='d-flex align-items-center pt-1 pb-2 pl-2 pr-2 `+(prev_perk_group == item_perks[j].perk_group && j!=0 ? 'border-top border-secondary':'')+`'>
+                        <div>
+                          <img src='https://bungie.net`+item_perks[j].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 30px; height: 30px;'/>
+                        </div>
+                        <div>
+                          <div class='font-weight-bold'>`+item_perks[j].name.replace(/"/g, "'")+`</div>
+                          <div class='perk-description mt-1'>`+item_perks[j].description.replace(/"/g, "'").replace(/•/g, "<br>• ")+`</div>
+                        </div>
+                      </div>`;
+
+            if( j+1 == item_perks.length ) {
+              perks += `</div>`;
+            }
+
+            prev_perk_group = item_perks[j].perk_group;
+          }
+
+          perks += `</div>`;
+        }
+
+        tooltip = `
+        <div>
+          <h6 class='font-weight-bold mb-1'>`+data[i].name+`</h6>
+          <div class='d-flex align-items-start'>
+            <div>
+              <img src='https://bungie.net`+data[i].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+            </div>
+            <div>`+data[i].description.replace(/"/g, "'")+`</div>
+          </div>
+          `+cost+`
+          `+perks+`
+        </div>
+        `;
+      }
+
+      str += `
+      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+        <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
+      </div>
+      `;
+    }
+
+    str += `
+        </div>
+      </div>
+    </div>
+    `
+    return str;
+  }
+
+  function getRaidLairModifiers(data) {
+
+    var tooltip = `
+    <h6 class='font-weight-bold mb-1'>`+data.modifier.name+`</h6>
+    <div>`+data.modifier.description+`</div>
+    `;
+
+    var str = `
+    <div class="mb-3 border-warning border">
+      <div class="border-warning border-bottom p-2">Y1 Prestige Raid Lair Modifiers</div>
+      <div class="pl-2 pr-2 pt-2 pb-1">
+        <div class="mb-1 vendor-item">
+          <div><u>Loadout</u></div>
+          <div class="d-flex">
+            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/dc4bb9bcdd4ae8a83fb9007a51d7d711.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Primary: `+data.loadouts.primary+`
+          </div>
+          <div class="d-flex">
+            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/b6d3805ca8400272b7ee7935b0b75c79.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Energy: `+data.loadouts.energy+`
+          </div>
+          <div class="d-flex">
+            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/9fa60d5a99c9ff9cea0fb6dd690f26ec.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Power: `+data.loadouts.power+`
+          </div>
+          <div class="mt-2"><u>Modifier</u></div>
+          <div class="d-flex mt-1" data-toggle="tooltip" title="`+tooltip+`">
+            <img class="img-fluid" src="`+data.modifier.icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>
+            `+data.modifier.name+`
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+    return str;
+  }
+
+  function get_xur_location() {
+    $.get('/api/xur', function(data){
+      if( data.location ) {
+        $("a#xur-link").text(data.location);
+        $('.grid').masonry('layout');
+      }
+    });
+  }
+
+  function getEscalationProtocol() {
+
+    var escalationProtocol = {
+      'Kathok, Roar of Xol': {
+        name: 'IKELOS_SMG_v1.0.1',
+        icon: '/common/destiny2_content/icons/85ad82abdfc13537325b45a85d6f4462.jpg'
+      },
+      'Damkath, The Mask': {
+        name: 'IKELOS_SR_v1.0.1',
+        icon: '/common/destiny2_content/icons/52630df015ef0e839555982c478d78f3.jpg'
+      },
+      'Naksud, the Famine': {
+        name: 'All 3 Weapons',
+        icon: '/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg'
+      },
+      'Bok Litur, Hunger of Xol': {
+        name: 'All 3 Weapons',
+        icon: '/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg'
+      },
+      'Nur Abath, Crest of Xol': {
+        name: 'IKELOS_SG_v1.0.1',
+        icon: '/common/destiny2_content/icons/edfdd807c9d604e80b48ad8fe39c8f36.jpg'
+      },
+    };
+
+    var startACDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(escalationProtocol).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startACDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startACDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startACDate = nextWeek;
+        index++;
+      }
+    }
+
+    return [{
+      name: escalationProtocol[ Object.keys(escalationProtocol)[index] ].name,
+      icon: escalationProtocol[ Object.keys(escalationProtocol)[index] ].icon,
+      description: 'Boss: ' + Object.keys(escalationProtocol)[index]
+    }];
+  }
+
+  function getAscendantChallenge() {
+
+    var ascendantChallenges = {
+      'Gardens of Esila': "At the overlook's edge, the garden grows onward.",
+      'Spine of Keres': "Climb the bones and you'll find your ruin.",
+      'Harbinger’s Seclude': "Crush the first queen's crown beneath your bootheel.",
+      'Bay of Drowned Wishes': "Drown in your wishes, dear squanderer.",
+      'Chamber of Starlight': "Starlight, star bright, first untruth she'll craft tonight...",
+      'Aphelion’s Rest': "They call it a 'rest,' but it is more truly a haunt."
+    };
+
+    var startACDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(ascendantChallenges).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startACDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startACDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startACDate = nextWeek;
+        index++;
+      }
+    }
+
+    return [{
+      name: 'Ascendant: ' + Object.keys(ascendantChallenges)[index],
+      icon: '/common/destiny2_content/icons/2f9e7dd03c415eb158c16bb59cc24c84.jpg',
+      description: ascendantChallenges[ Object.keys(ascendantChallenges)[index] ]
+    }];
+  }
+
+  function getWeeklyDCMission() {
+
+    var weeklyDCMission = {
+      'Broken Courier': "Respond to a distress call in the Strand.",
+      'Oracle Engine': "The Taken threaten to take control of an irreplaceable Awoken communications device.",
+      'Dark Monastery ': "Provide recon for Petra's forces by investigating strange enemy activity in Rheasilvia.",
+    };
+
+    var startDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(weeklyDCMission).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    return [{
+      name: 'Mission: ' + Object.keys(weeklyDCMission)[index],
+      icon: '/common/destiny2_content/icons/a6ce21a766375f5bcfb6cc01b093a383.png',
+      description: weeklyDCMission[ Object.keys(weeklyDCMission)[index] ]
+    }];
+  }
+
+  function getOutbreakSinge() {
+
+    var outbreakSinge = [
+      'Void',
+      'Arc',
+      'Solar'
+    ];
+
+    var startDate = moment('2019-05-08 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(outbreakSinge).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    var description = 'The configuration type is <u>' + outbreakSinge[index].toUpperCase() + '</u> for Zero Hour (Heroic).';
+
+    return [{
+      name: 'Singe Config: ' + outbreakSinge[index].toUpperCase(),
+      icon: '/common/destiny2_content/icons/c013e41cdb32779bc2322337614ea06b.jpg',
+      description: description
+    }];
+  }
+
+  function getReckoning() {
+
+    var bosses = [
+      'Sword Knights',
+      'Likeness of Oryx'
+    ];
+
+    var startDate = moment('2019-05-29 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(bosses).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    if( index == 0 )
+      var description = 'The bosses for this week\'s reckoning activity are the <u>' + bosses[index] + '</u>.';
+    else
+      var description = 'The boss for this week\'s reckoning activity is the <u>' + bosses[index] + '</u>.';
+
+    var data = [{
+      name: 'Tier 2/3 Boss: ' + bosses[index],
+      icon: '/common/destiny2_content/icons/fc31e8ede7cc15908d6e2dfac25d78ff.png',
+      description: description
+    }];
+
+    if( index == 0 ) {
+      var items = ([
+        {
+          "name": "Lonesome",
+          "description": "Weapon Type: Kinetic Sidearm<br/><br/>Am I the only one who sees?",
+          "icon": "/common/destiny2_content/icons/abd91ac904ddb37308898c9a5fd38b02.jpg",
+        },
+        {
+          "name": "Night Watch",
+          "description": "Weapon Type: Kinetic Scout Rifle<br/><br/>Sleep with both eyes open.",
+          "icon": "/common/destiny2_content/icons/f32f6b8896ca5b2684c6e02d447f5182.jpg",
+        },
+        {
+          "name": "Sole Survivor",
+          "description": "Weapon Type: Arc Sniper Rifle<br/><br/>Names mean nothing to the dead.",
+          "icon": "/common/destiny2_content/icons/0ae824a841009f28327d905c0610b03c.jpg",
+        },
+        {
+          "name": "Last Man Standing",
+          "description": "Weapon Type: Solar Shotgun<br/><br/>Call me Ozymandias.",
+          "icon": "/common/destiny2_content/icons/d39006fe5498ec8720622da5a31dd066.jpg",
+        },
+        {
+          "name": "Just in Case (T3 Only)",
+          "description": "Weapon Type: Solar Sword<br/><br/>Even contingencies need contingencies.",
+          "icon": "/common/destiny2_content/icons/c32e9275a505a1e39bfc146dca3702b6.jpg",
+        },
+      ]);
+    }
+    else {
+      var items = ([
+        {
+          "name": "Spare Rations",
+          "description": "Weapon Type: Kinetic Hand Cannon<br/><br/>Whether times are lean or fat.",
+          "icon": "/common/destiny2_content/icons/7106d949c81a1b2b281964ae2184d6b2.jpg",
+        },
+        {
+          "name": "Bug-Out Bag",
+          "description": "Weapon Type: Solar SMG<br/><br/>Grab and go.",
+          "icon": "/common/destiny2_content/icons/870aa58f8314ca60ec3075f937735885.jpg",
+        },
+        {
+          "name": "Outlast",
+          "description": "Weapon Type: Solar Pulse Rifle<br/><br/>No such word as extinction.",
+          "icon": "/common/destiny2_content/icons/7967ce5273a19ca50fe3ec1fd1b1b375.jpg",
+        },
+        {
+          "name": "Gnawing Hunger",
+          "description": "Weapon Type: Void Auto Rifle<br/><br/>Don't let pride keep you from a good meal.",
+          "icon": "/common/destiny2_content/icons/48037e6416c3c9da07030a72931e0ca9.jpg",
+        },
+        {
+          "name": "Doomsday (T3 Only)",
+          "description": "Weapon Type: Arc Grenade Launcher<br/><br/>The age-old chant: The end of days draws nigh.",
+          "icon": "/common/destiny2_content/icons/f689eb2328e786599701352b9c01b64d.jpg",
+        },
+      ]);
+    }
+
+    data = data.concat(items);
+
+    return data;
+  }
+
+  function getCurseLevel() {
+
+    var curseLevels = [
+      'Low',
+      'Medium',
+      'High'
+    ];
+
+    var startDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(curseLevels).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    var description = 'The curse level is <u>' + curseLevels[index].toLowerCase() + '</u> in the Dreaming City.';
+
+    if( index == 2 )
+      description += ' Shattered Throne is up.';
+
+    return [{
+      name: 'Curse Level: ' + curseLevels[index],
+      icon: '/common/destiny2_content/icons/8f755eb3a9109ed7adfc4a8b27871e7a.png',
+      description: description
+    }];
+  }
+});
+$(document).ready(function(){
+
+  $('#news-item-container').hide();
+
+  $.get('/api/news/get', function(res){
+    if(res.length) {
+      var destiny_news = [];
+      var division_news = [];
+      var magic_news = [];
+
+      for(var i=0; i<res.length; i++) {
+        switch(res[i].category) {
+          case "destiny":
+            destiny_news.push(res[i]);
+            break;
+          case "division":
+            division_news.push(res[i]);
+            break;
+          case "magic":
+            magic_news.push(res[i]);
+            break;
+          default:
+        }
+      }
+
+      if( destiny_news.length > 0 ) {
+        $("#news-item-container").append('<div class="col-md-4"><div id="destiny-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Destiny 2</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');
+
+        for(var i=0; i<destiny_news.length; i++) {
+          $("#destiny-news-container .news-listing-container").append("<div class='mb-2'>"+(i+1)+". <a href='"+destiny_news[i].url+"' target='_blank'>"+destiny_news[i].title+"</a> | "+destiny_news[i].source+"</div>");
+        }
+      }
+
+      if( magic_news.length > 0 ) {
+        $("#news-item-container").append('<div class="col-md-4"><div id="magic-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Magic: The Gathering Arena</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');
+
+        for(var i=0; i<magic_news.length; i++) {
+          $("#magic-news-container .news-listing-container").append("<div class='mb-2'>"+(i+1)+". <a href='"+magic_news[i].url+"' target='_blank'>"+magic_news[i].title+"</a> | "+magic_news[i].source+"</div>");
+        }
+      }
+
+      if( division_news.length > 0 ) {
+        $("#news-item-container").append('<div class="col-md-4"><div id="division-news-container" class="mb-3 text-left border-warning border"><h2 class="text-center p-2 border-warning border-bottom">Tom Clancy\'s The Division 2</h2><div class="news-listing-container pl-3 pr-3 pt-1 pb-1"></div></div></div>');
+
+        for(var i=0; i<division_news.length; i++) {
+          $("#division-news-container .news-listing-container").append("<div class='mb-2'>"+(i+1)+". <a href='"+division_news[i].url+"' target='_blank'>"+division_news[i].title+"</a> | "+division_news[i].source+"</div>");
+        }
+      }
+
+      $('section#news > div.loader, section#news > div.loader-text').hide();
+      $('#news-item-container').fadeIn();
+    }
+    else {
+      $('section#news > div.loader, section#news > div.loader-text').hide();
+      $("#news-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve news :(</div>');
+      $('#news-item-container').fadeIn();
+    }
+  })
+  .fail(function(){
+    $('section#news > div.loader, section#news > div.loader-text').hide();
+    $("#news-item-container").append('<div class="col-md-12 text-center p-4 mb-2">Unable to retrieve news :(</div>');
+    $('#news-item-container').fadeIn();
+  });
+})
+$(document).ready(function(){
+
+  $('#guides-item-container').hide();
+
+  $.get('/guides/get/latest', function(res){
+    if(res.length) {
+
+      for(var i=0; i<res.length; i++) {
+
+        var guideItemHtml = '<a href="'+res[i].url+'" title="'+res[i].title+'">' +
+                              '<div class="guides-posts-item mb-3">' +
+                                '<div class="text-center post-category" style="background: '+res[i].color_code+';">'+res[i].category+'</div>' +
+                                '<div class="guides-posts-tn d-flex flex-column justify-content-center" style="background: url('+(res[i].image?res[i].image:'https://ccboys.xyz/images/og-banner-ccb.jpg')+') no-repeat center 20%/cover;"></div>' +
+                                '<div class="guides-posts-title bg-white text-dark" style="border-top: 5px solid '+res[i].color_code+'!important;">' +
+                                  '<div class="p-3">'+
+                                    '<small>'+res[i].title+'</small>'+
+                                  '</div>' +
+                                '</div>' +
+                              '</div>' +
+                            '</a>';
+
+        $('#guides-item-container').append('<div class="col-md-4">'+guideItemHtml+'</div>');
+      }
+
+      $('section#guides > div.loader, section#guides > div.loader-text').hide();
+      $('#guides-item-container').fadeIn();
+    }
+    else {
+      $('section#guides > div.loader, section#guides > div.loader-text').hide();
+      $("#guides-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve guides :(</div>');
+      $('#guides-item-container').fadeIn();
+    }
+  })
+  .fail(function(){
+    $('section#guides > div.loader, section#guides > div.loader-text').hide();
+    $("#guides-item-container").append('<div class="col-md-12 text-center p-2">Unable to retrieve guides :(</div>');
+    $('#guides-item-container').fadeIn();
+  });
+})
