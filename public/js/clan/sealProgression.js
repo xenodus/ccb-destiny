@@ -200,11 +200,11 @@ var sealHashes = {
 $(document).ready(function(){
   if( "member_id" in ccbNS ) {
     $.get('/bungie/member/'+ccbNS['member_id']+'/triumphs', function(memberData){
-      console.log(memberData);
+      //console.log(memberData);
 
       $.get('https://destiny.plumbing/en/raw/DestinyRecordDefinition.json', function(recordDefinition){
         //console.log(recordDefinition);
-        console.log(sealHashes);
+        //console.log(sealHashes);
 
         $('#sub-menu > ul').append('<li class="nav-item pt-4"><a class="nav-link disabled" href="#" aria-disabled="true">Seals</a></li>');
 
@@ -273,7 +273,7 @@ $(document).ready(function(){
             }
           }
 
-          console.log(multipleObjectivesProgress);
+          //console.log(multipleObjectivesProgress);
 
           var total = completed.length + inProgress.length;
           var completedPercent = Math.floor(completed.length / total * 100);
@@ -284,8 +284,8 @@ $(document).ready(function(){
           if( completedPercent != 100 ) {
             // Completed / In-progress containers
             $('#' + seal.toLowerCase()).append('<div class="row mt-3"></div>');
-            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-inProgress" class="col-md-6 text-left"><h6 class="text-yellow">In-Progress ('+inProgress.length+'/'+total+')</h6></div>');
-            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-completed" class="col-md-6 text-left"><h6 class="text-yellow">Completed ('+completed.length+'/'+total+')</h6></div>');
+            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-inProgress" class="col-md-6 text-left mb-2"><h6 class="text-yellow">In-Progress ('+inProgress.length+'/'+total+')</h6></div>');
+            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-completed" class="col-md-6 text-left mb-2"><h6 class="text-yellow">Completed ('+completed.length+'/'+total+')</h6></div>');
 
             // Completed Triumphs
             for(var key in completed) {
