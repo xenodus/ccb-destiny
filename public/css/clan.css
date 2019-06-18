@@ -22,6 +22,10 @@ h2.stats-container-header {
   text-align: left;
 }
 
+#sub-menu .nav-link {
+  padding: .5rem 0rem;
+}
+
 #sub-menu .nav-link:hover, .nav-link:focus {
   text-decoration: underline;
 }
@@ -42,4 +46,12 @@ i.fa-times {
   font-size: inherit;
   letter-spacing: inherit;
   line-height: inherit;
+}
+
+.tabulator-table a,
+.tabulator-table a:active,
+.tabulator-table a:focus,
+.tabulator-table a:hover {
+  color: inherit;
+  text-decoration: underline;
 }

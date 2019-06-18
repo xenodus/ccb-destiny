@@ -46,9 +46,9 @@ mix.scripts([
 
 // HOME PAGE
 mix.scripts([
-    'public/js/index.js',
-    'public/js/index_news.js',
-    'public/js/index_guides.js',
+    'public/js/home/index.js',
+    'public/js/home/index_news.js',
+    'public/js/home/index_guides.js',
 ], 'public/js/compiled/index.js');
 
 // RAID LOCKOUTS PAGE
@@ -61,32 +61,37 @@ mix.scripts([
     'public/js/clan/seals.js',
 ], 'public/js/compiled/seals.js');
 
+// SEAL PROGRESSION PAGE
+mix.scripts([
+    'public/js/clan/sealProgression.js',
+], 'public/js/compiled/sealProgression.js');
+
 // POST + LISTING PAGE
 mix.scripts([
     'public/js/mtg/mtgtooltip.js',
-    'public/js/mtg_top_decks.js',
-    'public/js/post_listing.js',
+    'public/js/guides/mtg_top_decks.js',
+    'public/js/guides/post_listing.js',
 ], 'public/js/compiled/post.js');
 
 // STATS PAGES
 mix.scripts([
-    'public/js/raid_stats.js',
+    'public/js/stats/raid_stats.js',
 ], 'public/js/compiled/raid_stats.js');
 
 mix.scripts([
-    'public/js/weapon_stats.js',
+    'public/js/stats/weapon_stats.js',
 ], 'public/js/compiled/weapon_stats.js');
 
 mix.scripts([
-    'public/js/pve_stats.js',
+    'public/js/stats/pve_stats.js',
 ], 'public/js/compiled/pve_stats.js');
 
 mix.scripts([
-    'public/js/pvp_stats.js',
+    'public/js/stats/pvp_stats.js',
 ], 'public/js/compiled/pvp_stats.js');
 
 mix.scripts([
-    'public/js/gambit_stats.js',
+    'public/js/stats/gambit_stats.js',
 ], 'public/js/compiled/gambit_stats.js');
 
 mix.version();

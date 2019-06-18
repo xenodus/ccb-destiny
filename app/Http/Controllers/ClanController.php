@@ -37,10 +37,26 @@ class ClanController extends Controller
     'Chronicle' => 1754983323,
     'Unbroken' => 3369119720,
     'Dredgen' => 3798931976,
-    'Wayfarer' => 1693645129,
+    'Wayfarer' => 2757681677,
     'Blacksmith' => 2053985130,
     'Shadow' => 1883929036
   ];
+
+  public function member_seal_progression($member_id) {
+
+    $member = App\Classes\Clan_Member::find($member_id);
+
+    if( !$member ) {
+      return redirect()->route('clan_seal_progression');
+    }
+
+    $data['member'] = $member;
+    $data['member_id'] = $member_id;
+    $data['site_title'] = 'Seal Progress for ' . $member->display_name;
+    $data['active_page'] = 'seals_breakdown';
+
+    return view('clan.sealsBreakdown', $data);
+  }
 
   public function clan_seal_progression() {
     $data['site_title'] = 'Seal Completions for the ' . env('SITE_NAME') .' Clan in Destiny 2';

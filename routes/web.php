@@ -70,6 +70,7 @@ Route::get('/bungie/lockouts/update', 'ClanController@update_clan_raid_lockout')
 
 // Clan Seal Triumph Completions
 Route::get('/clan/seals', 'ClanController@clan_seal_progression')->name('clan_seal_progression');
+Route::get('/clan/seals/member/{member_id}', 'ClanController@member_seal_progression')->name('member_seal_progression');
 Route::get('/clan/seals/get', 'ClanController@get_clan_seal_progression')->name('get_clan_seal_progression');
 Route::get('/bungie/seals/update', 'ClanController@update_clan_seal_progression')->name('update_clan_seal_progression');
 

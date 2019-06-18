@@ -8,10 +8,10 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link {{ (isset($active_page) && $active_page == 'seals') ? 'active' : ''  }}" href="/clan/seals">
-        @if((isset($active_page) && $active_page == 'seals'))<h1>@endif
+      <a class="nav-link {{ ( isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown']) ) ? 'active' : ''  }}" href="/clan/seals">
+        @if((isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])))<h1>@endif
         Seal Completions
-        @if((isset($active_page) && $active_page == 'seals'))</h1>@endif
+        @if((isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])))</h1>@endif
       </a>
     </li>
   </ul>
