@@ -25,6 +25,7 @@ $(document).ready(function(){
       makeTable(y2RaidNameMap, data['raid_lockouts'], memberData);
       $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link disabled" href="#" aria-disabled="true">Year 1 Raids</a></li>');
       makeTable(y1RaidNameMap, data['raid_lockouts'], memberData);
+      $('.stats-container').prepend('<div class="col-md-12 text-left"><small>Note: If your guardian is missing, make sure "Show my Destiny game Activity Feed on Bungie.net" is checked under your Bungie.net privacy settings.</small></div>');
     });
   });
 });

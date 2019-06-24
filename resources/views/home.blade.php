@@ -9,7 +9,7 @@
     </div>
     <div id="about-us-description" class="text-justify">
       <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p>Most of our activities and communications are held inside our <a href="{{ env('DISCORD_LINK') }}" target="_blank">Discord</a> server. Drop by to say hi!</p>
+      <p>We're on PC / Battle.net. Most of our activities and communications are held inside our <a href="{{ env('DISCORD_LINK') }}" target="_blank">Discord</a> server. Drop by to say hi!</p>
     </div>
 
     <div class="row mt-5">

@@ -81,7 +81,10 @@ class ClanController extends Controller
 
     foreach($clan_members as $member) {
 
-      $response = $client->get( str_replace('https://', 'http://', route('bungie_get_member_triumphs', [$member->id])) );
+      $response = $client->get(
+        str_replace('https://', 'http://', route('bungie_get_member_triumphs', [$member->id])),
+        ['http_errors' => false]
+      );
 
       if( $response->getStatusCode() == 200 ) {
         $payload = json_decode($response->getBody()->getContents());
@@ -94,29 +97,29 @@ class ClanController extends Controller
         }
 
         $member->seal_completion = $seal_completion;
+        $member->seal_status = true;
       }
       else {
         $error = true;
         $failures[] = $member;
+        $member->seal_status = false;
       }
     }
 
-    if( $error == false ) {
 
-      DB::connection('ccb_mysql')->table('seal_completions')->truncate();
+    DB::connection('ccb_mysql')->table('seal_completions')->truncate();
 
-      foreach($clan_members as $member) {
+    foreach($clan_members as $member) {
+      if( $member->seal_status == true ) {
         $seal_completion = new App\Classes\Seal_Completions();
         $seal_completion->id = $member->id;
         $seal_completion->data = json_encode($member->seal_completion);
         $seal_completion->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
         $seal_completion->save();
       }
-
-      return response()->json(['status' => 1]); // success
     }
 
-    return response()->json(['status' => 0]); // failure
+    return response()->json(['status' => 1]); // success
   }
 
   public function clan_raid_lockout() {
@@ -157,7 +160,6 @@ class ClanController extends Controller
 
   public function update_clan_raid_lockout() {
 
-    $error = false;
     $failures = [];
     $results = [];
 
@@ -185,6 +187,7 @@ class ClanController extends Controller
 
     foreach($clan_members as $member) {
 
+      $error = false;
       $member_raid_lockout = $this->get_default_lockout();
 
       if( $member->characters->count() ) {
@@ -194,7 +197,7 @@ class ClanController extends Controller
           $client = new Client(); //GuzzleHttp\Client
           $characters_activities_response = $client->get(
             $this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
-            ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
+            ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
           );
 
           if( $characters_activities_response->getStatusCode() == 200 ) {
@@ -231,15 +234,17 @@ class ClanController extends Controller
         }
       }
 
-      $raid_lockout = new App\Classes\Raid_Lockouts();
-      $raid_lockout->id = $member->id;
-      $raid_lockout->data = json_encode($member_raid_lockout);
-      $raid_lockout->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+      if( $error == false ) {
+        $raid_lockout = new App\Classes\Raid_Lockouts();
+        $raid_lockout->id = $member->id;
+        $raid_lockout->data = json_encode($member_raid_lockout);
+        $raid_lockout->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
 
-      $results[] = $raid_lockout;
+        $results[] = $raid_lockout;
+      }
     }
 
-    if( count($results) && $error == false ) {
+    if( count($results) ) {
 
       DB::connection('ccb_mysql')->table('raid_lockouts')->truncate();
 

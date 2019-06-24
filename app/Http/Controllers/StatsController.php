@@ -56,7 +56,7 @@ class StatsController extends Controller
   {
     $client = new Client(); //GuzzleHttp\Client
 
-    $member_gambit_stats_response = $client->get('https://stats.bungie.net/Platform/Destiny2/4/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+    $member_gambit_stats_response = $client->get('https://stats.bungie.net/Platform/Destiny2/4/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
     ]);
 
     // Character/2305843009300583068/Stats/AggregateActivityStats/
@@ -169,7 +169,7 @@ class StatsController extends Controller
         foreach($members as $member) {
 
           // Gambit Stats
-          $member_gambit_stats_response = $client->get($this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+          $member_gambit_stats_response = $client->get($this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
           ]);
 
           if( $member_gambit_stats_response->getStatusCode() == 200 ) {
@@ -202,7 +202,7 @@ class StatsController extends Controller
           }
 
           // Profile
-          $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+          $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
           ]);
 
           if( $member_profile_response->getStatusCode() == 200 ) {
@@ -262,7 +262,7 @@ class StatsController extends Controller
 
         foreach($members as $member) {
 
-          $member_pvp_stats_response = $client->get($this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->destinyUserInfo->membershipId.'/Stats/', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+          $member_pvp_stats_response = $client->get($this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->destinyUserInfo->membershipId.'/Stats/', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
           ]);
 
           if( $member_pvp_stats_response->getStatusCode() == 200 ) {
@@ -274,7 +274,7 @@ class StatsController extends Controller
             $member->pvpStats['kd'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->killsDeathsRatio->basic->displayValue;
           }
 
-          $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')]
+          $member_profile_response = $client->get( $this->bungie_api_root_path.'/Destiny2/4/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
           ]);
 
           if( $member_profile_response->getStatusCode() == 200 ) {
@@ -498,8 +498,11 @@ class StatsController extends Controller
   }
 
   public function update_member_characters() {
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $member_response = $client->get( route('bungie_get_members') );
+    $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
+    $member_response = $client->get(
+      str_replace('https://', 'http://', route('bungie_get_members'))
+    );
+
     $char_ids = [];
 
     if( $member_response->getStatusCode() == 200 ) {
@@ -508,7 +511,9 @@ class StatsController extends Controller
 
       foreach($members as $member) {
 
-        $member_characters_response = $client->get( route('bungie_get_member_characters', [$member->destinyUserInfo->membershipId]) );
+        $member_characters_response = $client->get(
+          str_replace('https://', 'http://', route('bungie_get_member_characters', [$member->destinyUserInfo->membershipId]))
+        );
 
         if( $member_characters_response->getStatusCode() == 200 ) {
           $member_characters = json_decode($member_characters_response->getBody()->getContents());
