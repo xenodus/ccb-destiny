@@ -29,19 +29,6 @@ class StatsController extends Controller
     'cos'   => [3333172150]
   ];
 
-  // characters
-  private $class_hash = [
-    671679327 => 'hunter',
-    3655393761 => 'titan',
-    2271682572 => 'warlock'
-  ];
-
-  private $race_hash = [
-    3887404748 => 'human',
-    2803282938 => 'awoken',
-    898834093 => 'exo'
-  ];
-
   // pvp
   private $glory_hash = 2000925172; // competitive
   private $valor_hash = 3882308435; // quickplay
@@ -495,55 +482,6 @@ class StatsController extends Controller
     }
 
     return response()->json([]);
-  }
-
-  public function update_member_characters() {
-    $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
-    $member_response = $client->get(
-      str_replace('https://', 'http://', route('bungie_get_members'))
-    );
-
-    $char_ids = [];
-
-    if( $member_response->getStatusCode() == 200 ) {
-      $members = json_decode($member_response->getBody()->getContents());
-      $members = collect($members);
-
-      foreach($members as $member) {
-
-        $member_characters_response = $client->get(
-          str_replace('https://', 'http://', route('bungie_get_member_characters', [$member->destinyUserInfo->membershipId]))
-        );
-
-        if( $member_characters_response->getStatusCode() == 200 ) {
-          $member_characters = json_decode($member_characters_response->getBody()->getContents());
-          $member_characters = collect($member_characters);
-
-          foreach($member_characters['characters']->data as $character_id => $character) {
-            //dd($character);
-
-            $char_ids[] = $character_id;
-
-            $clan_member_character = \App\Classes\Clan_Member_Character::updateOrCreate(
-              ['id' => $character_id],
-              [
-                'user_id' => $member->destinyUserInfo->membershipId,
-                'light' => $character->light,
-                'class' => $this->class_hash[$character->classHash],
-                'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
-              ]
-            );
-          }
-        }
-      }
-
-      // delete character data that does not belong to members anymore
-      DB::connection('ccb_mysql')->table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
-
-      return response()->json(['status' => 1]);
-    }
-
-    return response()->json(['status' => 0]);
   }
 
   // Component definition: https://bungie-net.github.io/multi/schema_Destiny-DestinyComponentType.html#schema_Destiny-DestinyComponentType

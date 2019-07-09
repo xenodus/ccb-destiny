@@ -24,8 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
+
+        $schedule->command('update:lockouts')->everyThirtyMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:characters')->everyThirtyMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:seals')->everyFiveMinutes()->appendOutputTo($filePath);
     }
 
     /**

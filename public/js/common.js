@@ -8,27 +8,31 @@ gtag('config', 'UA-35918300-6');
 window.ccbNS = {};
 
 $(document).ready(function(){
-  checkMembersOnline();
 
-  setInterval(checkMembersOnline, 30000);
+  if( !('hideActivities' in ccbNS) ) {
 
-  $( "section#members-online" ).on("click", function() {
-    if( $("small#members-online-toggle-icon").data("status") == "up" ) {
-      $("small#members-online-toggle-icon").html('<i class="fas fa-times fa-lg animated rotateIn delay-0.5s"></i>');
-      $("small#members-online-toggle-icon").data("status", "down");
+    checkMembersOnline();
 
-      $("body").data("scroll", 0);
-      $("body").addClass("no-scroll");
-    }
-    else {
-      $("small#members-online-toggle-icon").html('<i class="fas fa-chevron-down fa-lg animated rotateIn delay-0.5s"></i>');
-      $("small#members-online-toggle-icon").data("status", "up");
+    setInterval(checkMembersOnline, 30000);
 
-      $("body").data("scroll", 1);
-      $("body").removeClass("no-scroll");
-    }
-    $("div#members-online-table").slideToggle();
-  });
+    $( "section#members-online" ).on("click", function() {
+      if( $("small#members-online-toggle-icon").data("status") == "up" ) {
+        $("small#members-online-toggle-icon").html('<i class="fas fa-times fa-lg animated rotateIn delay-0.5s"></i>');
+        $("small#members-online-toggle-icon").data("status", "down");
+
+        $("body").data("scroll", 0);
+        $("body").addClass("no-scroll");
+      }
+      else {
+        $("small#members-online-toggle-icon").html('<i class="fas fa-chevron-down fa-lg animated rotateIn delay-0.5s"></i>');
+        $("small#members-online-toggle-icon").data("status", "up");
+
+        $("body").data("scroll", 1);
+        $("body").removeClass("no-scroll");
+      }
+      $("div#members-online-table").slideToggle();
+    });
+  }
 });
 
 function checkMembersOnline() {
@@ -47,6 +51,7 @@ function checkMembersOnline() {
       $("span#member-count").text( data.length + " member" + (data.length>1?"s":"") );
 
       var tableHtml = '<table><thead class="text-success"><tr><th class="pl-1 pr-1">Name</th><th class="pl-1 pr-1">Activity</th><th class="pl-1 pr-1">Last Seen</th></tr></thead>';
+      var member_activities = [];
 
       for(var i=0; i<data.length; i++) {
         var member_activity = {
@@ -56,9 +61,17 @@ function checkMembersOnline() {
           activityDescription: data[i].latestActivity.originalDisplayProperties.description ? data[i].latestActivity.originalDisplayProperties.description : '',
           activityIcon: data[i].latestActivity.originalDisplayProperties.icon ? data[i].latestActivity.originalDisplayProperties.icon : '',
           activityStarted: data[i].latestActivityTime ? data[i].latestActivityTime : data[i].latestActivityTime
-        }
+        };
 
-        tableHtml += '<tr><td class="pl-1 pr-1">'+data[i].displayName+'</td><td class="pl-1 pr-1">'+member_activity.latestActivity+'</td><td class="pl-1 pr-1">'+member_activity.lastSeen+'</td></tr>';
+        member_activities.push(member_activity);
+
+        //tableHtml += '<tr><td class="pl-1 pr-1">'+data[i].displayName+'</td><td class="pl-1 pr-1">'+member_activity.latestActivity+'</td><td class="pl-1 pr-1">'+member_activity.lastSeen+'</td></tr>';
+      }
+
+      member_activities = _.sortBy(member_activities, ['latestActivity', 'name']);
+
+      for(var i=0; i<member_activities.length; i++) {
+        tableHtml += '<tr><td class="pl-1 pr-1">'+member_activities[i].name+'</td><td class="pl-1 pr-1">'+member_activities[i].latestActivity+'</td><td class="pl-1 pr-1">'+member_activities[i].lastSeen+'</td></tr>';
       }
 
       tableHtml += '</table>';

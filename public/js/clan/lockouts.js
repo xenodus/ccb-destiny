@@ -17,16 +17,22 @@ $(document).ready(function(){
 
   $.get('/bungie/members/get', function(memberData){
 
-    $('.loader-text').text('Fetching Raid Lockouts...');
+    if( memberData.length > 0 ) {
+      $('.loader-text').text('Fetching Raid Lockouts...');
 
-    $.get('/clan/lockouts/get', function(data){
-      $('#weekly-lockout-dates').html(data['start_of_week'] + " to " + data['end_of_week']);
-      $('#sub-menu > ul').append('<li class="nav-item pt-4"><a class="nav-link disabled" href="#" aria-disabled="true">Year 2 Raids</a></li>');
-      makeTable(y2RaidNameMap, data['raid_lockouts'], memberData);
-      $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link disabled" href="#" aria-disabled="true">Year 1 Raids</a></li>');
-      makeTable(y1RaidNameMap, data['raid_lockouts'], memberData);
-      $('.stats-container').prepend('<div class="col-md-12 text-left"><small>Note: If your guardian is missing, make sure "Show my Destiny game Activity Feed on Bungie.net" is checked under your Bungie.net privacy settings.</small></div>');
-    });
+      $.get('/clan/lockouts/get', function(data){
+        $('#weekly-lockout-dates').html(data['start_of_week'] + " to " + data['end_of_week']);
+        $('#sub-menu > ul').append('<li class="nav-item pt-4"><a class="nav-link disabled" href="#" aria-disabled="true">Year 2 Raids</a></li>');
+        makeTable(y2RaidNameMap, data['raid_lockouts'], memberData);
+        $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link disabled" href="#" aria-disabled="true">Year 1 Raids</a></li>');
+        makeTable(y1RaidNameMap, data['raid_lockouts'], memberData);
+        $('.stats-container').prepend('<div class="col-md-12 text-left"><small>Note: If your guardian is missing, make sure "Show my Destiny game Activity Feed on Bungie.net" is checked under your Bungie.net privacy settings.</small></div>');
+      });
+    }
+    else {
+      $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+    }
+
   });
 });
 

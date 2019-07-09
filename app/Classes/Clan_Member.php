@@ -18,4 +18,9 @@ class Clan_Member extends Model
   {
       return $this->hasMany('App\Classes\Clan_Member_Character', 'user_id');
   }
+
+  public function pvp_stats()
+  {
+      return $this->hasOne('App\Classes\Pvp_Stats', 'user_id');
+  }
 }

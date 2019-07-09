@@ -5,7 +5,16 @@ mix.copy('node_modules/rpg-awesome/fonts/*', 'public/css/fonts/');
 // FONT AWESOME
 mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/*', 'public/css/webfonts/');
 
+
+/*********************************
+        CSS
+**********************************/
+
 // COMMON CSS
+mix.postCss('public/css/style.css', 'public/css/autoprefix/style.css', [
+    require('autoprefixer')()
+]);
+
 mix.styles([
     'public/css/normalize.css',
     'node_modules/bootstrap/dist/css/bootstrap.css',
@@ -15,23 +24,28 @@ mix.styles([
     'node_modules/lightbox2/src/css/lightbox.css',
     'node_modules/tabulator-tables/dist/css/tabulator.css',
     'node_modules/tabulator-tables/dist/css/tabulator_site.css',
-    'public/css/style.css',
+    'public/css/autoprefix/style.css',
 ], 'public/css/compiled/common.css');
 
 // GUIDES CSS
-mix.styles([
-    'public/css/post.css',
-], 'public/css/compiled/post.css');
+mix.postCss('public/css/post.css', 'public/css/compiled/post.css', [
+    require('autoprefixer')()
+]);
 
 // STORE CSS
-mix.styles([
-    'public/css/store.css',
-], 'public/css/compiled/store.css');
+mix.postCss('public/css/store.css', 'public/css/compiled/store.css', [
+    require('autoprefixer')()
+]);
 
-// RAID LOCKOUTS CSS
-mix.styles([
-    'public/css/clan.css',
-], 'public/css/compiled/clan.css');
+// CLAN PAGE CSS
+mix.postCss('public/css/clan.css', 'public/css/compiled/clan.css', [
+    require('autoprefixer')()
+]);
+
+
+/*********************************
+        JAVASCRIPT
+**********************************/
 
 // COMMON JS
 mix.scripts([
@@ -51,6 +65,11 @@ mix.scripts([
     'public/js/home/index_guides.js',
 ], 'public/js/compiled/index.js');
 
+// GLORY CHEESE PAGE
+mix.scripts([
+    'public/js/glory_cheese.js',
+], 'public/js/compiled/glory_cheese.js');
+
 // RAID LOCKOUTS PAGE
 mix.scripts([
     'public/js/clan/lockouts.js',
@@ -60,6 +79,11 @@ mix.scripts([
 mix.scripts([
     'public/js/clan/seals.js',
 ], 'public/js/compiled/seals.js');
+
+// ROSTER PAGE
+mix.scripts([
+    'public/js/clan/roster.js',
+], 'public/js/compiled/roster.js');
 
 // SEAL PROGRESSION PAGE
 mix.scripts([

@@ -73,82 +73,89 @@ $(document).ready(function(){
   function print_gambit_stats() {
     $.get('/bungie/members/get', function(memberData){
 
-      $('.loader-text').text('Fetching Gambit Stats...');
+      if( memberData.length > 0 ) {
 
-      $.get('/bungie/gambit/get', function(memberGambitData){
+        $('.loader-text').text('Fetching Gambit Stats...');
 
-        var tableData = [];
+        $.get('/bungie/gambit/get', function(memberGambitData){
 
-        for(var i=0; i<memberData.length; i++) {
+          var tableData = [];
 
-          $('.loader-text').text('Processing ' + (i+1) + ' of ' + memberData.length + '...');
+          for(var i=0; i<memberData.length; i++) {
 
-          gambitData = memberGambitData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
+            $('.loader-text').text('Processing ' + (i+1) + ' of ' + memberData.length + '...');
 
-          infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
+            gambitData = memberGambitData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-          tableData.push({
-            name: memberData[i].destinyUserInfo.displayName,
-            infamy: gambitData.infamy,
-            infamy_step: infamy_rank,
-            infamy_resets: gambitData.infamy_resets,
-            kills: gambitData.kills,
-            deaths: gambitData.deaths,
-            kd: gambitData.killsDeathsRatio,
-            activitiesEntered: gambitData.activitiesEntered,
-            activitiesWon: gambitData.activitiesEntered > 0 ? ((gambitData.activitiesWon / gambitData.activitiesEntered) * 100) : 0,
-            invasionKills: gambitData.invasionKills,
-            invaderKills: gambitData.invaderKills,
-            invaderDeaths: gambitData.invaderDeaths,
-            primevalHealing: gambitData.primevalHealing,
-            primevalDamage: gambitData.primevalDamage,
-            motesDeposited: gambitData.motesDeposited,
-            motesLost: gambitData.motesLost,
-            motesDenied: gambitData.motesDenied,
+            infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
+
+            tableData.push({
+              name: memberData[i].destinyUserInfo.displayName,
+              infamy: gambitData.infamy,
+              infamy_step: infamy_rank,
+              infamy_resets: gambitData.infamy_resets,
+              kills: gambitData.kills,
+              deaths: gambitData.deaths,
+              kd: gambitData.killsDeathsRatio,
+              activitiesEntered: gambitData.activitiesEntered,
+              activitiesWon: gambitData.activitiesEntered > 0 ? ((gambitData.activitiesWon / gambitData.activitiesEntered) * 100) : 0,
+              invasionKills: gambitData.invasionKills,
+              invaderKills: gambitData.invaderKills,
+              invaderDeaths: gambitData.invaderDeaths,
+              primevalHealing: gambitData.primevalHealing,
+              primevalDamage: gambitData.primevalDamage,
+              motesDeposited: gambitData.motesDeposited,
+              motesLost: gambitData.motesLost,
+              motesDenied: gambitData.motesDenied,
+            });
+          }
+
+          $('.loader-text').text('Generating Table...');
+
+          $('.stats-container').append('<div id="gambit-stats-table"></div>');
+
+          $('.loader').hide();
+          $('.loader-text').hide();
+
+          var format = {precision: 0};
+
+          var table = new Tabulator("#gambit-stats-table", {
+            data:tableData, //assign data to table
+            layout:"fitColumns", //fit columns to width of table (optional)
+            columns:[ //Define Table Columns
+              {title:"Name", field:"name", frozen:true},
+              {title:"Infamy", field:"infamy", formatter:"money", formatterParams: format},
+              {title:"Infamy Rank", field:"infamy_step"},
+              {title:"Resets", field:"infamy_resets", formatter:"money", formatterParams: format},
+              {title:"Kills", field:"kills", formatter:"money", formatterParams: format},
+              {title:"Deaths", field:"deaths", formatter:"money", formatterParams: format},
+              {title:"KD", field:"kd", formatter:"money", formatterParams: {precision: 2}},
+              {title:"Played", field:"activitiesEntered", formatter:"money", formatterParams: format},
+              {title:"Win %", field:"activitiesWon", formatter:"money", formatterParams: format},
+              {title:"Invasion Kills", field:"invasionKills", formatter:"money", formatterParams: format},
+              {title:"Invaders Killed", field:"invaderKills", formatter:"money", formatterParams: format},
+              {title:"Deaths by Invader", field:"invaderDeaths", formatter:"money", formatterParams: format},
+              {title:"Primeval Healing (%)", field:"primevalHealing", formatter:"money", formatterParams: format},
+              {title:"Primeval Damage", field:"primevalDamage", formatter:"money", formatterParams: format},
+              {title:"Motes Banked", field:"motesDeposited", formatter:"money", formatterParams: format},
+              {title:"Motes Lost", field:"motesLost", formatter:"money", formatterParams: format},
+              {title:"Motes Denied", field:"motesDenied", formatter:"money", formatterParams: format},
+            ],
+            initialSort: [
+              {column:"name", dir:"asc"}
+            ],
+            layout:"fitDataFill",
+            //height:"350px",
+            resizableColumns:false,
           });
-        }
 
-        $('.loader-text').text('Generating Table...');
-
-        $('.stats-container').append('<div id="gambit-stats-table"></div>');
-
-        $('.loader').hide();
-        $('.loader-text').hide();
-
-        var format = {precision: 0};
-
-        var table = new Tabulator("#gambit-stats-table", {
-          data:tableData, //assign data to table
-          layout:"fitColumns", //fit columns to width of table (optional)
-          columns:[ //Define Table Columns
-            {title:"Name", field:"name", frozen:true},
-            {title:"Infamy", field:"infamy", formatter:"money", formatterParams: format},
-            {title:"Infamy Rank", field:"infamy_step"},
-            {title:"Resets", field:"infamy_resets", formatter:"money", formatterParams: format},
-            {title:"Kills", field:"kills", formatter:"money", formatterParams: format},
-            {title:"Deaths", field:"deaths", formatter:"money", formatterParams: format},
-            {title:"KD", field:"kd", formatter:"money", formatterParams: {precision: 2}},
-            {title:"Played", field:"activitiesEntered", formatter:"money", formatterParams: format},
-            {title:"Win %", field:"activitiesWon", formatter:"money", formatterParams: format},
-            {title:"Invasion Kills", field:"invasionKills", formatter:"money", formatterParams: format},
-            {title:"Invaders Killed", field:"invaderKills", formatter:"money", formatterParams: format},
-            {title:"Deaths by Invader", field:"invaderDeaths", formatter:"money", formatterParams: format},
-            {title:"Primeval Healing (%)", field:"primevalHealing", formatter:"money", formatterParams: format},
-            {title:"Primeval Damage", field:"primevalDamage", formatter:"money", formatterParams: format},
-            {title:"Motes Banked", field:"motesDeposited", formatter:"money", formatterParams: format},
-            {title:"Motes Lost", field:"motesLost", formatter:"money", formatterParams: format},
-            {title:"Motes Denied", field:"motesDenied", formatter:"money", formatterParams: format},
-          ],
-          initialSort: [
-            {column:"name", dir:"asc"}
-          ],
-          layout:"fitDataFill",
-          //height:"350px",
-          resizableColumns:false,
+          $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+gambitData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
         });
+      }
+      else {
+        $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+      }
 
-        $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+gambitData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
-      });
     });
   }
 });

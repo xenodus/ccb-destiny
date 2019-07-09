@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-35918300-6"></script>
     <meta name="google-site-verification" content="D9-BceHdaxycglc0RlAFxr_nlEh5GGiNgdK8pT7Y1PY" />
@@ -53,6 +54,7 @@
     @yield('header')
   </head>
   <body class="bg-dark text-white" data-scroll="1">
+    @if(!isset($hide_header))
     <header class="border-bottom border-dark">
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -68,7 +70,7 @@
                   <div>Home</div>
                 </a>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'lockouts', 'seals', 'seals_breakdown']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'lockouts', 'seals', 'seals_breakdown']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/clan/lockouts">
                   <i class="ra ra-double-team"></i>
                   <div>Clan</div>
@@ -103,6 +105,7 @@
         </nav>
       </div>
     </header>
+    @endif
 
     <main class="d-flex flex-column">
     @yield('body')
@@ -121,9 +124,11 @@
         <div>
           <small class="text-white">&copy; 2019 ccboys.xyz</small>
         </div>
+        @if(!isset($hide_footer))
         <div>
           <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/4/4611686018474971535" target="_blank">xenodus</a></small>
         </div>
+        @endif
       </div>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

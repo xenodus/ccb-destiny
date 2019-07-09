@@ -29,3 +29,6 @@ Route::get('/mtg/top_decks', 'ApiController@get_mtg_top_decks')->name('top_decks
 
 Route::get('/news/get/{category?}', 'ApiController@get_news')->name('get_news');
 Route::get('/news/update', 'ApiController@update_news')->name('update_news');
+
+Route::post('/pvp/closest_glory', 'ApiController@closest_glory')->name('closest_glory');
+Route::post('/pvp/update_glory_from_db', 'ApiController@update_glory_from_db')->name('update_glory_from_db');

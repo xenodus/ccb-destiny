@@ -8,6 +8,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Goutte;
 use Carbon\Carbon;
+use Cookie;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -16,6 +18,81 @@ class ApiController extends Controller
         'division' => 'Ubisoft Division 2',
         'magic' => 'mtg arena magic'
     ];
+
+    const HIDE_ACTIVITY = false;
+
+    function update_glory_from_db(Request $request) {
+        $names = explode(',', $request->input('names'));
+        $results = [];
+
+        foreach($names as $name) {
+            $member = App\Classes\Clan_Member::where('display_name', $name)->first();
+
+            if( $member ) {
+                $results[] = [
+                    'name' => $name,
+                    'glory' => $member->pvp_stats->glory
+                ];
+            }
+        }
+
+        return response()->json($results);
+    }
+
+    function closest_glory(Request $request) {
+
+        $points = explode(',', $request->input('points'));
+        $names = explode(',', $request->input('names'));
+
+        if( count($points) && count($names) ) {
+
+            $results = [];
+            $smallest_index = -1;
+
+            $combinations = new \drupol\phpermutations\Generators\Combinations($points, 4);
+            $combinations = $combinations->toArray();
+
+            // Just Brute Force
+            foreach($combinations as $c_key => $c) {
+                $team1 = $c;
+                $team2 = $points;
+
+                foreach($team1 as $p1) {
+                    foreach($team2 as $key => $p2) {
+                        if( $p1 == $p2 ) {
+                            unset($team2[$key]);
+                            break;
+                        }
+                    }
+                }
+
+                $diff = array_sum($team1) - array_sum($team2) > 0 ? array_sum($team1) - array_sum($team2) : abs(array_sum($team1) - array_sum($team2));
+
+                $results[] = [
+                    'team1' => $team1,
+                    'team2' => array_values($team2),
+                    'diff' => $diff,
+                    'team1_total' => array_sum($team1),
+                    'team2_total' => array_sum($team2),
+                ];
+
+                if( $smallest_index == -1 ) {
+                    $smallest_index = 0;
+                    $smallest_diff = $results[$smallest_index]['diff'];
+                }
+                elseif( $diff < $smallest_diff ) {
+                    $smallest_index = $c_key;
+                    $smallest_diff = $diff;
+                }
+            }
+
+            return response()->json($results[$smallest_index])
+                ->cookie(Cookie::forever('glory_names', $request->input('names')))
+                ->cookie(Cookie::forever('glory_points', $request->input('points')));
+        }
+
+        return response()->json([]);
+    }
 
     function get_mtg_top_decks() {
         $decks = [];
@@ -131,7 +208,10 @@ class ApiController extends Controller
         ];
 
         $client = new Client(); //GuzzleHttp\Client
-        $character_response = $client->get( 'https://www.bungie.net/Platform/Destiny2/4/Profile/4611686018474971535/Character/2305843009339205184?components=204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
+        $character_response = $client->get(
+            'https://www.bungie.net/Platform/Destiny2/4/Profile/4611686018474971535/Character/2305843009339205184?components=204',
+            ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+        );
 
         if( $character_response->getStatusCode() == 200 ) {
 
@@ -234,6 +314,8 @@ class ApiController extends Controller
                 foreach($members_online as $member) {
 
                     $membership_id = $member->membershipId;
+
+                    if( $membership_id == '4611686018474971535' && self::HIDE_ACTIVITY == true ) continue;
 
                     $res = $client->get( 'https://www.bungie.net/Platform/Destiny2/4/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
 

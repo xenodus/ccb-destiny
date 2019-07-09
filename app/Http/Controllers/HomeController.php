@@ -7,23 +7,38 @@ use GuzzleHttp\Client;
 use App;
 use Cookie;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 use Corcel\Model\Post as WP;
 
 class HomeController extends Controller
 {
-    public function test()
+    public function test(Request $request)
     {
+      dd( $request->cookies );
+
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
-      $nf = App\Classes\News_Feed::find(75804);
-
-      dd( strlen($nf->title) );
-      //dd( strlen(utf8_decode($nf->title)) );
-      dd($nf);
-
       return view('test', $data);
+    }
+
+    public function glory_cheese(Request $request)
+    {
+      $data['site_title'] = env('SITE_NAME');
+      $data['active_page'] = 'Glory Cheese Team Balancer';
+
+      $data['glory_names'] = $request->cookie('glory_names') ? explode(',', $request->cookie('glory_names')) : '';
+      $data['glory_points'] = $request->cookie('glory_points') ? explode(',', $request->cookie('glory_points')) : '';
+
+      $data['members'] = App\Classes\Clan_Member::get()->pluck('display_name');
+
+      $data['glory_last_update'] = \Carbon\Carbon::parse( App\Classes\Pvp_Stats::first()->last_updated )->format('g:i A j M Y');
+
+      $data['hide_header'] = 1;
+      $data['hide_footer'] = 1;
+
+      return view('glory_cheese', $data);
     }
 
     public function home()
