@@ -26,9 +26,22 @@ class Kernel extends ConsoleKernel
     {
         $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
 
+        // Raid lockouts
         $schedule->command('update:lockouts')->everyThirtyMinutes()->appendOutputTo($filePath);
+        // Member Characters
         $schedule->command('update:characters')->everyThirtyMinutes()->appendOutputTo($filePath);
+        // Seal Progression
         $schedule->command('update:seals')->everyFiveMinutes()->appendOutputTo($filePath);
+        // Weekly Nightfalls
+        $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($filePath);
+        // Vendor Stuff
+        $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($filePath);
+
+        // Stats
+        $schedule->command('update:raidStats')->everyFiveMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:PVEStats')->everyFiveMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:PVPStats')->everyFiveMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:GambitStats')->everyFiveMinutes()->appendOutputTo($filePath);
     }
 
     /**

@@ -30,36 +30,7 @@ var gloryRanks = [
 
 $(document).ready(function(){
 
-  $(document).on('click', 'button.refresh-btn', function(){
-    refreshBtn = $(this);
-    refreshBtn.prop('disabled', true);
-    update_pvp_stats();
-  });
-
   print_pvp_stats();
-
-  function update_pvp_stats() {
-
-    $('.loader').show();
-    $('.loader-text').show();
-    if( queueStatus == 0 )
-      $('.loader-text').text('Refreshing data (~1 min). Go grab a drink...');
-    $('.stats-container').empty();
-
-    $.get('/bungie/pvp/update', function(res){
-      if(res.status == 2) {
-        $('.loader-text').text('Resync already in progress. Queueing...');
-        queueStatus = 1;
-        setTimeout(update_pvp_stats, 5000);
-      }
-      else {
-        queueStatus = 0;
-        refreshBtn = $('button.refresh-btn');
-        refreshBtn.prop('disabled', false);
-        print_pvp_stats();
-      }
-    });
-  }
 
   function print_pvp_stats() {
     $.get('/bungie/members/get', function(memberData){
@@ -125,7 +96,7 @@ $(document).ready(function(){
             resizableColumns:false,
           });
 
-          $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+pvpData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
+          $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+pvpData.last_updated+'</small></div>');
         });
       }
       else {

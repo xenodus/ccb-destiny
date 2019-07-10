@@ -2,35 +2,7 @@ var queueStatus = 0;
 
 $(document).ready(function(){
 
-  $(document).on('click', 'button.refresh-btn', function(){
-    refreshBtn = $(this);
-    refreshBtn.prop('disabled', true);
-    update_raid_stats();
-  });
-
   print_raid_stats();
-
-  function update_raid_stats() {
-    $('.loader').show();
-    $('.loader-text').show();
-    if( queueStatus == 0 )
-      $('.loader-text').text('Refreshing data (~1 min). Go grab a drink...');
-    $('.stats-container').empty();
-
-    $.get('/bungie/raid/update', function(res){
-      if(res.status == 2) {
-        $('.loader-text').text('Resync already in progress. Queueing...');
-        queueStatus = 1;
-        setTimeout(update_raid_stats, 5000);
-      }
-      else {
-        queueStatus = 0;
-        refreshBtn = $('button.refresh-btn');
-        refreshBtn.prop('disabled', false);
-        print_raid_stats();
-      }
-    });
-  }
 
   function print_raid_stats() {
     $.get('/bungie/members/get', function(memberData){
@@ -51,23 +23,28 @@ $(document).ready(function(){
 
             raidData = memberRaidData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-            tableData.push({
-              membershipId: memberData[i].destinyUserInfo.membershipId,
-              name: '<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark">'+memberData[i].destinyUserInfo.displayName+'</a>',
-              levi: raidData.levi,
-              levip: raidData.levip,
-              eow: raidData.eow,
-              eowp: raidData.eowp,
-              sos: raidData.sos,
-              sosp: raidData.sosp,
-              lw: raidData.lw,
-              petra: raidData.petra > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
-              sotp: raidData.sotp,
-              diamond: raidData.diamond > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
-              cos: raidData.cos,
-              crown: raidData.crown > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
-              total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp+raidData.cos),
-            });
+            if( raidData ) {
+              tableData.push({
+                membershipId: memberData[i].destinyUserInfo.membershipId,
+                name: '<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark">'+memberData[i].destinyUserInfo.displayName+'</a>',
+                levi: raidData.levi,
+                levip: raidData.levip,
+                eow: raidData.eow,
+                eowp: raidData.eowp,
+                sos: raidData.sos,
+                sosp: raidData.sosp,
+                lw: raidData.lw,
+                petra: raidData.petra > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                sotp: raidData.sotp,
+                diamond: raidData.diamond > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                cos: raidData.cos,
+                crown: raidData.crown > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp+raidData.cos),
+              });
+            }
+            else {
+              console.log(memberData[i].destinyUserInfo.membershipId);
+            }
           }
 
           $('.loader-text').text('Generating Table...');
@@ -107,7 +84,7 @@ $(document).ready(function(){
             resizableColumns:false,
           });
 
-          $('.stats-container').append('<div id="raid-stats-info" class="text-center"><small>Last checked: '+raidData.last_updated+'</small> <br/><button type="button" class="btn btn-primary btn-sm badge badge-info refresh-btn"><i class="fas fa-sync-alt"></i> Resync data</button></div>');
+          $('.stats-container').append('<div id="raid-stats-info" class="text-center"><small>Last checked: '+raidData.last_updated+'</small></div>');
         });
       }
       else {

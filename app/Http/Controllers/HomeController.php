@@ -46,6 +46,8 @@ class HomeController extends Controller
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
+      $data['nightfalls'] = App\Classes\Nightfall::get();
+
       return view('home', $data);
     }
 

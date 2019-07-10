@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/test', 'HomeController@test')->name('test');
+// Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/test2', 'StatsController@test')->name('test2');
 
 // Team Glory Balancer
@@ -63,9 +63,6 @@ Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_
 // Get Members' Triumph Completion Records
 Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
 
-// Update Member Characters
-// Route::get('/bungie/members/characters/update', 'StatsController@update_member_characters')->name('update_member_characters');
-
 // Clan Roster
 Route::get('/clan', function(){
     return redirect()->route('clan_roster', 301);
@@ -76,27 +73,21 @@ Route::get('/bungie/roster/get', 'ClanController@get_roster')->name('get_roster'
 // Clan Raid Lockouts
 Route::get('/clan/lockouts', 'ClanController@clan_raid_lockout')->name('clan_raid_lockout');
 Route::get('/clan/lockouts/get', 'ClanController@get_clan_raid_lockout')->name('get_clan_raid_lockout');
-// Route::get('/bungie/lockouts/update', 'ClanController@update_clan_raid_lockout')->name('update_clan_raid_lockout');
 
 // Clan Seal Triumph Completions
 Route::get('/clan/seals', 'ClanController@clan_seal_progression')->name('clan_seal_progression');
 Route::get('/clan/seals/member/{member_id}', 'ClanController@member_seal_progression')->name('member_seal_progression');
 Route::get('/clan/seals/get', 'ClanController@get_clan_seal_progression')->name('get_clan_seal_progression');
-// Route::get('/bungie/seals/update', 'ClanController@update_clan_seal_progression')->name('update_clan_seal_progression');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');
-Route::get('/bungie/raid/update', 'StatsController@update_raid_stats')->name('update_raid_stats');
 
 // PvE & Weapon Stats
-Route::get('/bungie/pve/update', 'StatsController@update_pve_stats')->name('update_pve_stats');
 Route::get('/bungie/pve/get', 'StatsController@get_pve_stats')->name('get_pve_stats');
 Route::get('/bungie/weapon/get', 'StatsController@get_weapon_stats')->name('get_weapon_stats');
 
 // PvP
-Route::get('/bungie/pvp/update', 'StatsController@update_pvp_stats')->name('update_pvp_stats');
 Route::get('/bungie/pvp/get', 'StatsController@get_pvp_stats')->name('get_pvp_stats');
 
 // Gambit
-Route::get('/bungie/gambit/update', 'StatsController@update_gambit_stats')->name('update_gambit_stats');
 Route::get('/bungie/gambit/get', 'StatsController@get_gambit_stats')->name('get_gambit_stats');

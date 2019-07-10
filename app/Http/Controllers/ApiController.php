@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+    // values = key words to search in news api
     const NEWS_CATEGORIES = [
         'destiny' => 'Destiny 2 Bungie',
         'division' => 'Ubisoft Division 2',
@@ -209,7 +210,7 @@ class ApiController extends Controller
 
         $client = new Client(); //GuzzleHttp\Client
         $character_response = $client->get(
-            'https://www.bungie.net/Platform/Destiny2/4/Profile/4611686018474971535/Character/2305843009339205184?components=204',
+            env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
             ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
         );
 
@@ -222,7 +223,7 @@ class ApiController extends Controller
 
                 if( isset($character['Response']) ) {
 
-                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v, $k) use ($key) {
+                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($key) {
                         return $v->activityHash == $key;
                     });
 
@@ -250,45 +251,35 @@ class ApiController extends Controller
 
     function get_vendor($vendor_id='') {
 
-        $result = [];
-
-        $result = DB::table('vendor_sales');
-
-        if($vendor_id) {
-            $result = $result->where('vendor_hash', $vendor_id);
-        }
-
-        $result = $result->orderBy('vendor_hash');
+        if( $vendor_id )
+            $vendor_sales = App\Classes\Vendor_Sales::where('vendor_hash', $vendor_id);
+        else
+            $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash');
 
         if($vendor_id=='672118013')
-            $result = $result->orderBy('cost_name');
+            $vendor_sales = $vendor_sales->orderBy('cost_name');
         else
-            $result = $result->orderBy('itemTypeDisplayName');
+            $vendor_sales = $vendor_sales->orderBy('itemTypeDisplayName');
 
-        $result = $result->get();
+        $vendor_sales = $vendor_sales->get();
 
-        return response()->json($result);
+        return response()->json($vendor_sales);
     }
 
     function get_nightfall() {
 
-        $result = DB::table('active_nightfall')->get();
+        $nf = App\Classes\Nightfall::get();
 
-        return response()->json($result);
+        return response()->json($nf);
     }
 
     function get_sales_item_perks($vendor_id) {
 
-        // SELECT vendor_sales_item_perks.* FROM `vendor_sales` LEFT JOIN vendor_sales_item_perks ON vendor_sales.id = vendor_sales_item_perks.vendor_sales_id WHERE vendor_sales.vendor_hash = ? AND vendor_sales_item_perks.id IS NOT NULL
+        $vendor_sales_item_perks = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) use($vendor_id){
+            $q->where('vendor_hash', $vendor_id);
+        })->get();
 
-        $result = DB::table('vendor_sales')
-        ->select('vendor_sales_item_perks.*')
-        ->leftJoin('vendor_sales_item_perks', 'vendor_sales.id', '=', 'vendor_sales_item_perks.vendor_sales_id')
-        ->where('vendor_sales.vendor_hash', $vendor_id)
-        ->whereNotNull('vendor_sales_item_perks.id')
-        ->get();
-
-        return response()->json($result);
+        return response()->json($vendor_sales_item_perks);
     }
 
     public function activity()

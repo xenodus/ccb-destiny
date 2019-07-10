@@ -8,19 +8,19 @@ use GuzzleHttp\Client;
 use App;
 use DB;
 
-class updateSeals extends Command
+class UpdateSeals extends Command
 {
     // Seals
     private $seal_hash = [
-    'Rivensbane' => 2182090828,
-    'Cursebreaker' => 1693645129,
-    'Chronicle' => 1754983323,
-    'Unbroken' => 3369119720,
-    'Dredgen' => 3798931976,
-    'Wayfarer' => 2757681677,
-    'Blacksmith' => 2053985130,
-    'Shadow' => 1883929036,
-    'Reckoner' => 1313291220
+      'Rivensbane' => 2182090828,
+      'Cursebreaker' => 1693645129,
+      'Chronicle' => 1754983323,
+      'Unbroken' => 3369119720,
+      'Dredgen' => 3798931976,
+      'Wayfarer' => 2757681677,
+      'Blacksmith' => 2053985130,
+      'Shadow' => 1883929036,
+      'Reckoner' => 1313291220
     ];
 
     /**
@@ -61,6 +61,8 @@ class updateSeals extends Command
         $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
         $clan_members = \App\Classes\Clan_Member::get();
 
+        $this->info('Begin: Update Seals');
+
         $n = 1;
 
         foreach($clan_members as $member) {
@@ -78,6 +80,9 @@ class updateSeals extends Command
                 $payload = collect($payload);
 
                 $seal_completion = [];
+
+                if( isset($payload['profileRecords']->data) == false )
+                  continue;
 
                 foreach($this->seal_hash as $title => $id) {
                     $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
@@ -106,6 +111,7 @@ class updateSeals extends Command
           }
         }
 
-        $this->info('done');
+        $this->info('Completed: Update Seals');
+        return 1;
     }
 }

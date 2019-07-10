@@ -5,10 +5,10 @@ namespace App\Classes;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class News_Feed extends Model
+class Bungie_OAuth extends Model
 {
   protected $connection = 'ccb_mysql';
-  protected $table = 'news_feed';
+  protected $table = 'oauth_token';
   protected $primaryKey = 'id';
   public $timestamps = false;
 }

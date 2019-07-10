@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use App;
 use DB;
 
-class updateCharacters extends Command
+class UpdateCharacters extends Command
 {
     // characters
     private $class_hash = [
@@ -61,6 +61,8 @@ class updateCharacters extends Command
 
             $n = 1;
 
+            $this->info('Begin: Characters update');
+
             foreach($members as $member) {
 
                 $this->info('Processing '.$n.' of '.count($members).': ' . $member->destinyUserInfo->displayName);
@@ -99,7 +101,10 @@ class updateCharacters extends Command
             // delete character data that does not belong to members anymore
             DB::connection('ccb_mysql')->table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
 
-            $this->info('done');
+            $this->info('Completed: Characters update');
+            return 1;
         }
+
+        return 0;
     }
 }

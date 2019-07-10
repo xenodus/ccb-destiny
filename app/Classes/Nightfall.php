@@ -3,12 +3,11 @@
 namespace App\Classes;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
 
-class News_Feed extends Model
+class Nightfall extends Model
 {
   protected $connection = 'ccb_mysql';
-  protected $table = 'news_feed';
+  protected $table = 'nightfall';
   protected $primaryKey = 'id';
   public $timestamps = false;
 }

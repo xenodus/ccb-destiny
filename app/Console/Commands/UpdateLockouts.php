@@ -8,10 +8,8 @@ use GuzzleHttp\Client;
 use App;
 use DB;
 
-class updateLockouts extends Command
+class UpdateLockouts extends Command
 {
-    private $bungie_api_root_path = 'https://www.bungie.net/Platform';
-
     private $raid_activity_hash = [
     'levi'  => [2693136600, 2693136601, 2693136602, 2693136603, 2693136604, 2693136605],
     'levip' => [417231112, 757116822, 1685065161, 2449714930, 3446541099, 3879860661],
@@ -89,6 +87,8 @@ class updateLockouts extends Command
 
         $n = 1;
 
+        $this->info('Begin: Raid lockouts update');
+
         foreach($clan_members as $member) {
 
             $this->info('Processing '.$n.' of '.count($clan_members).': ' . $member->display_name);
@@ -105,8 +105,8 @@ class updateLockouts extends Command
 
                     $client = new Client(); //GuzzleHttp\Client
                     $characters_activities_response = $client->get(
-                    $this->bungie_api_root_path.'/Destiny2/4/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
-                    ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+                      env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
+                      ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 
                     $this->info('Processing Character ID: ' . $character->id);
@@ -167,8 +167,11 @@ class updateLockouts extends Command
             $raid_lockout->save();
           }
 
-          $this->info('done');
+          $this->info('Completed: Raid lockouts update');
+          return 1;
         }
+
+        return 0;
     }
 
     private function get_default_lockout() {
