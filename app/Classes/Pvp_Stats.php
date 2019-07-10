@@ -7,7 +7,6 @@ use DB;
 
 class Pvp_Stats extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'clan_pvp_stats';
   protected $primaryKey = 'user_id';
   public $timestamps = false;
@@ -22,7 +21,7 @@ class Pvp_Stats extends Model
   }
 
   public static function update_members($members) {
-    DB::connection('ccb_mysql')->table('clan_pvp_stats')->truncate();
+    DB::table('clan_pvp_stats')->truncate();
 
     foreach($members as $member) {
       $member_stat = new Pvp_Stats;

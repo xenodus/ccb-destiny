@@ -7,7 +7,6 @@ use DB;
 
 class Raid_Stats extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'clan_raid_stats';
   protected $primaryKey = 'user_id';
   public $timestamps = false;
@@ -22,7 +21,7 @@ class Raid_Stats extends Model
   }
 
   public static function update_members($members) {
-    DB::connection('ccb_mysql')->table('clan_raid_stats')->truncate();
+    DB::table('clan_raid_stats')->truncate();
 
     foreach($members as $member) {
       $member_stat = new Raid_Stats;

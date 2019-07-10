@@ -7,7 +7,6 @@ use DB;
 
 class Clan_Member extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'clan_members';
   protected $primaryKey = 'id';
   public $timestamps = false;

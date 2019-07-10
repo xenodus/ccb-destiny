@@ -99,7 +99,7 @@ class UpdateSeals extends Command
         }
 
 
-        DB::connection('ccb_mysql')->table('seal_completions')->truncate();
+        DB::table('seal_completions')->truncate();
 
         foreach($clan_members as $member) {
           if( $member->seal_status == true ) {

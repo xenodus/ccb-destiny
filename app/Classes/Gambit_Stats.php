@@ -7,7 +7,6 @@ use DB;
 
 class Gambit_Stats extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'clan_gambit_stats';
   protected $primaryKey = 'user_id';
   public $timestamps = false;
@@ -22,7 +21,7 @@ class Gambit_Stats extends Model
   }
 
   public static function update_members($members) {
-    DB::connection('ccb_mysql')->table('clan_gambit_stats')->truncate();
+    DB::table('clan_gambit_stats')->truncate();
 
     foreach($members as $member) {
       $member_stat = new Gambit_Stats;

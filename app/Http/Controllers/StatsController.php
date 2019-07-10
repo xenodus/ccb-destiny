@@ -13,6 +13,8 @@ class StatsController extends Controller
 
   public function test()
   {
+    dd([]);
+
     $i = App\Classes\Vendor_Sales::find(205);
     dd($i->perks);
 
@@ -197,7 +199,7 @@ class StatsController extends Controller
         return $member->destinyUserInfo->membershipId;
       })->toArray();
 
-      DB::connection('ccb_mysql')->table('clan_members')->whereNotIn('id', $ids)->delete();
+      DB::table('clan_members')->whereNotIn('id', $ids)->delete();
 
       foreach($payload->Response->results as $key => $result) {
         if( $result->destinyUserInfo->membershipType == 4 ) {

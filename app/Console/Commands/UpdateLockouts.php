@@ -161,7 +161,7 @@ class UpdateLockouts extends Command
 
         if( count($results) ) {
 
-          DB::connection('ccb_mysql')->table('raid_lockouts')->truncate();
+          DB::table('raid_lockouts')->truncate();
 
           foreach($results as $raid_lockout) {
             $raid_lockout->save();

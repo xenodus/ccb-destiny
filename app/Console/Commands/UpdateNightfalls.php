@@ -67,7 +67,7 @@ class UpdateNightfalls extends Command
 
             if( $res->getStatusCode() == 200 ) {
 
-                DB::connection('ccb_mysql')->table('nightfall')->truncate(); // cleanup db
+                DB::table('nightfall')->truncate(); // cleanup db
 
                 $activity_definitions = collect(json_decode($res->getBody()->getContents()));
 

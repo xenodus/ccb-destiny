@@ -7,7 +7,6 @@ use DB;
 
 class Vendor_Sales extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'vendor_sales';
   protected $primaryKey = 'id';
   public $timestamps = false;

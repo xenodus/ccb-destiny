@@ -154,8 +154,8 @@ class ApiController extends Controller
 
                 if( count($news['articles']) ) {
 
-                    DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->update(['status' => 'expired']);
-                    DB::connection('ccb_mysql')->table('news_feed')->where('category', $key)->whereRaw('date_added <= now() - INTERVAL 3 HOUR')->delete();
+                    DB::table('news_feed')->where('category', $key)->update(['status' => 'expired']);
+                    DB::table('news_feed')->where('category', $key)->whereRaw('date_added <= now() - INTERVAL 3 HOUR')->delete();
 
                     foreach($news['articles'] as $article) {
 

@@ -7,7 +7,6 @@ use DB;
 
 class Raid_Lockouts extends Model
 {
-  protected $connection = 'ccb_mysql';
   protected $table = 'raid_lockouts';
   protected $primaryKey = 'id';
   public $timestamps = false;

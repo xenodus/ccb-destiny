@@ -99,7 +99,7 @@ class UpdateCharacters extends Command
             }
 
             // delete character data that does not belong to members anymore
-            DB::connection('ccb_mysql')->table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
+            DB::table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
 
             $this->info('Completed: Characters update');
             return 1;
