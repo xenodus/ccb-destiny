@@ -77,7 +77,8 @@ $(document).ready(function(){
         'Commander Zavala': '69482069',
         'Xur': '2190858386',
         'Tess Everis': '3361454721',
-        'Benedict 99-40': '1265988377'
+        'Benedict 99-40': '1265988377',
+        'Eva Levante': '919809084'
       };
 
       var gambitBountiesFilter = [
@@ -118,6 +119,8 @@ $(document).ready(function(){
 
         benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
 
+        eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null });
+
         gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
 
         power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
@@ -138,6 +141,10 @@ $(document).ready(function(){
 
         if( benedict_bounties.length > 0 ) {
           $('#weeklies-item-container').append( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
+        }
+
+        if( eva_bounties.length > 0 ) {
+          $('#weeklies-item-container').append( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
         }
 
         if( raid_bounties.length > 0 ) {

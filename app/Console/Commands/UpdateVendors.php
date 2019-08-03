@@ -22,7 +22,8 @@ class UpdateVendors extends Command
       'Xur' => '2190858386',
       'Tess Everis' => '3361454721',
       'Petra Venj' => '1841717884',
-      'Benedict 99-40' => '1265988377'
+      'Benedict 99-40' => '1265988377',
+      'Eva Levante' => '919809084'
     ];
 
     // traits = stats, restore default == shader
