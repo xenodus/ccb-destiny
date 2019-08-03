@@ -1,1 +1,64 @@
-$(document).ready(function(){$.get("/bungie/members/get",function(e){e.length>0?($(".loader-text").text("Fetching Triumphs..."),$.get("/clan/seals/get",function(t){for(var a=[],i=[{title:"Name",field:"name",formatter:"html",frozen:!0}],s=0;s<t.length;s++){var l={name:e.filter(function(e){return e.destinyUserInfo.membershipId==t[s].id}).map(function(e){return e.destinyUserInfo.displayName})[0]+'<a href="/clan/seals/member/'+t[s].id+'"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'},n=JSON.parse(t[s].data),r=0;for(const e in n)l[e]=n[e]>0?'<i class="fas fa-check text-success"></i>':'<i class="fas fa-times text-danger"></i>',r=n[e]>0?r+1:r,0==s&&i.push({title:e,field:e,formatter:"html",cssClass:"text-center"});l.total=r,a.push(l)}i.push({title:"Total",field:"total",visible:!0}),$(".stats-container").append('<div id="stats-table"></div>'),$(".loader").hide(),$(".loader-text").hide();new Tabulator("#stats-table",{data:a,columns:i,initialSort:[{column:"name",dir:"asc"},{column:"total",dir:"desc"}],layout:"fitDataFill",resizableColumns:!1})})):$(".loader-text").html("Unable to retrieve members 😟 <br/>Bungie API might be under maintenance")})});
+$(document).ready(function(){
+  $.get('/bungie/members/get', function(memberData){
+
+    if( memberData.length > 0 ) {
+
+      $('.loader-text').text('Fetching Triumphs...');
+
+      $.get('/clan/seals/get', function(sealData){
+
+        var tableData = [];
+        var tableColumns = [
+          {title:"Name", field:"name", formatter:"html", frozen:true},
+        ];
+
+        for(var i=0; i<sealData.length; i++) {
+          var username = memberData.filter(function(member){ return member.destinyUserInfo.membershipId == sealData[i].id }).map(function(member){ return member.destinyUserInfo.displayName })[0];
+
+          var tableDataEntry = {
+            name: username+'<a href="/clan/seals/member/'+sealData[i].id+'"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+          };
+
+          var memberSealData = JSON.parse( sealData[i].data );
+          var memberSealTotal = 0;
+
+          for(const key in memberSealData) {
+            tableDataEntry[key] = memberSealData[key] > 0 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>';
+
+            memberSealTotal = memberSealData[key] > 0 ? memberSealTotal + 1 : memberSealTotal;
+
+            if(i==0) {
+              tableColumns.push({title:key, field:key, formatter:"html", cssClass: "text-center"});
+            }
+          }
+
+          tableDataEntry["total"] = memberSealTotal;
+          tableData.push(tableDataEntry);
+        }
+
+        tableColumns.push({title:"Total", field:"total", visible:true});
+
+        $('.stats-container').append('<div id="stats-table"></div>');
+        $('.loader').hide();
+        $('.loader-text').hide();
+
+        var table = new Tabulator("#stats-table", {
+          data:tableData, //assign data to table
+          columns: tableColumns,
+          initialSort: [
+            {column:"name", dir:"asc"},
+            {column:"total", dir:"desc"},
+          ],
+          layout:"fitDataFill",
+          // height: "350px",
+          resizableColumns:false,
+        });
+
+      });
+    }
+    else {
+      $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+    }
+
+  });
+});

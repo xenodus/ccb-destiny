@@ -1,1 +1,98 @@
-var queueStatus=0;$(document).ready(function(){$.get("/bungie/members/get",function(e){e.length>0?($(".loader-text").text("Fetching Weapon Stats..."),$.get("/bungie/weapon/get",function(a){for(var t=[],l=0;l<e.length;l++)$(".loader-text").text("Processing "+(l+1)+" of "+e.length+"..."),weaponData=a.filter(function(a){return a.user_id==e[l].destinyUserInfo.membershipId})[0],weaponData&&t.push({name:e[l].destinyUserInfo.displayName,weaponKillsAutoRifle:weaponData.weaponKillsAutoRifle,weaponKillsBow:weaponData.weaponKillsBow,weaponKillsFusionRifle:weaponData.weaponKillsFusionRifle,weaponKillsHandCannon:weaponData.weaponKillsHandCannon,weaponKillsTraceRifle:weaponData.weaponKillsTraceRifle,weaponKillsPulseRifle:weaponData.weaponKillsPulseRifle,weaponKillsRocketLauncher:weaponData.weaponKillsRocketLauncher,weaponKillsScoutRifle:weaponData.weaponKillsScoutRifle,weaponKillsShotgun:weaponData.weaponKillsShotgun,weaponKillsSniper:weaponData.weaponKillsSniper,weaponKillsSubmachinegun:weaponData.weaponKillsSubmachinegun,weaponKillsSideArm:weaponData.weaponKillsSideArm,weaponKillsSword:weaponData.weaponKillsSword,weaponKillsGrenadeLauncher:weaponData.weaponKillsGrenadeLauncher});$(".loader-text").text("Generating Table..."),$(".stats-container").append('<div id="weapon-stats-table"></div>'),$(".loader").hide(),$(".loader-text").hide();var n={precision:0};new Tabulator("#weapon-stats-table",{data:t,layout:"fitColumns",columns:[{title:"Name",field:"name",frozen:!0},{title:"Auto Rifle",field:"weaponKillsAutoRifle",formatter:"money",formatterParams:n},{title:"Bow",field:"weaponKillsBow",formatter:"money",formatterParams:n},{title:"Fusion Rifle",field:"weaponKillsFusionRifle",formatter:"money",formatterParams:n},{title:"Hand Cannon",field:"weaponKillsHandCannon",formatter:"money",formatterParams:n},{title:"Trace Rifle",field:"weaponKillsTraceRifle",formatter:"money",formatterParams:n},{title:"Pulse Rifle",field:"weaponKillsPulseRifle",formatter:"money",formatterParams:n},{title:"Rocket Launcher",field:"weaponKillsRocketLauncher",formatter:"money",formatterParams:n},{title:"Scout Rifle",field:"weaponKillsScoutRifle",formatter:"money",formatterParams:n},{title:"Shotgun",field:"weaponKillsShotgun",formatter:"money",formatterParams:n},{title:"Sniper",field:"weaponKillsSniper",formatter:"money",formatterParams:n},{title:"SMG",field:"weaponKillsSubmachinegun",formatter:"money",formatterParams:n},{title:"Sidearm",field:"weaponKillsSideArm",formatter:"money",formatterParams:n},{title:"Sword",field:"weaponKillsSword",formatter:"money",formatterParams:n},{title:"Grenade Launcher",field:"weaponKillsGrenadeLauncher",formatter:"money",formatterParams:n}],layout:"fitDataFill",height:"500px",resizableColumns:!1}),$(".stats-container").append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+weaponData.last_updated+"</small></div>")})):$(".loader-text").html("Unable to retrieve members 😟 <br/>Bungie API might be under maintenance")})});
+var queueStatus = 0;
+
+$(document).ready(function(){
+
+  print_weapon_stats();
+
+  function print_weapon_stats() {
+    $.get('/bungie/members/get', function(memberData){
+
+      if( memberData.length > 0 ) {
+
+        $('.loader-text').text('Fetching Weapon Stats...');
+
+        $.get('/bungie/weapon/get', function(memberWeaponData){
+
+          var tableData = [];
+
+          for(var i=0; i<memberData.length; i++) {
+
+            $('.loader-text').text('Processing ' + (i+1) + ' of ' + memberData.length + '...');
+
+            weaponData = memberWeaponData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
+
+            if( weaponData ) {
+
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
+                //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
+                weaponKillsBow: weaponData.weaponKillsBow,
+                weaponKillsFusionRifle: weaponData.weaponKillsFusionRifle,
+                weaponKillsHandCannon: weaponData.weaponKillsHandCannon,
+                weaponKillsTraceRifle: weaponData.weaponKillsTraceRifle,
+                weaponKillsPulseRifle: weaponData.weaponKillsPulseRifle,
+                weaponKillsRocketLauncher: weaponData.weaponKillsRocketLauncher,
+                weaponKillsScoutRifle: weaponData.weaponKillsScoutRifle,
+                weaponKillsShotgun: weaponData.weaponKillsShotgun,
+                weaponKillsSniper: weaponData.weaponKillsSniper,
+                weaponKillsSubmachinegun: weaponData.weaponKillsSubmachinegun,
+                //weaponKillsRelic: weaponData.weaponKillsRelic,
+                weaponKillsSideArm: weaponData.weaponKillsSideArm,
+                weaponKillsSword: weaponData.weaponKillsSword,
+                weaponKillsGrenadeLauncher: weaponData.weaponKillsGrenadeLauncher,
+              });
+            }
+          }
+
+          $('.loader-text').text('Generating Table...');
+
+          $('.stats-container').append('<div id="weapon-stats-table"></div>');
+
+          $('.loader').hide();
+          $('.loader-text').hide();
+
+          var autoNumFormatter = function(){
+            return $("#weapon-stats-table .tabulator-row").length;
+          };
+
+          var format = {precision: 0};
+
+          var table = new Tabulator("#weapon-stats-table", {
+            data:tableData, //assign data to table
+            layout:"fitColumns", //fit columns to width of table (optional)
+            columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
+              {title:"Name", field:"name", frozen:true},
+              {title:"Auto Rifle", field:"weaponKillsAutoRifle", formatter:"money", formatterParams: format},
+              //{title:"Beam Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
+              {title:"Bow", field:"weaponKillsBow", formatter:"money", formatterParams: format},
+              {title:"Fusion Rifle", field:"weaponKillsFusionRifle", formatter:"money", formatterParams: format},
+              {title:"Hand Cannon", field:"weaponKillsHandCannon", formatter:"money", formatterParams: format},
+              {title:"Trace Rifle", field:"weaponKillsTraceRifle", formatter:"money", formatterParams: format},
+              {title:"Pulse Rifle", field:"weaponKillsPulseRifle", formatter:"money", formatterParams: format},
+              {title:"Rocket Launcher", field:"weaponKillsRocketLauncher", formatter:"money", formatterParams: format},
+              {title:"Scout Rifle", field:"weaponKillsScoutRifle", formatter:"money", formatterParams: format},
+              {title:"Shotgun", field:"weaponKillsShotgun", formatter:"money", formatterParams: format},
+              {title:"Sniper", field:"weaponKillsSniper", formatter:"money", formatterParams: format},
+              {title:"SMG", field:"weaponKillsSubmachinegun", formatter:"money", formatterParams: format},
+              //{title:"Relic", field:"weaponKillsRelic", formatter:"money", formatterParams: format},
+              {title:"Sidearm", field:"weaponKillsSideArm", formatter:"money", formatterParams: format},
+              {title:"Sword", field:"weaponKillsSword", formatter:"money", formatterParams: format},
+              {title:"Grenade Launcher", field:"weaponKillsGrenadeLauncher", formatter:"money", formatterParams: format},
+            ],
+            layout:"fitDataFill",
+            height:"500px",
+            resizableColumns:false,
+          });
+
+          $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+weaponData.last_updated+'</small></div>');
+        });
+      }
+      else {
+        $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+      }
+
+    });
+  }
+});
