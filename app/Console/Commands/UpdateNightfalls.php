@@ -63,27 +63,23 @@ class UpdateNightfalls extends Command
                 return isset($activity->displayLevel) && $activity->displayLevel == 50;
             });
 
-            $res = $client->get( 'https://destiny.plumbing/en/raw/DestinyActivityDefinition.json' );
 
-            if( $res->getStatusCode() == 200 ) {
+            DB::table('nightfall')->truncate(); // cleanup db
 
-                DB::table('nightfall')->truncate(); // cleanup db
+            $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
 
-                $activity_definitions = collect(json_decode($res->getBody()->getContents()));
+            foreach($characters_activities as $activity) {
+                if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0 ) {
 
-                foreach($characters_activities as $activity) {
-                    if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0 ) {
+                    $nf = new App\Classes\Nightfall();
+                    $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
+                    $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;
+                    $nf->icon = $activity_definitions[ $activity->activityHash ]->displayProperties->icon;
+                    $nf->hash = $activity->activityHash;
+                    $nf->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                    $nf->save();
 
-                        $nf = new App\Classes\Nightfall();
-                        $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
-                        $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;
-                        $nf->icon = $activity_definitions[ $activity->activityHash ]->displayProperties->icon;
-                        $nf->hash = $activity->activityHash;
-                        $nf->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                        $nf->save();
-
-                        $this->info('Inserted: ' . $nf->name);
-                    }
+                    $this->info('Inserted: ' . $nf->name);
                 }
             }
         }

@@ -51,7 +51,10 @@ class Pvp_Stats extends Model
       'valor' => 0,
       'glory_step' => 0,
       'valor_step' => 0,
-      'valor_resets' => 0
+      'valor_resets' => 0,
+      'weaponKillsSuper' => 0,
+      'weaponKillsMelee' => 0,
+      'weaponKillsGrenade' => 0
     ];
   }
 }

@@ -64,12 +64,13 @@ class UpdateGambitStats extends Command
 
                 $members = json_decode($members_response->getBody()->getContents());
                 $members = collect($members);
+                $updated_members = collect([]);
 
                 $n = 1;
 
                 foreach($members as $member) {
 
-                    $this->info('Processing '.$n.' of '.count($members).' members');
+                    $this->info('Processing '.$n.' of '.count($members).': ' . $member->destinyUserInfo->displayName);
                     $n++;
 
                     // Gambit Stats
@@ -106,6 +107,9 @@ class UpdateGambitStats extends Command
                             $member->gambitStats['largeBlockersSent'] = $gs->largeBlockersSent->basic->displayValue;
                         }
                     }
+                    else {
+                        continue;
+                    }
 
                     // Profile
                     $member_profile_response = $client->get(
@@ -130,12 +134,16 @@ class UpdateGambitStats extends Command
                         $member->gambitStats['infamy_step'] = $member_profile['Response']->characterProgressions->data->$character_id->progressions->$infamy_hash->level;
                         $member->gambitStats['infamy_resets'] = isset($member_profile['Response']->profileRecords->data->records->$infamy_reset_hash->objectives[0]->progress) ? $member_profile['Response']->profileRecords->data->records->$infamy_reset_hash->objectives[0]->progress : 0;
                     }
+                    else {
+                        continue;
+                    }
 
                     //dd($member);
                     //dd($member_gambit_stats);
+                    $updated_members->push($member);
                 }
 
-                App\Classes\Gambit_Stats::update_members($members);
+                App\Classes\Gambit_Stats::update_members($updated_members);
 
                 $work_progress->end = date('Y-m-d H:i:s');
                 $work_progress->status = 'completed';

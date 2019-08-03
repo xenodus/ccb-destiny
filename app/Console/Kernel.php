@@ -26,10 +26,15 @@ class Kernel extends ConsoleKernel
     {
         $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
 
+        // D2 Manifest
+        $schedule->command('update:manifest')->dailyAt('01:10')->appendOutputTo($filePath);
+
         // Raid lockouts
         $schedule->command('update:lockouts')->everyThirtyMinutes()->appendOutputTo($filePath);
         // Member Characters
         $schedule->command('update:characters')->everyThirtyMinutes()->appendOutputTo($filePath);
+        // Member Platform Profile
+        $schedule->command('update:memberPlatformProfile')->everyThirtyMinutes()->appendOutputTo($filePath);
         // Seal Progression
         $schedule->command('update:seals')->everyFiveMinutes()->appendOutputTo($filePath);
         // Weekly Nightfalls

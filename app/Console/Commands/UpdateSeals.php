@@ -20,7 +20,8 @@ class UpdateSeals extends Command
       'Wayfarer' => 2757681677,
       'Blacksmith' => 2053985130,
       'Shadow' => 1883929036,
-      'Reckoner' => 1313291220
+      'Reckoner' => 1313291220,
+      'MMXIX' => 2254764897
     ];
 
     /**
@@ -85,7 +86,11 @@ class UpdateSeals extends Command
                   continue;
 
                 foreach($this->seal_hash as $title => $id) {
-                    $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
+                    $seal_completion[$title] = 0;
+
+                    if( isset($payload['profileRecords']->data->records->$id) ) {
+                      $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
+                    }
                 }
 
                 $member->seal_completion = $seal_completion;

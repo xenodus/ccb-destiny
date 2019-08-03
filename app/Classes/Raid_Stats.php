@@ -11,6 +11,10 @@ class Raid_Stats extends Model
   protected $primaryKey = 'user_id';
   public $timestamps = false;
 
+  protected $casts = array(
+    "user_id" => "string"
+  );
+
   public function __construct(array $attributes = array())
   {
       parent::__construct($attributes);

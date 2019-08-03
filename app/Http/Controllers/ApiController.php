@@ -16,11 +16,35 @@ class ApiController extends Controller
     // values = key words to search in news api
     const NEWS_CATEGORIES = [
         'destiny' => 'Destiny 2 Bungie',
-        'division' => 'Ubisoft Division 2',
+        'division' => 'Ubisoft Division',
         'magic' => 'mtg arena magic'
     ];
 
-    const HIDE_ACTIVITY = false;
+    const HIDE_ACTIVITY = true;
+
+    function get_membership_id_from_bnet_id($bnet_id) {
+
+        $client = new Client(); //GuzzleHttp\Client
+        $response = $client->get(
+            env('BUNGIE_API_ROOT_URL').'/Destiny2/SearchDestinyPlayer/'.env('BUNGIE_PC_PLATFORM_ID').'/'.urlencode($bnet_id).'/',
+            [
+                'headers' => ['X-API-Key' => env('BUNGIE_API')],
+                'http_errors' => false
+            ]
+        );
+
+        if( $response->getStatusCode() == 200 ) {
+
+            $data = json_decode($response->getBody()->getContents());
+            $data = collect($data);
+
+            if( count($data['Response']) > 0 ) {
+                return response()->json($data['Response'][0]);
+            }
+        }
+
+        return response()->json([]);
+    }
 
     function update_glory_from_db(Request $request) {
         $names = explode(',', $request->input('names'));
@@ -114,7 +138,7 @@ class ApiController extends Controller
                     ];
                 });
 
-                if( count($deck_set) ) $decks[] = $deck_set;
+                if( isset($deck_set['decks']) && count($deck_set['decks']) ) $decks[] = $deck_set;
             });
         }
 
@@ -287,12 +311,8 @@ class ApiController extends Controller
         $data = [];
 
         $client = new Client(); //GuzzleHttp\Client
-        $res = $client->get( 'https://destiny.plumbing/en/raw/DestinyActivityDefinition.json' );
 
-        if( $res->getStatusCode() == 200 ) {
-            $activity_definitions = collect(json_decode($res->getBody()->getContents()));
-            //dd( $activity_definitions->where('hash', '10898844') );
-        }
+        $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
 
         // 1. Get members online
         $res = $client->get( route('get_members_online') );
@@ -308,7 +328,7 @@ class ApiController extends Controller
 
                     if( $membership_id == '4611686018474971535' && self::HIDE_ACTIVITY == true ) continue;
 
-                    $res = $client->get( 'https://www.bungie.net/Platform/Destiny2/4/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
+                    $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
 
                     if( $res->getStatusCode() == 200 ) {
                         $member_profile = collect(json_decode($res->getBody()->getContents()));
@@ -317,37 +337,39 @@ class ApiController extends Controller
                         $member_activity->displayName = $member_profile['Response']->profile->data->userInfo->displayName;
                         $member_activity->lastSeen = Carbon::parse($member_profile['Response']->profile->data->dateLastPlayed)->timezone('Asia/Singapore')->format('g:i A');
 
-                        foreach( $member_profile['Response']->characterActivities->data as $character_id => $character_activity ) {
-                            if( isset($latest_activity) ) {
-                                $prev_activity_dt = Carbon::parse($latest_activity->dateActivityStarted);
-                                $curr_activity = Carbon::parse($character_activity->dateActivityStarted);
+                        if( isset($member_profile['Response']->characterActivities->data) ) {
+                            foreach( $member_profile['Response']->characterActivities->data as $character_id => $character_activity ) {
+                                if( isset($latest_activity) ) {
+                                    $prev_activity_dt = Carbon::parse($latest_activity->dateActivityStarted);
+                                    $curr_activity = Carbon::parse($character_activity->dateActivityStarted);
 
-                                if( $curr_activity->greaterThan($prev_activity_dt) ) {
+                                    if( $curr_activity->greaterThan($prev_activity_dt) ) {
+                                        $latest_activity = $character_activity;
+                                        $member_activity->character_id = $character_id;
+                                    }
+                                }
+                                else {
                                     $latest_activity = $character_activity;
                                     $member_activity->character_id = $character_id;
                                 }
                             }
-                            else {
-                                $latest_activity = $character_activity;
-                                $member_activity->character_id = $character_id;
-                            }
-                        }
 
-                        $member_activity->latestActivityTime = Carbon::parse($latest_activity->dateActivityStarted)->timezone('Asia/Singapore')->format('g:i A');
+                            $member_activity->latestActivityTime = Carbon::parse($latest_activity->dateActivityStarted)->timezone('Asia/Singapore')->format('g:i A');
 
-                        $member_activity->latestActivity = $activity_definitions->where('hash', $latest_activity->currentActivityHash)->first();
+                            $member_activity->latestActivity = $activity_definitions->where('hash', $latest_activity->currentActivityHash)->first();
 
-                        if( $member_activity->latestActivity ) {
-                            // Orbit
-                            if( $member_activity->latestActivity->placeHash == '2961497387' ) {
-                                $member_activity->latestActivity->originalDisplayProperties->name = "Orbit";
-                                $member_activity->latestActivity->displayProperties->name = "Orbit";
+                            if( $member_activity->latestActivity ) {
+                                // Orbit
+                                if( $member_activity->latestActivity->placeHash == '2961497387' ) {
+                                    $member_activity->latestActivity->originalDisplayProperties->name = "Orbit";
+                                    $member_activity->latestActivity->displayProperties->name = "Orbit";
+                                }
+
+                                $data[] = $member_activity;
                             }
 
-                            $data[] = $member_activity;
+                            unset( $latest_activity );
                         }
-
-                        unset( $latest_activity );
                     }
                 }
             }

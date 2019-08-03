@@ -108,160 +108,155 @@ class UpdateVendors extends Command
             $access_token = json_decode($new_token_data)->access_token;
 
             // 2. Get Item Definitions
-            $res = $client->get('https://destiny.plumbing/en/raw/DestinyInventoryItemDefinition.json');
+            $item_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyInventoryItemDefinition.json'))));
 
-            if( $res->getStatusCode() == 200 ) {
+            $this->info('Item Definition Count: ' . $item_definitions->count());
 
-                $item_definitions = collect(json_decode($res->getBody()->getContents()));
+            // 3. Get Vendor Data
+            $vendor_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Vendors?components=402,400,302,305',
+                [
+                    'headers' => [
+                        'X-API-Key' => env('BUNGIE_API'),
+                        'Authorization' => 'Bearer '.$access_token,
+                    ],
+                    'http_errors' => false
+                ]
+            );
 
-                $this->info('Item Definition Count: ' . $item_definitions->count());
+            if( $vendor_response->getStatusCode() == 200 ) {
 
-                // 3. Get Vendor Data
-                $vendor_response = $client->get(
-                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Vendors?components=402,400,302,305',
-                    [
-                        'headers' => [
-                            'X-API-Key' => env('BUNGIE_API'),
-                            'Authorization' => 'Bearer '.$access_token,
-                        ],
-                        'http_errors' => false
-                    ]
-                );
+                $this->info('Begin: Vendor Updates');
 
-                if( $vendor_response->getStatusCode() == 200 ) {
+                $vendor_data = json_decode($vendor_response->getBody()->getContents());
+                $vendor_data = collect($vendor_data);
 
-                    $this->info('Begin: Vendor Updates');
+                $saleItems = [];
 
-                    $vendor_data = json_decode($vendor_response->getBody()->getContents());
-                    $vendor_data = collect($vendor_data);
+                $this->info('Begin: Vendor Updates');
 
-                    $saleItems = [];
+                foreach($this->vendorHash as $vendor_name => $vendor_hash) {
 
-                    $this->info('Begin: Vendor Updates');
+                    $saleItems[$vendor_name] = [];
 
-                    foreach($this->vendorHash as $vendor_name => $vendor_hash) {
+                    if( isset( $vendor_data['Response']->sales->data->$vendor_hash ) ) {
 
-                        $saleItems[$vendor_name] = [];
+                        foreach($vendor_data['Response']->sales->data->$vendor_hash->saleItems as $k => $v) {
 
-                        if( isset( $vendor_data['Response']->sales->data->$vendor_hash ) ) {
+                            // 4. Get Sale Item Perks' Hash
+                            $perks = [];
 
-                            foreach($vendor_data['Response']->sales->data->$vendor_hash->saleItems as $k => $v) {
+                            if( isset( $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k ) ) {
+                                if(count($vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets) > 0){
 
-                                // 4. Get Sale Item Perks' Hash
-                                $perks = [];
+                                    $sockets = $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets;
 
-                                if( isset( $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k ) ) {
-                                    if(count($vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets) > 0){
+                                    foreach($sockets as $socket) {
+                                        if(
+                                            isset($socket->plugHash) &&
+                                            isset($item_definitions[$socket->plugHash]) &&
+                                            isset($item_definitions[$socket->plugHash]->itemTypeDisplayName) &&
+                                            isset($socket->reusablePlugs) &&
+                                            in_array($item_definitions[$socket->plugHash]->itemTypeDisplayName, $this->perksExcluded) == false &&
+                                            count($socket->reusablePlugs) > 0
+                                        ) {
+                                            $perkGroup = [];
 
-                                        $sockets = $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets;
-
-                                        foreach($sockets as $socket) {
-                                            if(
-                                                isset($socket->plugHash) &&
-                                                isset($item_definitions[$socket->plugHash]) &&
-                                                isset($item_definitions[$socket->plugHash]->itemTypeDisplayName) &&
-                                                isset($socket->reusablePlugs) &&
-                                                in_array($item_definitions[$socket->plugHash]->itemTypeDisplayName, $this->perksExcluded) == false &&
-                                                count($socket->reusablePlugs) > 0
-                                            ) {
-                                                $perkGroup = [];
-
-                                                foreach($socket->reusablePlugs as $plug) {
-                                                    if( $plug->canInsert == true ) {
-                                                        $perkGroup[] = $item_definitions[ $plug->plugItemHash ];
-                                                    }
+                                            foreach($socket->reusablePlugs as $plug) {
+                                                if( $plug->canInsert == true ) {
+                                                    $perkGroup[] = $item_definitions[ $plug->plugItemHash ];
                                                 }
-
-                                                $perks[] = $perkGroup;
                                             }
-                                        }
-                                    }
-                                    //dd( $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets );
-                                }
 
-                                // 5. Prepare Data
-                                $saleItems[$vendor_name][] = [
-                                    'hash' => $v->itemHash,
-                                    'cost' => $v->costs,
-                                    'perks' => $perks
-                                ];
-                            }
-                        }
-                    }
-
-                    // 6. Process Data
-                    $n = 1;
-                    $date_added = \Carbon\Carbon::now()->format('Y-m-d H:00:00');
-
-                    foreach($saleItems as $vendor_name => $items) {
-
-                        $this->info('Processing '.$n.' of '.count($saleItems).': ' . $vendor_name);
-                        $n++;
-
-                        foreach($items as $sale_item) {
-
-                            // 7. Create Sale Item
-                            $itemHash = $sale_item['hash'];
-
-                            if( $item_definitions[$itemHash]->displayProperties->name ) {
-
-                                $costHash = $sale_item['cost'][0]->itemHash ?? null;
-                                $costAmount = $sale_item['cost'][0]->quantity ?? null;
-                                $costName = $item_definitions[$costHash]->displayProperties->name ?? null;
-
-                                $vendor_sales = new App\Classes\Vendor_Sales();
-                                $vendor_sales->itemTypeDisplayName = $item_definitions[$itemHash]->itemTypeDisplayName ?? '';
-                                $vendor_sales->itemTypeAndTierDisplayName = $item_definitions[$itemHash]->itemTypeAndTierDisplayName ?? '';
-                                $vendor_sales->hash = $item_definitions[$itemHash]->hash;
-                                $vendor_sales->vendor_hash = $this->vendorHash[$vendor_name];
-                                $vendor_sales->description = $item_definitions[$itemHash]->displayProperties->description;
-                                $vendor_sales->name = $item_definitions[$itemHash]->displayProperties->name;
-                                $vendor_sales->icon = $item_definitions[$itemHash]->displayProperties->hasIcon == true ? $item_definitions[$itemHash]->displayProperties->icon : '';
-                                $vendor_sales->cost = $costAmount;
-                                $vendor_sales->cost_hash = $costHash;
-                                $vendor_sales->cost_name = $costName;
-                                $vendor_sales->date_added = $date_added;
-
-                                try {
-                                    $vendor_sales->save();
-                                    $this->info("Created: " . $vendor_sales->name);
-                                }
-                                catch(\PDOException $e) {
-                                    //$this->info($e->getMessage());
-                                    $this->info("Error: " . $vendor_sales->name);
-                                }
-
-                                // 8. Create Perks for Sale Item
-                                if( count($sale_item['perks']) > 0 && $vendor_sales->id ) {
-                                    foreach($sale_item['perks'] as $perk_group_index => $perk_group) { // perk group
-                                        foreach($perk_group as $perk) { // individual perk hash
-                                            $vendor_sales_item_perk = new App\Classes\Vendor_Sales_Item_Perks();
-                                            $vendor_sales_item_perk->vendor_sales_id = $vendor_sales->id;
-                                            $vendor_sales_item_perk->perk_group = $perk_group_index;
-                                            $vendor_sales_item_perk->date_added = $date_added;
-                                            $vendor_sales_item_perk->description = $perk->displayProperties->description;
-                                            $vendor_sales_item_perk->name = $perk->displayProperties->name;
-                                            $vendor_sales_item_perk->icon = $perk->displayProperties->hasIcon == true ? $perk->displayProperties->icon : '';
-                                            $vendor_sales_item_perk->itemTypeDisplayName = $perk->itemTypeDisplayName;
-                                            $vendor_sales_item_perk->itemTypeAndTierDisplayName = $perk->itemTypeAndTierDisplayName;
-                                            $vendor_sales_item_perk->hash = $perk->hash;
-                                            $vendor_sales_item_perk->save();
+                                            $perks[] = $perkGroup;
                                         }
                                     }
                                 }
+                                //dd( $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets );
                             }
+
+                            // 5. Prepare Data
+                            $saleItems[$vendor_name][] = [
+                                'hash' => $v->itemHash,
+                                'cost' => $v->costs,
+                                'perks' => $perks
+                            ];
                         }
                     }
-
-                    $deletedRows1 = App\Classes\Vendor_Sales::where('date_added', '!=', $date_added)->delete();
-                    $deletedRows2 = App\Classes\Vendor_Sales_Item_Perks::where('date_added', '!=', $date_added)->delete();
-
-                    $this->info('Cleanup: '.$deletedRows1.' Vendor Sale Records Deleted');
-                    $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
-
-                    $this->info('Completed: Vendor Updates');
-                    return 1;
                 }
+
+                // 6. Process Data
+                $n = 1;
+                $date_added = \Carbon\Carbon::now()->format('Y-m-d H:00:00');
+
+                foreach($saleItems as $vendor_name => $items) {
+
+                    $this->info('Processing '.$n.' of '.count($saleItems).': ' . $vendor_name);
+                    $n++;
+
+                    foreach($items as $sale_item) {
+
+                        // 7. Create Sale Item
+                        $itemHash = $sale_item['hash'];
+
+                        if( $item_definitions[$itemHash]->displayProperties->name ) {
+
+                            $costHash = $sale_item['cost'][0]->itemHash ?? null;
+                            $costAmount = $sale_item['cost'][0]->quantity ?? null;
+                            $costName = $item_definitions[$costHash]->displayProperties->name ?? null;
+
+                            $vendor_sales = new App\Classes\Vendor_Sales();
+                            $vendor_sales->itemTypeDisplayName = $item_definitions[$itemHash]->itemTypeDisplayName ?? '';
+                            $vendor_sales->itemTypeAndTierDisplayName = $item_definitions[$itemHash]->itemTypeAndTierDisplayName ?? '';
+                            $vendor_sales->hash = $item_definitions[$itemHash]->hash;
+                            $vendor_sales->vendor_hash = $this->vendorHash[$vendor_name];
+                            $vendor_sales->description = $item_definitions[$itemHash]->displayProperties->description;
+                            $vendor_sales->name = $item_definitions[$itemHash]->displayProperties->name;
+                            $vendor_sales->icon = $item_definitions[$itemHash]->displayProperties->hasIcon == true ? $item_definitions[$itemHash]->displayProperties->icon : '';
+                            $vendor_sales->cost = $costAmount;
+                            $vendor_sales->cost_hash = $costHash;
+                            $vendor_sales->cost_name = $costName;
+                            $vendor_sales->date_added = $date_added;
+
+                            try {
+                                $vendor_sales->save();
+                                $this->info("Created: " . $vendor_sales->name);
+                            }
+                            catch(\PDOException $e) {
+                                //$this->info($e->getMessage());
+                                $this->info("Error: " . $vendor_sales->name);
+                            }
+
+                            // 8. Create Perks for Sale Item
+                            if( count($sale_item['perks']) > 0 && $vendor_sales->id ) {
+                                foreach($sale_item['perks'] as $perk_group_index => $perk_group) { // perk group
+                                    foreach($perk_group as $perk) { // individual perk hash
+                                        $vendor_sales_item_perk = new App\Classes\Vendor_Sales_Item_Perks();
+                                        $vendor_sales_item_perk->vendor_sales_id = $vendor_sales->id;
+                                        $vendor_sales_item_perk->perk_group = $perk_group_index;
+                                        $vendor_sales_item_perk->date_added = $date_added;
+                                        $vendor_sales_item_perk->description = $perk->displayProperties->description;
+                                        $vendor_sales_item_perk->name = $perk->displayProperties->name;
+                                        $vendor_sales_item_perk->icon = $perk->displayProperties->hasIcon == true ? $perk->displayProperties->icon : '';
+                                        $vendor_sales_item_perk->itemTypeDisplayName = $perk->itemTypeDisplayName;
+                                        $vendor_sales_item_perk->itemTypeAndTierDisplayName = $perk->itemTypeAndTierDisplayName;
+                                        $vendor_sales_item_perk->hash = $perk->hash;
+                                        $vendor_sales_item_perk->save();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $deletedRows1 = App\Classes\Vendor_Sales::where('date_added', '!=', $date_added)->delete();
+                $deletedRows2 = App\Classes\Vendor_Sales_Item_Perks::where('date_added', '!=', $date_added)->delete();
+
+                $this->info('Cleanup: '.$deletedRows1.' Vendor Sale Records Deleted');
+                $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
+
+                $this->info('Completed: Vendor Updates');
+                return 1;
             }
         }
     }

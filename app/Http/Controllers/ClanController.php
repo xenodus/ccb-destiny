@@ -21,6 +21,29 @@ class ClanController extends Controller
     return response()->json($roster);
   }
 
+  public function clan_exotic_collection() {
+    $data['site_title'] = 'Exotic Collection Progress for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+    $data['active_page'] = 'clan_exotic';
+
+    return view('clan.exotics', $data);
+  }
+
+  public function member_exotic_collection($member_id) {
+
+    $member = App\Classes\Clan_Member::find($member_id);
+
+    if( !$member ) {
+      return redirect()->route('clan_exotics');
+    }
+
+    $data['member'] = $member;
+    $data['member_id'] = $member_id;
+    $data['site_title'] = 'Exotic Collection for ' . $member->display_name;
+    // $data['active_page'] = 'seals_breakdown';
+
+    // return view('clan.sealsBreakdown', $data);
+  }
+
   public function member_seal_progression($member_id) {
 
     $member = App\Classes\Clan_Member::find($member_id);

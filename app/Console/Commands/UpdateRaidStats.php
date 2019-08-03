@@ -84,6 +84,7 @@ class UpdateRaidStats extends Command
 
                 $members = json_decode($members_response->getBody()->getContents());
                 $members = collect($members);
+                $updated_members = collect([]);
 
                 $n = 1;
 
@@ -108,6 +109,10 @@ class UpdateRaidStats extends Command
 
                         $member->raidClears['crown'] = $member_profile['Response']->profileRecords->data->records->$crown_run_hash->objectives[0]->progress ?? 0;
                     }
+                    else {
+                        $this->info('Skipping: ' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
+                        continue;
+                    }
 
                     // Check raid.report
                     $url = $this->raid_report_root_path . $member->destinyUserInfo->membershipId;
@@ -131,12 +136,17 @@ class UpdateRaidStats extends Command
                             }
                         }
                     }
+                    else {
+                        $this->info('Skipping: ' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get raid report.');
+                        continue;
+                    }
 
                     //App\Classes\Raid_Stats::update_members($members);
                     //dd($member);
+                    $updated_members->push($member);
                 }
 
-                App\Classes\Raid_Stats::update_members($members);
+                App\Classes\Raid_Stats::update_members($updated_members);
 
                 $work_progress->end = date('Y-m-d H:i:s');
                 $work_progress->status = 'completed';

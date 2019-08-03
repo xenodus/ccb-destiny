@@ -66,12 +66,13 @@ class UpdatePVPStats extends Command
 
                 $members = json_decode($members_response->getBody()->getContents());
                 $members = collect($members);
+                $updated_members = collect([]);
 
                 $n = 1;
 
                 foreach($members as $member) {
 
-                    $this->info('Processing '.$n.' of '.count($members).' members');
+                    $this->info('Processing '.$n.' of '.count($members).': ' . $member->destinyUserInfo->displayName);
                     $n++;
 
                     $member_pvp_stats_response = $client->get(
@@ -80,12 +81,25 @@ class UpdatePVPStats extends Command
                     );
 
                     if( $member_pvp_stats_response->getStatusCode() == 200 ) {
+
                         $member_pvp_stats = json_decode($member_pvp_stats_response->getBody()->getContents());
                         $member_pvp_stats = collect($member_pvp_stats);
+
+                        if( isset($member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime) == false ) {
+                            $this->info("Skipping");
+                            continue;
+                        }
 
                         $member->pvpStats['kad'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->efficiency->basic->displayValue;
                         $member->pvpStats['kda'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->killsDeathsAssists->basic->displayValue;
                         $member->pvpStats['kd'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->killsDeathsRatio->basic->displayValue;
+
+                        $member->pvpStats['weaponKillsSuper'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->weaponKillsSuper->basic->displayValue;
+                        $member->pvpStats['weaponKillsMelee'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->weaponKillsMelee->basic->displayValue;
+                        $member->pvpStats['weaponKillsGrenade'] = $member_pvp_stats['Response']->mergedAllCharacters->results->allPvP->allTime->weaponKillsGrenade->basic->displayValue;
+                    }
+                    else {
+                        continue;
                     }
 
                     $member_profile_response = $client->get(
@@ -123,9 +137,14 @@ class UpdatePVPStats extends Command
                         $member->pvpStats['glory_step'] = $member_profile['Response']->characterProgressions->data->$character_id->progressions->$glory_hash->level;
                         $member->pvpStats['valor_step'] = $member_profile['Response']->characterProgressions->data->$character_id->progressions->$valor_hash->level;
                     }
+                    else {
+                        continue;
+                    }
+
+                    $updated_members->push($member);
                 }
 
-                App\Classes\Pvp_Stats::update_members($members);
+                App\Classes\Pvp_Stats::update_members($updated_members);
 
                 $work_progress->end = date('Y-m-d H:i:s');
                 $work_progress->status = 'completed';

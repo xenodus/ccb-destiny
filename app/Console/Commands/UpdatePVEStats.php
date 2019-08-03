@@ -60,6 +60,7 @@ class UpdatePVEStats extends Command
 
                 $members = json_decode($members_response->getBody()->getContents());
                 $members = collect($members);
+                $updated_members = collect([]);
 
                 $n = 1;
 
@@ -92,10 +93,15 @@ class UpdatePVEStats extends Command
                             function($value, $key){ return $value->deleted == true; }
                         ));
                     }
+                    else {
+                      continue;
+                    }
+
+                  $updated_members->push($member);
                 }
 
-                App\Classes\Weapon_Stats::update_members($members);
-                App\Classes\Pve_Stats::update_members($members);
+                App\Classes\Weapon_Stats::update_members($updated_members);
+                App\Classes\Pve_Stats::update_members($updated_members);
 
                 $work_progress->end = date('Y-m-d H:i:s');
                 $work_progress->status = 'completed';

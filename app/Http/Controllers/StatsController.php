@@ -20,7 +20,7 @@ class StatsController extends Controller
 
     $client = new Client(); //GuzzleHttp\Client
 
-    $member_gambit_stats_response = $client->get('https://stats.bungie.net/Platform/Destiny2/4/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
+    $member_gambit_stats_response = $client->get(env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
     ]);
 
     // Character/2305843009300583068/Stats/AggregateActivityStats/
@@ -209,6 +209,7 @@ class StatsController extends Controller
           $clan_member = \App\Classes\Clan_Member::updateOrCreate(
             ['id' => $result->destinyUserInfo->membershipId],
             [
+              'bungie_id' => $result->bungieNetUserInfo->membershipId,
               'display_name' => $result->destinyUserInfo->displayName,
               'last_online' => $last_online->format('Y-m-d H:i:s'),
               'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),

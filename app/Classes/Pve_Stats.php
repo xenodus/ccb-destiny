@@ -33,7 +33,7 @@ class Pve_Stats extends Model
         }
       }
 
-      $member_stat->characters_deleted = $member->charactersDeleted;
+      $member_stat->characters_deleted = $member->charactersDeleted ?? 0;
       $member_stat->user_id = $member->destinyUserInfo->membershipId;
       $member_stat->last_updated = date("Y-m-d H:i:s");
 
