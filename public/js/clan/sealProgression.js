@@ -233,7 +233,7 @@ $(document).ready(function(){
     $.get('/bungie/member/'+ccbNS['member_id']+'/triumphs', function(memberData){
       //console.log(memberData);
 
-      $.get('https://destiny.plumbing/en/raw/DestinyRecordDefinition.json', function(recordDefinition){
+      $.get('/api/manifest/get_record_definition', function(recordDefinition){
         //console.log(recordDefinition);
         //console.log(sealHashes);
 

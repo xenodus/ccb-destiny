@@ -22,6 +22,11 @@ class ApiController extends Controller
 
     const HIDE_ACTIVITY = true;
 
+    function get_record_definition() {
+        $def = file_get_contents( storage_path('manifest/DestinyRecordDefinition.json') );
+        return response()->json(json_decode($def, true));
+    }
+
     function get_membership_id_from_bnet_id($bnet_id) {
 
         $client = new Client(); //GuzzleHttp\Client

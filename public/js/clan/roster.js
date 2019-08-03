@@ -43,7 +43,7 @@ $(document).ready(function(){
         data:tableData, //assign data to table
         layout:"fitColumns", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
-          {formatter:autoNumFormatter, width:40},
+          {formatter:autoNumFormatter, width:40, headerSort:false},
           {title:"Name", field:"name"},
           {title:"Warlock", field:"warlock", sorter:"number"},
           {title:"Hunter", field:"hunter", sorter:"number"},

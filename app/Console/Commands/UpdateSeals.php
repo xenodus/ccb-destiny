@@ -91,6 +91,20 @@ class UpdateSeals extends Command
                     if( isset($payload['profileRecords']->data->records->$id) ) {
                       $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
                     }
+                    else {
+                      // Check chars
+                      if( isset($payload['characterRecords']->data) ) {
+                        $chars = collect($payload['characterRecords']->data);
+
+                        if( count($chars) ) {
+                          foreach($chars as $char) {
+                            if( isset($char->records->$id) ) {
+                              $seal_completion[$title] = $char->records->$id->objectives[0]->complete ? 1 : 0;
+                            }
+                          }
+                        }
+                      }
+                    }
                 }
 
                 $member->seal_completion = $seal_completion;
