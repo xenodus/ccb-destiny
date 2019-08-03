@@ -26,7 +26,7 @@ $(document).ready(function(){
             if( raidData ) {
               tableData.push({
                 membershipId: memberData[i].destinyUserInfo.membershipId,
-                name: '<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark">'+memberData[i].destinyUserInfo.displayName+'</a>',
+                name: memberData[i].destinyUserInfo.displayName+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
                 levi: raidData.levi,
                 levip: raidData.levip,
                 eow: raidData.eow,
@@ -54,12 +54,17 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
+          var autoNumFormatter = function(){
+            return $("#raid-stats-table .tabulator-row").length;
+          };
+
           var format = {precision: 0};
 
           var table = new Tabulator("#raid-stats-table", {
             data:tableData, //assign data to table
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
               {title:"Name", field:"name", formatter:"html", formatterParams: format, frozen:true},
               {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
               {title:"Levi", field:"levi", formatter:"money", formatterParams: format},
@@ -80,7 +85,7 @@ $(document).ready(function(){
               {column:"total", dir:"desc"}
             ],
             layout:"fitDataFill",
-            // height:"350px",
+            height:"500px",
             resizableColumns:false,
           });
 

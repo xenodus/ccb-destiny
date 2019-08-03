@@ -21,25 +21,28 @@ $(document).ready(function(){
 
             weaponData = memberWeaponData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-            tableData.push({
-              name: memberData[i].destinyUserInfo.displayName,
-              weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
-              //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
-              weaponKillsBow: weaponData.weaponKillsBow,
-              weaponKillsFusionRifle: weaponData.weaponKillsFusionRifle,
-              weaponKillsHandCannon: weaponData.weaponKillsHandCannon,
-              weaponKillsTraceRifle: weaponData.weaponKillsTraceRifle,
-              weaponKillsPulseRifle: weaponData.weaponKillsPulseRifle,
-              weaponKillsRocketLauncher: weaponData.weaponKillsRocketLauncher,
-              weaponKillsScoutRifle: weaponData.weaponKillsScoutRifle,
-              weaponKillsShotgun: weaponData.weaponKillsShotgun,
-              weaponKillsSniper: weaponData.weaponKillsSniper,
-              weaponKillsSubmachinegun: weaponData.weaponKillsSubmachinegun,
-              //weaponKillsRelic: weaponData.weaponKillsRelic,
-              weaponKillsSideArm: weaponData.weaponKillsSideArm,
-              weaponKillsSword: weaponData.weaponKillsSword,
-              weaponKillsGrenadeLauncher: weaponData.weaponKillsGrenadeLauncher,
-            });
+            if( weaponData ) {
+
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
+                //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
+                weaponKillsBow: weaponData.weaponKillsBow,
+                weaponKillsFusionRifle: weaponData.weaponKillsFusionRifle,
+                weaponKillsHandCannon: weaponData.weaponKillsHandCannon,
+                weaponKillsTraceRifle: weaponData.weaponKillsTraceRifle,
+                weaponKillsPulseRifle: weaponData.weaponKillsPulseRifle,
+                weaponKillsRocketLauncher: weaponData.weaponKillsRocketLauncher,
+                weaponKillsScoutRifle: weaponData.weaponKillsScoutRifle,
+                weaponKillsShotgun: weaponData.weaponKillsShotgun,
+                weaponKillsSniper: weaponData.weaponKillsSniper,
+                weaponKillsSubmachinegun: weaponData.weaponKillsSubmachinegun,
+                //weaponKillsRelic: weaponData.weaponKillsRelic,
+                weaponKillsSideArm: weaponData.weaponKillsSideArm,
+                weaponKillsSword: weaponData.weaponKillsSword,
+                weaponKillsGrenadeLauncher: weaponData.weaponKillsGrenadeLauncher,
+              });
+            }
           }
 
           $('.loader-text').text('Generating Table...');
@@ -49,12 +52,17 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
+          var autoNumFormatter = function(){
+            return $("#weapon-stats-table .tabulator-row").length;
+          };
+
           var format = {precision: 0};
 
           var table = new Tabulator("#weapon-stats-table", {
             data:tableData, //assign data to table
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
               {title:"Name", field:"name", frozen:true},
               {title:"Auto Rifle", field:"weaponKillsAutoRifle", formatter:"money", formatterParams: format},
               //{title:"Beam Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
@@ -74,7 +82,7 @@ $(document).ready(function(){
               {title:"Grenade Launcher", field:"weaponKillsGrenadeLauncher", formatter:"money", formatterParams: format},
             ],
             layout:"fitDataFill",
-            //height:"350px",
+            height:"500px",
             resizableColumns:false,
           });
 

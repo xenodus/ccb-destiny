@@ -49,20 +49,29 @@ $(document).ready(function(){
 
             pvpData = memberPvpData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-            glory_rank = pvpData.glory_step == gloryRanks.length ? gloryRanks[gloryRanks.length-1] : gloryRanks[ pvpData.glory_step ];
-            valor_rank = pvpData.valor_step == valorRanks.length ? valorRanks[valorRanks.length-1] : valorRanks[ pvpData.valor_step ];
+            if( pvpData ) {
 
-            tableData.push({
-              name: memberData[i].destinyUserInfo.displayName,
-              kd: pvpData.kd,
-              kda: pvpData.kda,
-              kad: pvpData.kad,
-              glory: pvpData.glory,
-              glory_step: glory_rank,
-              valor: pvpData.valor,
-              valor_step: valor_rank,
-              valor_resets: pvpData.valor_resets,
-            });
+              glory_rank = pvpData.glory_step == gloryRanks.length ? gloryRanks[gloryRanks.length-1] : gloryRanks[ pvpData.glory_step ];
+              valor_rank = pvpData.valor_step == valorRanks.length ? valorRanks[valorRanks.length-1] : valorRanks[ pvpData.valor_step ];
+
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                kd: pvpData.kd,
+                kda: pvpData.kda,
+                kad: pvpData.kad,
+                glory: pvpData.glory,
+                glory_step: glory_rank,
+                valor: pvpData.valor,
+                valor_step: valor_rank,
+                valor_resets: pvpData.valor_resets,
+                super_kills: pvpData.weaponKillsSuper,
+                melee_kills: pvpData.weaponKillsMelee,
+                grenade_kills: pvpData.weaponKillsGrenade,
+              });
+            }
+            else {
+              console.log("Unable to retrieve PVP data for: " + memberData[i].destinyUserInfo.displayName);
+            }
           }
 
           $('.loader-text').text('Generating Table...');
@@ -72,12 +81,17 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
+          var autoNumFormatter = function(){
+            return $("#pvp-stats-table .tabulator-row").length;
+          };
+
           var format = {precision: 0};
 
           var table = new Tabulator("#pvp-stats-table", {
             data:tableData, //assign data to table
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
               {title:"Name", field:"name", formatter:"money", formatterParams: format, frozen:true},
               {title:"KD", field:"kd", formatter:"money", formatterParams: {precision: 2}},
               {title:"KDA", field:"kda", formatter:"money", formatterParams: {precision: 2}},
@@ -87,12 +101,15 @@ $(document).ready(function(){
               {title:"Valor", field:"valor", formatter:"money", formatterParams: format},
               {title:"Valor Rank", field:"valor_step"},
               {title:"Valor Resets", field:"valor_resets", formatter:"money", formatterParams: format},
+              {title:"Super Kills", field:"super_kills", formatter:"money", formatterParams: format},
+              {title:"Melee Kills", field:"melee_kills", formatter:"money", formatterParams: format},
+              {title:"Grenade Kills", field:"grenade_kills", formatter:"money", formatterParams: format},
             ],
             initialSort: [
               {column:"glory", dir:"desc"}
             ],
             layout:"fitDataFill",
-            //height:"350px",
+            height:"500px",
             resizableColumns:false,
           });
 

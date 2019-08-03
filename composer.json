@@ -13,6 +13,7 @@
         "fabpot/goutte": "^3.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "halaxa/json-machine": "^0.3.2",
         "jgrossi/corcel": "^2.8",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",

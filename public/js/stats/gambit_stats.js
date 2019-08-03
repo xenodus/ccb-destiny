@@ -58,27 +58,30 @@ $(document).ready(function(){
 
             gambitData = memberGambitData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-            infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
+            if( gambitData ) {
 
-            tableData.push({
-              name: memberData[i].destinyUserInfo.displayName,
-              infamy: gambitData.infamy,
-              infamy_step: infamy_rank,
-              infamy_resets: gambitData.infamy_resets,
-              kills: gambitData.kills,
-              deaths: gambitData.deaths,
-              kd: gambitData.killsDeathsRatio,
-              activitiesEntered: gambitData.activitiesEntered,
-              activitiesWon: gambitData.activitiesEntered > 0 ? ((gambitData.activitiesWon / gambitData.activitiesEntered) * 100) : 0,
-              invasionKills: gambitData.invasionKills,
-              invaderKills: gambitData.invaderKills,
-              invaderDeaths: gambitData.invaderDeaths,
-              primevalHealing: gambitData.primevalHealing,
-              primevalDamage: gambitData.primevalDamage,
-              motesDeposited: gambitData.motesDeposited,
-              motesLost: gambitData.motesLost,
-              motesDenied: gambitData.motesDenied,
-            });
+              infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
+
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                infamy: gambitData.infamy,
+                infamy_step: infamy_rank,
+                infamy_resets: gambitData.infamy_resets,
+                kills: gambitData.kills,
+                deaths: gambitData.deaths,
+                kd: gambitData.killsDeathsRatio,
+                activitiesEntered: gambitData.activitiesEntered,
+                activitiesWon: gambitData.activitiesEntered > 0 ? ((gambitData.activitiesWon / gambitData.activitiesEntered) * 100) : 0,
+                invasionKills: gambitData.invasionKills,
+                invaderKills: gambitData.invaderKills,
+                invaderDeaths: gambitData.invaderDeaths,
+                primevalHealing: gambitData.primevalHealing,
+                primevalDamage: gambitData.primevalDamage,
+                motesDeposited: gambitData.motesDeposited,
+                motesLost: gambitData.motesLost,
+                motesDenied: gambitData.motesDenied,
+              });
+            }
           }
 
           $('.loader-text').text('Generating Table...');
@@ -88,12 +91,17 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
+          var autoNumFormatter = function(){
+            return $("#gambit-stats-table .tabulator-row").length;
+          };
+
           var format = {precision: 0};
 
           var table = new Tabulator("#gambit-stats-table", {
             data:tableData, //assign data to table
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
               {title:"Name", field:"name", frozen:true},
               {title:"Infamy", field:"infamy", formatter:"money", formatterParams: format},
               {title:"Infamy Rank", field:"infamy_step"},
@@ -116,7 +124,7 @@ $(document).ready(function(){
               {column:"name", dir:"asc"}
             ],
             layout:"fitDataFill",
-            //height:"350px",
+            height:"500px",
             resizableColumns:false,
           });
 

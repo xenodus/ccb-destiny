@@ -19,6 +19,7 @@
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/chalice-of-opulence-item-combinations/212">Chalice Rune Recipe</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/menageries-secret-triumphs/224">Menagerie Secret Triumphs</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/others/31">Others</a></div>
+      <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/where-to-get-every-destiny-2-weapon-catalyst/260">Exotic Catalyst Source</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/how-to-trigger-heroic-public-events/61">Heroic Public Events</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/destiny-mods-breakdown/63">Mods Breakdown</a></div>
     </div>

@@ -39,5 +39,9 @@
 <script type="text/javascript">
   ccbNS["member_id"] = '{{ $member_id }}';
 </script>
+@if( isset($_GET['test']) )
+<script src="/js/clan/sealProgression.js?<?=time()?>"></script>
+@else
 <script src="{{ mix('/js/compiled/sealProgression.js') }}"></script>
+@endif
 @endsection

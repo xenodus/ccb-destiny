@@ -75,12 +75,28 @@
                   <i class="ra ra-double-team"></i>
                   <div>Clan</div>
                 </a>
+                <div class="drop-down-menu animated fadeIn faster">
+                  <ul>
+                    <li><a href="/clan/roster">Roster</a></li>
+                    <li><a href="/clan/lockouts">Raid Lockouts</a></li>
+                    <li><a href="/clan/seals">Seal Completions</a></li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">
                   <i class="far fa-chart-bar animated pulse slower infinite delay-0.5s"></i>
                   <div>Stats</div>
                 </a>
+                <div class="drop-down-menu animated fadeIn faster">
+                  <ul>
+                    <li><a href="/stats/raid">Raid Completions</a></li>
+                    <li><a href="/stats/weapons">Weapon Kills</a></li>
+                    <li><a href="/stats/pve">PvE</a></li>
+                    <li><a href="/stats/pvp">PvP</a></li>
+                    <li><a href="/stats/gambit">Gambit</a></li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item {{ (isset($active_page) && $active_page == 'guides') ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/guides">

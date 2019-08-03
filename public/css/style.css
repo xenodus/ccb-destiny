@@ -402,6 +402,35 @@ section#members-online {
   transition: left 0.15s ease-out;
 }
 
+header .drop-down-menu {
+  display: none;
+  position: absolute;
+  background: rgba(0,0,0,0.98);
+  font-size: 1rem;
+  line-height: 1;
+  z-index: 4;
+  cursor: pointer;
+}
+header nav li.nav-item:hover div.drop-down-menu {
+  display: block;
+}
+div.drop-down-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+header .drop-down-menu a {
+  color: rgba(255,255,255,.5);
+  display: block;
+  padding: 12px 15px;
+}
+header .drop-down-menu a:hover,
+header .drop-down-menu a:focus,
+header .drop-down-menu a:active {
+  text-decoration: none;
+  color: #ffca00!important;
+}
+
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
 }
@@ -423,6 +452,12 @@ section#members-online {
   }
   .mobile-hide {
     display: none!important;
+  }
+  header .drop-down-menu {
+    display: block;
+    position: relative;
+    background: inherit;
+    border: none!important;
   }
 }
 

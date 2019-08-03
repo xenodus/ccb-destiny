@@ -9,7 +9,8 @@
     </div>
     <div id="about-us-description" class="text-justify">
       <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p>We're on PC / Battle.net. Most of our activities and communications are held inside our <a href="{{ env('DISCORD_LINK') }}" target="_blank">Discord</a> server. Drop by to say hi!</p>
+      <p><a href="https://www.bungie.net/en-us/ClanV2?groupid=3717919" target="_blank">We're recruiting for PC / Battle.net / Steam!</a> We have an active & friendly discord, internal progression systems and 9+ raids/week; all experience levels welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord server to say hi!</a></p>
+      <!--p>We're on PC / Battle.net. Most of our activities and communications are held inside our <a href="{{ env('DISCORD_LINK') }}" target="_blank">Discord</a> server. Drop by to say hi!</p-->
     </div>
 
     <div class="row mt-5">

@@ -39,7 +39,6 @@ $(document).ready(function(){
         return $("#roster-container .tabulator-row").length;
       };
 
-
       var table = new Tabulator("#roster-container", {
         data:tableData, //assign data to table
         layout:"fitColumns", //fit columns to width of table (optional)
@@ -56,6 +55,7 @@ $(document).ready(function(){
           {column:"last_online", dir:"desc"}
         ],
         layout:"fitDataFill",
+        height:"500px",
         resizableColumns:false,
       });
     }

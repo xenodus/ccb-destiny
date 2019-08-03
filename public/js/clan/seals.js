@@ -16,7 +16,7 @@ $(document).ready(function(){
           var username = memberData.filter(function(member){ return member.destinyUserInfo.membershipId == sealData[i].id }).map(function(member){ return member.destinyUserInfo.displayName })[0];
 
           var tableDataEntry = {
-            name: '<a href="/clan/seals/member/'+sealData[i].id+'">'+username+'</a>'
+            name: username+'<a href="/clan/seals/member/'+sealData[i].id+'"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
           };
 
           var memberSealData = JSON.parse( sealData[i].data );

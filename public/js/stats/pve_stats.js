@@ -21,19 +21,21 @@ $(document).ready(function(){
 
             pveData = memberPveData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
-            tableData.push({
-              name: memberData[i].destinyUserInfo.displayName,
-              kills: pveData.kills,
-              deaths: pveData.deaths,
-              suicides: pveData.suicides,
-              killsDeathsRatio: pveData.killsDeathsRatio,
-              activitiesCleared: pveData.activitiesCleared,
-              weaponKillsSuper: pveData.weaponKillsSuper,
-              weaponKillsMelee: pveData.weaponKillsMelee,
-              weaponKillsGrenade: pveData.weaponKillsGrenade,
-              publicEventsCompleted: pveData.publicEventsCompleted,
-              heroicPublicEventsCompleted: pveData.heroicPublicEventsCompleted,
-            });
+            if( pveData ) {
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                kills: pveData.kills,
+                deaths: pveData.deaths,
+                suicides: pveData.suicides,
+                killsDeathsRatio: pveData.killsDeathsRatio,
+                activitiesCleared: pveData.activitiesCleared,
+                weaponKillsSuper: pveData.weaponKillsSuper,
+                weaponKillsMelee: pveData.weaponKillsMelee,
+                weaponKillsGrenade: pveData.weaponKillsGrenade,
+                publicEventsCompleted: pveData.publicEventsCompleted,
+                heroicPublicEventsCompleted: pveData.heroicPublicEventsCompleted,
+              });
+            }
           }
 
           $('.loader-text').text('Generating Table...');
@@ -43,12 +45,17 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
+          var autoNumFormatter = function(){
+            return $("#pve-stats-table .tabulator-row").length;
+          };
+
           var format = {precision: 0};
 
           var table = new Tabulator("#pve-stats-table", {
             data:tableData, //assign data to table
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
+              //{formatter:autoNumFormatter, width:40},
               {title:"Name", field:"name", formatter:"money", formatterParams: format, frozen:true},
               {title:"Kills", field:"kills", formatter:"money", formatterParams: format},
               {title:"Deaths", field:"deaths", formatter:"money", formatterParams: format},
@@ -65,7 +72,7 @@ $(document).ready(function(){
               {column:"name", dir:"asc"}
             ],
             layout:"fitDataFill",
-            //height:"350px",
+            height:"500px",
             resizableColumns:false,
           });
 

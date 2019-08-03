@@ -195,6 +195,37 @@ var sealHashes = {
       1575460002
     ]
   },
+  'MMXIX': {
+    'name': 'A Shadow Rises',
+    'description': 'Complete these feats of strength before 8/27/2019 to claim your unique rewards.',
+    'hash': '2254764897',
+    'objectives': [
+      1076096270,
+      1732935196,
+      2630441634,
+      1386173696,
+      444152197,
+      1518215963,
+      2181708792,
+      1294551872,
+      4175049478,
+      1492080644,
+      488987738,
+      1567884322,
+      3710831503,
+      3728188192,
+      700444358,
+      2556866202,
+      277879384,
+      3332500563,
+      1913403057,
+      1760928123,
+      2314271318,
+      2195455623,
+      4060320345,
+      1558682421
+    ]
+  },
 };
 
 $(document).ready(function(){
@@ -216,12 +247,14 @@ $(document).ready(function(){
           var completed = [];
           var inProgress = [];
           var multipleObjectivesProgress = [];
+          var singleObjectivesProgress = [];
 
           for(var i=0; i<sealHashes[seal]['objectives'].length; i++) {
             var recordID = sealHashes[seal]['objectives'][i];
 
             var isCompleted = false;
             var multipleObjectives = false;
+            var objectProgress = '';
             var multipleObjectivesItem = {
               'completed': 0,
               'total': 0,
@@ -260,6 +293,12 @@ $(document).ready(function(){
                 multipleObjectivesItem['total'] = memberData.profileRecords.data.records[recordID].objectives.length;
                 multipleObjectivesItem['inProgress'] = memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete != true });
               }
+
+              if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == false ) {
+                if ( memberData.profileRecords.data.records[recordID].objectives[0].progress != 0 && memberData.profileRecords.data.records[recordID].objectives[0].completionValue != 0 ) {
+                  objectProgress = memberData.profileRecords.data.records[recordID].objectives[0].progress + "/" + memberData.profileRecords.data.records[recordID].objectives[0].completionValue;
+                }
+              }
             }
 
             if( isCompleted )
@@ -269,6 +308,9 @@ $(document).ready(function(){
 
               if( multipleObjectives ) {
                 multipleObjectivesProgress[recordID] = multipleObjectivesItem;
+              }
+              else {
+                singleObjectivesProgress[recordID] = objectProgress;
               }
             }
           }
@@ -305,7 +347,7 @@ $(document).ready(function(){
                 `;
 
                 var str = `
-                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+completed[key]+`">
                   <img class="img-fluid" src="https://bungie.net`+recordDefinition[completed[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[completed[key]]["displayProperties"]["name"]+`
                 </div>
                 `;
@@ -318,15 +360,21 @@ $(document).ready(function(){
             for(var key in inProgress) {
               if( inProgress[key] in recordDefinition ) {
 
-                var multipleObjectivesProgressStr = '';
+                var objectivesProgressStr = '';
 
                 if( inProgress[key] in multipleObjectivesProgress ) {
-                  multipleObjectivesProgressStr = ' (' + multipleObjectivesProgress[inProgress[key]]['completed'] + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
+                  objectivesProgressStr = ' (' + multipleObjectivesProgress[inProgress[key]]['completed'] + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
+                }
+
+                if( inProgress[key] in singleObjectivesProgress ) {
+                  if( singleObjectivesProgress[inProgress[key]] ) {
+                    objectivesProgressStr = ' (' + singleObjectivesProgress[inProgress[key]] + ')';
+                  }
                 }
 
                 var tooltip = `
                 <div>
-                  <h6 class='font-weight-bold mb-1'>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+multipleObjectivesProgressStr+`</h6>
+                  <h6 class='font-weight-bold mb-1'>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`</h6>
                   <div class='d-flex align-items-center'>
                     <div>
                       <img src='https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
@@ -339,8 +387,8 @@ $(document).ready(function(){
                 `;
 
                 var str = `
-                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
-                  <img class="img-fluid" src="https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+multipleObjectivesProgressStr+`
+                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+inProgress[key]+`">
+                  <img class="img-fluid" src="https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`
                 </div>
                 `;
 
