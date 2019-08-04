@@ -21,6 +21,13 @@ class ClanController extends Controller
     return response()->json($roster);
   }
 
+  public function get_clan_exotic_collection() {
+    $data['clan_exotic_weapon_collection'] = DB::table("clan_member_exotic_weapons")->get();
+    $data['clan_exotic_armor_collection'] = DB::table("clan_member_exotic_armors")->get();
+    $data['exotic_definition'] = DB::table("exotics")->get();
+    return response()->json($data);
+  }
+
   public function clan_exotic_collection() {
     $data['site_title'] = 'Exotic Collection Progress for the ' . env('SITE_NAME') .' Clan in Destiny 2';
     $data['active_page'] = 'clan_exotic';

@@ -50,7 +50,7 @@ $(document).ready(function(){
             {column:"total", dir:"desc"},
           ],
           layout:"fitDataFill",
-          // height: "350px",
+          height: "500px",
           resizableColumns:false,
         });
 

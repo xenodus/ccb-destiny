@@ -81,6 +81,7 @@ Route::get('/clan/seals/get', 'ClanController@get_clan_seal_progression')->name(
 
 // Clan Exotic
 Route::get('/clan/exotics', 'ClanController@clan_exotic_collection')->name('clan_exotic');
+Route::get('/clan/exotics/get', 'ClanController@get_clan_exotic_collection')->name('get_clan_exotic_collection');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');

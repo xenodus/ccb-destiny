@@ -22,6 +22,11 @@ class ApiController extends Controller
 
     const HIDE_ACTIVITY = true;
 
+    function get_exotic_definition() {
+        $exotics = App\Classes\Exotic_Weapon::get();
+        return response()->json($exotics);
+    }
+
     function get_record_definition() {
         $def = file_get_contents( storage_path('manifest/DestinyRecordDefinition.json') );
         return response()->json(json_decode($def, true));

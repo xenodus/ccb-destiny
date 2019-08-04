@@ -90,6 +90,11 @@ mix.scripts([
     'public/js/clan/sealProgression.js',
 ], 'public/js/compiled/sealProgression.js');
 
+// EXOTIC COLLECTION PAGE
+mix.scripts([
+    'public/js/clan/exotics.js',
+], 'public/js/compiled/exotics.js');
+
 // POST + LISTING PAGE
 mix.scripts([
     'public/js/mtg/mtgtooltip.js',

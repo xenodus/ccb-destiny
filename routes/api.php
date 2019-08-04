@@ -35,4 +35,5 @@ Route::get('/get_membership_id/{bnet_id}', 'ApiController@get_membership_id_from
 Route::post('/pvp/closest_glory', 'ApiController@closest_glory')->name('closest_glory');
 Route::post('/pvp/update_glory_from_db', 'ApiController@update_glory_from_db')->name('update_glory_from_db');
 
+Route::get('/manifest/get_exotic_definition', 'ApiController@get_exotic_definition')->name('get_exotic_definition');
 Route::get('/manifest/get_record_definition', 'ApiController@get_record_definition')->name('get_record_definition');

@@ -70,7 +70,7 @@
                   <div>Home</div>
                 </a>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'lockouts', 'seals', 'seals_breakdown']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/clan/lockouts">
                   <i class="ra ra-double-team"></i>
                   <div>Clan</div>
@@ -80,6 +80,7 @@
                     <li><a href="/clan/roster">Roster</a></li>
                     <li><a href="/clan/lockouts">Raid Lockouts</a></li>
                     <li><a href="/clan/seals">Seal Completions</a></li>
+                    <li><a href="/clan/exotics">Uncollected Exotic Tracker</a></li>
                   </ul>
                 </div>
               </li>

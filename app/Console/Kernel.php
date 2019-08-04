@@ -33,6 +33,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:lockouts')->everyThirtyMinutes()->appendOutputTo($filePath);
         // Member Characters
         $schedule->command('update:characters')->everyThirtyMinutes()->appendOutputTo($filePath);
+        // Member Exotic Collection
+        $schedule->command('update:memberExotic')->everyThirtyMinutes()->appendOutputTo($filePath);
         // Member Platform Profile
         $schedule->command('update:memberPlatformProfile')->everyThirtyMinutes()->appendOutputTo($filePath);
         // Seal Progression
