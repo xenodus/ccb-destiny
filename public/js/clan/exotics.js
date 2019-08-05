@@ -104,7 +104,7 @@ $(document).ready(function(){
               {column:"name", dir:"asc"},
             ],
             layout:"fitDataFill",
-            height: "500px",
+            height: "600px",
             resizableColumns:false,
           });
 

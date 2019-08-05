@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('body')
-<section id="exotic-collection" class="container text-center mb-4">
+<section id="exotic-collection" class="container-fluid text-center mb-4">
   <div class="mt-4 mb-4">
     @include('clan.nav')
   </div>
@@ -18,6 +18,17 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ mix('/css/compiled/clan.css') }}"/>
+<style type="text/css">
+  .tabulator-row.tabulator-selectable:hover {
+    background-color: inherit;
+  }
+  .tabulator-row.tabulator-row-even {
+    background-color: #eee;
+  }
+  .tabulator-row.tabulator-row-even:hover {
+    background-color: #eee;
+  }
+</style>
 @endsection
 
 @section('footer')

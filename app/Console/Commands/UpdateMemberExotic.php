@@ -239,7 +239,7 @@ class UpdateMemberExotic extends Command
                                 $collection_records = collect($member_profile['Response']->profileCollectibles->data->collectibles);
 
                                 if( isset($collection_records[$id]) ) {
-                                    $is_collected = in_array($collection_records[$id]->state, [1, 3, 5]) ? 0 : 1;
+                                    $is_collected = in_array($collection_records[$id]->state, [0, 8, 16, 32, 64]) ? 1 : 0;
 
                                     DB::table('clan_member_exotic_weapons')
                                     ->updateOrInsert(
@@ -275,8 +275,8 @@ class UpdateMemberExotic extends Command
                                 foreach($chars as $char) {
                                     $collection_records = collect($char->collectibles);
 
-                                    if( isset($collection_records[$id]) ) {
-                                        $is_collected = in_array($collection_records[$id]->state, [1, 3, 5]) ? 0 : 1;
+                                    if( isset($collection_records[$id]->state) ) {
+                                        $is_collected = in_array($collection_records[$id]->state, [0, 8, 16, 32, 64]) ? 1 : 0;
 
                                         DB::table('clan_member_exotic_armors')
                                         ->updateOrInsert(
@@ -284,7 +284,7 @@ class UpdateMemberExotic extends Command
                                             ['is_collected' => $is_collected, 'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')]
                                         );
 
-                                        continue;
+                                        if( $is_collected == 1 ) break;
                                     }
                                 }
                             }
