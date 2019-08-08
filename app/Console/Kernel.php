@@ -30,17 +30,26 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:manifest')->dailyAt('01:10')->appendOutputTo($filePath);
 
         // Raid lockouts
-        $schedule->command('update:lockouts')->everyThirtyMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:lockouts')->everyFiveMinutes()->appendOutputTo($filePath);
+
         // Member Characters
         $schedule->command('update:characters')->everyThirtyMinutes()->appendOutputTo($filePath);
+
         // Member Exotic Collection
         $schedule->command('update:memberExotic')->everyThirtyMinutes()->appendOutputTo($filePath);
+
         // Member Platform Profile
         $schedule->command('update:memberPlatformProfile')->everyThirtyMinutes()->appendOutputTo($filePath);
+
         // Seal Progression
         $schedule->command('update:seals')->everyFiveMinutes()->appendOutputTo($filePath);
+
         // Weekly Nightfalls
-        $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($filePath);
+        // $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($filePath);
+
+        // Milestones
+        $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($filePath);
+
         // Vendor Stuff
         $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($filePath);
 

@@ -11,8 +11,8 @@
 |
 */
 
-// Route::get('/test', 'HomeController@test')->name('test');
-Route::get('/test2', 'StatsController@test')->name('test2');
+Route::get('/test', 'HomeController@test')->name('test');
+//Route::get('/test2', 'StatsController@test')->name('test2');
 
 // Team Glory Balancer
 Route::get('/glory_cheese', 'HomeController@glory_cheese')->name('glory_cheese');

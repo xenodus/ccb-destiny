@@ -22,6 +22,18 @@ class ApiController extends Controller
 
     const HIDE_ACTIVITY = true;
 
+    function get_milestones() {
+        $activity_modifiers = App\Classes\Activity_Modifier::get();
+        $nightfalls = App\Classes\Nightfall::get();
+
+        $milestones = [
+            'milestones' => $activity_modifiers,
+            'nightfalls' => $nightfalls
+        ];
+
+        return response()->json($milestones);
+    }
+
     function get_exotic_definition() {
         $exotics = App\Classes\Exotic_Weapon::get();
         return response()->json($exotics);

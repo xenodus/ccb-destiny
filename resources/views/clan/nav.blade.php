@@ -24,7 +24,7 @@
     <li class="nav-item">
       <a class="nav-link {{ ( isset($active_page) && in_array($active_page, ['clan_exotic']) ) ? 'active' : ''  }}" href="/clan/exotics">
         @if((isset($active_page) && in_array($active_page, ['clan_exotic'])))<h1>@endif
-        Uncollected Exotic Tracker
+        Uncollected Exotics
         @if((isset($active_page) && in_array($active_page, ['clan_exotic'])))</h1>@endif
       </a>
     </li>

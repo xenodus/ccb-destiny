@@ -15,12 +15,12 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      dd( $request->cookies );
-
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
-      return view('test', $data);
+      $data['nightfalls'] = App\Classes\Nightfall::get();
+
+      return view('home2', $data);
     }
 
     public function glory_cheese(Request $request)

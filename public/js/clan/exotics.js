@@ -8,10 +8,10 @@ $(document).ready(function(){
           var tableData = [];
           var tableColumns = [
             {title:"Name", field:"name", frozen:true, widthGrow:1},
-            {title:"Weapons", field:"missingWeapons", formatter:"html", widthGrow:1},
-            {title:"Warlock", field:"missingArmorsWarlock", formatter:"html", widthGrow:1},
-            {title:"Titan", field:"missingArmorsTitan", formatter:"html", widthGrow:1},
-            {title:"Hunter", field:"missingArmorsHunter", formatter:"html", widthGrow:1},
+            {title:"Weapon", field:"missingWeapons", formatter:"html", widthGrow:1, headerSort:false},
+            {title:"Warlock", field:"missingArmorsWarlock", formatter:"html", widthGrow:1, headerSort:false},
+            {title:"Titan", field:"missingArmorsTitan", formatter:"html", widthGrow:1, headerSort:false},
+            {title:"Hunter", field:"missingArmorsHunter", formatter:"html", widthGrow:1, headerSort:false},
           ];
 
           var weaponCollectionData = exoticData.clan_exotic_weapon_collection;
@@ -24,9 +24,13 @@ $(document).ready(function(){
               name: memberData[i].destinyUserInfo.displayName
             };
 
+            var missingWeapons = [];
             var missingWeaponsStr = '';
+            var missingArmorsWarlock = [];
             var missingArmorsWarlockStr = '';
+            var missingArmorsTitan = [];
             var missingArmorsTitanStr = '';
+            var missingArmorsHunter = [];
             var missingArmorsHunterStr = '';
 
             var memberWeaponCollectionData = weaponCollectionData.filter(function(data){
@@ -46,11 +50,7 @@ $(document).ready(function(){
                   });
 
                   if( exoticWeapon ) {
-                    missingWeaponsStr += `
-                    <div class="d-flex mb-1 align-items-center">
-                      <img class="img-fluid" src="https://bungie.net`+exoticWeapon[0].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+exoticWeapon[0].name+`
-                    </div>
-                    `;
+                    missingWeapons.push(exoticWeapon[0]);
                   }
                 }
               }
@@ -65,24 +65,58 @@ $(document).ready(function(){
                   });
 
                   if( exoticArmor ) {
-                      var missingArmorStr = `
-                      <div class="d-flex mb-1 align-items-center">
-                        <img class="img-fluid" src="https://bungie.net`+exoticArmor[0].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+exoticArmor[0].name+`
-                      </div>
-                      `;
-
                     if( memberArmorCollectionData[j].class == 'warlock' ) {
-                      missingArmorsWarlockStr += missingArmorStr;
+                      missingArmorsWarlock.push(exoticArmor[0]);
                     }
                     else if( memberArmorCollectionData[j].class == 'titan' ) {
-                      missingArmorsTitanStr += missingArmorStr;
+                      missingArmorsTitan.push(exoticArmor[0]);
                     }
                     else {
-                      missingArmorsHunterStr += missingArmorStr;
+                      missingArmorsHunter.push(exoticArmor[0]);
                     }
                   }
                 }
               }
+            }
+
+            // Sort
+            missingWeapons = _.sortBy(missingWeapons, ['name']);
+            missingArmorsWarlock = _.sortBy(missingArmorsWarlock, ['name']);
+            missingArmorsTitan = _.sortBy(missingArmorsTitan, ['name']);
+            missingArmorsHunter = _.sortBy(missingArmorsHunter, ['name']);
+
+            console.log(missingArmorsWarlock);
+
+            for(var j=0; j<missingWeapons.length; j++) {
+              missingWeaponsStr += `
+              <div class="d-flex mb-1 align-items-center exotic-item">
+                <img class="img-fluid" src="https://bungie.net`+missingWeapons[j].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+missingWeapons[j].name+`
+              </div>
+              `;
+            }
+
+            for(var j=0; j<missingArmorsWarlock.length; j++) {
+              missingArmorsWarlockStr += `
+              <div class="d-flex mb-1 align-items-center exotic-item">
+                <img class="img-fluid" src="https://bungie.net`+missingArmorsWarlock[j].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+missingArmorsWarlock[j].name+`
+              </div>
+              `;
+            }
+
+            for(var j=0; j<missingArmorsTitan.length; j++) {
+              missingArmorsTitanStr += `
+              <div class="d-flex mb-1 align-items-center exotic-item">
+                <img class="img-fluid" src="https://bungie.net`+missingArmorsTitan[j].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+missingArmorsTitan[j].name+`
+              </div>
+              `;
+            }
+
+            for(var j=0; j<missingArmorsHunter.length; j++) {
+              missingArmorsHunterStr += `
+              <div class="d-flex mb-1 align-items-center exotic-item">
+                <img class="img-fluid" src="https://bungie.net`+missingArmorsHunter[j].icon+`" style="width: 30px; height: 30px; margin-right: 5px;"/>`+missingArmorsHunter[j].name+`
+              </div>
+              `;
             }
 
             tableDataEntry['missingWeapons'] = missingWeaponsStr;
@@ -107,6 +141,8 @@ $(document).ready(function(){
             height: "600px",
             resizableColumns:false,
           });
+
+          $('[data-toggle="tooltip"]').tooltip();
 
           $("#nameFilter").on("input", function(){
             table.setFilter("name", "like", $(this).val());

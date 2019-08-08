@@ -80,7 +80,7 @@
                     <li><a href="/clan/roster">Roster</a></li>
                     <li><a href="/clan/lockouts">Raid Lockouts</a></li>
                     <li><a href="/clan/seals">Seal Completions</a></li>
-                    <li><a href="/clan/exotics">Uncollected Exotic Tracker</a></li>
+                    <li><a href="/clan/exotics">Uncollected Exotics</a></li>
                   </ul>
                 </div>
               </li>

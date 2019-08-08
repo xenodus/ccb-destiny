@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 
 Route::get('/vendor/{vendor_id?}', 'ApiController@get_vendor')->name('get_vendor');
+Route::get('/milestones', 'ApiController@get_milestones')->name('get_milestones');
 Route::get('/nightfall', 'ApiController@get_nightfall')->name('get_nightfall');
 Route::get('/sales-item-perks/{vendor_id}', 'ApiController@get_sales_item_perks')->name('get_sales_item_perks');
 Route::get('/xur', 'ApiController@get_xur_location')->name('get_xur_location ');

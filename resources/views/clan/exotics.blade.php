@@ -28,9 +28,13 @@
   .tabulator-row.tabulator-row-even:hover {
     background-color: #eee;
   }
+  .exotic-item {
+    font-size: 0.8rem;
+  }
 </style>
 @endsection
 
 @section('footer')
 <script src="{{ mix('/js/compiled/exotics.js') }}"></script>
+<!--script src="/js/clan/exotics.js?<?=time()?>"></script-->
 @endsection
