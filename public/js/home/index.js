@@ -2,250 +2,227 @@ $(document).ready(function(){
 
   fetchMilestones();
 
-  ccbNS["timer"] = parseInt( $('.auto-refresh-timer').attr('data-timer') );
-  ccbNS["refreshInterval"] = 30000;
+  function fetchMilestones() {
 
-  var refreshTimerInterval = null;
-  var refreshMilestonesInterval = null;
+    var weekliesItems = [];
 
-  if( ccbNS["autoRefreshMilestones"] == 1 ) {
-    setIntervals();
-  }
-
-  $("#autoRefreshOn").on("click", function(){
-    $.get('/milestones/refresh/1');
-    ccbNS["autoRefreshMilestones"] = 1;
-    $(this).prop('checked', true);
-    resetTimer();
-    clearIntervals();
-    setIntervals();
-  });
-
-  $("#autoRefreshOff").on("click", function(){
-    $.get('/milestones/refresh/0');
-    ccbNS["autoRefreshMilestones"] = 0;
-    $(this).prop('checked', true);
-    $('.auto-refresh-timer').html('');
-    clearIntervals();
-  });
-
-  function updateTimer() {
-    if( ccbNS["timer"] > 0 )
-      ccbNS["timer"] = ccbNS["timer"] - 1;
-    else
-      ccbNS["timer"] = ccbNS["refreshInterval"] / 1000;
-
-    $('.auto-refresh-timer').attr('data-timer', ccbNS["timer"]);
-    $('.auto-refresh-timer').html('('+ccbNS["timer"]+')');
-  }
-
-  function setIntervals() {
-    refreshMilestonesInterval = setInterval(fetchMilestones, ccbNS["refreshInterval"], true);
-    refreshTimerInterval = setInterval(updateTimer, 1000);
-  }
-
-  function clearIntervals() {
-    clearInterval(refreshMilestonesInterval);
-    clearInterval(refreshTimerInterval);
-  }
-
-  function resetTimer() {
-    ccbNS["timer"] = ccbNS["refreshInterval"] / 1000;
-    $('.auto-refresh-timer').attr('data-timer', (ccbNS.refreshInterval/1000));
-  }
-
-  function fetchMilestones(refresh=false) {
-    resetTimer();
     $('section#weeklies > div.loader, section#weeklies > div.loader-text').show();
     $('#weeklies-item-container').empty();
     $('#weeklies-item-container').append('<div class="grid-sizer"></div><div class="gutter-sizer"></div>');
     $('#weeklies-item-container').hide();
     $('.tooltip').remove();
 
-    if( refresh ) $('.grid').masonry('destroy');
+    $.get('/api/milestones', function(milestonesData){
 
-    $.get('/api/vendor', function(data){
-
-      var vendorHash = {
-        'Suraya Hawthorne': '3347378076',
-        'Ada-1': '2917531897',
-        'Banshee-44': '672118013',
-        'Spider': '863940356',
-        'Lord Shaxx': '3603221665',
-        'The Drifter': '248695599',
-        'Lord Saladin': '895295461',
-        'Commander Zavala': '69482069',
-        'Xur': '2190858386',
-        'Tess Everis': '3361454721',
-        'Benedict 99-40': '1265988377',
-        'Eva Levante': '919809084'
-      };
-
-      var gambitBountiesFilter = [
-        'Gambit Bounty',
-        'Weekly Drifter Bounty'
-      ];
-
-      // includes
-      var tessFilter = [
-        'Emote',
-        'Ghost Shell',
-        'Ship',
-        'Transmat Effect',
-        'Vehicle',
-        'Weapon Ornament',
-        'Armor Ornament',
-        'Multiplayer Emote'
-      ];
-
-      // excludes
-      var benedictFilter = [
-        'Buff',
-        'Armor Set',
-        'Quest Step',
-      ];
-
-      var spiderRareBounty = [
-        'WANTED: Combustor Valus',
-        'WANTED: Arcadian Chord',
-        'WANTED: The Eye in the Dark',
-        'WANTED: Gravetide Summoner',
-        'WANTED: Silent Fang',
-        'WANTED: Blood Cleaver'
-      ];
-
-      if( data.length > 0 ) {
-        raid_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Suraya Hawthorne'] && item.itemTypeDisplayName == 'Weekly Bounty' });
-
-        benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
-
-        eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null });
-
-        gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
-
-        power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
-
-        spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
-
-        spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
-
-        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
-
-        xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
-
-        tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
-
-        saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
-
-        ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
-
-        if( benedict_bounties.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
-        }
-
-        if( eva_bounties.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
-        }
-
-        if( raid_bounties.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
-        }
-
-        if( spider_powerful_bounty.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(spider_powerful_bounty, 'Spider\'s Powerful Bounty') );
-        }
-
-        if( banshee_wares.length > 0 ) {
-          banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
-          $('#weeklies-item-container').append( getVendorStr(banshee_wares, 'Banshee-44') );
-        }
-
-        if( spider_wares.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(spider_wares, 'Spider\'s Wares') );
-        }
-
-        ascendant_challenge = getAscendantChallenge();
-        weekly_dc_mission = getWeeklyDCMission();
-        curse_level = getCurseLevel();
-
-        if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>') );
-        }
-
-        outbreak_config = getOutbreakSinge();
-
-        if( outbreak_config.length > 0  ) {
-          $('#weeklies-item-container').append( getVendorStr( outbreak_config, 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>') );
-        }
-
-        escalation_protocol = getEscalationProtocol();
-
-        if( escalation_protocol.length > 0  ) {
-          $('#weeklies-item-container').append( getVendorStr( escalation_protocol, 'Escalation Protocol') );
-        }
-
-        reckoning = getReckoning();
-
-        if( reckoning.length > 0  ) {
-          $('#weeklies-item-container').append( getVendorStr( reckoning, 'The Reckoning') );
-        }
-
-        if( saladin_bounties.length > 0 ) {
-          // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
-        }
-
-        if( tess_wares.length > 0 ) {
-          $('#weeklies-item-container').append( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
-        }
-
-        $('[data-toggle="tooltip"]').tooltip({
-          html: true
-        });
-
-        $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
-        $('#weeklies-item-container').fadeIn();
-
-        $('.grid').masonry({
-          itemSelector: '.grid-item',
-          gutter: 0,
-          columnWidth: '.grid-sizer',
-          gutter: '.gutter-sizer',
-          percentPosition: true
-        });
+      // Nightfall
+      if( milestonesData['nightfalls'].length > 0 ) {
+        weekliesItems.push( getVendorStr(milestonesData['nightfalls'], 'Nightfalls') );
       }
 
-      $.get('/api/nightfall', function(data){
+      // Leviathan
+      var leviOrder = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_order' });
+
+      if( leviOrder.length > 0 ) {
+        var title = String(leviOrder[0].description).replace(/>/g, '<i class="fas fa-chevron-right fa-xs mx-1"></i>');
+        var leviData = [{icon: leviOrder[0].icon, name: title}];
+        var leviChallenge = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_challenge' });
+
+        if( leviChallenge.length > 0 ) {
+          leviData.unshift(leviChallenge[0]);
+        }
+
+        weekliesItems.push( getVendorStr(leviData, 'Leviathan') );
+      }
+
+      // Y1 Prestige Raid Modifiers
+      var y1RaidModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'y1_prestige_raid' });
+      if( y1RaidModifiers.length > 0 ) {
+        weekliesItems.push( getVendorStr(y1RaidModifiers, 'Y1 Prestige Raid Modifiers') );
+      }
+
+      // Daily Modifiers
+      var dailyModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'strike' });
+
+      if( dailyModifiers.length > 0 ) {
+        weekliesItems.push( getVendorStr(dailyModifiers, 'Daily Modifiers') );
+      }
+
+      $.get('/api/vendor', function(data){
+
+        var vendorHash = {
+          'Suraya Hawthorne': '3347378076',
+          'Ada-1': '2917531897',
+          'Banshee-44': '672118013',
+          'Spider': '863940356',
+          'Lord Shaxx': '3603221665',
+          'The Drifter': '248695599',
+          'Lord Saladin': '895295461',
+          'Commander Zavala': '69482069',
+          'Xur': '2190858386',
+          'Tess Everis': '3361454721',
+          'Benedict 99-40': '1265988377',
+          'Eva Levante': '919809084'
+        };
+
+        var gambitBountiesFilter = [
+          'Gambit Bounty',
+          'Weekly Drifter Bounty'
+        ];
+
+        // includes
+        var tessFilter = [
+          'Emote',
+          'Ghost Shell',
+          'Ship',
+          'Transmat Effect',
+          'Vehicle',
+          'Weapon Ornament',
+          'Armor Ornament',
+          'Multiplayer Emote'
+        ];
+
+        // excludes
+        var benedictFilter = [
+          'Buff',
+          'Armor Set',
+          'Quest Step',
+        ];
+
+        var spiderRareBounty = [
+          'WANTED: Combustor Valus',
+          'WANTED: Arcadian Chord',
+          'WANTED: The Eye in the Dark',
+          'WANTED: Gravetide Summoner',
+          'WANTED: Silent Fang',
+          'WANTED: Blood Cleaver'
+        ];
 
         if( data.length > 0 ) {
-          var $items = $(getVendorStr(data, 'Nightfalls'));
-          $('.grid').append( $items ).masonry( 'appended', $items );
+          raid_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Suraya Hawthorne'] && item.itemTypeDisplayName == 'Weekly Bounty' });
 
+          benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
+
+          eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null });
+
+          gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
+
+          power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
+
+          spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
+
+          spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
+
+          banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
+
+          xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
+
+          tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
+
+          saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
+
+          ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
+
+          if( eva_bounties.length > 0 ) {
+            weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
+          }
+
+          if( raid_bounties.length > 0 ) {
+            weekliesItems.push( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
+          }
+
+          if( benedict_bounties.length > 0 ) {
+            // weekliesItems.push( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
+          }
+
+          if( spider_powerful_bounty.length > 0 ) {
+            weekliesItems.push( getVendorStr(spider_powerful_bounty, 'Spider\'s Powerful Bounty') );
+          }
+
+          if( banshee_wares.length > 0 ) {
+            banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
+            weekliesItems.push( getVendorStr(banshee_wares, 'Banshee-44') );
+          }
+
+          if( spider_wares.length > 0 ) {
+            weekliesItems.push( getVendorStr(spider_wares, 'Spider\'s Wares') );
+          }
+
+          ascendant_challenge = getAscendantChallenge();
+          weekly_dc_mission = getWeeklyDCMission();
+          curse_level = getCurseLevel();
+
+          if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
+            var title = 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>';
+            weekliesItems.push( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , title) );
+          }
+
+          reckoning = getReckoning();
+
+          if( reckoning.length > 0  ) {
+            var reckoningModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'reckoning' });
+            if( reckoningModifiers.length > 0 ) {
+              reckoning = Array(reckoning.shift()).concat(reckoningModifiers).concat(reckoning);
+            }
+
+            weekliesItems.push( getVendorStr( reckoning, 'The Reckoning') );
+          }
+
+          if( saladin_bounties.length > 0 ) {
+            // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
+          }
+
+          if( tess_wares.length > 0 ) {
+            weekliesItems.push( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
+          }
+
+          outbreak_config = getOutbreakSinge();
+
+          if( outbreak_config.length > 0  ) {
+            var title = 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>';
+            weekliesItems.push( getVendorStr( outbreak_config, title) );
+          }
+
+          escalation_protocol = getEscalationProtocol();
+
+          if( escalation_protocol.length > 0  ) {
+            weekliesItems.push( getVendorStr( escalation_protocol, 'Escalation Protocol') );
+          }
+
+          // Append items to DOM
+          for(var i=0; i<weekliesItems.length; i++) {
+            $('.grid').append( weekliesItems[i] );
+          }
+
+          // Enable tooltips
           $('[data-toggle="tooltip"]').tooltip({
             html: true
           });
-        }
-      });
 
-      $.get('/api/levi', function(data){
-        if( data.order ) {
-          var $items = $(getVendorStr([{icon: '/common/destiny2_content/icons/b8177e166f01c2cd914fc3e925ae902d.png', name: data.order}], 'Leviathan'));
-          $('.grid').append( $items ).masonry( 'appended', $items );
-        }
-      });
+          $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
+          $('#weeklies-item-container').fadeIn();
 
-      // XUR
-      $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(data){
-
-        if( xur_wares.length > 1 ) {
-          var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', data));
-          $('.grid').append( $items ).masonry( 'appended', $items );
-
-          $('[data-toggle="tooltip"]').tooltip({
-            html: true
+          $('.grid').masonry({
+            itemSelector: '.grid-item',
+            gutter: 0,
+            columnWidth: '.grid-sizer',
+            gutter: '.gutter-sizer',
+            percentPosition: true
           });
         }
 
-        get_xur_location();
+        // XUR
+        $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(data){
+          if( xur_wares.length > 1 ) {
+            var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', data));
+            $('.grid').append( $items ).masonry( 'appended', $items );
+
+            $('[data-toggle="tooltip"]').tooltip({
+              html: true
+            });
+
+            get_xur_location();
+          }
+        });
       });
     });
   }
@@ -393,7 +370,7 @@ $(document).ready(function(){
       }
 
       str += `
-      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+      <div class="d-flex mb-1 align-items-center vendor-item" data-toggle="tooltip" title="`+tooltip+`">
         <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
       </div>
       `;
@@ -480,47 +457,13 @@ $(document).ready(function(){
       }
 
       str += `
-      <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+      <div class="d-flex mb-1 align-items-center vendor-item" data-toggle="tooltip" title="`+tooltip+`">
         <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
       </div>
       `;
     }
 
     str += `
-        </div>
-      </div>
-    </div>
-    `
-    return str;
-  }
-
-  function getRaidLairModifiers(data) {
-
-    var tooltip = `
-    <h6 class='font-weight-bold mb-1'>`+data.modifier.name+`</h6>
-    <div>`+data.modifier.description+`</div>
-    `;
-
-    var str = `
-    <div class="mb-3 border-warning border">
-      <div class="border-warning border-bottom p-2">Y1 Prestige Raid Lair Modifiers</div>
-      <div class="pl-2 pr-2 pt-2 pb-1">
-        <div class="mb-1 vendor-item">
-          <div><u>Loadout</u></div>
-          <div class="d-flex">
-            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/dc4bb9bcdd4ae8a83fb9007a51d7d711.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Primary: `+data.loadouts.primary+`
-          </div>
-          <div class="d-flex">
-            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/b6d3805ca8400272b7ee7935b0b75c79.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Energy: `+data.loadouts.energy+`
-          </div>
-          <div class="d-flex">
-            <img class="img-fluid" src="https://bungie.net/common/destiny2_content/icons/9fa60d5a99c9ff9cea0fb6dd690f26ec.png" style="width: 20px; height: 20px; margin-right: 5px;"/> Power: `+data.loadouts.power+`
-          </div>
-          <div class="mt-2"><u>Modifier</u></div>
-          <div class="d-flex mt-1" data-toggle="tooltip" title="`+tooltip+`">
-            <img class="img-fluid" src="`+data.modifier.icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>
-            `+data.modifier.name+`
-          </div>
         </div>
       </div>
     </div>
@@ -708,7 +651,7 @@ $(document).ready(function(){
     var description = 'The configuration type is <u>' + outbreakSinge[index].toUpperCase() + '</u> for Zero Hour (Heroic).';
 
     return [{
-      name: 'Singe Config: ' + outbreakSinge[index].toUpperCase(),
+      name: 'Configuration: ' + outbreakSinge[index].toUpperCase(),
       icon: '/common/destiny2_content/icons/c013e41cdb32779bc2322337614ea06b.jpg',
       description: description
     }];

@@ -41,18 +41,6 @@
     <div id="milestones-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="milestones-header-icon" class="mr-1"></div>
       <h1>Weeklies / Dailies</h1>
-      <div class="ml-auto d-flex align-items-center mobile-hide">
-        <small>Auto Refresh <span class="auto-refresh-timer" data-timer="30"></span></small>
-        <div class="d-flex align-items-center ml-3 text-white">
-          <div class="switch">
-            <input type="radio" class="switch-input" name="view" value="1" id="autoRefreshOn" {{ \Cookie::get('autoRefreshMilestones') ? 'checked':''}}>
-            <label for="autoRefreshOn" class="switch-label switch-label-off">ON</label>
-            <input type="radio" class="switch-input" name="view" value="0" id="autoRefreshOff" {{ \Cookie::get('autoRefreshMilestones') ? '':'checked'}}>
-            <label for="autoRefreshOff" class="switch-label switch-label-on">OFF</label>
-            <span class="switch-selection"></span>
-          </div>
-        </div>
-      </div>
     </div>
     <div id="weeklies-item-container" class="grid row"></div>
   </div>
