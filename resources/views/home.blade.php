@@ -9,8 +9,7 @@
     </div>
     <div id="about-us-description" class="text-justify">
       <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p><a href="https://www.bungie.net/en-us/ClanV2?groupid=3717919" target="_blank">We're recruiting for PC / Battle.net / Steam!</a> We have an active & friendly discord, internal progression systems and 9+ raids/week; all experience levels welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord server to say hi!</a></p>
-      <!--p>We're on PC / Battle.net. Most of our activities and communications are held inside our <a href="{{ env('DISCORD_LINK') }}" target="_blank">Discord</a> server. Drop by to say hi!</p-->
+      <p><a href="https://www.bungie.net/en-us/ClanV2?groupid=3717919" target="_blank">We're recruiting for Battle.net / Steam!</a> We have an active & friendly Discord, internal progression systems and 9+ raids/week. All experience levels welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord server to say hi 👋</a></p>
     </div>
 
     <div class="row mt-5">
@@ -40,7 +39,10 @@
   <div class="container pb-5 pt-5 mb-4">
     <div id="milestones-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="milestones-header-icon" class="mr-1"></div>
-      <h1>Weeklies / Dailies</h1>
+      <div style="position: relative; bottom: 8px;">
+        <h1>Weeklies / Dailies</h1>
+        <div style="position: absolute; font-size: 0.6rem;" class="text-left w-100">- Powered by <a href="https://github.com/Bungie-net/api" style="text-decoration: underline;" target="_blank">Bungie API</a> -</div>
+      </div>
     </div>
     <div id="weeklies-item-container" class="grid row"></div>
   </div>
@@ -53,7 +55,7 @@
   <div class="container pb-5 pt-5">
     <div id="guides-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="latest-post-header-icon"></div>
-      <div style="position: relative; bottom: 8px;" class="ml-2">
+      <div style="position: relative; bottom: 8px;">
         <h1>Latest Guides</h1>
       </div>
     </div>

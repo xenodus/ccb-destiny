@@ -44,185 +44,192 @@ $(document).ready(function(){
       var dailyModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'strike' });
 
       if( dailyModifiers.length > 0 ) {
-        weekliesItems.push( getVendorStr(dailyModifiers, 'Daily Modifiers') );
+        weekliesItems.push( getVendorStr(dailyModifiers, 'Daily Modifiers <small class="text-yellow" style="font-size: 70%;font-style: italic;">Strike / Menagerie / Heroic Story</small>') );
       }
 
-      $.get('/api/vendor', function(data){
+      // Weekly Flashpoint
+      var flashpoint = milestonesData['milestones'].filter(function(d){ return d.type == 'flashpoint' });
 
-        var vendorHash = {
-          'Suraya Hawthorne': '3347378076',
-          'Ada-1': '2917531897',
-          'Banshee-44': '672118013',
-          'Spider': '863940356',
-          'Lord Shaxx': '3603221665',
-          'The Drifter': '248695599',
-          'Lord Saladin': '895295461',
-          'Commander Zavala': '69482069',
-          'Xur': '2190858386',
-          'Tess Everis': '3361454721',
-          'Benedict 99-40': '1265988377',
-          'Eva Levante': '919809084'
-        };
+      if( flashpoint.length > 0 ) {
+        weekliesItems.push( getVendorStr(flashpoint, 'Flashpoint') );
+      }
 
-        var gambitBountiesFilter = [
-          'Gambit Bounty',
-          'Weekly Drifter Bounty'
-        ];
+      // Vendor Sales Data
+      var data = milestonesData['vendor_sales'];
 
-        // includes
-        var tessFilter = [
-          'Emote',
-          'Ghost Shell',
-          'Ship',
-          'Transmat Effect',
-          'Vehicle',
-          'Weapon Ornament',
-          'Armor Ornament',
-          'Multiplayer Emote'
-        ];
+      var vendorHash = {
+        'Suraya Hawthorne': '3347378076',
+        'Ada-1': '2917531897',
+        'Banshee-44': '672118013',
+        'Spider': '863940356',
+        'Lord Shaxx': '3603221665',
+        'The Drifter': '248695599',
+        'Lord Saladin': '895295461',
+        'Commander Zavala': '69482069',
+        'Xur': '2190858386',
+        'Tess Everis': '3361454721',
+        'Benedict 99-40': '1265988377',
+        'Eva Levante': '919809084'
+      };
 
-        // excludes
-        var benedictFilter = [
-          'Buff',
-          'Armor Set',
-          'Quest Step',
-        ];
+      var gambitBountiesFilter = [
+        'Gambit Bounty',
+        'Weekly Drifter Bounty'
+      ];
 
-        var spiderRareBounty = [
-          'WANTED: Combustor Valus',
-          'WANTED: Arcadian Chord',
-          'WANTED: The Eye in the Dark',
-          'WANTED: Gravetide Summoner',
-          'WANTED: Silent Fang',
-          'WANTED: Blood Cleaver'
-        ];
+      // includes
+      var tessFilter = [
+        'Emote',
+        'Ghost Shell',
+        'Ship',
+        'Transmat Effect',
+        'Vehicle',
+        'Weapon Ornament',
+        'Armor Ornament',
+        'Multiplayer Emote'
+      ];
 
-        if( data.length > 0 ) {
-          raid_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Suraya Hawthorne'] && item.itemTypeDisplayName == 'Weekly Bounty' });
+      // excludes
+      var benedictFilter = [
+        'Buff',
+        'Armor Set',
+        'Quest Step',
+      ];
 
-          benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
+      var spiderRareBounty = [
+        'WANTED: Combustor Valus',
+        'WANTED: Arcadian Chord',
+        'WANTED: The Eye in the Dark',
+        'WANTED: Gravetide Summoner',
+        'WANTED: Silent Fang',
+        'WANTED: Blood Cleaver'
+      ];
 
-          eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null });
+      if( data.length > 0 ) {
+        raid_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Suraya Hawthorne'] && item.itemTypeDisplayName == 'Weekly Bounty' });
 
-          gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
+        benedict_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Benedict 99-40'] && item.itemTypeDisplayName == 'Weekly Bounty' });
 
-          power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
+        eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null });
 
-          spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
+        gambit_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && gambitBountiesFilter.includes(item.itemTypeDisplayName) });
 
-          spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
+        power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
 
-          banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
+        spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
 
-          xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
+        spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
 
-          tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
+        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
 
-          saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
+        xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
 
-          ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
+        tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
 
-          if( eva_bounties.length > 0 ) {
-            weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
+        saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
+
+        ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
+
+        if( eva_bounties.length > 0 ) {
+          weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
+        }
+
+        if( raid_bounties.length > 0 ) {
+          weekliesItems.push( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
+        }
+
+        if( benedict_bounties.length > 0 ) {
+          // weekliesItems.push( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
+        }
+
+        if( spider_powerful_bounty.length > 0 ) {
+          weekliesItems.push( getVendorStr(spider_powerful_bounty, 'Spider\'s Powerful Bounty') );
+        }
+
+        if( banshee_wares.length > 0 ) {
+          banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
+          weekliesItems.push( getVendorStr(banshee_wares, 'Banshee-44') );
+        }
+
+        if( spider_wares.length > 0 ) {
+          weekliesItems.push( getVendorStr(spider_wares, 'Spider\'s Wares') );
+        }
+
+        ascendant_challenge = getAscendantChallenge();
+        weekly_dc_mission = getWeeklyDCMission();
+        curse_level = getCurseLevel();
+
+        if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
+          var title = 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>';
+          weekliesItems.push( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , title) );
+        }
+
+        reckoning = getReckoning();
+
+        if( reckoning.length > 0  ) {
+          var reckoningModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'reckoning' });
+          if( reckoningModifiers.length > 0 ) {
+            reckoning = Array(reckoning.shift()).concat(reckoningModifiers).concat(reckoning);
           }
 
-          if( raid_bounties.length > 0 ) {
-            weekliesItems.push( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
-          }
+          weekliesItems.push( getVendorStr( reckoning, 'The Reckoning') );
+        }
 
-          if( benedict_bounties.length > 0 ) {
-            // weekliesItems.push( getVendorStr(benedict_bounties, 'Benedict 99-40\'s Bounties') );
-          }
+        if( saladin_bounties.length > 0 ) {
+          // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
+        }
 
-          if( spider_powerful_bounty.length > 0 ) {
-            weekliesItems.push( getVendorStr(spider_powerful_bounty, 'Spider\'s Powerful Bounty') );
-          }
+        if( tess_wares.length > 0 ) {
+          weekliesItems.push( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
+        }
 
-          if( banshee_wares.length > 0 ) {
-            banshee_wares = _.orderBy(banshee_wares, ['cost_name'], ['desc']);
-            weekliesItems.push( getVendorStr(banshee_wares, 'Banshee-44') );
-          }
+        outbreak_config = getOutbreakSinge();
 
-          if( spider_wares.length > 0 ) {
-            weekliesItems.push( getVendorStr(spider_wares, 'Spider\'s Wares') );
-          }
+        if( outbreak_config.length > 0  ) {
+          var title = 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>';
+          weekliesItems.push( getVendorStr( outbreak_config, title) );
+        }
 
-          ascendant_challenge = getAscendantChallenge();
-          weekly_dc_mission = getWeeklyDCMission();
-          curse_level = getCurseLevel();
+        escalation_protocol = getEscalationProtocol();
 
-          if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
-            var title = 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>';
-            weekliesItems.push( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , title) );
-          }
+        if( escalation_protocol.length > 0  ) {
+          weekliesItems.push( getVendorStr( escalation_protocol, 'Escalation Protocol') );
+        }
 
-          reckoning = getReckoning();
+        // Append items to DOM
+        for(var i=0; i<weekliesItems.length; i++) {
+          $('.grid').append( weekliesItems[i] );
+        }
 
-          if( reckoning.length > 0  ) {
-            var reckoningModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'reckoning' });
-            if( reckoningModifiers.length > 0 ) {
-              reckoning = Array(reckoning.shift()).concat(reckoningModifiers).concat(reckoning);
-            }
+        // Enable tooltips
+        $('[data-toggle="tooltip"]').tooltip({
+          html: true
+        });
 
-            weekliesItems.push( getVendorStr( reckoning, 'The Reckoning') );
-          }
+        $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
+        $('#weeklies-item-container').fadeIn();
 
-          if( saladin_bounties.length > 0 ) {
-            // $('.right-col').append( getVendorStr(saladin_bounties, 'Lord Salad\'s Bounties') );
-          }
+        $('.grid').masonry({
+          itemSelector: '.grid-item',
+          gutter: 0,
+          columnWidth: '.grid-sizer',
+          gutter: '.gutter-sizer',
+          percentPosition: true
+        });
+      }
 
-          if( tess_wares.length > 0 ) {
-            weekliesItems.push( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
-          }
+      // XUR
+      $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(locationStr){
+        if( xur_wares.length > 1 ) {
+          var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', locationStr));
+          $('.grid').append( $items ).masonry( 'appended', $items );
 
-          outbreak_config = getOutbreakSinge();
-
-          if( outbreak_config.length > 0  ) {
-            var title = 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>';
-            weekliesItems.push( getVendorStr( outbreak_config, title) );
-          }
-
-          escalation_protocol = getEscalationProtocol();
-
-          if( escalation_protocol.length > 0  ) {
-            weekliesItems.push( getVendorStr( escalation_protocol, 'Escalation Protocol') );
-          }
-
-          // Append items to DOM
-          for(var i=0; i<weekliesItems.length; i++) {
-            $('.grid').append( weekliesItems[i] );
-          }
-
-          // Enable tooltips
           $('[data-toggle="tooltip"]').tooltip({
             html: true
           });
 
-          $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
-          $('#weeklies-item-container').fadeIn();
-
-          $('.grid').masonry({
-            itemSelector: '.grid-item',
-            gutter: 0,
-            columnWidth: '.grid-sizer',
-            gutter: '.gutter-sizer',
-            percentPosition: true
-          });
+          get_xur_location();
         }
-
-        // XUR
-        $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(data){
-          if( xur_wares.length > 1 ) {
-            var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', data));
-            $('.grid').append( $items ).masonry( 'appended', $items );
-
-            $('[data-toggle="tooltip"]').tooltip({
-              html: true
-            });
-
-            get_xur_location();
-          }
-        });
       });
     });
   }

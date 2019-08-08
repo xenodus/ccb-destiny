@@ -15,6 +15,7 @@ class UpdateMilestones extends Command
     private $y1PrestigeRaidHash = '2683538554';
     private $leviRaidChallengeHash = '3660836525';
     private $strikeHash = '1437935813';
+    private $flashpointHash = '463010297';
 
     /**
      * The name and signature of the console command.
@@ -60,6 +61,8 @@ class UpdateMilestones extends Command
 
         $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
         $modifier_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModifierDefinition.json'))));
+        $item_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyInventoryItemDefinition.json'))));
+
 
         if( $response->getStatusCode() == 200 ) {
             $milestones = json_decode($response->getBody()->getContents());
@@ -191,6 +194,29 @@ class UpdateMilestones extends Command
                         }
 
                         break;
+                    }
+                }
+            }
+
+            // Flashpoint
+            if( $milestones->get( $this->flashpointHash ) ) {
+                DB::table('activity_modifiers')->where('type', 'flashpoint')->delete(); // cleanup db
+
+                $flashpoint = $milestones->get( $this->flashpointHash );
+
+                if( isset( $flashpoint->availableQuests ) ) {
+
+                    if( count($flashpoint->availableQuests) ) {
+                        $am = new App\Classes\Activity_Modifier();
+                        $am->type = 'flashpoint';
+                        $am->hash = $flashpoint->availableQuests[0]->questItemHash;
+                        $am->description = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->description;
+                        $am->name = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name;
+                        $am->icon = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->icon;
+                        $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                        $am->save();
+
+                        $this->info('Inserted Flashpoint: ' . $am->name);
                     }
                 }
             }

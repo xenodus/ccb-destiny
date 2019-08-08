@@ -25,10 +25,12 @@ class ApiController extends Controller
     function get_milestones() {
         $activity_modifiers = App\Classes\Activity_Modifier::get();
         $nightfalls = App\Classes\Nightfall::get();
+        $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash')->get();
 
         $milestones = [
             'milestones' => $activity_modifiers,
-            'nightfalls' => $nightfalls
+            'nightfalls' => $nightfalls,
+            'vendor_sales' => $vendor_sales
         ];
 
         return response()->json($milestones);
