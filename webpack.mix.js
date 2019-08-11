@@ -42,6 +42,10 @@ mix.postCss('public/css/clan.css', 'public/css/compiled/clan.css', [
     require('autoprefixer')()
 ]);
 
+// STATS PAGE CSS
+mix.postCss('public/css/stats.css', 'public/css/compiled/stats.css', [
+    require('autoprefixer')()
+]);
 
 /*********************************
         JAVASCRIPT

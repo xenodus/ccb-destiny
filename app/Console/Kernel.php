@@ -44,9 +44,6 @@ class Kernel extends ConsoleKernel
         // Seal Progression
         $schedule->command('update:seals')->everyFiveMinutes()->appendOutputTo($filePath);
 
-        // Weekly Nightfalls
-        // $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($filePath);
-
         // Milestones
         $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($filePath);
 

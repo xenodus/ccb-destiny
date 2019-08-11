@@ -14,46 +14,6 @@ $(document).ready(function(){
 
     $.get('/api/milestones', function(milestonesData){
 
-      // Nightfall
-      if( milestonesData['nightfalls'].length > 0 ) {
-        weekliesItems.push( getVendorStr(milestonesData['nightfalls'], 'Nightfalls') );
-      }
-
-      // Leviathan
-      var leviOrder = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_order' });
-
-      if( leviOrder.length > 0 ) {
-        var title = String(leviOrder[0].description).replace(/>/g, '<i class="fas fa-chevron-right fa-xs mx-1"></i>');
-        var leviData = [{icon: leviOrder[0].icon, name: title}];
-        var leviChallenge = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_challenge' });
-
-        if( leviChallenge.length > 0 ) {
-          leviData.unshift(leviChallenge[0]);
-        }
-
-        weekliesItems.push( getVendorStr(leviData, 'Leviathan') );
-      }
-
-      // Y1 Prestige Raid Modifiers
-      var y1RaidModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'y1_prestige_raid' });
-      if( y1RaidModifiers.length > 0 ) {
-        weekliesItems.push( getVendorStr(y1RaidModifiers, 'Y1 Prestige Raid Modifiers') );
-      }
-
-      // Daily Modifiers
-      var dailyModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'strike' });
-
-      if( dailyModifiers.length > 0 ) {
-        weekliesItems.push( getVendorStr(dailyModifiers, 'Daily Modifiers <small class="text-yellow" style="font-size: 70%;font-style: italic;">Strike / Menagerie / Heroic Story</small>') );
-      }
-
-      // Weekly Flashpoint
-      var flashpoint = milestonesData['milestones'].filter(function(d){ return d.type == 'flashpoint' });
-
-      if( flashpoint.length > 0 ) {
-        weekliesItems.push( getVendorStr(flashpoint, 'Flashpoint') );
-      }
-
       // Vendor Sales Data
       var data = milestonesData['vendor_sales'];
 
@@ -130,6 +90,63 @@ $(document).ready(function(){
 
         ada_frames = data.filter(function(item){ return item.vendor_hash == vendorHash['Ada-1'] && item.cost_name == 'Ballistics Log' });
 
+        // All Mighty Xur
+        if( xur_wares.length > 1 ) {
+          weekliesItems.push( getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', milestonesData['xur_sales_item_perks']) );
+        }
+
+        // Nightfall
+        if( milestonesData['nightfalls'].length > 0 ) {
+          weekliesItems.push( getVendorStr(milestonesData['nightfalls'], 'Nightfalls') );
+        }
+
+        // Leviathan
+        var leviOrder = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_order' });
+
+        if( leviOrder.length > 0 ) {
+          var title = String(leviOrder[0].description).replace(/>/g, '<i class="fas fa-chevron-right fa-xs mx-1"></i>');
+          var leviData = [{icon: leviOrder[0].icon, name: title}];
+          var leviChallenge = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_challenge' });
+
+          if( leviChallenge.length > 0 ) {
+            leviData.unshift(leviChallenge[0]);
+          }
+
+          weekliesItems.push( getVendorStr(leviData, 'Leviathan') );
+        }
+
+        // Y1 Prestige Raid Modifiers
+        var y1RaidModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'y1_prestige_raid' });
+        if( y1RaidModifiers.length > 0 ) {
+          weekliesItems.push( getVendorStr(y1RaidModifiers, 'Y1 Prestige Raid Modifiers <small class="text-yellow" style="font-size: 70%;font-style: italic;">EOW / SOS</small>') );
+        }
+
+        // Daily Modifiers
+        var dailyModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'strike' });
+
+        if( dailyModifiers.length > 0 ) {
+          weekliesItems.push( getVendorStr(dailyModifiers, 'Daily Modifiers <small class="text-yellow" style="font-size: 70%;font-style: italic;">Strike / Menagerie / Heroic Story</small>') );
+        }
+
+        // Menagerie Modifiers
+        var menagerieModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'menagerie' });
+
+        if( menagerieModifiers.length > 0 ) {
+          var menagerie = getMenagerie(menagerieModifiers);
+
+          if( menagerie.length > 0 ) {
+            weekliesItems.push( getVendorStr( menagerie, "The Menagerie (Heroic)") );
+          }
+        }
+
+        // Weekly Flashpoint
+        var flashpoint = milestonesData['milestones'].filter(function(d){ return d.type == 'flashpoint' });
+
+        if( flashpoint.length > 0 ) {
+          weekliesItems.push( getVendorStr(flashpoint, 'Flashpoint') );
+        }
+
+        // Vendors
         if( eva_bounties.length > 0 ) {
           weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
         }
@@ -186,8 +203,15 @@ $(document).ready(function(){
         outbreak_config = getOutbreakSinge();
 
         if( outbreak_config.length > 0  ) {
-          var title = 'Outbreak Catalyst <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>';
+          var title = 'Outbreak Perfected (Heroic) <small style="font-size: 70%;font-style: italic;"><a href="/outbreak">Solution Generator <i class="fas fa-external-link-alt"></i></a></small>';
           weekliesItems.push( getVendorStr( outbreak_config, title) );
+        }
+
+        whisper_singe = getWhisperSinge();
+
+        if( whisper_singe.length > 0  ) {
+          var title = 'Whisper of the Worm (Heroic)';
+          weekliesItems.push( getVendorStr( whisper_singe, title) );
         }
 
         escalation_protocol = getEscalationProtocol();
@@ -208,6 +232,7 @@ $(document).ready(function(){
 
         $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
         $('#weeklies-item-container').fadeIn();
+        $('#weeklies-note').fadeIn();
 
         $('.grid').masonry({
           itemSelector: '.grid-item',
@@ -216,21 +241,9 @@ $(document).ready(function(){
           gutter: '.gutter-sizer',
           percentPosition: true
         });
+
+        get_xur_location();
       }
-
-      // XUR
-      $.get('/api/sales-item-perks/' + vendorHash['Xur'], function(locationStr){
-        if( xur_wares.length > 1 ) {
-          var $items = $(getXurVendorStr(xur_wares, 'Xur\'s Shinies <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', locationStr));
-          $('.grid').append( $items ).masonry( 'appended', $items );
-
-          $('[data-toggle="tooltip"]').tooltip({
-            html: true
-          });
-
-          get_xur_location();
-        }
-      });
     });
   }
 
@@ -481,7 +494,7 @@ $(document).ready(function(){
   function get_xur_location() {
     $.get('/api/xur', function(data){
       if( data.location ) {
-        $("a#xur-link").text(data.location);
+        $("a#xur-link").html(data.location+' <i class="fas fa-external-link-alt"></i>');
         $('.grid').masonry('layout');
       }
     });
@@ -555,7 +568,6 @@ $(document).ready(function(){
 
     var startACDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment();
-    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
 
     var index = 0;
     var found = false;
@@ -594,7 +606,6 @@ $(document).ready(function(){
 
     var startDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment();
-    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
 
     var index = 0;
     var found = false;
@@ -623,6 +634,84 @@ $(document).ready(function(){
     }];
   }
 
+  function getWhisperSinge() {
+
+    var whisperSinge = [
+      {name: 'Void', icon: '/common/destiny2_content/icons/150c14552f0138feadcc157571e0b0e6.png', description: 'Void damage increases slightly from all sources.'},
+      {name: 'Arc', icon: '/common/destiny2_content/icons/ee1536e4ab72c6286ab68980d1ce6ecb.png', description: 'Arc damage increases slightly from all sources.'},
+      {name: 'Solar', icon: '/common/destiny2_content/icons/608fb3a03d42f16f85788abe799b0af0.png', description: 'Solar damage increases slightly from all sources.'}
+    ];
+
+    var startDate = moment('2019-07-31 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(whisperSinge).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    return [{
+      name: whisperSinge[index].name + ' Singe',
+      icon: '/common/destiny2_content/icons/b760b737519af909e26f21009d6a1487.jpg',
+      description: whisperSinge[index].description
+    }];
+  }
+
+  function getMenagerie(modifiers) {
+
+    var menagerieBosses = [
+      {hash: '2509539867', name: 'Hasapiko', description: "The Boss for this week is Hasapiko, a Vex Minotaur. The related flawless triumph is, <u>Break a Leg</u>."},
+      {hash: '2509539865', name: 'Arunak', description: "The Boss for this week is Arunak, a Hive Ogre. The related flawless triumph is, <u>Uncontrolled Rage</u>."},
+      {hash: '2509539864', name: 'Pagouri', description: "The Boss for this week is Pagouri, a Vex Hydra. The related flawless triumph is, <u>Lambs to the Slaughter</u>."}
+    ];
+
+    var startDate = moment('2019-08-07 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(menagerieBosses).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    var boss = [{
+      name: 'Boss: ' + menagerieBosses[index].name,
+      icon: '/common/destiny2_content/icons/52c7544a41c3c7b2d0514991fe77d8b7.png',
+      description: menagerieBosses[index].description
+    }];
+
+    return boss.concat(modifiers);
+  }
+
   function getOutbreakSinge() {
 
     var outbreakSinge = [
@@ -633,7 +722,6 @@ $(document).ready(function(){
 
     var startDate = moment('2019-05-08 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment();
-    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
 
     var index = 0;
     var found = false;
@@ -655,10 +743,10 @@ $(document).ready(function(){
       }
     }
 
-    var description = 'The configuration type is <u>' + outbreakSinge[index].toUpperCase() + '</u> for Zero Hour (Heroic).';
+    var description = 'The configuration type is <u class="color-'+outbreakSinge[index].toLowerCase()+'">' + outbreakSinge[index].toUpperCase() + '</u> for Zero Hour (Heroic).';
 
     return [{
-      name: 'Configuration: ' + outbreakSinge[index].toUpperCase(),
+      name: outbreakSinge[index] + ' Configuration',
       icon: '/common/destiny2_content/icons/c013e41cdb32779bc2322337614ea06b.jpg',
       description: description
     }];
@@ -673,7 +761,6 @@ $(document).ready(function(){
 
     var startDate = moment('2019-05-29 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment();
-    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
 
     var index = 0;
     var found = false;
@@ -710,27 +797,27 @@ $(document).ready(function(){
       var items = ([
         {
           "name": "Lonesome",
-          "description": "Weapon Type: Kinetic Sidearm<br/><br/>Am I the only one who sees?",
+          "description": "Kinetic Sidearm<br/><br/>Am I the only one who sees?",
           "icon": "/common/destiny2_content/icons/abd91ac904ddb37308898c9a5fd38b02.jpg",
         },
         {
           "name": "Night Watch",
-          "description": "Weapon Type: Kinetic Scout Rifle<br/><br/>Sleep with both eyes open.",
+          "description": "Kinetic Scout Rifle<br/><br/>Sleep with both eyes open.",
           "icon": "/common/destiny2_content/icons/f32f6b8896ca5b2684c6e02d447f5182.jpg",
         },
         {
           "name": "Sole Survivor",
-          "description": "Weapon Type: Arc Sniper Rifle<br/><br/>Names mean nothing to the dead.",
+          "description": "<span class='color-arc'>Arc</span> Sniper Rifle<br/><br/>Names mean nothing to the dead.",
           "icon": "/common/destiny2_content/icons/0ae824a841009f28327d905c0610b03c.jpg",
         },
         {
           "name": "Last Man Standing",
-          "description": "Weapon Type: Solar Shotgun<br/><br/>Call me Ozymandias.",
+          "description": "<span class='color-solar'>Solar</span> Shotgun<br/><br/>Call me Ozymandias.",
           "icon": "/common/destiny2_content/icons/d39006fe5498ec8720622da5a31dd066.jpg",
         },
         {
-          "name": "Just in Case (T3 Only)",
-          "description": "Weapon Type: Solar Sword<br/><br/>Even contingencies need contingencies.",
+          "name": "Just in Case (Tier 3 Only)",
+          "description": "<span class='color-solar'>Solar</span> Sword<br/><br/>Even contingencies need contingencies.",
           "icon": "/common/destiny2_content/icons/c32e9275a505a1e39bfc146dca3702b6.jpg",
         },
       ]);
@@ -739,27 +826,27 @@ $(document).ready(function(){
       var items = ([
         {
           "name": "Spare Rations",
-          "description": "Weapon Type: Kinetic Hand Cannon<br/><br/>Whether times are lean or fat.",
+          "description": "Kinetic Hand Cannon<br/><br/>Whether times are lean or fat.",
           "icon": "/common/destiny2_content/icons/7106d949c81a1b2b281964ae2184d6b2.jpg",
         },
         {
           "name": "Bug-Out Bag",
-          "description": "Weapon Type: Solar SMG<br/><br/>Grab and go.",
+          "description": "<span class='color-solar'>Solar</span> SMG<br/><br/>Grab and go.",
           "icon": "/common/destiny2_content/icons/870aa58f8314ca60ec3075f937735885.jpg",
         },
         {
           "name": "Outlast",
-          "description": "Weapon Type: Solar Pulse Rifle<br/><br/>No such word as extinction.",
+          "description": "<span class='color-solar'>Solar</span> Pulse Rifle<br/><br/>No such word as extinction.",
           "icon": "/common/destiny2_content/icons/7967ce5273a19ca50fe3ec1fd1b1b375.jpg",
         },
         {
           "name": "Gnawing Hunger",
-          "description": "Weapon Type: Void Auto Rifle<br/><br/>Don't let pride keep you from a good meal.",
+          "description": "<span class='color-void'>Void</span> Auto Rifle<br/><br/>Don't let pride keep you from a good meal.",
           "icon": "/common/destiny2_content/icons/48037e6416c3c9da07030a72931e0ca9.jpg",
         },
         {
-          "name": "Doomsday (T3 Only)",
-          "description": "Weapon Type: Arc Grenade Launcher<br/><br/>The age-old chant: The end of days draws nigh.",
+          "name": "Doomsday (Tier 3 Only)",
+          "description": "<span class='color-arc'>Arc</span> Grenade Launcher<br/><br/>The age-old chant: The end of days draws nigh.",
           "icon": "/common/destiny2_content/icons/f689eb2328e786599701352b9c01b64d.jpg",
         },
       ]);
@@ -780,7 +867,6 @@ $(document).ready(function(){
 
     var startDate = moment('2019-01-16 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment();
-    // var currDate = moment('2019-05-01 05:55:55', 'YYYY-MM-DD H:mm:ss');
 
     var index = 0;
     var found = false;

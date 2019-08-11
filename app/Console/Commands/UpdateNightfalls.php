@@ -1,5 +1,7 @@
 <?php
 
+// DEPRECATED - USE UPDATE:MILESTONES INSTEAD
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;

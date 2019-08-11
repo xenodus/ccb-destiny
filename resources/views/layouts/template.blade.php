@@ -77,10 +77,18 @@
                 </a>
                 <div class="drop-down-menu animated fadeIn faster">
                   <ul>
-                    <li><a href="/clan/roster">Roster</a></li>
-                    <li><a href="/clan/lockouts">Raid Lockouts</a></li>
-                    <li><a href="/clan/seals">Seal Completions</a></li>
-                    <li><a href="/clan/exotics">Uncollected Exotics</a></li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'roster') ? 'active' : ''  }}">
+                      <a href="/clan/roster">Roster</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
+                      <a href="/clan/lockouts">Raid Lockouts</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])) ? 'active' : ''  }}">
+                      <a href="/clan/seals">Seal Completions</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'clan_exotic') ? 'active' : ''  }}">
+                      <a href="/clan/exotics">Uncollected Exotics</a>
+                    </li>
                   </ul>
                 </div>
               </li>
@@ -91,11 +99,21 @@
                 </a>
                 <div class="drop-down-menu animated fadeIn faster">
                   <ul>
-                    <li><a href="/stats/raid">Raid Completions</a></li>
-                    <li><a href="/stats/weapons">Weapon Kills</a></li>
-                    <li><a href="/stats/pve">PvE</a></li>
-                    <li><a href="/stats/pvp">PvP</a></li>
-                    <li><a href="/stats/gambit">Gambit</a></li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'stats') ? 'active' : ''  }}">
+                      <a href="/stats/raid">Raid Completions</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'weapons') ? 'active' : ''  }}">
+                      <a href="/stats/weapons">Weapon Kills</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'pve') ? 'active' : ''  }}">
+                      <a href="/stats/pve">PvE</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'pvp') ? 'active' : ''  }}">
+                      <a href="/stats/pvp">PvP</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit') ? 'active' : ''  }}">
+                      <a href="/stats/gambit">Gambit</a>
+                    </li>
                   </ul>
                 </div>
               </li>

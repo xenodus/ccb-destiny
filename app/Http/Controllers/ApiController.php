@@ -27,10 +27,18 @@ class ApiController extends Controller
         $nightfalls = App\Classes\Nightfall::get();
         $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash')->get();
 
+        // Xur Items' Perks
+        $vendor_id = '2190858386';
+        $xur_sales_item_perks = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) use($vendor_id){
+            $q->where('vendor_hash', $vendor_id);
+        })->get();
+
+
         $milestones = [
             'milestones' => $activity_modifiers,
             'nightfalls' => $nightfalls,
-            'vendor_sales' => $vendor_sales
+            'vendor_sales' => $vendor_sales,
+            'xur_sales_item_perks' => $xur_sales_item_perks
         ];
 
         return response()->json($milestones);

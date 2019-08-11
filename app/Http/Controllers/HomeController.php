@@ -18,7 +18,10 @@ class HomeController extends Controller
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
-      $data['nightfalls'] = App\Classes\Nightfall::get();
+      // Extra Stats
+      $data['raids_completed'] = App\Classes\Raid_Stats::selectRaw('SUM((levi + levip + eow + eowp + sos + sosp + lw + sotp + cos)) as total')->first()->total ?? 0;
+      $data['pve_kills'] = App\Classes\Pve_Stats::selectRaw('SUM(kills) as total')->first()->total ?? 0;
+      $data['clan_members_count'] = App\Classes\Clan_Member::count();
 
       return view('home2', $data);
     }
@@ -46,7 +49,10 @@ class HomeController extends Controller
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
-      $data['nightfalls'] = App\Classes\Nightfall::get();
+      // Extra Stats
+      $data['raids_completed'] = App\Classes\Raid_Stats::selectRaw('SUM((levi + levip + eow + eowp + sos + sosp + lw + sotp + cos)) as total')->first()->total ?? 0;
+      $data['pve_kills'] = App\Classes\Pve_Stats::selectRaw('SUM(kills) as total')->first()->total ?? 0;
+      $data['clan_members_count'] = App\Classes\Clan_Member::count();
 
       return view('home', $data);
     }

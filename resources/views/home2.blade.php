@@ -32,6 +32,27 @@
         </div>
       </div>
     </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="border border-yellow traits-box p-3">
+          <div class="traits-title pl-2 pr-2"><i class="ra ra-hydra mr-1"></i>Raids Completed</div>
+          {{ number_format($raids_completed) }}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="border border-yellow traits-box p-3">
+          <div class="traits-title pl-2 pr-2"><i class="ra ra-heart-bottle mr-1"></i>Enemies Slained</div>
+          {{ number_format($pve_kills) }}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="border border-yellow traits-box p-3">
+          <div class="traits-title pl-2 pr-2"><i class="ra ra-double-team mr-1"></i>Members</div>
+          {{ $clan_members_count }} / 100
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

@@ -64,9 +64,7 @@ Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_
 Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
 
 // Clan Roster
-Route::get('/clan', function(){
-    return redirect()->route('clan_roster', 301);
-});
+Route::redirect('/clan', '/clan/roster', 301);
 Route::get('/clan/roster', 'ClanController@roster')->name('clan_roster');
 Route::get('/bungie/roster/get', 'ClanController@get_roster')->name('get_roster');
 

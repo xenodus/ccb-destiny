@@ -2,9 +2,7 @@
 
 @section('body')
 <section id="seal-completions" class="container text-center mb-4">
-  <div class="mt-4 mb-4">
-    @include('clan.nav')
-  </div>
+  <div class="my-4"></div>
   <div class="loader"></div>
   <div class="loader-text mb-4">Fetching Triumphs...</div>
 
@@ -39,9 +37,5 @@
 <script type="text/javascript">
   ccbNS["member_id"] = '{{ $member_id }}';
 </script>
-@if( isset($_GET['test']) )
-<script src="/js/clan/sealProgression.js?<?=time()?>"></script>
-@else
 <script src="{{ mix('/js/compiled/sealProgression.js') }}"></script>
-@endif
 @endsection

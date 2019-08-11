@@ -23,6 +23,8 @@ class SitemapController extends Controller
                   ->add(Url::create( str_replace('http://', 'https://', route('home')) ))
                   ->add(Url::create( str_replace('http://', 'https://', route('clan_raid_lockout')) ))
                   ->add(Url::create( str_replace('http://', 'https://', route('clan_seal_progression')) ))
+                  ->add(Url::create( str_replace('http://', 'https://', route('clan_roster')) ))
+                  ->add(Url::create( str_replace('http://', 'https://', route('clan_exotic')) ))
                   ->add(Url::create( str_replace('http://', 'https://', route('stats_raid')) ))
                   ->add(Url::create( str_replace('http://', 'https://', route('stats_weapons')) ))
                   ->add(Url::create( str_replace('http://', 'https://', route('stats_pve')) ))

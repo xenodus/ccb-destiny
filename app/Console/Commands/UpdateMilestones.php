@@ -63,7 +63,6 @@ class UpdateMilestones extends Command
         $modifier_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModifierDefinition.json'))));
         $item_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyInventoryItemDefinition.json'))));
 
-
         if( $response->getStatusCode() == 200 ) {
             $milestones = json_decode($response->getBody()->getContents());
             $milestones = collect($milestones->Response);
@@ -221,12 +220,13 @@ class UpdateMilestones extends Command
                 }
             }
 
-            // Leviathan Encounter Order
+            // Activities Available to my Warlock
             $character_response = $client->get(
                 env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
                 ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
             );
 
+            // Leviathan Encounter Order
             if( $character_response->getStatusCode() == 200 ) {
 
                 DB::table('activity_modifiers')->where('type', 'levi_order')->delete(); // cleanup db
@@ -262,7 +262,57 @@ class UpdateMilestones extends Command
                             $am->save();
 
                             $this->info('Inserted Levi Order: ' . $am->description);
-                            return response()->json(['order' => $val]);
+                        }
+                    }
+                }
+            }
+
+            // Heroic Menagerie Modifiers
+            $character_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
+                ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+            );
+
+            if( $character_response->getStatusCode() == 200 ) {
+
+                DB::table('activity_modifiers')->where('type', 'menagerie')->delete(); // cleanup db
+
+                $character = json_decode($character_response->getBody()->getContents());
+                $character = collect($character);
+
+                $menagerieHashes = [
+                    '2509539867',
+                    '2509539865',
+                    '2509539864',
+                ];
+
+                foreach($menagerieHashes as $hash) {
+
+                    if( isset($character['Response']) ) {
+
+                        $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($hash) {
+                            return $v->activityHash == $hash;
+                        });
+
+                        if( $search->count() > 0 ) {
+
+                            if( isset($activity_definitions[$hash]->modifiers) ) {
+                                foreach($activity_definitions[$hash]->modifiers as $modifier) {
+
+                                    $am = new App\Classes\Activity_Modifier();
+                                    $am->type = 'menagerie';
+                                    $am->hash = $modifier->activityModifierHash;
+                                    $am->description = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->description;
+                                    $am->name = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->name;
+                                    $am->icon = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->icon;
+                                    $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                                    $am->save();
+
+                                    $this->info('Inserted Heroic Menegerie Modifier: ' . $am->name);
+                                }
+                            }
+
+                            break;
                         }
                     }
                 }

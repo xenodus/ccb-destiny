@@ -2,12 +2,9 @@
 
 @section('body')
 <section id="raid-lockouts" class="container text-center mb-4">
-  <div class="mt-4 mb-4">
-    @include('clan.nav')
-    <!--h1 class="text-yellow text-left">Weekly Raid Lockouts</h1-->
-    <!--div class="text-secondary text-left">
-      <smaller id="weekly-lockout-dates"></smaller>
-    </div-->
+  <div class="my-4">
+    @include('clan.breadcrumbs', ['nav_link' => '/clan/lockouts', 'nav_name' => 'Weekly Raid Lockouts'])
+    <h1 class="text-yellow text-left">Weekly Raid Lockouts</h1>
   </div>
   <div class="loader"></div>
   <div class="loader-text mb-4">Fetching Members...</div>
@@ -15,7 +12,7 @@
   <div>
     <div class="row">
       <div class="col-md-3">
-        <div id="sub-menu" class="mb-5 sticky-top pt-md-4">
+        <div id="sub-menu" class="mb-md-5 mb-4 sticky-top pt-md-4">
           <ul class="nav flex-column"></ul>
         </div>
       </div>
