@@ -35,20 +35,16 @@ $(document).ready(function(){
       $('.loader').hide();
       $('.loader-text').hide();
 
-      var autoNumFormatter = function(){
-        return $("#roster-container .tabulator-row").length;
-      };
-
       var table = new Tabulator("#roster-container", {
         data:tableData, //assign data to table
         layout:"fitColumns", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
-          {formatter:autoNumFormatter, width:40, headerSort:false},
-          {title:"Name", field:"name"},
-          {title:"Warlock", field:"warlock", sorter:"number"},
-          {title:"Hunter", field:"hunter", sorter:"number"},
-          {title:"Titan", field:"titan", sorter:"number"},
-          {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"}},
+          {formatter:"rownum", width:40, headerSort:false},
+          {title:"Name", field:"name", headerSort:false},
+          {title:"Warlock", field:"warlock", sorter:"number", headerSort:false},
+          {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
+          {title:"Titan", field:"titan", sorter:"number", headerSort:false},
+          {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"}, headerSort:false},
         ],
         initialSort: [
           {column:"name", dir:"asc"},

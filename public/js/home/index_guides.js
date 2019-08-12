@@ -10,7 +10,7 @@ $(document).ready(function(){
         var guideItemHtml = '<a href="'+res[i].url+'" title="'+res[i].title+'">' +
                               '<div class="guides-posts-item mb-3">' +
                                 '<div class="text-center post-category" style="background: '+res[i].color_code+';">'+res[i].category+'</div>' +
-                                '<div class="guides-posts-tn d-flex flex-column justify-content-center" style="background: url('+(res[i].image?res[i].image:'https://ccboys.xyz/images/og-banner-ccb.jpg')+') no-repeat center 20%/cover;"></div>' +
+                                '<div class="guides-posts-tn d-flex flex-column justify-content-center lazy" style="background: url('+(res[i].thumbnail?res[i].thumbnail:'https://ccboys.xyz/images/og-banner-ccb.jpg')+') no-repeat center 20%/cover;" data-bg="url('+(res[i].thumbnail_large?res[i].thumbnail_large:'https://ccboys.xyz/images/og-banner-ccb.jpg')+')"></div>' +
                                 '<div class="guides-posts-title bg-white text-dark" style="border-top: 5px solid '+res[i].color_code+'!important;">' +
                                   '<div class="p-3">'+
                                     '<small>'+res[i].title+'</small>'+
@@ -20,6 +20,11 @@ $(document).ready(function(){
                             '</a>';
 
         $('#guides-item-container').append('<div class="col-md-4">'+guideItemHtml+'</div>');
+      }
+
+      // Lazy load
+      if (lazyLoadInstance) {
+        lazyLoadInstance.update();
       }
 
       $('section#guides > div.loader, section#guides > div.loader-text').hide();

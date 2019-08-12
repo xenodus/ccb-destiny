@@ -58,6 +58,14 @@
     <header class="border-bottom border-dark">
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+
+          <a href="/" class="text-white">
+            <div class="d-md-none d-flex align-items-center" style="line-height: 1rem;">
+              <img src="/images/crab.svg" onerror="this.onerror=null; this.src='/images/crab.png'" alt="CCB" class="img-fluid mr-3" style="width: 36px;">
+              <div style="letter-spacing: 3px; font-size: .8rem;">The CCBs</div>
+            </div>
+          </a>
+
           <button class="navbar-toggler mt-1 mb-1" type="button" data-toggle="collapse" data-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -66,7 +74,7 @@
             <ul class="navbar-nav">
               <li class="nav-item {{ (isset($active_page) && $active_page == 'home') ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/">
-                  <i class="fas fa-igloo animated pulse slower infinite delay-0.5s"></i>
+                  <i class="fas fa-home animated pulse slower infinite delay-0.5s"></i>
                   <div>Home</div>
                 </a>
               </li>

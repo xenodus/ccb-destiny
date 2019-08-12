@@ -24,6 +24,15 @@ class Raid_Stats extends Model
       }
   }
 
+  public static function get_total_raids_completed() {
+    $rc = self::selectRaw('SUM((levi + levip + eow + eowp + sos + sosp + lw + sotp + cos)) as total')->first();
+
+    if( $rc )
+      return $rc->total;
+    else
+      return 0;
+  }
+
   public static function update_members($members) {
     DB::table('clan_raid_stats')->truncate();
 

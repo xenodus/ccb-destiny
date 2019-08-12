@@ -6,19 +6,21 @@ $(document).ready(function(){
       'destiny': 'destiny',
     };
 
-    $.get('/api/news/get/' + category_map[news_listing_category_slug], function(res){
+    if( category_map[news_listing_category_slug] ) {
+      $.get('/api/news/get/' + category_map[news_listing_category_slug], function(res){
 
-      $("#news-listing-"+news_listing_category_slug+" .loader").hide();
+        $("#news-listing-"+news_listing_category_slug+" .loader").hide();
 
-      if( res.length ) {
-        for(var i=0; i<res.length; i++) {
-          $("#news-listing-" + news_listing_category_slug).append("<div class='mb-2'>"+(i+1)+". <a href='"+res[i].url+"' target='_blank'>"+res[i].title+"</a> | "+res[i].source+"</div>");
+        if( res.length ) {
+          for(var i=0; i<res.length; i++) {
+            $("#news-listing-" + news_listing_category_slug).append("<div class='mb-2'>"+(i+1)+". <a href='"+res[i].url+"' target='_blank'>"+res[i].title+"</a> | "+res[i].source+"</div>");
+          }
         }
-      }
-      else {
-        $("#news-widget-{{$top_category->term->slug}}").remove();
-      }
-    });
+        else {
+          $("#news-widget-{{$top_category->term->slug}}").remove();
+        }
+      });
+    }
   }
 });
 

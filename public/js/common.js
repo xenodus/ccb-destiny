@@ -4,8 +4,12 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-35918300-6');
 
-// Store an globals inside our own NS
+// Store globals inside our own NS
 window.ccbNS = {};
+
+var lazyLoadInstance = new LazyLoad({
+  elements_selector: ".lazy"
+});
 
 $(document).ready(function(){
 

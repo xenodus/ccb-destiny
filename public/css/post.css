@@ -43,7 +43,7 @@ li.breadcrumb-item.active a span {
   width: auto;
   height: auto;
   /* max-height: 100vh; */
-  max-width: 80%;
+  max-width: 100%;
   border: 1px solid #fff;
   padding: 5px;
 }

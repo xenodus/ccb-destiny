@@ -5,7 +5,7 @@
   </div>
   <div class="p-2 text-left sidebar-nav-content">
     <div>
-      <div class="mb-1"><strong>Categories</strong></div>
+      <div class="mb-1"><strong>Guides</strong></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/raid/7">Raids</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/leviathan/19">Leviathan</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/last-wish/20">Last Wish</a></div>
@@ -25,7 +25,7 @@
     </div>
 
     <div>
-      <div class="mb-1 mt-2"><strong>Quick Links</strong></div>
+      <div class="mb-1 mt-2"><strong>External Links</strong></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://raid.report/" target="_blank">Raid.Report</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://www.light.gg/" target="_blank">Light.GG</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="https://www.d2checklist.com/home" target="_blank">D2Checklist</a></div>

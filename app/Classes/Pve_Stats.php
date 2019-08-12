@@ -20,6 +20,15 @@ class Pve_Stats extends Model
       }
   }
 
+  public static function get_total_kills() {
+    $pk = self::selectRaw('SUM(kills) as total')->first();
+
+    if( $pk )
+      return $pk->total;
+    else
+      return 0;
+  }
+
   public static function update_members($members) {
     DB::table('clan_pve_stats')->truncate();
 

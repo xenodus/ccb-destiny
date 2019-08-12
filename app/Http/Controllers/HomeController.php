@@ -9,21 +9,26 @@ use Cookie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use Corcel\Model\Post as WP;
+use App\Classes\Post;
 
 class HomeController extends Controller
 {
     public function test(Request $request)
     {
+      $p = Post::first();
+
+      // dd($p->thumbnail->size('medium'));
+      dd($p->getThumbnail('mediums'));
+
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
 
       // Extra Stats
-      $data['raids_completed'] = App\Classes\Raid_Stats::selectRaw('SUM((levi + levip + eow + eowp + sos + sosp + lw + sotp + cos)) as total')->first()->total ?? 0;
-      $data['pve_kills'] = App\Classes\Pve_Stats::selectRaw('SUM(kills) as total')->first()->total ?? 0;
+      $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();
+      $data['pve_kills'] = App\Classes\Pve_Stats::get_total_kills();
       $data['clan_members_count'] = App\Classes\Clan_Member::count();
 
-      return view('home2', $data);
+      return view('test', $data);
     }
 
     public function glory_cheese(Request $request)
@@ -50,8 +55,8 @@ class HomeController extends Controller
       $data['active_page'] = 'home';
 
       // Extra Stats
-      $data['raids_completed'] = App\Classes\Raid_Stats::selectRaw('SUM((levi + levip + eow + eowp + sos + sosp + lw + sotp + cos)) as total')->first()->total ?? 0;
-      $data['pve_kills'] = App\Classes\Pve_Stats::selectRaw('SUM(kills) as total')->first()->total ?? 0;
+      $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();
+      $data['pve_kills'] = App\Classes\Pve_Stats::get_total_kills();
       $data['clan_members_count'] = App\Classes\Clan_Member::count();
 
       return view('home', $data);

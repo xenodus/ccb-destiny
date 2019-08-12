@@ -26,6 +26,26 @@ class Post extends WP_Post
     return $this->stripShortcodes($this->post_content);
   }
 
+  public function getThumbnail($size='original')
+  {
+    if( $size == 'original' || $size == '' ) {
+      return $this->thumbnail;
+    }
+    else {
+      if( isset( $this->thumbnail->size($size)['url'] ) ) {
+        return $this->thumbnail->size($size)['url'];
+      }
+      /*
+      else if ( isset( $this->thumbnail->size('medium')['url'] ) ) {
+        return $this->thumbnail->size('medium')['url'];
+      }
+      */
+      else {
+        return $this->thumbnail;
+      }
+    }
+  }
+
   // Related posts - same child category first
   public function related() {
     $post_categories = $this->getCategories();

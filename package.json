@@ -28,6 +28,7 @@
         "lightbox2": "^2.11.0",
         "moment": "^2.24.0",
         "rpg-awesome": "^0.2.0",
-        "tabulator-tables": "^4.2.7"
+        "tabulator-tables": "^4.2.7",
+        "vanilla-lazyload": "^12.0.0"
     }
 }

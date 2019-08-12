@@ -59,6 +59,7 @@ mix.scripts([
     'node_modules/moment/moment.js',
     'node_modules/lightbox2/src/js/lightbox.js',
     'node_modules/tabulator-tables/dist/js/tabulator.js',
+    'node_modules/vanilla-lazyload/dist/lazyload.js',
     'public/js/common.js',
 ], 'public/js/compiled/common.js');
 
