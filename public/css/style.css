@@ -177,7 +177,7 @@ footer {
 .loader {
   width:100px; /*width of your image*/
   height:100px; /*height of your image*/
-  background-image:url('/images/ghost-loader-sm.gif?ver=1');
+  background-image:url('/images/ghost-loader-sm.gif');
   background-repeat: no-repeat;
   background-size: contain;
   margin: 0 auto;

@@ -46,7 +46,7 @@
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=fallback" rel="stylesheet">
     <link rel="stylesheet" href="{{ mix('/css/compiled/common.css') }}"/>
     @if( isset($_GET['light']) )
     <link rel="stylesheet" href="/css/light-mode.css?<?=time()?>"/>
@@ -124,6 +124,12 @@
                     </li>
                   </ul>
                 </div>
+              </li>
+              <li class="nav-item {{ (isset($active_page) && $active_page == 'raid_events') ? 'active' : ''  }}">
+                <a class="nav-link text-md-center" href="/raids">
+                  <i class="fas fa-calendar-check"></i>
+                  <div>Raids</div>
+                </a>
               </li>
               <li class="nav-item {{ (isset($active_page) && $active_page == 'guides') ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/guides">

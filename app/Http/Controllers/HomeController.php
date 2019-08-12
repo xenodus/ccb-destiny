@@ -15,13 +15,14 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      $p = Post::first();
-
-      // dd($p->thumbnail->size('medium'));
-      dd($p->getThumbnail('mediums'));
-
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
+
+      $rv = App\Classes\Raid_Event::where('status', 'active')->first();
+
+      preg_match('/(\[.*\])/', $rv->event_name, $matches);
+
+      dd( $matches );
 
       // Extra Stats
       $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();
@@ -29,6 +30,21 @@ class HomeController extends Controller
       $data['clan_members_count'] = App\Classes\Clan_Member::count();
 
       return view('test', $data);
+    }
+
+    public function raids()
+    {
+      $data['site_title'] = env('SITE_NAME');
+      $data['active_page'] = 'raid_events';
+
+      // Raid Events
+      $data['raid_events'] = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
+        ->where('status', 'active')
+        ->orderBy('event_date', 'asc')
+        ->with('signups')
+        ->get();
+
+      return view('raids', $data);
     }
 
     public function glory_cheese(Request $request)

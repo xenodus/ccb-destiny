@@ -48,9 +48,11 @@ Route::get('/stats/pve', 'StatsController@pve')->name('stats_pve');
 Route::get('/stats/pvp', 'StatsController@pvp')->name('stats_pvp');
 Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
 
+// Raid Events
+Route::get('/raids', 'HomeController@raids')->name('raid_events');
+
 // Static / iFrames
 Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
-// Route::get('/chalice', 'HomeController@chalice')->name('chalice_recipes');
 Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_report');
 
 // Members & Currently Online Members
