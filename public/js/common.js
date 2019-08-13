@@ -7,6 +7,11 @@ gtag('config', 'UA-35918300-6');
 // Store globals inside our own NS
 window.ccbNS = {};
 
+ccbNS.platform_id = 4;
+ccbNS.bungie_api_url = 'https://www.bungie.net/Platform';
+ccbNS.bungie_api = '856136fabe704c149dd4bd41344b54c8';
+ccbNS.clan_id = 3717919;
+
 var lazyLoadInstance = new LazyLoad({
   elements_selector: ".lazy"
 });
@@ -17,7 +22,7 @@ $(document).ready(function(){
 
     checkMembersOnline();
 
-    setInterval(checkMembersOnline, 30000);
+    setInterval(checkMembersOnline, 60000);
 
     $( "section#members-online" ).on("click", function() {
       if( $("small#members-online-toggle-icon").data("status") == "up" ) {

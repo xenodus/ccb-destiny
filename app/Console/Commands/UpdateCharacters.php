@@ -49,15 +49,13 @@ class UpdateCharacters extends Command
     public function handle()
     {
         $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
-        $member_response = $client->get(
-          str_replace('https://', 'http://', route('bungie_get_members'))
-        );
 
         $char_ids = [];
 
-        if( $member_response->getStatusCode() == 200 ) {
-            $members = json_decode($member_response->getBody()->getContents());
-            $members = collect($members);
+        $members = App\Classes\Clan_Member::get_members();
+        $members = collect(json_decode($members));
+
+        if( $members->count() > 0 ) {
 
             $n = 1;
 
@@ -104,7 +102,6 @@ class UpdateCharacters extends Command
             $this->info('Completed: Characters update');
             return 1;
         }
-
         return 0;
     }
 }

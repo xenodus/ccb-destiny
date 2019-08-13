@@ -194,15 +194,13 @@ class UpdateMemberExotic extends Command
         $item_definitions = json_decode(file_get_contents(storage_path('manifest/DestinyCollectibleDefinition.json')));
 
         $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
-        $member_response = $client->get(
-          str_replace('https://', 'http://', route('bungie_get_members'))
-        );
 
         $char_ids = [];
 
-        if( $member_response->getStatusCode() == 200 ) {
-            $members = json_decode($member_response->getBody()->getContents());
-            $members = collect($members);
+        $members = App\Classes\Clan_Member::get_members();
+        $members = collect(json_decode($members));
+
+        if( $members->count() > 0 ) {
 
             $n = 1;
 

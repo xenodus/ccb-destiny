@@ -19,7 +19,7 @@
               <th class="border-0" scope="col">Reserve</th>
             </tr>
           </thead>
-          <tbody style="font-size:.9rem;">
+          <tbody style="font-size:.9rem; background: rgba(255,255,255,.05);">
           @foreach($raid_events as $event)
             <tr>
               <td class="w-50 border-dark">

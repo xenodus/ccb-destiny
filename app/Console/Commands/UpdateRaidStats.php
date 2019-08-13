@@ -78,13 +78,12 @@ class UpdateRaidStats extends Command
             $crown_run_hash = $this->crown_run_hash;
 
             $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-            $members_response = $client->get( route('bungie_get_members') );
 
-            if( $members_response->getStatusCode() == 200 ) {
+            $members = App\Classes\Clan_Member::get_members();
+            $members = collect(json_decode($members));
+            $updated_members = collect([]);
 
-                $members = json_decode($members_response->getBody()->getContents());
-                $members = collect($members);
-                $updated_members = collect([]);
+            if( $members->count() > 0 ) {
 
                 $n = 1;
 
@@ -110,8 +109,11 @@ class UpdateRaidStats extends Command
                         $member->raidClears['crown'] = $member_profile['Response']->profileRecords->data->records->$crown_run_hash->objectives[0]->progress ?? 0;
                     }
                     else {
-                        $this->info('Skipping: ' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
-                        continue;
+                        $member->raidClears['petra'] = 0;
+                        $member->raidClears['diamond'] = 0;
+                        $member->raidClears['crown'] = 0;
+
+                        $this->info('Setting 0 flawless for ' $member->destinyUserInfo->displayName .' / '. $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
                     }
 
                     // Check raid.report
@@ -137,8 +139,11 @@ class UpdateRaidStats extends Command
                         }
                     }
                     else {
-                        $this->info('Skipping: ' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get raid report.');
-                        continue;
+                        // Assign 0 if unable to get
+                        foreach($this->raid_activity_hash as $name => $hash_arr) {
+                            $member->raidClears[$name] = 0;
+                        }
+                        $this->info('Setting 0 clears for ' $member->destinyUserInfo->displayName . '/' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get raid report.');
                     }
 
                     //App\Classes\Raid_Stats::update_members($members);

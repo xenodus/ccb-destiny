@@ -5,9 +5,16 @@ $(document).ready(function(){
   print_raid_stats();
 
   function print_raid_stats() {
-    $.get('/bungie/members/get', function(memberData){
+    $.ajax({
+      url: 'https://www.bungie.net/Platform/GroupV2/3717919/Members/',
+      headers: {
+        'X-API-Key': '856136fabe704c149dd4bd41344b54c8'
+      }
+    }).done(function(data){
 
-      if( memberData.length > 0 ) {
+      if( data.Response.results && data.Response.results.length > 0 ) {
+
+        memberData = data.Response.results;
 
         $('.loader-text').text('Fetching Raid Stats...');
 
@@ -43,7 +50,25 @@ $(document).ready(function(){
               });
             }
             else {
-              console.log(memberData[i].destinyUserInfo.membershipId);
+              tableData.push({
+                membershipId: memberData[i].destinyUserInfo.membershipId,
+                name: memberData[i].destinyUserInfo.displayName+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+                levi: 0,
+                levip: 0,
+                eow: 0,
+                eowp: 0,
+                sos: 0,
+                sosp: 0,
+                lw: 0,
+                petra: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                sotp: 0,
+                diamond: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                cos: 0,
+                crown: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                total: 0,
+              });
+
+              console.log("No data: " + memberData[i].destinyUserInfo.displayName);
             }
           }
 

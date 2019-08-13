@@ -230,189 +230,201 @@ var sealHashes = {
 
 $(document).ready(function(){
   if( "member_id" in ccbNS ) {
-    $.get('/bungie/member/'+ccbNS['member_id']+'/triumphs', function(memberData){
-      //console.log(memberData);
+    $.ajax({
+      url: 'https://www.bungie.net/Platform/Destiny2/4/Profile/'+ccbNS['member_id']+'/?components=900',
+      headers: {
+        'X-API-Key': '856136fabe704c149dd4bd41344b54c8'
+      }
+    }).done(function(data){
 
-      $.get('/api/manifest/get_record_definition', function(recordDefinition){
-        //console.log(recordDefinition);
-        //console.log(sealHashes);
+      if( data.Response ) {
 
-        $('#sub-menu > ul').append('<li class="nav-item pt-4"><a class="nav-link disabled" href="#" aria-disabled="true">Seals</a></li>');
+        memberData = data.Response;
 
-        for(var seal in sealHashes) {
+        $.get('/api/manifest/get_record_definition', function(recordDefinition){
+          //console.log(recordDefinition);
+          //console.log(sealHashes);
 
-          // Seal Header
-          $('.stats-container').append('<div id="'+seal.toLowerCase()+'" class="col-md-12 mb-4 pt-md-5"><h2 class="text-yellow text-left mb-1 stats-container-header"><a href="#'+seal.toLowerCase()+'">'+seal+'</a></h2><div class="text-left text-secondary mb-2">'+sealHashes[seal].description+'</div></div>');
+          $('#sub-menu > ul').append('<li class="nav-item pt-4"><a class="nav-link disabled" href="#" aria-disabled="true">Seals</a></li>');
 
-          var completed = [];
-          var inProgress = [];
-          var multipleObjectivesProgress = [];
-          var singleObjectivesProgress = [];
+          for(var seal in sealHashes) {
 
-          for(var i=0; i<sealHashes[seal]['objectives'].length; i++) {
-            var recordID = sealHashes[seal]['objectives'][i];
+            // Seal Header
+            $('.stats-container').append('<div id="'+seal.toLowerCase()+'" class="col-md-12 mb-4 pt-md-5"><h2 class="text-yellow text-left mb-1 stats-container-header"><a href="#'+seal.toLowerCase()+'">'+seal+'</a></h2><div class="text-left text-secondary mb-2">'+sealHashes[seal].description+'</div></div>');
 
-            var isCompleted = false;
-            var multipleObjectives = false;
-            var objectProgress = '';
-            var multipleObjectivesItem = {
-              'completed': 0,
-              'total': 0,
-              'inProgress': []
-            };
+            var completed = [];
+            var inProgress = [];
+            var multipleObjectivesProgress = [];
+            var singleObjectivesProgress = [];
 
-            // Check characters
-            for(var char_id in memberData.characterRecords.data) {
-              if( recordID in memberData.characterRecords.data[char_id].records ) {
-                if( memberData.characterRecords.data[char_id].records[recordID].objectives.length == 1 && memberData.characterRecords.data[char_id].records[recordID].objectives[0].complete == true ) {
-                  isCompleted = true;
-                }
-                else if( memberData.characterRecords.data[char_id].records[recordID].objectives.length > 1 && memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length == memberData.characterRecords.data[char_id].records[recordID].objectives.length ) {
-                  isCompleted = true;
-                }
-                else if( memberData.characterRecords.data[char_id].records[recordID].objectives.length > 1 && memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length != memberData.characterRecords.data[char_id].records[recordID].objectives.length ) {
-                  multipleObjectives = true;
-                  multipleObjectivesItem['completed'] = memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length;
-                  multipleObjectivesItem['total'] = memberData.characterRecords.data[char_id].records[recordID].objectives.length;
-                  multipleObjectivesItem['inProgress'] = memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete != true });
-                }
-              }
-            }
+            for(var i=0; i<sealHashes[seal]['objectives'].length; i++) {
+              var recordID = sealHashes[seal]['objectives'][i];
 
-            // Check profile
-            if( recordID in memberData.profileRecords.data.records ) {
-              if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == true ) {
-                isCompleted = true;
-              }
-              else if( memberData.profileRecords.data.records[recordID].objectives.length > 1 && memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length == memberData.profileRecords.data.records[recordID].objectives.length ) {
-                isCompleted = true;
-              }
-              else if( memberData.profileRecords.data.records[recordID].objectives.length > 1 && memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length != memberData.profileRecords.data.records[recordID].objectives.length ) {
-                multipleObjectives = true;
-                multipleObjectivesItem['completed'] = memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length;
-                multipleObjectivesItem['total'] = memberData.profileRecords.data.records[recordID].objectives.length;
-                multipleObjectivesItem['inProgress'] = memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete != true });
-              }
+              var isCompleted = false;
+              var multipleObjectives = false;
+              var objectProgress = '';
+              var multipleObjectivesItem = {
+                'completed': 0,
+                'total': 0,
+                'inProgress': []
+              };
 
-              if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == false ) {
-                if ( memberData.profileRecords.data.records[recordID].objectives[0].progress != 0 && memberData.profileRecords.data.records[recordID].objectives[0].completionValue != 0 ) {
-                  objectProgress = memberData.profileRecords.data.records[recordID].objectives[0].progress + "/" + memberData.profileRecords.data.records[recordID].objectives[0].completionValue;
-                }
-              }
-            }
-
-            if( isCompleted )
-              completed.push(recordID);
-            else {
-              inProgress.push(recordID);
-
-              if( multipleObjectives ) {
-                multipleObjectivesProgress[recordID] = multipleObjectivesItem;
-              }
-              else {
-                singleObjectivesProgress[recordID] = objectProgress;
-              }
-            }
-          }
-
-          //console.log(multipleObjectivesProgress);
-
-          var total = completed.length + inProgress.length;
-          var completedPercent = Math.floor(completed.length / total * 100);
-
-          // Seal Header Progress Bar
-          $('#' + seal.toLowerCase()).append('<div class="progress"><div class="progress-bar bg-success" style="width: '+completedPercent+'%;" role="progressbar" aria-valuenow="'+completedPercent+'" aria-valuemin="0" aria-valuemax="100">'+completedPercent+'%</div></div>');
-
-          if( completedPercent != 100 ) {
-            // Completed / In-progress containers
-            $('#' + seal.toLowerCase()).append('<div class="row mt-3"></div>');
-            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-inProgress" class="col-md-6 text-left mb-2"><h6 class="text-yellow">In-Progress ('+inProgress.length+'/'+total+')</h6></div>');
-            $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-completed" class="col-md-6 text-left mb-2"><h6 class="text-yellow">Completed ('+completed.length+'/'+total+')</h6></div>');
-
-            // Completed Triumphs
-            for(var key in completed) {
-              if( completed[key] in recordDefinition ) {
-                var tooltip = `
-                <div>
-                  <h6 class='font-weight-bold mb-1'>`+recordDefinition[completed[key]]["displayProperties"]["name"]+`</h6>
-                  <div class='d-flex align-items-center'>
-                    <div>
-                      <img src='https://bungie.net`+recordDefinition[completed[key]]["displayProperties"]["icon"]+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
-                    </div>
-                    <div>
-                      `+recordDefinition[completed[key]]["displayProperties"]["description"].replace(/"/g, "'")+`
-                    </div>
-                  </div>
-                </div>
-                `;
-
-                var str = `
-                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+completed[key]+`">
-                  <img class="img-fluid" src="https://bungie.net`+recordDefinition[completed[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[completed[key]]["displayProperties"]["name"]+`
-                </div>
-                `;
-
-                $('#'+seal.toLowerCase()+'-completed').append("<div>"+str+"</div>");
-              }
-            }
-
-            // In-progress Triumphs
-            for(var key in inProgress) {
-              if( inProgress[key] in recordDefinition ) {
-
-                var objectivesProgressStr = '';
-
-                if( inProgress[key] in multipleObjectivesProgress ) {
-                  objectivesProgressStr = ' (' + multipleObjectivesProgress[inProgress[key]]['completed'] + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
-                }
-
-                if( inProgress[key] in singleObjectivesProgress ) {
-                  if( singleObjectivesProgress[inProgress[key]] ) {
-                    objectivesProgressStr = ' (' + singleObjectivesProgress[inProgress[key]] + ')';
+              // Check characters
+              for(var char_id in memberData.characterRecords.data) {
+                if( recordID in memberData.characterRecords.data[char_id].records ) {
+                  if( memberData.characterRecords.data[char_id].records[recordID].objectives.length == 1 && memberData.characterRecords.data[char_id].records[recordID].objectives[0].complete == true ) {
+                    isCompleted = true;
+                  }
+                  else if( memberData.characterRecords.data[char_id].records[recordID].objectives.length > 1 && memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length == memberData.characterRecords.data[char_id].records[recordID].objectives.length ) {
+                    isCompleted = true;
+                  }
+                  else if( memberData.characterRecords.data[char_id].records[recordID].objectives.length > 1 && memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length != memberData.characterRecords.data[char_id].records[recordID].objectives.length ) {
+                    multipleObjectives = true;
+                    multipleObjectivesItem['completed'] = memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete == true }).length;
+                    multipleObjectivesItem['total'] = memberData.characterRecords.data[char_id].records[recordID].objectives.length;
+                    multipleObjectivesItem['inProgress'] = memberData.characterRecords.data[char_id].records[recordID].objectives.filter(function(r){ return r.complete != true });
                   }
                 }
+              }
 
-                var tooltip = `
-                <div>
-                  <h6 class='font-weight-bold mb-1'>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`</h6>
-                  <div class='d-flex align-items-center'>
-                    <div>
-                      <img src='https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
-                    </div>
-                    <div>
-                      `+recordDefinition[inProgress[key]]["displayProperties"]["description"].replace(/"/g, "'")+`
-                    </div>
-                  </div>
-                </div>
-                `;
+              // Check profile
+              if( recordID in memberData.profileRecords.data.records ) {
+                if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == true ) {
+                  isCompleted = true;
+                }
+                else if( memberData.profileRecords.data.records[recordID].objectives.length > 1 && memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length == memberData.profileRecords.data.records[recordID].objectives.length ) {
+                  isCompleted = true;
+                }
+                else if( memberData.profileRecords.data.records[recordID].objectives.length > 1 && memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length != memberData.profileRecords.data.records[recordID].objectives.length ) {
+                  multipleObjectives = true;
+                  multipleObjectivesItem['completed'] = memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete == true }).length;
+                  multipleObjectivesItem['total'] = memberData.profileRecords.data.records[recordID].objectives.length;
+                  multipleObjectivesItem['inProgress'] = memberData.profileRecords.data.records[recordID].objectives.filter(function(r){ return r.complete != true });
+                }
 
-                var str = `
-                <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+inProgress[key]+`">
-                  <img class="img-fluid" src="https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`
-                </div>
-                `;
+                if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == false ) {
+                  if ( memberData.profileRecords.data.records[recordID].objectives[0].progress != 0 && memberData.profileRecords.data.records[recordID].objectives[0].completionValue != 0 ) {
+                    objectProgress = memberData.profileRecords.data.records[recordID].objectives[0].progress + "/" + memberData.profileRecords.data.records[recordID].objectives[0].completionValue;
+                  }
+                }
+              }
 
-                $('#'+seal.toLowerCase()+'-inProgress').append("<div>"+str+"</div>");
+              if( isCompleted )
+                completed.push(recordID);
+              else {
+                inProgress.push(recordID);
+
+                if( multipleObjectives ) {
+                  multipleObjectivesProgress[recordID] = multipleObjectivesItem;
+                }
+                else {
+                  singleObjectivesProgress[recordID] = objectProgress;
+                }
               }
             }
 
-            $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link" href="#'+seal.toLowerCase()+'">'+seal+' ('+completedPercent+'%)</a></li>');
-          }
-          else {
-            $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link" href="#'+seal.toLowerCase()+'">'+seal+'<i class="fas fa-check text-success ml-2"></i></a></li>');
-            $('.stats-container #' + seal.toLowerCase() + ' h2').append('<i class="fas fa-check text-success ml-2"></i>');
-          }
-        }
+            //console.log(multipleObjectivesProgress);
 
-        $('.loader').hide();
-        $('.loader-text').hide();
-        $("h1#member-name").show();
-        $("#back-nav").show();
-        $('#sub-menu').show();
-        $('[data-toggle="tooltip"]').tooltip({
-          html: true
+            var total = completed.length + inProgress.length;
+            var completedPercent = Math.floor(completed.length / total * 100);
+
+            // Seal Header Progress Bar
+            $('#' + seal.toLowerCase()).append('<div class="progress"><div class="progress-bar bg-success" style="width: '+completedPercent+'%;" role="progressbar" aria-valuenow="'+completedPercent+'" aria-valuemin="0" aria-valuemax="100">'+completedPercent+'%</div></div>');
+
+            if( completedPercent != 100 ) {
+              // Completed / In-progress containers
+              $('#' + seal.toLowerCase()).append('<div class="row mt-3"></div>');
+              $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-inProgress" class="col-md-6 text-left mb-2"><h6 class="text-yellow">In-Progress ('+inProgress.length+'/'+total+')</h6></div>');
+              $('#' + seal.toLowerCase() + ' > div.row').append('<div id="'+seal.toLowerCase()+'-completed" class="col-md-6 text-left mb-2"><h6 class="text-yellow">Completed ('+completed.length+'/'+total+')</h6></div>');
+
+              // Completed Triumphs
+              for(var key in completed) {
+                if( completed[key] in recordDefinition ) {
+                  var tooltip = `
+                  <div>
+                    <h6 class='font-weight-bold mb-1'>`+recordDefinition[completed[key]]["displayProperties"]["name"]+`</h6>
+                    <div class='d-flex align-items-center'>
+                      <div>
+                        <img src='https://bungie.net`+recordDefinition[completed[key]]["displayProperties"]["icon"]+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+                      </div>
+                      <div>
+                        `+recordDefinition[completed[key]]["displayProperties"]["description"].replace(/"/g, "'")+`
+                      </div>
+                    </div>
+                  </div>
+                  `;
+
+                  var str = `
+                  <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+completed[key]+`">
+                    <img class="img-fluid" src="https://bungie.net`+recordDefinition[completed[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[completed[key]]["displayProperties"]["name"]+`
+                  </div>
+                  `;
+
+                  $('#'+seal.toLowerCase()+'-completed').append("<div>"+str+"</div>");
+                }
+              }
+
+              // In-progress Triumphs
+              for(var key in inProgress) {
+                if( inProgress[key] in recordDefinition ) {
+
+                  var objectivesProgressStr = '';
+
+                  if( inProgress[key] in multipleObjectivesProgress ) {
+                    objectivesProgressStr = ' (' + multipleObjectivesProgress[inProgress[key]]['completed'] + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
+                  }
+
+                  if( inProgress[key] in singleObjectivesProgress ) {
+                    if( singleObjectivesProgress[inProgress[key]] ) {
+                      objectivesProgressStr = ' (' + singleObjectivesProgress[inProgress[key]] + ')';
+                    }
+                  }
+
+                  var tooltip = `
+                  <div>
+                    <h6 class='font-weight-bold mb-1'>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`</h6>
+                    <div class='d-flex align-items-center'>
+                      <div>
+                        <img src='https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+                      </div>
+                      <div>
+                        `+recordDefinition[inProgress[key]]["displayProperties"]["description"].replace(/"/g, "'")+`
+                      </div>
+                    </div>
+                  </div>
+                  `;
+
+                  var str = `
+                  <div class="d-flex mb-1 vendor-item" data-toggle="tooltip" title="`+tooltip+`" data-hash="`+inProgress[key]+`">
+                    <img class="img-fluid" src="https://bungie.net`+recordDefinition[inProgress[key]]["displayProperties"]["icon"]+`" style="width: 20px; height: 20px; margin-right: 5px; position: relative; top: 2px;"/>`+recordDefinition[inProgress[key]]["displayProperties"]["name"]+objectivesProgressStr+`
+                  </div>
+                  `;
+
+                  $('#'+seal.toLowerCase()+'-inProgress').append("<div>"+str+"</div>");
+                }
+              }
+
+              $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link" href="#'+seal.toLowerCase()+'">'+seal+' ('+completedPercent+'%)</a></li>');
+            }
+            else {
+              $('#sub-menu > ul').append('<li class="nav-item"><a class="nav-link" href="#'+seal.toLowerCase()+'">'+seal+'<i class="fas fa-check text-success ml-2"></i></a></li>');
+              $('.stats-container #' + seal.toLowerCase() + ' h2').append('<i class="fas fa-check text-success ml-2"></i>');
+            }
+          }
+
+          $('.loader').hide();
+          $('.loader-text').hide();
+          $("h1#member-name").show();
+          $("#back-nav").show();
+          $('#sub-menu').show();
+          $('[data-toggle="tooltip"]').tooltip({
+            html: true
+          });
         });
-      });
+      }
+      else {
+        $('.loader-text').html('Unable to retrieve data 😟 <br/>Bungie API might be under maintenance');
+      }
     });
   }
 });

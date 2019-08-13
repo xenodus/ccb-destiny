@@ -15,14 +15,99 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
+      dd( App\Classes\Clan_Member::get_members() );
+
+      // Get all clan members ID
+      $members = App\Classes\Clan_Member::get();
+      $member_ids = $members->pluck('id')->all();
+
+      // Activity Modes
+      $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
+
+      // 0 == All
+      // 4 == Raid
+      // 5 == PvP
+      // 7 == PvE
+
+      $activity_count = [];
+      $page_no = 0;
+      $per_page = 100;
+      $next_page = false;
+
+      $account_id = env('DESTINY_ID');
+      $character_id = env('DESTINY_CHAR_ID');
+
+      $client = new Client();
+
+      $activities_url = env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Stats/Activities/?count='.$per_page.'&page=' . $page_no;
+
+      $response = $client->get($activities_url, ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]);
+
+      if( $response->getStatusCode() == 200 ) {
+        $response = collect( json_decode($response->getBody()->getContents()) );
+
+        if( isset( $response['Response']->activities ) ) {
+          $next_page = true;
+
+          foreach( $response['Response']->activities as $activity ) {
+            $activity_id = $activity->activityDetails->instanceId;
+
+            $pgcr_url = env('BUNGIE_API_ROOT_URL').'/Destiny2/Stats/PostGameCarnageReport/'.$activity_id.'/';
+
+            $pgcr_response = $client->get($pgcr_url, ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]);
+
+            if( $pgcr_response->getStatusCode() == 200 ) {
+              $pgcr_response = collect( json_decode($pgcr_response->getBody()->getContents()) );
+
+              if( isset($pgcr_response['Response']->entries) ) {
+                foreach( $pgcr_response['Response']->entries as $entry ) {
+                  // Ignore self
+                  if( $entry->player->destinyUserInfo->membershipId != $account_id ) {
+
+                    $player_id = $entry->player->destinyUserInfo->membershipId;
+
+                    foreach( $pgcr_response['Response']->activityDetails->modes as $mode ) {
+
+                      // Individual Modes
+                      if( $mode != 0 ) {
+                        // Mode Definition
+                        $activity_count[ $mode ]['mode'] = $activity_mode_definitions->where('modeType', $mode)->first();
+
+                        if( isset( $activity_count[ $mode ][ $player_id ] ) ) {
+                          $activity_count[ $mode ]['players'][ $player_id ]++;
+                        }
+                        else {
+                          $activity_count[ $mode ]['players'][ $player_id ] = 1;
+                        }
+                      }
+
+                      // All Modes
+                      $activity_count[0]['mode'] = $activity_mode_definitions->where('modeType', 0)->first();
+
+                      if( isset( $activity_count[0][ $player_id ] ) ) {
+                        $activity_count[0]['players'][ $player_id ]++;
+                      }
+                      else {
+                        $activity_count[0]['players'][ $player_id ] = 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            // dd( $activity_id );
+          }
+
+          dd( $activity_count );
+          dd( $response['Response']->activities );
+        }
+      }
+
+      dd('the end...');
+
       $data['site_title'] = env('SITE_NAME');
       $data['active_page'] = 'home';
-
-      $rv = App\Classes\Raid_Event::where('status', 'active')->first();
-
-      preg_match('/(\[.*\])/', $rv->event_name, $matches);
-
-      dd( $matches );
 
       // Extra Stats
       $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();

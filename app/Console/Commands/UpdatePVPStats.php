@@ -60,13 +60,12 @@ class UpdatePVPStats extends Command
             $work_progress->save();
 
             $client = new Client(); //GuzzleHttp\Client
-            $members_response = $client->get( route('bungie_get_members') );
 
-            if( $members_response->getStatusCode() == 200 ) {
+            $members = App\Classes\Clan_Member::get_members();
+            $members = collect(json_decode($members));
+            $updated_members = collect([]);
 
-                $members = json_decode($members_response->getBody()->getContents());
-                $members = collect($members);
-                $updated_members = collect([]);
+            if( $members->count() > 0 ) {
 
                 $n = 1;
 

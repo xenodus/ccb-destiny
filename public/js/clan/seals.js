@@ -1,7 +1,14 @@
 $(document).ready(function(){
-  $.get('/bungie/members/get', function(memberData){
+  $.ajax({
+    url: ccbNS.bungie_api_url+'/GroupV2/'+ccbNS.clan_id+'/Members/',
+    headers: {
+      'X-API-Key': ccbNS.bungie_api
+    }
+  }).done(function(data){
 
-    if( memberData.length > 0 ) {
+    if( data.Response.results && data.Response.results.length > 0 ) {
+
+      memberData = data.Response.results;
 
       $('.loader-text').text('Fetching Triumphs...');
 

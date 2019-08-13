@@ -112,11 +112,11 @@ class StatsController extends Controller
   public function get_members_online()
   {
     $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $response = $client->get( route('bungie_get_members') );
 
-    if( $response->getStatusCode() == 200 ) {
-      $payload = json_decode($response->getBody()->getContents());
-      $members = collect($payload);
+    $members = App\Classes\Clan_Member::get_members();
+    $members = collect(json_decode($members));
+
+    if( $members->count() > 0 ) {
 
       $online_members = $members->filter(function($member){
         return $member->isOnline != false;

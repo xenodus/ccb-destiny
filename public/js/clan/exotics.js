@@ -1,6 +1,14 @@
 $(document).ready(function(){
-  $.get('/bungie/members/get', function(memberData){
-    if( memberData.length > 0 ) {
+  $.ajax({
+    url: 'https://www.bungie.net/Platform/GroupV2/3717919/Members/',
+    headers: {
+      'X-API-Key': '856136fabe704c149dd4bd41344b54c8'
+    }
+  }).done(function(data){
+
+    if( data.Response.results && data.Response.results.length > 0 ) {
+
+      memberData = data.Response.results;
 
       $('.loader-text').text('Fetching Collection...');
 

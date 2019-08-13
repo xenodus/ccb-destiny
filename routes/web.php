@@ -56,8 +56,8 @@ Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
 Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_report');
 
 // Members & Currently Online Members
-Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');
-Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
+// Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');
+// Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
 
 // Get Members' Characters
 Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
