@@ -25,38 +25,44 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
+        $baseFilePath = '/var/www/sites/ccb/storage/logs/';
 
         // D2 Manifest
-        $schedule->command('update:manifest')->weeklyOn(3, '01:05')->appendOutputTo($filePath);
+        $schedule->command('update:manifest')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'manifest.log');
 
         // Member Characters
-        $schedule->command('update:characters')->hourly()->appendOutputTo($filePath);
+        $schedule->command('update:characters')->hourly()->appendOutputTo($baseFilePath . 'characters.log');
 
         // Member Exotic Collection
-        $schedule->command('update:memberExotic')->hourly()->appendOutputTo($filePath);
+        $schedule->command('update:memberExotic')->hourly()->appendOutputTo($baseFilePath . 'exotics.log');
 
         // Member Platform Profile
-        $schedule->command('update:memberPlatformProfile')->hourly()->appendOutputTo($filePath);
+        $schedule->command('update:memberPlatformProfile')->hourly()->appendOutputTo($baseFilePath . 'platform.log');
 
         // Seal Progression
-        $schedule->command('update:seals')->hourly()->appendOutputTo($filePath);
+        $schedule->command('update:seals')->hourly()->appendOutputTo($baseFilePath . 'seals.log');
 
         // Milestones
-        // $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($filePath);
-        $schedule->command('update:milestones')->dailyAt('01:02')->appendOutputTo($filePath);
+        $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($baseFilePath . 'milestones.log');
+        //$schedule->command('update:milestones')->dailyAt('01:02')->appendOutputTo($filePath);
+        $schedule->command('update:milestones')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'milestones.log');
 
         // Vendor Stuff
-        // $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($filePath);
-        $schedule->command('update:vendors')->dailyAt('01:02')->appendOutputTo($filePath);
+        $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($baseFilePath . 'vendors.log');
+        //$schedule->command('update:vendors')->dailyAt('01:02')->appendOutputTo($filePath);
+        $schedule->command('update:vendors')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'vendors.log');
+
+        // Clan Activity Buddy
+        $schedule->command('update:clanActivityBuddies')->weeklyOn(3, '05:33')->appendOutputTo($baseFilePath . 'buddy.log');
 
         // Raid lockouts
-        $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');
 
         // Stats
-        $schedule->command('update:raidStats')->everyFifteenMinutes()->appendOutputTo($filePath);
-        $schedule->command('update:PVEStats')->everyFifteenMinutes()->appendOutputTo($filePath);
-        $schedule->command('update:PVPStats')->everyFifteenMinutes()->appendOutputTo($filePath);
-        $schedule->command('update:GambitStats')->everyFifteenMinutes()->appendOutputTo($filePath);
+        $schedule->command('update:raidStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVEStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVPStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
     }
 
     /**

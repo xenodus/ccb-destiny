@@ -113,7 +113,7 @@ class UpdateRaidStats extends Command
                         $member->raidClears['diamond'] = 0;
                         $member->raidClears['crown'] = 0;
 
-                        $this->info('Setting 0 flawless for ' $member->destinyUserInfo->displayName .' / '. $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
+                        $this->info('Setting 0 flawless for ' . $member->destinyUserInfo->displayName .' / '. $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
                     }
 
                     // Check raid.report
@@ -143,7 +143,7 @@ class UpdateRaidStats extends Command
                         foreach($this->raid_activity_hash as $name => $hash_arr) {
                             $member->raidClears[$name] = 0;
                         }
-                        $this->info('Setting 0 clears for ' $member->destinyUserInfo->displayName . '/' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get raid report.');
+                        $this->info('Setting 0 clears for ' . $member->destinyUserInfo->displayName . '/' . $member->destinyUserInfo->membershipId . ' Reason: Unable to get raid report.');
                     }
 
                     //App\Classes\Raid_Stats::update_members($members);

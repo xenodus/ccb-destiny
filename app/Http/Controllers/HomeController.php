@@ -15,14 +15,14 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      dd( App\Classes\Clan_Member::get_members() );
-
       // Get all clan members ID
       $members = App\Classes\Clan_Member::get();
       $member_ids = $members->pluck('id')->all();
 
       // Activity Modes
       $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
+
+      dd( $activity_mode_definitions->where('modeType', 4)->first() );
 
       // 0 == All
       // 4 == Raid

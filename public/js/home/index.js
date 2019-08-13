@@ -46,7 +46,8 @@ $(document).ready(function(){
         'Vehicle',
         'Weapon Ornament',
         'Armor Ornament',
-        'Multiplayer Emote'
+        'Multiplayer Emote',
+        'Shader'
       ];
 
       // excludes
@@ -85,6 +86,8 @@ $(document).ready(function(){
         xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
 
         tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
+
+        tess_silver_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name == 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
 
         saladin_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Lord Saladin'] && item.itemTypeDisplayName == 'Iron Banner Bounty' });
 
@@ -197,7 +200,12 @@ $(document).ready(function(){
         }
 
         if( tess_wares.length > 0 ) {
+          tess_wares = _.orderBy(tess_wares, ['itemTypeDisplayName'], ['desc']);
           weekliesItems.push( getVendorStr(tess_wares, 'Tess\'s Dust Stash') );
+        }
+
+        if( tess_wares.length > 0 ) {
+          // weekliesItems.push( getVendorStr(tess_silver_wares, 'Tess\'s Silverwares') );
         }
 
         outbreak_config = getOutbreakSinge();
