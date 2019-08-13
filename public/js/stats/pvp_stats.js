@@ -36,9 +36,9 @@ $(document).ready(function(){
     // $.get('/bungie/members/get', function(memberData){
 
     $.ajax({
-      url: 'https://www.bungie.net/Platform/GroupV2/3717919/Members/',
+      url: ccbNS.bungie_api_url+'/GroupV2/'+ccbNS.clan_id+'/Members/',
       headers: {
-        'X-API-Key': '856136fabe704c149dd4bd41344b54c8'
+        'X-API-Key': ccbNS.bungie_api
       }
     }).done(function(data){
 
@@ -79,6 +79,21 @@ $(document).ready(function(){
               });
             }
             else {
+              tableData.push({
+                name: memberData[i].destinyUserInfo.displayName,
+                kd: 0,
+                kda: 0,
+                kad: 0,
+                glory: 0,
+                glory_step: '',
+                valor: 0,
+                valor_step: '',
+                valor_resets: 0,
+                super_kills: 0,
+                melee_kills: 0,
+                grenade_kills: 0,
+              });
+
               console.log("Unable to retrieve PVP data for: " + memberData[i].destinyUserInfo.displayName);
             }
           }

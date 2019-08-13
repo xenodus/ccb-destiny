@@ -6,9 +6,9 @@ $(document).ready(function(){
 
   function print_pve_stats() {
     $.ajax({
-      url: 'https://www.bungie.net/Platform/GroupV2/3717919/Members/',
+      url: ccbNS.bungie_api_url+'/GroupV2/'+ccbNS.clan_id+'/Members/',
       headers: {
-        'X-API-Key': '856136fabe704c149dd4bd41344b54c8'
+        'X-API-Key': ccbNS.bungie_api
       }
     }).done(function(data){
 

@@ -5,7 +5,9 @@
 /storage/manifest
 /storage/manifest/*
 /vendor
+/public/css/compiled
 /public/css/compiled/*
+/public/js/compiled
 /public/js/compiled/*
 .env
 .phpunit.result.cache
