@@ -62,6 +62,7 @@ class UpdateMilestones extends Command
         $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
         $modifier_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModifierDefinition.json'))));
         $item_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyInventoryItemDefinition.json'))));
+        $item_category_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyItemCategoryDefinition.json'))));
 
         if( $response->getStatusCode() == 200 ) {
             $milestones = json_decode($response->getBody()->getContents());
@@ -126,6 +127,7 @@ class UpdateMilestones extends Command
                     if( isset( $activity->modifierHashes ) ) {
 
                         foreach($activity->modifierHashes as $modifier_hash) {
+
                             $am = new App\Classes\Activity_Modifier();
                             $am->type = 'y1_prestige_raid';
                             $am->hash = $modifier_hash;
@@ -133,6 +135,48 @@ class UpdateMilestones extends Command
                             $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
                             $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
                             $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+
+                            // Get Armsmaster loadout
+                            if( $modifier_definitions[ $modifier_hash ]->displayProperties->name == 'Armsmaster' ) {
+                                if( isset($activity->loadoutRequirementIndex) ) {
+                                    $activity_loadouts = $activity_definitions[$activity->activityHash]->loadouts;
+                                    $current_loadouts = $activity_loadouts[$activity->loadoutRequirementIndex];
+                                    $restricted_loadouts = [
+                                        'Kinetic' => 'Anything',
+                                        'Energy' => 'Anything',
+                                        'Power' => 'Anything'
+                                    ];
+
+                                    foreach($current_loadouts->requirements as $requirement) {
+                                        // Kinetic
+                                        if( $requirement->equipmentSlotHash == '1498876634' ) {
+                                            $restricted_loadouts['Kinetic'] = $item_category_definitions->where(
+                                                'grantDestinySubType',
+                                                $requirement->allowedWeaponSubTypes[0]
+                                            )->first()->shortTitle;
+                                        }
+
+                                        // Energy
+                                        if( $requirement->equipmentSlotHash == '2465295065' ) {
+                                            $restricted_loadouts['Energy'] = $item_category_definitions->where(
+                                                'grantDestinySubType',
+                                                $requirement->allowedWeaponSubTypes[0]
+                                            )->first()->shortTitle;
+                                        }
+
+                                        // Power
+                                        if( $requirement->equipmentSlotHash == '953998645' ) {
+                                            $restricted_loadouts['Power'] = $item_category_definitions->where(
+                                                'grantDestinySubType',
+                                                $requirement->allowedWeaponSubTypes[0]
+                                            )->first()->shortTitle;
+                                        }
+                                    }
+
+                                    $am->description = "You've been challenged to wield the following: <br/><br/>Kinetic: ".$restricted_loadouts['Kinetic']."<br/>Energy: ".$restricted_loadouts['Energy']."<br/>Power: ".$restricted_loadouts['Power'];
+                                }
+                            }
+
                             $am->save();
 
                             $this->info('Inserted Y1 Prestige Raid Modifier: ' . $am->name);

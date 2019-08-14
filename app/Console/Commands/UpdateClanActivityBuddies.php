@@ -59,7 +59,7 @@ class UpdateClanActivityBuddies extends Command
 
                 // Helper Text
                 $this->info('----------------------------');
-                $this->info('Processing '.$member_index.' of '.$members->count().' members: ' . $member->id);
+                $this->info('Processing '.$member_index.' of '.$members->count().' members: ' . $member->display_name);
                 $member_index++;
 
                 //$activity_count = [];
