@@ -12,7 +12,6 @@
 */
 
 Route::get('/test', 'HomeController@test')->name('test');
-//Route::get('/test2', 'StatsController@test')->name('test2');
 
 // Team Glory Balancer
 Route::get('/glory_cheese', 'HomeController@glory_cheese')->name('glory_cheese');
@@ -60,10 +59,10 @@ Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_re
 // Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
 
 // Get Members' Characters
-Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
+// Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
 
 // Get Members' Triumph Completion Records
-Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
+// Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
 
 // Clan Roster
 Route::redirect('/clan', '/clan/roster', 301);

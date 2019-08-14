@@ -67,16 +67,21 @@ class UpdateCharacters extends Command
                 $n++;
 
                 $member_characters_response = $client->get(
-                  str_replace('https://', 'http://', route('bungie_get_member_characters', [$member->destinyUserInfo->membershipId]))
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'?components=200,204',
+                    [
+                        'headers' => [
+                            'X-API-Key' => env('BUNGIE_API')
+                        ]
+                    ]
                 );
 
                 if( $member_characters_response->getStatusCode() == 200 ) {
                     $member_characters = json_decode($member_characters_response->getBody()->getContents());
                     $member_characters = collect($member_characters);
 
-                    $this->info('Characters: ' . $member_characters->count());
+                    $this->info('Characters: ' . collect($member_characters['Response']->characters->data)->count());
 
-                    foreach($member_characters['characters']->data as $character_id => $character) {
+                    foreach($member_characters['Response']->characters->data as $character_id => $character) {
                         //dd($character);
 
                         $char_ids[] = $character_id;

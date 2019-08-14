@@ -72,8 +72,12 @@ class UpdateSeals extends Command
             $n++;
 
             $response = $client->get(
-                str_replace('https://', 'http://', route('bungie_get_member_triumphs', [$member->id])),
-                ['http_errors' => false]
+              env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->id.'?components=900',
+              [
+                'headers' => [
+                  'X-API-Key' => env('BUNGIE_API')
+                ]
+              ]
             );
 
             if( $response->getStatusCode() == 200 ) {
@@ -82,19 +86,19 @@ class UpdateSeals extends Command
 
                 $seal_completion = [];
 
-                if( isset($payload['profileRecords']->data) == false )
+                if( isset($payload['Response']->profileRecords->data) == false )
                   continue;
 
                 foreach($this->seal_hash as $title => $id) {
                     $seal_completion[$title] = 0;
 
-                    if( isset($payload['profileRecords']->data->records->$id) ) {
-                      $seal_completion[$title] = $payload['profileRecords']->data->records->$id->objectives[0]->complete ? 1 : 0;
+                    if( isset($payload['Response']->profileRecords->data->records->$id) ) {
+                      $seal_completion[$title] = $payload['Response']->profileRecords->data->records->$id->objectives[0]->complete ? 1 : 0;
                     }
                     else {
                       // Check chars
-                      if( isset($payload['characterRecords']->data) ) {
-                        $chars = collect($payload['characterRecords']->data);
+                      if( isset($payload['Response']->characterRecords->data) ) {
+                        $chars = collect($payload['Response']->characterRecords->data);
 
                         if( count($chars) ) {
                           foreach($chars as $char) {

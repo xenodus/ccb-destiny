@@ -9,31 +9,6 @@ use DB;
 
 class StatsController extends Controller
 {
-  private $clan_id = '3717919';
-
-  public function test()
-  {
-    dd([]);
-
-    $i = App\Classes\Vendor_Sales::find(205);
-    dd($i->perks);
-
-    $client = new Client(); //GuzzleHttp\Client
-
-    $member_gambit_stats_response = $client->get(env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/4611686018471180200/Stats', ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false
-    ]);
-
-    // Character/2305843009300583068/Stats/AggregateActivityStats/
-
-    if( $member_gambit_stats_response->getStatusCode() == 200 ) {
-      $member_gambit_stats = json_decode($member_gambit_stats_response->getBody()->getContents());
-      $member_gambit_stats = collect($member_gambit_stats);
-
-      dd($member_gambit_stats);
-      dd(collect($member_gambit_stats['Response']->activities)->where('activityHash', '3333172150'));
-    }
-  }
-
   public function raid()
   {
       $data['site_title'] = 'Raid stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
@@ -179,7 +154,7 @@ class StatsController extends Controller
 
   public function get_members()
   {
-    $url = env('BUNGIE_API_ROOT_URL').'/GroupV2/'.$this->clan_id.'/Members/';
+    $url = env('BUNGIE_API_ROOT_URL').'/GroupV2/'.env('CLAN_ID').'/Members/';
 
     $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
     $response = $client->get($url, [
