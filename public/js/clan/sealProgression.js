@@ -231,7 +231,7 @@ var sealHashes = {
 $(document).ready(function(){
   if( "member_id" in ccbNS ) {
     $.ajax({
-      url: ccbNS.bungie_api_url+'/GroupV2/'+ccbNS.clan_id+'/Members/',
+      url: ccbNS.bungie_api_url+'/Destiny2/'+ccbNS.platform_id+'/Profile/'+ccbNS.member_id+'/?components=900',
       headers: {
         'X-API-Key': ccbNS.bungie_api
       }

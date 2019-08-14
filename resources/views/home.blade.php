@@ -67,9 +67,7 @@
     </div>
     <div id="weeklies-item-container" class="grid row"></div>
     <div id="weeklies-note" class="text-left" style="display: none;">
-      <small>
-        Note: Tess's Dust Stash from the Bungie.Net API is bugged and returning the wrong items at the moment. Confirmed by Bungie <a href="https://github.com/Bungie-net/api/issues/997#issuecomment-519742690" target="_blank">here</a>.
-      </small>
+      <small></small>
     </div>
   </div>
 

@@ -37,5 +37,6 @@
 <script type="text/javascript">
   ccbNS["member_id"] = '{{ $member_id }}';
 </script>
-<script src="{{ mix('/js/compiled/sealProgression.js') }}"></script>
+<!--script src="{{ mix('/js/compiled/sealProgression.js') }}"></script-->
+<script src="/js/clan/sealProgression.js?<?=time()?>"></script>
 @endsection
