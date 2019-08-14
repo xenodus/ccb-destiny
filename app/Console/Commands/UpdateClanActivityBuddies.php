@@ -111,7 +111,10 @@ class UpdateClanActivityBuddies extends Command
                                 foreach( $response['Response']->activities as $activity ) {
 
                                     // Check if activity has already been processed previously
-                                    $prev = DB::table('clan_member_activity_last_processed')->where('character_id', $character_id)->first();
+                                    $prev = DB::table('clan_member_activity_last_processed')
+                                        ->where('character_id', $character_id)
+                                        ->where('mode', 4)
+                                        ->first();
 
                                     if( $prev ) {
                                         $prev_processed_date = \Carbon\Carbon::parse($prev->last_entry);
@@ -191,7 +194,7 @@ class UpdateClanActivityBuddies extends Command
                     if( $first_date ) {
                         DB::table('clan_member_activity_last_processed')
                             ->updateOrInsert(
-                                ['character_id' => $character_id],
+                                ['character_id' => $character_id, 'mode' => 4],
                                 [
                                     'last_entry' => $first_date,
                                     'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')

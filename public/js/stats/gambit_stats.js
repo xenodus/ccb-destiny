@@ -97,6 +97,7 @@ $(document).ready(function(){
 
           $('.loader').hide();
           $('.loader-text').hide();
+          $('.filter-container').show();
 
           var autoNumFormatter = function(){
             return $("#gambit-stats-table .tabulator-row").length;

@@ -9,6 +9,27 @@ use DB;
 
 class StatsController extends Controller
 {
+  public function raid_buddy($member_id)
+  {
+      $data['member'] = App\Classes\Clan_Member::with('raid_buddies')->find($member_id);
+      $data['clan_members'] = App\Classes\Clan_Member::get();
+
+      $data['site_title'] = 'Raid buddies for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'raid_buddy';
+
+      return view('stats.raid_buddy', $data);
+  }
+
+  public function clan_raid_buddy()
+  {
+      $data['site_title'] = 'Raid buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'raid_buddies';
+
+      $data['members'] = App\Classes\Clan_Member::with('raid_buddies')->get();
+
+      return view('stats.clan_raid_buddies', $data);
+  }
+
   public function raid()
   {
       $data['site_title'] = 'Raid stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
@@ -82,126 +103,5 @@ class StatsController extends Controller
     $gambit_stats = App\Classes\Gambit_Stats::get();
 
     return response()->json($gambit_stats);
-  }
-
-  public function get_members_online()
-  {
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-
-    $members = App\Classes\Clan_Member::get_members();
-    $members = collect(json_decode($members));
-
-    if( $members->count() > 0 ) {
-
-      $online_members = $members->filter(function($member){
-        return $member->isOnline != false;
-      });
-
-      $online_members = $online_members->map(function($member){
-        return [
-          'membershipId' => $member->destinyUserInfo->membershipId,
-          'displayName' => $member->destinyUserInfo->displayName,
-          'avatar' => $member->bungieNetUserInfo->iconPath,
-          'lastOnlineStatusChange' => $member->lastOnlineStatusChange
-        ];
-      });
-
-      return response()->json( $online_members );
-    }
-
-    return response()->json([]);
-  }
-
-  // Component definition: https://bungie-net.github.io/multi/schema_Destiny-DestinyComponentType.html#schema_Destiny-DestinyComponentType
-  public function get_member_characters($member_id)
-  {
-    $url = env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member_id.'?components=200,204';
-
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $response = $client->get($url, [
-      'headers' => [
-        'X-API-Key' => env('BUNGIE_API')
-      ]
-    ]);
-
-    if( $response->getStatusCode() == 200 ) {
-      $payload = json_decode($response->getBody()->getContents());
-      return response()->json( $payload->Response );
-    }
-
-    return response()->json([]);
-  }
-
-  // https://bungie-net.github.io/multi/schema_Destiny-DestinyRecordState.html#schema_Destiny-DestinyRecordState
-  public function get_member_triumphs($member_id)
-  {
-    $url = env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member_id.'?components=900';
-
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $response = $client->get($url, [
-      'headers' => [
-        'X-API-Key' => env('BUNGIE_API')
-      ]
-    ]);
-
-    if( $response->getStatusCode() == 200 ) {
-      $payload = json_decode($response->getBody()->getContents());
-      return response()->json( $payload->Response );
-    }
-
-    return response()->json([]);
-  }
-
-  public function get_members()
-  {
-    $url = env('BUNGIE_API_ROOT_URL').'/GroupV2/'.env('CLAN_ID').'/Members/';
-
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-    $response = $client->get($url, [
-      'headers' => [
-        'X-API-Key' => env('BUNGIE_API')
-      ]
-    ]);
-
-    if( $response->getStatusCode() == 200 ) {
-      $payload = json_decode($response->getBody()->getContents());
-
-      // Get all current member ids and delete those are ain't in clan anymore
-      $ids = collect($payload->Response->results)->filter(function($member){
-        return $member->destinyUserInfo->membershipType == 4;
-      })
-      ->map(function($member){
-        return $member->destinyUserInfo->membershipId;
-      })->toArray();
-
-      DB::table('clan_members')->whereNotIn('id', $ids)->delete();
-
-      foreach($payload->Response->results as $key => $result) {
-        if( $result->destinyUserInfo->membershipType == 4 ) {
-          $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
-          $last_online->setTimezone('Asia/Singapore');
-
-          $clan_member = \App\Classes\Clan_Member::updateOrCreate(
-            ['id' => $result->destinyUserInfo->membershipId],
-            [
-              'bungie_id' => $result->bungieNetUserInfo->membershipId,
-              'display_name' => $result->destinyUserInfo->displayName,
-              'last_online' => $last_online->format('Y-m-d H:i:s'),
-              'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
-            ]
-          );
-        }
-        else {
-          unset( $payload->Response->results[$key] );
-        }
-      }
-
-      // Reset array keys
-      $payload->Response->results = array_values($payload->Response->results);
-
-      return response()->json( $payload->Response->results );
-    }
-
-    return response()->json([]);
   }
 }

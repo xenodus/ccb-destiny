@@ -58,6 +58,7 @@ $(document).ready(function(){
 
           $('.loader').hide();
           $('.loader-text').hide();
+          $('.filter-container').show();
 
           var autoNumFormatter = function(){
             return $("#weapon-stats-table .tabulator-row").length;
@@ -91,6 +92,10 @@ $(document).ready(function(){
             layout:"fitDataFill",
             height:"500px",
             resizableColumns:false,
+          });
+
+          $("#nameFilter").on("input", function(){
+            table.setFilter("name", "like", $(this).val());
           });
 
           $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+weaponData.last_updated+'</small></div>');

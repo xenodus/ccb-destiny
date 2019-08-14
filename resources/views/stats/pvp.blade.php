@@ -11,6 +11,11 @@
   <div class="loader"></div>
   <div class="loader-text">Fetching Members...</div>
 
+  <div class="form-group filter-container text-left" style="display: none;">
+    <label for="nameFilter" class="d-md-inline-block">Filter by name</label>
+    <input type="text" class="form-control form-control-sm d-md-inline-block ml-0 ml-md-1" id="nameFilter" style="max-width: 360px;">
+  </div>
+
   <div class="stats-container mt-4"></div>
 </section>
 @endsection
