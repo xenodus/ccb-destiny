@@ -15,6 +15,27 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
+      dd( strval(4611686018483939726) );
+
+      $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::create(
+        [
+          'member_id' => 4611686018467275095,
+          'mode' => 5,
+          'buddy_id' => 4611686018468112491,
+          'activity_count' => 2,
+          'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
+        ]
+      );
+
+      dd($clan_member_activity_buddy);
+
+      $bb = \App\Classes\Clan_Member_Activity_Buddy::where('member_id', 4611686018467275090)
+                            ->where('mode', 5)
+                            ->where('buddy_id', 4611686018471098504)
+                            ->first();
+
+      dd($bb);
+
       // Get all clan members ID
       $members = App\Classes\Clan_Member::get();
       $member_ids = $members->pluck('id')->all();

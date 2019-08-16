@@ -14,9 +14,13 @@
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 
-// Raid Buddy
+// Buddies
 Route::get('/stats/raid/buddy', 'StatsController@clan_raid_buddy')->name('clan_raid_buddy');
 Route::get('/stats/raid/buddy/{member_id}', 'StatsController@raid_buddy')->name('raid_buddy');
+Route::get('/stats/raid/buddy/{member_id}/{buddy_id}', 'StatsController@raid_buddy_activities')->name('raid_buddy_activities');
+
+Route::get('/stats/pvp/buddy', 'StatsController@clan_pvp_buddy')->name('clan_pvp_buddy');
+Route::get('/stats/pvp/buddy/{member_id}', 'StatsController@pvp_buddy')->name('pvp_buddy');
 
 // Team Glory Balancer
 Route::get('/glory_cheese', 'HomeController@glory_cheese')->name('glory_cheese');

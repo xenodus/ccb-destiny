@@ -12,8 +12,7 @@ class Clan_Member extends Model
   protected $table = 'clan_members';
   protected $primaryKey = 'id';
   public $timestamps = false;
-  protected $casts = ['id' => 'string'];
-
+  protected $casts = ['id' => 'string', 'bungie_id' => 'string'];
   protected $fillable = ['id', 'bungie_id', 'display_name', 'last_online', 'date_added'];
 
   public function characters()
@@ -30,6 +29,13 @@ class Clan_Member extends Model
   {
       return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy', 'member_id')
         ->where('mode', 4)
+        ->orderBy('activity_count', 'desc');
+  }
+
+  public function pvp_buddies()
+  {
+      return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy', 'member_id')
+        ->where('mode', 5)
         ->orderBy('activity_count', 'desc');
   }
 

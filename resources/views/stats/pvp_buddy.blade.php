@@ -4,45 +4,21 @@
 <section class="stats text-center container-fluid mb-4">
 
   <div class="mt-4">
-
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats">
-            <span property="name">Stats</span>
-          </a>
-          <meta property="position" content="1">
-        </li>
-
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/raid/buddy">
-            <span property="name">Raid Buddies</span>
-          </a>
-          <meta property="position" content="2">
-        </li>
-
-        <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/raid/buddy/{{$member->id}}">
-            <span property="name">{{ $member->display_name }}</span>
-          </a>
-          <meta property="position" content="3">
-        </li>
-      </ol>
-    </nav>
-
-    <h1 class="text-yellow text-left">Raid Buddies of {{ $member->display_name }} <i class="fas fa-user-friends"></i></h1>
+    @include('stats.breadcrumbs', ['nav_link' => '/stats/pvp/buddy', 'nav_name' => 'PvP (Crucible) Buddies'])
+    <h1 class="text-yellow text-left">PvP (Crucible) Buddies of {{ $member->display_name }} <i class="fas fa-user-friends"></i></h1>
   </div>
 
   <div class="mt-3 p-0 col-md-12 col-xs-12 text-center">
     <canvas id="buddiesChart" style="background: rgba(255,255,255,.05);"></canvas>
   </div>
 
-  <div class="mt-3 text-left mt-4">
-    <div><small>Data updated daily. Data includes any raid activity regardless of completion status.</small></div>
-    <div><small>* Not clan mate</small></div>
-  </div>
-
   <div class="stats-container mt-1"></div>
+
+  <div class="mt-3 text-left">
+    <div><small>* Not clan mate</small></div>
+    <div><small>** Data updated daily</small></div>
+    <div><small>*** Data includes any pvp activity regardless of completion status</small></div>
+  </div>
 </section>
 @endsection
 
@@ -64,20 +40,20 @@ $(document).ready(function(){
   var buddiesValues = [];
   var buddiesIDs = [];
 
-  for(var i=0; i<member.raid_buddies.length; i++) {
+  for(var i=0; i<member.pvp_buddies.length; i++) {
 
-    buddiesValues.push(member.raid_buddies[i].activity_count);
+    buddiesValues.push(member.pvp_buddies[i].activity_count);
 
     var match = clan_members.filter(function(m){
-      return m.id == member.raid_buddies[i].buddy_id;
+      return m.id == member.pvp_buddies[i].buddy_id;
     });
 
     if( match.length > 0 ) {
       buddiesIDs.push(match[0].display_name);
     }
     else {
-      id2query.push(member.raid_buddies[i].buddy_id);
-      buddiesIDs.push(member.raid_buddies[i].buddy_id);
+      id2query.push(member.pvp_buddies[i].buddy_id);
+      buddiesIDs.push(member.pvp_buddies[i].buddy_id);
     }
 
     if(i==(chartLimit-1))
@@ -112,7 +88,7 @@ $(document).ready(function(){
     options: {
       title: {
         display: true,
-        text: 'Top '+chartLimit+' Raid Buddies',
+        text: 'Top '+chartLimit+' PvP (Crucible) Buddies',
         fontColor: "#ffffff"
       },
       legend: {
@@ -149,7 +125,7 @@ $(document).ready(function(){
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'No. of Raids Played Together',
+            labelString: 'No. of Matches Played Together',
             padding: 15,
             fontColor: "#ffffff"
           }
@@ -194,10 +170,10 @@ $(document).ready(function(){
   var tableBuddiesValues = [];
   var tableBuddiesIDs = [];
 
-  for(var i=0; i<member.raid_buddies.length; i++) {
+  for(var i=0; i<member.pvp_buddies.length; i++) {
 
     var match = clan_members.filter(function(m){
-      return m.id == member.raid_buddies[i].buddy_id;
+      return m.id == member.pvp_buddies[i].buddy_id;
     });
 
     var buddy_name = '';
@@ -206,16 +182,15 @@ $(document).ready(function(){
       buddy_name = match[0].display_name;
     }
     else {
-      buddy_name = member.raid_buddies[i].buddy_id;
-      tableIDs2query.push(member.raid_buddies[i].buddy_id);
+      buddy_name = member.pvp_buddies[i].buddy_id;
+      tableIDs2query.push(member.pvp_buddies[i].buddy_id);
     }
 
     tableData.push({
-      id: member.raid_buddies[i].buddy_id,
+      id: member.pvp_buddies[i].buddy_id,
       buddy_name: buddy_name,
-      buddy_id: member.raid_buddies[i].buddy_id,
-      activity_count: member.raid_buddies[i].activity_count,
-      link: '<a class="text-dark" href="/stats/raid/buddy/'+member.id+'/'+member.raid_buddies[i].buddy_id+'">Go</a>'
+      buddy_id: member.pvp_buddies[i].buddy_id,
+      activity_count: member.pvp_buddies[i].activity_count
     });
 
     if(i==(tableLimit-1))
@@ -234,8 +209,7 @@ $(document).ready(function(){
       {title:"Member ID", field:"id", visible: false, cssClass: 'member_id'},
       {title:"Buddy ID", field:"buddy_id", visible: false, cssClass: 'buddy_id'},
       {title:"Buddy", field:"buddy_name", cssClass: 'buddy_name', headerSort:false},
-      {title:"No. of Raids Together", field:"activity_count", cssClass: 'activity_count text-center', headerSort:false},
-      {title:"Activities", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title:"No. of Matches Together", field:"activity_count", cssClass: 'activity_count text-center', headerSort:false},
     ],
     initialSort: [
       {column:"activity_count", dir:"desc"}

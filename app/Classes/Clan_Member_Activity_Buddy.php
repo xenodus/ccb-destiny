@@ -11,6 +11,8 @@ class Clan_Member_Activity_Buddy extends Model
   protected $primaryKey = 'id';
   public $timestamps = false;
 
+  protected $casts = ['buddy_id' => 'string', 'member_id' => 'string'];
+
   protected $fillable = ['id', 'member_id', 'mode', 'buddy_id', 'activity_count', 'date_added'];
 
   public function member()

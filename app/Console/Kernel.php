@@ -53,7 +53,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:vendors')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'vendors.log');
 
         // Clan Activity Buddy
-        $schedule->command('update:clanActivityBuddies')->weeklyOn(3, '05:33')->appendOutputTo($baseFilePath . 'buddy.log');
+        $schedule->command('update:clanRaidActivityBuddies')->dailyAt('03:00')->appendOutputTo($baseFilePath . 'raid_buddy.log');
+        $schedule->command('update:clanPvPActivityBuddies')->dailyAt('03:00')->appendOutputTo($baseFilePath . 'pvp_buddy.log');
 
         // Raid lockouts
         $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');

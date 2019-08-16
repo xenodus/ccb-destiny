@@ -4,18 +4,12 @@
 <section class="stats text-center container-fluid mb-4">
 
   <div class="mt-4">
-    @include('stats.breadcrumbs', ['nav_link' => '/stats/raid/buddy', 'nav_name' => 'Raid Buddies'])
-    <h1 class="text-yellow text-left">Who's Your Raid Buddy? <i class="fas fa-user-friends"></i></h1>
+    @include('stats.breadcrumbs', ['nav_link' => '/stats/pvp/buddy', 'nav_name' => 'PvP (Crucible) Buddies'])
+    <h1 class="text-yellow text-left">Who's Your PvP (Crucible) Buddy? <i class="fas fa-user-friends"></i></h1>
   </div>
 
   <div class="loader"></div>
   <div class="loader-text">Fetching Members...</div>
-
-  <div class="mt-3 text-left mt-4">
-    <div><small>If your name is not listed here, go to your Bungie privacy settings and ensure "Show my Destiny game Activity Feed on Bungie.net" is checked. Come back in 24 hours.</small></div>
-    <div><small>Data updated daily. Data includes any raid activity regardless of completion status.</small></div>
-    <div><small>* Not clan mate</small></div>
-  </div>
 
   <div class="form-group filter-container text-left mt-4" style="display: none;">
     <label for="nameFilter" class="d-md-inline-block">Filter by name</label>
@@ -23,6 +17,11 @@
   </div>
 
   <div class="stats-container mt-1"></div>
+  <div class="mt-3 text-left">
+    <div><small>* Not clan mate</small></div>
+    <div><small>** Data updated daily</small></div>
+    <div><small>*** Data includes any pvp activity regardless of completion status</small></div>
+  </div>
 </section>
 @endsection
 
@@ -39,10 +38,10 @@ $(document).ready(function(){
 
   for(var i=0; i<memberData.length; i++) {
 
-      if( memberData[i].raid_buddies[0] ) {
+      if( memberData[i].pvp_buddies[0] ) {
 
         var buddy = memberData.filter(function(m){
-          return m.id == memberData[i].raid_buddies[0].buddy_id;
+          return m.id == memberData[i].pvp_buddies[0].buddy_id;
         });
 
         var buddy_name = '';
@@ -51,16 +50,16 @@ $(document).ready(function(){
           buddy_name = buddy[0].display_name;
         }
         else {
-          id2query.push( memberData[i].raid_buddies[0].buddy_id );
+          id2query.push( memberData[i].pvp_buddies[0].buddy_id );
         }
 
       tableData.push({
         id: memberData[i].id,
         name: memberData[i].display_name,
         buddy_name: buddy_name,
-        buddy_id: memberData[i].raid_buddies[0] ? memberData[i].raid_buddies[0].buddy_id : '',
-        activity_count: memberData[i].raid_buddies[0] ? memberData[i].raid_buddies[0].activity_count : '',
-        link: '<a class="text-dark" href="/stats/raid/buddy/'+memberData[i].id+'">Go</a>'
+        buddy_id: memberData[i].pvp_buddies[0] ? memberData[i].pvp_buddies[0].buddy_id : '',
+        activity_count: memberData[i].pvp_buddies[0] ? memberData[i].pvp_buddies[0].activity_count : '',
+        link: '<a class="text-dark" href="/stats/pvp/buddy/'+memberData[i].id+'">Go</a>'
       });
     }
   }
@@ -81,8 +80,8 @@ $(document).ready(function(){
       {title:"Member ID", field:"id", visible: false, cssClass: 'member_id'},
       {title:"Buddy ID", field:"buddy_id", visible: false, cssClass: 'buddy_id'},
       {title:"No. 1 Buddy", field:"buddy_name", cssClass: 'buddy_name'},
-      {title:"No. of Raids Together", field:"activity_count", cssClass: 'activity_count text-center'},
-      {title:"More Details", field:"link", formatter:"html", cssClass: 'view_more text-center', headerSort:false},
+      {title:"No. of Matches Together", field:"activity_count", cssClass: 'activity_count text-center'},
+      {title:"More", field:"link", formatter:"html", cssClass: 'view_more text-center', headerSort:false},
     ],
     initialSort: [
       {column:"activity_count", dir:"desc"}

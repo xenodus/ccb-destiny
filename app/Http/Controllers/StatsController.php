@@ -9,6 +9,48 @@ use DB;
 
 class StatsController extends Controller
 {
+  public function pvp_buddy($member_id)
+  {
+      $data['member'] = App\Classes\Clan_Member::with('pvp_buddies')->find($member_id);
+      $data['clan_members'] = App\Classes\Clan_Member::get();
+
+      $data['site_title'] = 'PvP (Crucible) buddies for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'pvp_buddy';
+
+      return view('stats.pvp_buddy', $data);
+  }
+
+  public function clan_pvp_buddy()
+  {
+      $data['site_title'] = 'PvP (Crucible) buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'pvp_buddies';
+
+      $data['members'] = App\Classes\Clan_Member::with('pvp_buddies')->get();
+
+      return view('stats.clan_pvp_buddies', $data);
+  }
+
+  public function raid_buddy_activities($member_id, $buddy_id)
+  {
+      $data['member'] = App\Classes\Clan_Member::find($member_id);
+
+      $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+        with('pgcr')
+        ->where('mode', 4)
+        ->where('member_id', $member_id)
+        ->where('buddy_id', $buddy_id)
+        ->get();
+
+      $data['clan_members'] = App\Classes\Clan_Member::get();
+      $data['buddy_id'] = $buddy_id;
+      $data['activity_definition'] = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+
+      $data['site_title'] = 'Raid activities for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'raid_buddy_activities';
+
+      return view('stats.raid_buddy_activities', $data);
+  }
+
   public function raid_buddy($member_id)
   {
       $data['member'] = App\Classes\Clan_Member::with('raid_buddies')->find($member_id);

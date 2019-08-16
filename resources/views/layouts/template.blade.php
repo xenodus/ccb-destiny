@@ -100,7 +100,7 @@
                   </ul>
                 </div>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">
                   <i class="far fa-chart-bar animated pulse slower infinite delay-0.5s"></i>
                   <div>Stats</div>
@@ -122,7 +122,7 @@
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit') ? 'active' : ''  }}">
                       <a href="/stats/gambit">Gambit</a>
                     </li>
-                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies'])) ? 'active' : ''  }}">
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies', 'raid_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/raid/buddy">Raid Buddies</a>
                     </li>
                   </ul>
