@@ -8,6 +8,7 @@ use App;
 use Cookie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Cache;
 
 use App\Classes\Post;
 
@@ -15,116 +16,6 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      dd( strval(4611686018483939726) );
-
-      $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::create(
-        [
-          'member_id' => 4611686018467275095,
-          'mode' => 5,
-          'buddy_id' => 4611686018468112491,
-          'activity_count' => 2,
-          'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
-        ]
-      );
-
-      dd($clan_member_activity_buddy);
-
-      $bb = \App\Classes\Clan_Member_Activity_Buddy::where('member_id', 4611686018467275090)
-                            ->where('mode', 5)
-                            ->where('buddy_id', 4611686018471098504)
-                            ->first();
-
-      dd($bb);
-
-      // Get all clan members ID
-      $members = App\Classes\Clan_Member::get();
-      $member_ids = $members->pluck('id')->all();
-
-      // Activity Modes
-      $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
-
-      dd( $activity_mode_definitions->where('modeType', 4)->first() );
-
-      // 0 == All
-      // 4 == Raid
-      // 5 == PvP
-      // 7 == PvE
-
-      $activity_count = [];
-      $page_no = 0;
-      $per_page = 100;
-      $next_page = false;
-
-      $account_id = env('DESTINY_ID');
-      $character_id = env('DESTINY_CHAR_ID');
-
-      $client = new Client();
-
-      $activities_url = env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Stats/Activities/?count='.$per_page.'&page=' . $page_no;
-
-      $response = $client->get($activities_url, ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]);
-
-      if( $response->getStatusCode() == 200 ) {
-        $response = collect( json_decode($response->getBody()->getContents()) );
-
-        if( isset( $response['Response']->activities ) ) {
-          $next_page = true;
-
-          foreach( $response['Response']->activities as $activity ) {
-            $activity_id = $activity->activityDetails->instanceId;
-
-            $pgcr_url = env('BUNGIE_API_ROOT_URL').'/Destiny2/Stats/PostGameCarnageReport/'.$activity_id.'/';
-
-            $pgcr_response = $client->get($pgcr_url, ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]);
-
-            if( $pgcr_response->getStatusCode() == 200 ) {
-              $pgcr_response = collect( json_decode($pgcr_response->getBody()->getContents()) );
-
-              if( isset($pgcr_response['Response']->entries) ) {
-                foreach( $pgcr_response['Response']->entries as $entry ) {
-                  // Ignore self
-                  if( $entry->player->destinyUserInfo->membershipId != $account_id ) {
-
-                    $player_id = $entry->player->destinyUserInfo->membershipId;
-
-                    foreach( $pgcr_response['Response']->activityDetails->modes as $mode ) {
-
-                      // Individual Modes
-                      if( $mode != 0 ) {
-                        // Mode Definition
-                        $activity_count[ $mode ]['mode'] = $activity_mode_definitions->where('modeType', $mode)->first();
-
-                        if( isset( $activity_count[ $mode ][ $player_id ] ) ) {
-                          $activity_count[ $mode ]['players'][ $player_id ]++;
-                        }
-                        else {
-                          $activity_count[ $mode ]['players'][ $player_id ] = 1;
-                        }
-                      }
-
-                      // All Modes
-                      $activity_count[0]['mode'] = $activity_mode_definitions->where('modeType', 0)->first();
-
-                      if( isset( $activity_count[0][ $player_id ] ) ) {
-                        $activity_count[0]['players'][ $player_id ]++;
-                      }
-                      else {
-                        $activity_count[0]['players'][ $player_id ] = 1;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            // dd( $activity_id );
-          }
-
-          dd( $activity_count );
-          dd( $response['Response']->activities );
-        }
-      }
-
       dd('the end...');
 
       $data['site_title'] = env('SITE_NAME');
@@ -177,9 +68,20 @@ class HomeController extends Controller
       $data['active_page'] = 'home';
 
       // Extra Stats
-      $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();
-      $data['pve_kills'] = App\Classes\Pve_Stats::get_total_kills();
-      $data['clan_members_count'] = App\Classes\Clan_Member::count();
+      $cache_time = 15 * 60;
+      $data['raids_completed'] = Cache::remember('home_raids_completed', $cache_time, function () {
+        return App\Classes\Raid_Stats::get_total_raids_completed();
+      });
+
+      $data['pve_kills'] = Cache::remember('home_pve_kills', $cache_time, function () {
+        return App\Classes\Pve_Stats::get_total_kills();
+      });
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
+      $data['clan_members_count'] = $data['clan_members']->count();
 
       return view('home', $data);
     }

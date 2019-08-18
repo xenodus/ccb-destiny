@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class ClanController extends Controller
 {
@@ -17,14 +18,22 @@ class ClanController extends Controller
   }
 
   public function get_roster() {
-    $roster = App\Classes\Clan_Member::with('characters')->get();
+    $roster = Cache::rememberForever('clan_members_characters', function () {
+      return App\Classes\Clan_Member::with('characters')->get();
+    });
     return response()->json($roster);
   }
 
   public function get_clan_exotic_collection() {
-    $data['clan_exotic_weapon_collection'] = DB::table("clan_member_exotic_weapons")->get();
-    $data['clan_exotic_armor_collection'] = DB::table("clan_member_exotic_armors")->get();
-    $data['exotic_definition'] = DB::table("exotics")->get();
+    $data['clan_exotic_weapon_collection'] = Cache::rememberForever('clan_exotic_weapon_collection', function () {
+      return DB::table("clan_member_exotic_weapons")->get();
+    });
+    $data['clan_exotic_armor_collection'] = Cache::rememberForever('clan_exotic_armor_collection', function () {
+      return DB::table("clan_member_exotic_armors")->get();
+    });
+    $data['exotic_definition'] = Cache::rememberForever('exotic_definition', function () {
+      return DB::table("exotics")->get();
+    });
     return response()->json($data);
   }
 
@@ -33,22 +42,6 @@ class ClanController extends Controller
     $data['active_page'] = 'clan_exotic';
 
     return view('clan.exotics', $data);
-  }
-
-  public function member_exotic_collection($member_id) {
-
-    $member = App\Classes\Clan_Member::find($member_id);
-
-    if( !$member ) {
-      return redirect()->route('clan_exotics');
-    }
-
-    $data['member'] = $member;
-    $data['member_id'] = $member_id;
-    $data['site_title'] = 'Exotic Collection for ' . $member->display_name;
-    // $data['active_page'] = 'seals_breakdown';
-
-    // return view('clan.sealsBreakdown', $data);
   }
 
   public function member_seal_progression($member_id) {
@@ -75,7 +68,9 @@ class ClanController extends Controller
   }
 
   public function get_clan_seal_progression() {
-    $seal_completions = App\Classes\Seal_Completions::get();
+    $seal_completions = Cache::rememberForever('clan_seal_completions', function () {
+      return App\Classes\Seal_Completions::get();
+    });
     return response()->json($seal_completions);
   }
 
@@ -110,7 +105,9 @@ class ClanController extends Controller
 
     $data['start_of_week'] = $start_of_week->format('j M Y');
     $data['end_of_week'] = $end_of_week->format('j M Y');
-    $data['raid_lockouts'] = \App\Classes\Raid_Lockouts::get();
+    $data['raid_lockouts'] = Cache::rememberForever('clan_raid_lockouts', function () {
+      return App\Classes\Raid_Lockouts::get();
+    });
 
     return response()->json($data);
   }

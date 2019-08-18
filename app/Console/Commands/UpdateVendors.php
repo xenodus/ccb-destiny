@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateVendors extends Command
 {
@@ -257,6 +258,23 @@ class UpdateVendors extends Command
                 $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
 
                 $this->info('Completed: Vendor Updates');
+
+                // Refresh Cache
+                Cache::forget('vendor_sales');
+                Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
+
+                // Refresh Cache
+                Cache::forget('vendor_sales_item_perks');
+                Cache::forever('vendor_sales_item_perks', App\Classes\Vendor_Sales_Item_Perks::get());
+
+                // Refresh Cache
+                $vendor_sales_item_perks_xur = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) {
+                    $q->where('vendor_hash', '2190858386');
+                })->get();
+
+                Cache::forget('vendor_sales_item_perks_xur');
+                Cache::forever('vendor_sales_item_perks_xur', $vendor_sales_item_perks_xur);
+
                 return 1;
             }
         }

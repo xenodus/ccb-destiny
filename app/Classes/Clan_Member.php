@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Cache;
+use App;
 
 class Clan_Member extends Model
 {
@@ -25,18 +27,38 @@ class Clan_Member extends Model
       return $this->hasMany('App\Classes\Clan_Member_Platform_Profile', 'id');
   }
 
+  public function raid_activities()
+  {
+    return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
+      ->select("activity_id")
+      ->where('mode', 4);
+  }
+
+  public function pvp_activities()
+  {
+    return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
+      ->select("activity_id")
+      ->where('mode', 5);
+  }
+
   public function raid_buddies()
   {
-      return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy', 'member_id')
-        ->where('mode', 4)
-        ->orderBy('activity_count', 'desc');
+    return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
+      ->selectRaw("member_id, buddy_id, activity_id, count(buddy_id) as activity_count")
+      ->where('mode', 4)
+      ->groupBy('member_id')
+      ->groupBy('buddy_id')
+      ->orderBy('activity_count', 'desc');
   }
 
   public function pvp_buddies()
   {
-      return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy', 'member_id')
-        ->where('mode', 5)
-        ->orderBy('activity_count', 'desc');
+    return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
+      ->selectRaw("member_id, buddy_id, activity_id, count(buddy_id) as activity_count")
+      ->where('mode', 5)
+      ->groupBy('member_id')
+      ->groupBy('buddy_id')
+      ->orderBy('activity_count', 'desc');
   }
 
   public function pvp_stats()
@@ -118,6 +140,10 @@ class Clan_Member extends Model
 
       // Reset array keys
       $payload->Response->results = array_values($payload->Response->results);
+
+      // Refresh Cache
+      Cache::forget('clan_members');
+      Cache::forever('clan_members', App\Classes\Clan_Member::get());
 
       return collect($payload->Response->results)->toJson();
     }

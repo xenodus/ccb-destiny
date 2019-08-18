@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateCharacters extends Command
 {
@@ -103,6 +104,10 @@ class UpdateCharacters extends Command
 
             // delete character data that does not belong to members anymore
             DB::table('clan_member_characters')->whereNotIn('id', $char_ids)->delete();
+
+            // Refresh Cache
+            Cache::forget('clan_members_characters');
+            Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->get());
 
             $this->info('Completed: Characters update');
             return 1;

@@ -78,7 +78,6 @@ class UpdateClanPvPActivityBuddies extends Command
                     $page_no = 0;
                     $next_page = false;
                     $first_date = '';
-                    $activity_count = [];
 
                     while( $page_no == 0 || $next_page == true ) {
 
@@ -118,9 +117,9 @@ class UpdateClanPvPActivityBuddies extends Command
                                         $this->info( $prev_processed_date->format('Y-m-d H:i:s') );
                                         $this->info( $current_entry->format('Y-m-d H:i:s') );
 
-                                        if( $prev_processed_date->lessThan($current_entry) ) {
+                                        if( $prev_processed_date->greaterThanOrEqualTo($current_entry) ) {
                                             $next_page = false;
-                                            break; // skip to next character
+                                            break 2; // skip to next character
                                         }
                                     }
 
@@ -185,13 +184,6 @@ class UpdateClanPvPActivityBuddies extends Command
                                                             );
 
                                                             $players_processed[] = $player_id;
-
-                                                            if( isset( $activity_count[ $modeType ]['players'][ $player_id ] ) ) {
-                                                                $activity_count[ $modeType ]['players'][ $player_id ]++;
-                                                            }
-                                                            else {
-                                                                $activity_count[ $modeType ]['players'][ $player_id ] = 1;
-                                                            }
                                                         }
                                                     }
                                                 }
@@ -217,42 +209,8 @@ class UpdateClanPvPActivityBuddies extends Command
                             );
                     }
 
-                    if( isset($activity_count[ $modeType ]) ) {
-
-                        foreach( $activity_count[ $modeType ]['players'] as $buddy_id => $count ) {
-
-                            $buddy_id = strval( $buddy_id );
-
-                            $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::
-                                where('member_id', $account_id)
-                                ->where('mode', $modeType)
-                                ->where('buddy_id', $buddy_id)
-                                ->first();
-
-                            if( $clan_member_activity_buddy ) {
-                                $clan_member_activity_buddy->activity_count += $count;
-                                $clan_member_activity_buddy->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                                $clan_member_activity_buddy->save();
-                            }
-                            else {
-                                $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::create(
-                                  [
-                                    'member_id' => $account_id,
-                                    'mode' => $modeType,
-                                    'buddy_id' => $buddy_id,
-                                    'activity_count' => $count,
-                                    'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
-                                  ]
-                                );
-                            }
-                        }
-                    }
-
                     $this->info('Finished Processing: ' . $character->id);
                 }
-
-                // dd( $activity_count );
-                // dd( $member->characters );
             }
 
             $this->info('Completed: Clan PvP Activity Buddy');

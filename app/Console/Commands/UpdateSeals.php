@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateSeals extends Command
 {
@@ -133,6 +134,10 @@ class UpdateSeals extends Command
             $seal_completion->save();
           }
         }
+
+        // Refresh Cache
+        Cache::forget('clan_seal_completions');
+        Cache::forever('clan_seal_completions', App\Classes\Seal_Completions::get());
 
         $this->info('Completed: Update Seals');
         return 1;

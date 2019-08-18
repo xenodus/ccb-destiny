@@ -6,13 +6,41 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class StatsController extends Controller
 {
+  public function pvp_buddy_activities($member_id, $buddy_id)
+  {
+      $data['member'] = App\Classes\Clan_Member::find($member_id);
+
+      $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+        with('pgcr')
+        ->where('mode', 5)
+        ->where('member_id', $member_id)
+        ->where('buddy_id', $buddy_id)
+        ->get();
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
+      $data['buddy_id'] = $buddy_id;
+      $data['activity_definition'] = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+
+      $data['site_title'] = 'PvP (Crucible) activities for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'pvp_buddy_activities';
+
+      return view('stats.pvp_buddy_activities', $data);
+  }
+
   public function pvp_buddy($member_id)
   {
       $data['member'] = App\Classes\Clan_Member::with('pvp_buddies')->find($member_id);
-      $data['clan_members'] = App\Classes\Clan_Member::get();
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
 
       $data['site_title'] = 'PvP (Crucible) buddies for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'pvp_buddy';
@@ -41,7 +69,10 @@ class StatsController extends Controller
         ->where('buddy_id', $buddy_id)
         ->get();
 
-      $data['clan_members'] = App\Classes\Clan_Member::get();
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
       $data['buddy_id'] = $buddy_id;
       $data['activity_definition'] = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
 
@@ -53,8 +84,15 @@ class StatsController extends Controller
 
   public function raid_buddy($member_id)
   {
-      $data['member'] = App\Classes\Clan_Member::with('raid_buddies')->find($member_id);
-      $data['clan_members'] = App\Classes\Clan_Member::get();
+      $cache_timer = 5 * 60;
+
+      $data['member'] = Cache::remember('clan_member_raid_buddies_' . $member_id, $cache_timer, function () use($member_id) {
+        return App\Classes\Clan_Member::with('raid_buddies')->find($member_id);
+      });
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
 
       $data['site_title'] = 'Raid buddies for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'raid_buddy';
@@ -67,7 +105,9 @@ class StatsController extends Controller
       $data['site_title'] = 'Raid buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'raid_buddies';
 
-      $data['members'] = App\Classes\Clan_Member::with('raid_buddies')->get();
+      $data['members'] = Cache::rememberForever('clan_member_raid_buddies', function() {
+        return App\Classes\Clan_Member::with('raid_buddies')->get();
+      });
 
       return view('stats.clan_raid_buddies', $data);
   }
@@ -114,35 +154,45 @@ class StatsController extends Controller
 
   public function get_raid_stats()
   {
-    $raid_stats = App\Classes\Raid_Stats::get();
+    $raid_stats = Cache::rememberForever('raid_stats', function () {
+      return App\Classes\Raid_Stats::get();
+    });
 
     return response()->json($raid_stats);
   }
 
   public function get_pve_stats()
   {
-    $pve_stats = App\Classes\Pve_Stats::get();
+    $pve_stats = Cache::rememberForever('pve_stats', function () {
+      return App\Classes\Pve_Stats::get();
+    });
 
     return response()->json($pve_stats);
   }
 
   public function get_pvp_stats()
   {
-    $pvp_stats = App\Classes\Pvp_Stats::get();
+    $pvp_stats = Cache::rememberForever('pvp_stats', function () {
+      return App\Classes\Pvp_Stats::get();
+    });
 
     return response()->json($pvp_stats);
   }
 
   public function get_weapon_stats()
   {
-    $weapon_stats = App\Classes\Weapon_Stats::get();
+    $weapon_stats = Cache::rememberForever('weapon_stats', function () {
+      return App\Classes\Weapon_Stats::get();
+    });
 
     return response()->json($weapon_stats);
   }
 
   public function get_gambit_stats()
   {
-    $gambit_stats = App\Classes\Gambit_Stats::get();
+    $gambit_stats = Cache::rememberForever('gambit_stats', function () {
+      return App\Classes\Gambit_Stats::get();
+    });
 
     return response()->json($gambit_stats);
   }

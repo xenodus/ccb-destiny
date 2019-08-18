@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateRaidStats extends Command
 {
@@ -162,6 +163,10 @@ class UpdateRaidStats extends Command
             $this->info('Error: Raid stats update already in progress');
             return 0;
         }
+
+        // Refresh Cache
+        Cache::forget('raid_stats');
+        Cache::forever('raid_stats', App\Classes\Raid_Stats::get());
 
         $this->info('Completed: Raid stats update');
         return 1;

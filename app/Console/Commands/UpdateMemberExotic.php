@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Exotic;
 
 class UpdateMemberExotic extends Command
 {
@@ -294,6 +295,16 @@ class UpdateMemberExotic extends Command
                 }
             }
         }
+
+        // Refresh Cache
+        Cache::forget('clan_exotic_weapon_collection');
+        Cache::forever('clan_exotic_weapon_collection', DB::table("clan_member_exotic_weapons")->get());
+
+        Cache::forget('clan_exotic_armor_collection');
+        Cache::forever('clan_exotic_armor_collection', DB::table("clan_member_exotic_armors")->get());
+
+        Cache::forget('exotic_definition');
+        Cache::forever('exotic_definition', DB::table("exotics")->get());
 
         $this->info('Completed: member collection update');
     }

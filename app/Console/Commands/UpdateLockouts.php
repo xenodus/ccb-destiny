@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateLockouts extends Command
 {
@@ -168,6 +169,11 @@ class UpdateLockouts extends Command
           }
 
           $this->info('Completed: Raid lockouts update');
+
+          // Refresh Cache
+          Cache::forget('clan_raid_lockouts');
+          Cache::forever('clan_raid_lockouts', App\Classes\Raid_Lockouts::get());
+
           return 1;
         }
 

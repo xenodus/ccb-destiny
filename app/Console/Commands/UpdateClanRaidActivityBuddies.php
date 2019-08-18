@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateClanRaidActivityBuddies extends Command
 {
@@ -78,7 +79,6 @@ class UpdateClanRaidActivityBuddies extends Command
                     $page_no = 0;
                     $next_page = false;
                     $first_date = '';
-                    $activity_count = [];
 
                     while( $page_no == 0 || $next_page == true ) {
 
@@ -112,6 +112,9 @@ class UpdateClanRaidActivityBuddies extends Command
                                         // Getting rid of milli / micro-seconds
                                         $prev_processed_date = \Carbon\Carbon::parse( \Carbon\Carbon::parse($prev->last_entry)->format('Y-m-d H:i:s') );
                                         $current_entry = \Carbon\Carbon::parse( \Carbon\Carbon::parse($activity->period)->format('Y-m-d H:i:s') );
+
+                                        $this->info( $prev_processed_date->format('Y-m-d H:i:s') );
+                                        $this->info( $current_entry->format('Y-m-d H:i:s') );
 
                                         if( $prev_processed_date->greaterThanOrEqualTo($current_entry) ) {
                                             $next_page = false;
@@ -180,17 +183,6 @@ class UpdateClanRaidActivityBuddies extends Command
                                                             );
 
                                                             $players_processed[] = $player_id;
-
-                                                            if( $player_id == '4611686018467408366' ) {
-                                                                $this->info($activity_id);
-                                                            }
-
-                                                            if( isset( $activity_count[ $modeType ]['players'][ $player_id ] ) ) {
-                                                                $activity_count[ $modeType ]['players'][ $player_id ]++;
-                                                            }
-                                                            else {
-                                                                $activity_count[ $modeType ]['players'][ $player_id ] = 1;
-                                                            }
                                                         }
 
                                                     }
@@ -217,42 +209,16 @@ class UpdateClanRaidActivityBuddies extends Command
                             );
                     }
 
-                    // var_dump($activity_count);
-
-                    foreach( $activity_count as $mode => $data ) {
-                        foreach( $data['players'] as $buddy_id => $count ) {
-
-                            $buddy_id = strval( $buddy_id );
-
-                            $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::
-                                where('member_id', $account_id)
-                                ->where('mode', $mode)
-                                ->where('buddy_id', $buddy_id)
-                                ->first();
-
-                            if( $clan_member_activity_buddy ) {
-                                $clan_member_activity_buddy->activity_count += $count;
-                                $clan_member_activity_buddy->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                                $clan_member_activity_buddy->save();
-                            }
-                            else {
-                                $clan_member_activity_buddy = \App\Classes\Clan_Member_Activity_Buddy::create(
-                                  [
-                                    'member_id' => $account_id,
-                                    'mode' => $mode,
-                                    'buddy_id' => $buddy_id,
-                                    'activity_count' => $count,
-                                    'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
-                                  ]
-                                );
-                            }
-                        }
-                    }
-
                     $this->info('----------------------------');
                     $this->info('Finished Processing: ' . $character->id);
                 }
             }
+
+            // Refresh Cache
+            $clan_member_raid_buddies = App\Classes\Clan_Member::with('raid_buddies')->get();
+
+            Cache::forget('clan_member_raid_buddies');
+            Cache::forever('clan_member_raid_buddies', $clan_member_raid_buddies);
 
             $this->info('Completed: Clan Raid Activity Buddy');
         }

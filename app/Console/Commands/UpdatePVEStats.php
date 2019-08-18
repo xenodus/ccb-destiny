@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdatePVEStats extends Command
 {
@@ -111,6 +112,14 @@ class UpdatePVEStats extends Command
             $this->info('Error: PVE stats update already in progress');
             return 0;
         }
+
+        // Refresh Cache
+        Cache::forget('pve_stats');
+        Cache::forever('pve_stats', App\Classes\Pve_Stats::get());
+
+        // Refresh Cache
+        Cache::forget('weapon_stats');
+        Cache::forever('weapon_stats', App\Classes\Weapon_Stats::get());
 
         $this->info('Completed: PVE stats update');
         return 1;

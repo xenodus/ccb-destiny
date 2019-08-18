@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateMilestones extends Command
 {
@@ -88,6 +89,10 @@ class UpdateMilestones extends Command
                         $this->info('Inserted: ' . $nf->name);
                     }
                 }
+
+                // Refresh Cache
+                Cache::forget('milestones_nightfall');
+                Cache::forever('milestones_nightfall', App\Classes\Nightfall::get());
             }
 
             // Reckoning Modifiers
@@ -361,6 +366,10 @@ class UpdateMilestones extends Command
                     }
                 }
             }
+
+            // Refresh Cache
+            Cache::forget('milestones_activity_modifier');
+            Cache::forever('milestones_activity_modifier', App\Classes\Activity_Modifier::get());
         }
 
         $this->info('Completed: milestones update');

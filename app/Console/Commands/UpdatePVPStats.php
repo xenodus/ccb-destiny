@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdatePVPStats extends Command
 {
@@ -154,6 +155,10 @@ class UpdatePVPStats extends Command
             $this->info('Error: PVP stats update already in progress');
             return 0;
         }
+
+        // Refresh Cache
+        Cache::forget('pvp_stats');
+        Cache::forever('pvp_stats', App\Classes\Pvp_Stats::get());
 
         $this->info('Completed: PVP stats update');
         return 1;

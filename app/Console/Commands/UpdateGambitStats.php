@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateGambitStats extends Command
 {
@@ -153,6 +154,10 @@ class UpdateGambitStats extends Command
             $this->info('Error: Gambit stats update already in progress');
             return 0;
         }
+
+        // Refresh Cache
+        Cache::forget('gambit_stats');
+        Cache::forever('gambit_stats', App\Classes\Gambit_Stats::get());
 
         $this->info('Completed: Gambit stats update');
         return 1;

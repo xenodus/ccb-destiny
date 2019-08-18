@@ -10,6 +10,7 @@ use Goutte;
 use Carbon\Carbon;
 use Cookie;
 use Illuminate\Http\Request;
+use Cache;
 
 class ApiController extends Controller
 {
@@ -23,16 +24,24 @@ class ApiController extends Controller
     const HIDE_ACTIVITY = true;
 
     function get_milestones() {
-        $activity_modifiers = App\Classes\Activity_Modifier::get();
-        $nightfalls = App\Classes\Nightfall::get();
-        $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash')->get();
+        $activity_modifiers = Cache::rememberForever('milestones_activity_modifier', function () {
+            return App\Classes\Activity_Modifier::get();
+        });
+
+        $nightfalls = Cache::rememberForever('milestones_nightfall', function () {
+            return App\Classes\Nightfall::get();
+        });
+
+        $vendor_sales = Cache::rememberForever('vendor_sales', function () {
+            return App\Classes\Vendor_Sales::orderBy('vendor_hash')->get();
+        });
 
         // Xur Items' Perks
-        $vendor_id = '2190858386';
-        $xur_sales_item_perks = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) use($vendor_id){
-            $q->where('vendor_hash', $vendor_id);
-        })->get();
-
+        $xur_sales_item_perks = Cache::rememberForever('vendor_sales_item_perks_xur', function () {
+            return App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) {
+                $q->where('vendor_hash', '2190858386');
+            })->get();
+        });
 
         $milestones = [
             'milestones' => $activity_modifiers,
@@ -44,9 +53,68 @@ class ApiController extends Controller
         return response()->json($milestones);
     }
 
-    function get_exotic_definition() {
-        $exotics = App\Classes\Exotic_Weapon::get();
-        return response()->json($exotics);
+    function refresh_cache() {
+
+        // clan members
+        Cache::forget('clan_members');
+        Cache::forever('clan_members', App\Classes\Clan_Member::get());
+
+        // clan members characters
+        Cache::forget('clan_members_characters');
+        Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->get());
+
+        // Stats
+        Cache::forget('pve_stats');
+        Cache::forever('pve_stats', App\Classes\Pve_Stats::get());
+        Cache::forget('weapon_stats');
+        Cache::forever('weapon_stats', App\Classes\Weapon_Stats::get());
+        Cache::forget('pvp_stats');
+        Cache::forever('pvp_stats', App\Classes\Pvp_Stats::get());
+        Cache::forget('raid_stats');
+        Cache::forever('raid_stats', App\Classes\Raid_Stats::get());
+        Cache::forget('gambit_stats');
+        Cache::forever('gambit_stats', App\Classes\Gambit_Stats::get());
+
+        // Milestones
+        Cache::forget('milestones_activity_modifier');
+        Cache::forever('milestones_activity_modifier', App\Classes\Activity_Modifier::get());
+        Cache::forget('milestones_nightfall');
+        Cache::forever('milestones_nightfall', App\Classes\Nightfall::get());
+
+        // Vendors
+        $vendor_sales_item_perks_xur = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) {
+            $q->where('vendor_hash', '2190858386');
+        })->get();
+
+        Cache::forget('vendor_sales_item_perks_xur');
+        Cache::forever('vendor_sales_item_perks_xur', $vendor_sales_item_perks_xur);
+        Cache::forget('vendor_sales');
+        Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
+        Cache::forget('vendor_sales_item_perks');
+        Cache::forever('vendor_sales_item_perks', App\Classes\Vendor_Sales_Item_Perks::get());
+
+        // Raid Lockouts
+        Cache::forget('clan_raid_lockouts');
+        Cache::forever('clan_raid_lockouts', App\Classes\Raid_Lockouts::get());
+
+        // Seals
+        Cache::forget('clan_seal_completions');
+        Cache::forever('clan_seal_completions', App\Classes\Seal_Completions::get());
+
+        // Exotic Collection
+        Cache::forget('clan_exotic_weapon_collection');
+        Cache::forever('clan_exotic_weapon_collection', DB::table("clan_member_exotic_weapons")->get());
+
+        Cache::forget('clan_exotic_armor_collection');
+        Cache::forever('clan_exotic_armor_collection', DB::table("clan_member_exotic_armors")->get());
+
+        Cache::forget('exotic_definition');
+        Cache::forever('exotic_definition', DB::table("exotics")->get());
+
+        // Clan Activity
+        Cache::forget('clan_activity');
+
+        return response()->json(1);
     }
 
     function get_record_definition() {
@@ -178,12 +246,20 @@ class ApiController extends Controller
     }
 
     function get_news($category='') {
-        if( in_array($category, array_keys(self::NEWS_CATEGORIES)) )
-            $news = App\Classes\News_Feed::where('status', 'active')->where('category', $category)->take(5)->get();
+
+        // ALl news
+        $cache_time = 15 * 60;
+        $all_news = Cache::remember('all_news', $cache_time, function () {
+            return App\Classes\News_Feed::where('status', 'active')->get();
+        });
+
+        if( in_array($category, array_keys(self::NEWS_CATEGORIES)) ) {
+            $news = $all_news->where('category', $category)->take(5);
+        }
         else {
-            $destiny_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'destiny')->take(5)->get();
-            $division_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'division')->take(5)->get();
-            $magic_news = App\Classes\News_Feed::where('status', 'active')->where('category', 'magic')->take(5)->get();
+            $destiny_news = $all_news->where('status', 'active')->where('category', 'destiny')->take(5);
+            $division_news = $all_news->where('status', 'active')->where('category', 'division')->take(5);
+            $magic_news = $all_news->where('status', 'active')->where('category', 'magic')->take(5);
             $news = $destiny_news->merge($division_news)->merge($magic_news);
         }
 
@@ -253,46 +329,6 @@ class ApiController extends Controller
         }
     }
 
-    function get_leviathan_rotation() {
-
-        $leviOrders = [
-            '1685065161' => 'Gauntlet > Dogs > Pools',
-            '757116822' => 'Gauntlet > Pools > Dogs',
-            '417231112' => 'Dogs > Gauntlet > Pools',
-            '3446541099' => 'Dogs > Pools > Gauntlet',
-            '2449714930' => 'Pools > Gauntlet > Dogs',
-            '3879860661' => 'Pools > Dogs > Gauntlet'
-        ];
-
-        $client = new Client(); //GuzzleHttp\Client
-        $character_response = $client->get(
-            env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
-            ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
-        );
-
-        if( $character_response->getStatusCode() == 200 ) {
-
-            $character = json_decode($character_response->getBody()->getContents());
-            $character = collect($character);
-
-            foreach($leviOrders as $key => $val) {
-
-                if( isset($character['Response']) ) {
-
-                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($key) {
-                        return $v->activityHash == $key;
-                    });
-
-                    if( $search->count() > 0 ) {
-                        return response()->json(['order' => $val]);
-                    }
-                }
-            }
-
-            return response()->json([]);
-        }
-    }
-
     function get_xur_location() {
         $location = '';
         $client = new Goutte\Client();
@@ -322,13 +358,6 @@ class ApiController extends Controller
         return response()->json($vendor_sales);
     }
 
-    function get_nightfall() {
-
-        $nf = App\Classes\Nightfall::get();
-
-        return response()->json($nf);
-    }
-
     function get_sales_item_perks($vendor_id) {
 
         $vendor_sales_item_perks = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) use($vendor_id){
@@ -341,68 +370,72 @@ class ApiController extends Controller
     public function activity()
     {
         $data = [];
+        $cache_time = 60;
+        $data = Cache::remember('clan_activity', $cache_time, function () use(&$data) {
 
-        $client = new Client(); //GuzzleHttp\Client
+            $client = new Client(); //GuzzleHttp\Client
 
-        $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+            $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
 
-        // 1. Get members online
-        $members_online = App\Classes\Clan_Member::get_members_online();
-        $members_online = collect(json_decode($members_online))->toArray();
+            // 1. Get members online
+            $members_online = App\Classes\Clan_Member::get_members_online();
+            $members_online = collect(json_decode($members_online))->toArray();
 
-        if( count($members_online) > 0 ) {
-            // 2. Get members'
-            foreach($members_online as $member) {
+            if( count($members_online) > 0 ) {
+                // 2. Get members'
+                foreach($members_online as $member) {
 
-                $membership_id = $member->membershipId;
+                    $membership_id = $member->membershipId;
 
-                if( $membership_id == '4611686018474971535' && self::HIDE_ACTIVITY == true ) continue;
+                    if( $membership_id == '4611686018474971535' && self::HIDE_ACTIVITY == true ) continue;
 
-                $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
+                    $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
 
-                if( $res->getStatusCode() == 200 ) {
-                    $member_profile = collect(json_decode($res->getBody()->getContents()));
+                    if( $res->getStatusCode() == 200 ) {
+                        $member_profile = collect(json_decode($res->getBody()->getContents()));
 
-                    $member_activity = new App\Classes\Member_Activity();
-                    $member_activity->displayName = $member_profile['Response']->profile->data->userInfo->displayName;
-                    $member_activity->lastSeen = Carbon::parse($member_profile['Response']->profile->data->dateLastPlayed)->timezone('Asia/Singapore')->format('g:i A');
+                        $member_activity = new App\Classes\Member_Activity();
+                        $member_activity->displayName = $member_profile['Response']->profile->data->userInfo->displayName;
+                        $member_activity->lastSeen = Carbon::parse($member_profile['Response']->profile->data->dateLastPlayed)->timezone('Asia/Singapore')->format('g:i A');
 
-                    if( isset($member_profile['Response']->characterActivities->data) ) {
-                        foreach( $member_profile['Response']->characterActivities->data as $character_id => $character_activity ) {
-                            if( isset($latest_activity) ) {
-                                $prev_activity_dt = Carbon::parse($latest_activity->dateActivityStarted);
-                                $curr_activity = Carbon::parse($character_activity->dateActivityStarted);
+                        if( isset($member_profile['Response']->characterActivities->data) ) {
+                            foreach( $member_profile['Response']->characterActivities->data as $character_id => $character_activity ) {
+                                if( isset($latest_activity) ) {
+                                    $prev_activity_dt = Carbon::parse($latest_activity->dateActivityStarted);
+                                    $curr_activity = Carbon::parse($character_activity->dateActivityStarted);
 
-                                if( $curr_activity->greaterThan($prev_activity_dt) ) {
+                                    if( $curr_activity->greaterThan($prev_activity_dt) ) {
+                                        $latest_activity = $character_activity;
+                                        $member_activity->character_id = $character_id;
+                                    }
+                                }
+                                else {
                                     $latest_activity = $character_activity;
                                     $member_activity->character_id = $character_id;
                                 }
                             }
-                            else {
-                                $latest_activity = $character_activity;
-                                $member_activity->character_id = $character_id;
-                            }
-                        }
 
-                        $member_activity->latestActivityTime = Carbon::parse($latest_activity->dateActivityStarted)->timezone('Asia/Singapore')->format('g:i A');
+                            $member_activity->latestActivityTime = Carbon::parse($latest_activity->dateActivityStarted)->timezone('Asia/Singapore')->format('g:i A');
 
-                        $member_activity->latestActivity = $activity_definitions->where('hash', $latest_activity->currentActivityHash)->first();
+                            $member_activity->latestActivity = $activity_definitions->where('hash', $latest_activity->currentActivityHash)->first();
 
-                        if( $member_activity->latestActivity ) {
-                            // Orbit
-                            if( $member_activity->latestActivity->placeHash == '2961497387' ) {
-                                $member_activity->latestActivity->originalDisplayProperties->name = "Orbit";
-                                $member_activity->latestActivity->displayProperties->name = "Orbit";
+                            if( $member_activity->latestActivity ) {
+                                // Orbit
+                                if( $member_activity->latestActivity->placeHash == '2961497387' ) {
+                                    $member_activity->latestActivity->originalDisplayProperties->name = "Orbit";
+                                    $member_activity->latestActivity->displayProperties->name = "Orbit";
+                                }
+
+                                $data[] = $member_activity;
                             }
 
-                            $data[] = $member_activity;
+                            unset( $latest_activity );
                         }
-
-                        unset( $latest_activity );
                     }
                 }
             }
-        }
+            return $data;
+        });
 
         return response()->json($data);
     }
