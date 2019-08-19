@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 // Route::get('/sales-item-perks/{vendor_id}', 'ApiController@get_sales_item_perks')->name('get_sales_item_perks');
 // Route::get('/levi', 'ApiController@get_leviathan_rotation')->name('get_leviathan_rotation ');
 
+
+Route::get('/cache/refresh', 'ApiController@refresh_cache')->name('refresh_cache');
+
 Route::get('/milestones', 'ApiController@get_milestones')->name('get_milestones');
 Route::get('/xur', 'ApiController@get_xur_location')->name('get_xur_location ');
 Route::get('/activity', 'ApiController@activity')->name('activity');
@@ -31,5 +34,4 @@ Route::get('/get_membership_id/{bnet_id}', 'ApiController@get_membership_id_from
 Route::post('/pvp/closest_glory', 'ApiController@closest_glory')->name('closest_glory');
 Route::post('/pvp/update_glory_from_db', 'ApiController@update_glory_from_db')->name('update_glory_from_db');
 
-Route::get('/manifest/get_exotic_definition', 'ApiController@get_exotic_definition')->name('get_exotic_definition');
 Route::get('/manifest/get_record_definition', 'ApiController@get_record_definition')->name('get_record_definition');

@@ -131,6 +131,28 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'g-recaptcha-response' => [
+            'required' => 'Please verify you are not a robot.',
+            'captcha' => 'Captcha error! try again later or contact site admin.',
+        ],
+        'ig_name' => [
+            'required' => 'Your in-game name is required.'
+        ],
+        'nationality' => [
+            'required' => 'Your nationality is required.'
+        ],
+        'age' => [
+            'required' => 'Your age is required.'
+        ],
+        'expansion' => [
+            'required' => 'Your expansion owned information is required.'
+        ],
+        'activity' => [
+            'required' => 'Your level of activity information is required.'
+        ],
+        'experience' => [
+            'required' => 'Your raid experience & interest information is required.'
+        ],
     ],
 
     /*

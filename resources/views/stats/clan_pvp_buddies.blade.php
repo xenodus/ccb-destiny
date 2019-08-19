@@ -34,6 +34,9 @@
 $(document).ready(function(){
   var tableData = [];
   var memberData = JSON.parse('{!! $members->toJson() !!}');
+
+  console.log( memberData );
+
   var id2query = [];
 
   for(var i=0; i<memberData.length; i++) {

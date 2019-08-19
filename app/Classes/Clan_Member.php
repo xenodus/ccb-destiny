@@ -68,8 +68,6 @@ class Clan_Member extends Model
 
   public static function get_members_online()
   {
-    $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
-
     $members = self::get_members();
     $members = collect(json_decode($members));
 

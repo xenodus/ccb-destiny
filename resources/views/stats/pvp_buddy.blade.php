@@ -4,7 +4,32 @@
 <section class="stats text-center container-fluid mb-4">
 
   <div class="mt-4">
-    @include('stats.breadcrumbs', ['nav_link' => '/stats/pvp/buddy', 'nav_name' => 'PvP (Crucible) Buddies'])
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" vocab="https://schema.org/" typeof="BreadcrumbList">
+        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
+          <a property="item" typeof="WebPage" href="/stats">
+            <span property="name">Stats</span>
+          </a>
+          <meta property="position" content="1">
+        </li>
+
+        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
+          <a property="item" typeof="WebPage" href="/stats/pvp/buddy">
+            <span property="name">PvP (Crucible) Buddies</span>
+          </a>
+          <meta property="position" content="2">
+        </li>
+
+        <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
+          <a property="item" typeof="WebPage" href="/stats/pvp/buddy/{{$member->id}}">
+            <span property="name">{{ $member->display_name }}</span>
+          </a>
+          <meta property="position" content="3">
+        </li>
+      </ol>
+    </nav>
+
     <h1 class="text-yellow text-left">PvP (Crucible) Buddies of {{ $member->display_name }} <i class="fas fa-user-friends"></i></h1>
   </div>
 
@@ -14,10 +39,9 @@
 
   <div class="stats-container mt-1"></div>
 
-  <div class="mt-3 text-left">
+  <div class="mt-3 text-left mt-4">
+    <div><small>Data updated daily. Data includes any crucible activity regardless of completion status.</small></div>
     <div><small>* Not clan mate</small></div>
-    <div><small>** Data updated daily</small></div>
-    <div><small>*** Data includes any pvp activity regardless of completion status</small></div>
   </div>
 </section>
 @endsection
@@ -190,7 +214,8 @@ $(document).ready(function(){
       id: member.pvp_buddies[i].buddy_id,
       buddy_name: buddy_name,
       buddy_id: member.pvp_buddies[i].buddy_id,
-      activity_count: member.pvp_buddies[i].activity_count
+      activity_count: member.pvp_buddies[i].activity_count,
+      link: '<a class="text-dark" href="/stats/pvp/buddy/'+member.id+'/'+member.pvp_buddies[i].buddy_id+'">Go</a>'
     });
 
     if(i==(tableLimit-1))
@@ -210,6 +235,7 @@ $(document).ready(function(){
       {title:"Buddy ID", field:"buddy_id", visible: false, cssClass: 'buddy_id'},
       {title:"Buddy", field:"buddy_name", cssClass: 'buddy_name', headerSort:false},
       {title:"No. of Matches Together", field:"activity_count", cssClass: 'activity_count text-center', headerSort:false},
+      {title:"Activities", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
     ],
     initialSort: [
       {column:"activity_count", dir:"desc"}

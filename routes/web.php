@@ -14,6 +14,10 @@
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 
+// Join Us
+Route::get('/join', 'HomeController@join_us')->name('join_us');
+Route::post('/join', 'HomeController@process_join_us')->name('process_join_us');
+
 // Buddies
 Route::get('/stats/raid/buddy', 'StatsController@clan_raid_buddy')->name('clan_raid_buddy');
 Route::get('/stats/raid/buddy/{member_id}', 'StatsController@raid_buddy')->name('raid_buddy');
@@ -21,9 +25,10 @@ Route::get('/stats/raid/buddy/{member_id}/{buddy_id}', 'StatsController@raid_bud
 
 Route::get('/stats/pvp/buddy', 'StatsController@clan_pvp_buddy')->name('clan_pvp_buddy');
 Route::get('/stats/pvp/buddy/{member_id}', 'StatsController@pvp_buddy')->name('pvp_buddy');
+Route::get('/stats/pvp/buddy/{member_id}/{buddy_id}', 'StatsController@pvp_buddy_activities')->name('pvp_buddy_activities');
 
 // Team Glory Balancer
-Route::get('/glory_cheese', 'HomeController@glory_cheese')->name('glory_cheese');
+Route::get('/glory', 'HomeController@glory_cheese')->name('glory_cheese');
 
 // Store
 Route::any('/stripe/webhook', 'StoreController@stripeWebhook')->name('stripe_webhook');
@@ -62,16 +67,6 @@ Route::get('/raids', 'HomeController@raids')->name('raid_events');
 // Static / iFrames
 Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
 Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_report');
-
-// Members & Currently Online Members
-// Route::get('/bungie/members/get', 'StatsController@get_members')->name('bungie_get_members');
-// Route::get('/bungie/members/online', 'StatsController@get_members_online')->name('get_members_online');
-
-// Get Members' Characters
-// Route::get('/bungie/member/{member_id}/characters', 'StatsController@get_member_characters')->name('bungie_get_member_characters');
-
-// Get Members' Triumph Completion Records
-// Route::get('/bungie/member/{member_id}/triumphs', 'StatsController@get_member_triumphs')->name('bungie_get_member_triumphs');
 
 // Clan Roster
 Route::redirect('/clan', '/clan/roster', 301);

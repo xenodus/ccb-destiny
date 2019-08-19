@@ -9,6 +9,7 @@ use Cookie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Cache;
+use Illuminate\Support\Facades\Validator;
 
 use App\Classes\Post;
 
@@ -29,19 +30,37 @@ class HomeController extends Controller
       return view('test', $data);
     }
 
-    public function raids()
+    public function process_join_us(Request $request)
     {
-      $data['site_title'] = env('SITE_NAME');
-      $data['active_page'] = 'raid_events';
+      Validator::make($request->all(), [
+          'ig_name' => 'required|max:255',
+          'nationality' => 'required|max:255',
+          'age' => 'required|max:255',
+          'expansion' => 'required|max:255',
+          'activity' => 'required|max:255',
+          'experience' => 'required|max:255',
+          'g-recaptcha-response' => 'required|captcha',
+      ])->validate();
 
-      // Raid Events
-      $data['raid_events'] = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
-        ->where('status', 'active')
-        ->orderBy('event_date', 'asc')
-        ->with('signups')
-        ->get();
+      $application = new App\Classes\Application();
+      $application->ig_name = $request->input('ig_name');
+      $application->nationality = $request->input('nationality');
+      $application->age = $request->input('age');
+      $application->expansion = $request->input('expansion');
+      $application->activity = $request->input('activity');
+      $application->experience = $request->input('experience');
+      $application->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+      $application->save();
 
-      return view('raids', $data);
+      return response()->json(['status' => 1])  ;
+    }
+
+    public function join_us()
+    {
+      $data['site_title'] = 'Join the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'join_us';
+
+      return view('join_us', $data);
     }
 
     public function glory_cheese(Request $request)
@@ -64,7 +83,7 @@ class HomeController extends Controller
 
     public function home()
     {
-      $data['site_title'] = env('SITE_NAME');
+      $data['site_title'] = env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'home';
 
       // Extra Stats
@@ -84,6 +103,21 @@ class HomeController extends Controller
       $data['clan_members_count'] = $data['clan_members']->count();
 
       return view('home', $data);
+    }
+
+    public function raids()
+    {
+      $data['site_title'] = 'Scheduled raid events for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'raid_events';
+
+      // Raid Events
+      $data['raid_events'] = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
+        ->where('status', 'active')
+        ->orderBy('event_date', 'asc')
+        ->with('signups')
+        ->get();
+
+      return view('raids', $data);
     }
 
     public function setLightmode($status=0)

@@ -125,6 +125,9 @@
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies', 'raid_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/raid/buddy">Raid Buddies</a>
                     </li>
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities'])) ? 'active' : ''  }}">
+                      <a href="/stats/pvp/buddy">PvP Buddies</a>
+                    </li>
                   </ul>
                 </div>
               </li>
@@ -164,7 +167,7 @@
     </main>
 
     <section id="members-online" class="w-100 text-center" data-show="0">
-      <div class="pt-2 pb-2 pl-2 pr-2" id="members-online-text">
+      <div class="p-2" id="members-online-text">
         <i class="fas fa-circle fa-sm text-success mr-1" style="font-size: 0.6rem;position: relative; bottom: 1px;"></i> <span id="member-count">2 members</span> online
         <small id="members-online-toggle-icon" data-status="up" class="pr-3"><i class="fas fa-chevron-down fa-lg animated rotateIn delay-0.5s"></i></small>
       </div>
@@ -172,7 +175,7 @@
     </section>
 
     <footer class="border-top border-dark">
-      <div id="footer" class="text-center pt-4 pb-4 pl-3 pr-3">
+      <div id="footer" class="text-center py-4 px-3">
         <div>
           <small class="text-white">&copy; 2019 ccboys.xyz</small>
         </div>

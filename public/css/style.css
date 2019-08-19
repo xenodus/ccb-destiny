@@ -59,7 +59,8 @@ header .navbar-brand {
 #outbreak-solution h1,
 #about-us-header h1,
 #milestones-header h1,
-#news-header h1 {
+#news-header h1,
+.standard-header h1 {
   font-size: 1.3rem;
   text-align: left;
   font-weight: 700;
