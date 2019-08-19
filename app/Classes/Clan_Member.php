@@ -41,6 +41,25 @@ class Clan_Member extends Model
       ->where('mode', 5);
   }
 
+  public function get_raid_buddies($limit=0)
+  {
+    $buddies = App\Classes\Clan_Member_Activity_Buddy_Instance::
+      selectRaw("member_id, buddy_id, activity_id, count(buddy_id) as activity_count")
+      ->where('member_id', $this->id)
+      ->where('mode', 4)
+      ->groupBy('member_id')
+      ->groupBy('buddy_id')
+      ->orderBy('activity_count', 'desc');
+
+    if($limit>0) {
+      $buddies = $buddies->limit($limit);
+    }
+
+    $buddies = $buddies->get();
+
+    return $buddies;
+  }
+
   public function raid_buddies()
   {
     return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
@@ -49,6 +68,25 @@ class Clan_Member extends Model
       ->groupBy('member_id')
       ->groupBy('buddy_id')
       ->orderBy('activity_count', 'desc');
+  }
+
+  public function get_pvp_buddies($limit=0)
+  {
+    $buddies = App\Classes\Clan_Member_Activity_Buddy_Instance::
+      selectRaw("member_id, buddy_id, activity_id, count(buddy_id) as activity_count")
+      ->where('member_id', $this->id)
+      ->where('mode', 5)
+      ->groupBy('member_id')
+      ->groupBy('buddy_id')
+      ->orderBy('activity_count', 'desc');
+
+    if($limit>0) {
+      $buddies = $buddies->limit($limit);
+    }
+
+    $buddies = $buddies->get();
+
+    return $buddies;
   }
 
   public function pvp_buddies()

@@ -213,6 +213,8 @@ class UpdateClanPvPActivityBuddies extends Command
                 }
             }
 
+            Cache::forget('clan_pvp_buddy');
+
             $this->info('Completed: Clan PvP Activity Buddy');
         }
 

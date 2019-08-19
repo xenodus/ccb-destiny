@@ -23,6 +23,22 @@ class ApiController extends Controller
 
     const HIDE_ACTIVITY = true;
 
+    function get_clan_applications(Request $request) {
+        if( $request->input('api-key') == env('SITE_CCB_BOT_KEY') ) {
+            $applications = App\Classes\Application::where('bot_processed', 0)->get();
+
+            if( $request->input('ids') ) {
+                $ids = explode( ',', $request->input('ids') );
+                App\Classes\Application::whereIn('id', $ids)
+                ->update(['bot_processed' => 1]);
+            }
+
+            return response()->json($applications);
+        }
+
+        return response()->json([]);
+    }
+
     function get_milestones() {
         $activity_modifiers = Cache::rememberForever('milestones_activity_modifier', function () {
             return App\Classes\Activity_Modifier::get();
@@ -113,6 +129,9 @@ class ApiController extends Controller
 
         // Clan Activity
         Cache::forget('clan_activity');
+
+        Cache::forget('clan_member_raid_buddies');
+        Cache::forget('clan_pvp_buddy');
 
         return response()->json(1);
     }

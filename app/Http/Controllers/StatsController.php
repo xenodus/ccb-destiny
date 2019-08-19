@@ -36,7 +36,14 @@ class StatsController extends Controller
 
   public function pvp_buddy($member_id)
   {
-      $data['member'] = App\Classes\Clan_Member::with('pvp_buddies')->find($member_id);
+      $cache_timer = 5 * 60;
+
+      $data['member'] = Cache::remember('clan_member_pvp_buddies_' . $member_id, $cache_timer, function () use($member_id) {
+        $member = App\Classes\Clan_Member::find($member_id);
+        $member->pvp_buddies = $member->get_pvp_buddies(50);
+
+        return $member;
+      });
 
       $data['clan_members'] = Cache::rememberForever('clan_members', function () {
         return App\Classes\Clan_Member::get();
@@ -53,7 +60,15 @@ class StatsController extends Controller
       $data['site_title'] = 'PvP (Crucible) buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'pvp_buddies';
 
-      $data['members'] = App\Classes\Clan_Member::with('pvp_buddies')->get();
+      $data['members'] = Cache::rememberForever('clan_pvp_buddy', function () {
+        $members = App\Classes\Clan_Member::get();
+
+        foreach($members as $m) {
+          $m->pvp_buddies = $m->get_pvp_buddies(1);
+        }
+
+        return $members;
+      });
 
       return view('stats.clan_pvp_buddies', $data);
   }
@@ -87,7 +102,10 @@ class StatsController extends Controller
       $cache_timer = 5 * 60;
 
       $data['member'] = Cache::remember('clan_member_raid_buddies_' . $member_id, $cache_timer, function () use($member_id) {
-        return App\Classes\Clan_Member::with('raid_buddies')->find($member_id);
+        $member = App\Classes\Clan_Member::find($member_id);
+        $member->raid_buddies = $member->get_raid_buddies(50);
+
+        return $member;
       });
 
       $data['clan_members'] = Cache::rememberForever('clan_members', function () {
@@ -105,8 +123,14 @@ class StatsController extends Controller
       $data['site_title'] = 'Raid buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'raid_buddies';
 
-      $data['members'] = Cache::rememberForever('clan_member_raid_buddies', function() {
-        return App\Classes\Clan_Member::with('raid_buddies')->get();
+      $data['members'] = Cache::rememberForever('clan_member_raid_buddies', function () {
+        $members = App\Classes\Clan_Member::get();
+
+        foreach($members as $m) {
+          $m->raid_buddies = $m->get_raid_buddies(1);
+        }
+
+        return $members;
       });
 
       return view('stats.clan_raid_buddies', $data);

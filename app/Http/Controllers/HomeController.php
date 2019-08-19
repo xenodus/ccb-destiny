@@ -35,6 +35,7 @@ class HomeController extends Controller
       Validator::make($request->all(), [
           'ig_name' => 'required|max:255',
           'nationality' => 'required|max:255',
+          'timezone' => 'required|max:255',
           'age' => 'required|max:255',
           'expansion' => 'required|max:255',
           'activity' => 'required|max:255',
@@ -45,6 +46,7 @@ class HomeController extends Controller
       $application = new App\Classes\Application();
       $application->ig_name = $request->input('ig_name');
       $application->nationality = $request->input('nationality');
+      $application->timezone = $request->input('timezone');
       $application->age = $request->input('age');
       $application->expansion = $request->input('expansion');
       $application->activity = $request->input('activity');
@@ -57,7 +59,7 @@ class HomeController extends Controller
 
     public function join_us()
     {
-      $data['site_title'] = 'Join the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['site_title'] = 'Apply to join the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'join_us';
 
       return view('join_us', $data);
