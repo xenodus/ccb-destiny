@@ -128,18 +128,18 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
         'g-recaptcha-response' => [
-            'required' => 'Please verify you are not a robot.',
+            'required' => 'Please verify you are not a Vex.',
             'captcha' => 'Captcha error! try again later or contact site admin.',
         ],
         'ig_name' => [
-            'required' => 'Your in-game name is required.'
+            'required' => 'Your in-game name is required for us to find your clan application on Bungie.net.'
         ],
         'nationality' => [
             'required' => 'Your nationality is required.'
+        ],
+        'timezone' => [
+            'required' => 'Your timezone is required.'
         ],
         'age' => [
             'required' => 'Your age is required.'

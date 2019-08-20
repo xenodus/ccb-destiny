@@ -100,7 +100,7 @@
                   </ul>
                 </div>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">
                   <i class="far fa-chart-bar animated pulse slower infinite delay-0.5s"></i>
                   <div>Stats</div>
@@ -149,8 +149,8 @@
                   <div>Discord</div>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link text-md-center" href="https://www.bungie.net/en-us/ClanV2?groupid=3717919" target="_blank">
+              <li class="nav-item {{ (isset($active_page) && $active_page == 'join_us') ? 'active' : ''  }}">
+                <a class="nav-link text-md-center" href="/apply">
                   <i class="fas fa-door-open animated pulse slower infinite delay-0.5s"></i>
                   <div>Join Us</div>
                 </a>

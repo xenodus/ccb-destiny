@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 // Route::get('/sales-item-perks/{vendor_id}', 'ApiController@get_sales_item_perks')->name('get_sales_item_perks');
 // Route::get('/levi', 'ApiController@get_leviathan_rotation')->name('get_leviathan_rotation ');
 
+Route::post('/clan_applications', 'ApiController@get_clan_applications')->name('get_clan_applications');
 
 Route::get('/cache/refresh', 'ApiController@refresh_cache')->name('refresh_cache');
 

@@ -15,8 +15,8 @@
 Route::get('/test', 'HomeController@test')->name('test');
 
 // Join Us
-Route::get('/join', 'HomeController@join_us')->name('join_us');
-Route::post('/join', 'HomeController@process_join_us')->name('process_join_us');
+Route::get('/apply', 'HomeController@join_us')->name('join_us');
+Route::post('/apply', 'HomeController@process_join_us')->name('process_join_us');
 
 // Buddies
 Route::get('/stats/raid/buddy', 'StatsController@clan_raid_buddy')->name('clan_raid_buddy');

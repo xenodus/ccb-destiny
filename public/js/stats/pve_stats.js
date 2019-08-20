@@ -10,7 +10,11 @@ $(document).ready(function(){
       headers: {
         'X-API-Key': ccbNS.bungie_api
       }
-    }).done(function(data){
+    })
+    .fail(function(){
+      $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+    })
+    .done(function(data){
 
       if( data.Response.results && data.Response.results.length > 0 ) {
 

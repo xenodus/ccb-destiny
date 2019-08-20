@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $baseFilePath = '/var/www/sites/ccb/storage/logs/';
 
         // D2 Manifest
-        $schedule->command('update:manifest')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'manifest.log');
+        $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
 
         // Member Characters
         $schedule->command('update:characters')->hourly()->appendOutputTo($baseFilePath . 'characters.log');
@@ -44,17 +44,15 @@ class Kernel extends ConsoleKernel
 
         // Milestones
         $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($baseFilePath . 'milestones.log');
-        //$schedule->command('update:milestones')->dailyAt('01:02')->appendOutputTo($filePath);
-        $schedule->command('update:milestones')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'milestones.log');
+        $schedule->command('update:milestones')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'milestones.log'); // After Reset
 
         // Vendor Stuff
         $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($baseFilePath . 'vendors.log');
-        //$schedule->command('update:vendors')->dailyAt('01:02')->appendOutputTo($filePath);
-        $schedule->command('update:vendors')->weeklyOn(3, '01:05')->appendOutputTo($baseFilePath . 'vendors.log');
+        $schedule->command('update:vendors')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'vendors.log'); // After Reset
 
         // Clan Activity Buddy
-        $schedule->command('update:clanRaidActivityBuddies')->dailyAt('03:00')->appendOutputTo($baseFilePath . 'raid_buddy.log');
-        $schedule->command('update:clanPvPActivityBuddies')->dailyAt('03:00')->appendOutputTo($baseFilePath . 'pvp_buddy.log');
+        $schedule->command('update:clanRaidActivityBuddies')->dailyAt('03:00')->withoutOverlapping()->appendOutputTo($baseFilePath . 'raid_buddy.log');
+        $schedule->command('update:clanPvPActivityBuddies')->dailyAt('03:00')->withoutOverlapping()->appendOutputTo($baseFilePath . 'pvp_buddy.log');
 
         // Raid lockouts
         $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');

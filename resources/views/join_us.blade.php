@@ -5,48 +5,50 @@
 @endsection
 
 @section('body')
-<section>
+<section id="application-section">
   <div class="container">
     <div class="standard-header mt-5 mb-5 text-yellow d-flex justify-content-start align-items-center">
       <div id="milestones-header-icon"></div>
       <h1>Apply to join the {{ env('SITE_NAME') }}</h1>
     </div>
 
-    <div class="mt-0 mb-3 text-yellow">
-      <h6>Step 1 of 3: Apply</h6>
+    <div class="mb-3 text-yellow">
+      <h4>Step 1 of 3: Apply</h4>
     </div>
 
     <div class="mb-5">
-      Apply to the clan at Bungie.net, <a href="{{ env('CLAN_LINK') }}" target="_blank">{{ env('CLAN_LINK') }}</a>.
+      <p>Apply to the clan at Bungie.net, <a href="{{ env('CLAN_LINK') }}" target="_blank">{{ env('CLAN_LINK') }}</a>.</p>
     </div>
 
     <div class="mt-5 mb-3 text-yellow">
-      <h6>Step 2 of 3: Fill in the application form</h6>
+      <h4>Step 2 of 3: Fill in the application form</h4>
     </div>
 
-    <div style="max-width: 800px;">
+    <div style="max-width: 550px;">
       <form action="/" id="join_form" method="POST">
         <div class="form-group">
           <label for="ig_name">What is your in-game name?</label>
           <input type="text" class="form-control" id="ig_name" name="ig_name" aria-describedby="ig_name_help">
-          <small id="ig_name_help" class="form-text text-muted">So we can find your clan application on Bungie.net</small>
-          <div class="d-none ig_name_error-msg error-msg text-danger"></div>
+          <div class="d-none ig_name_error-msg error-msg text-danger mt-1"></div>
         </div>
         <div class="form-group">
           <label for="nationality">Where are you from?</label>
           <input type="text" class="form-control" aria-describedby="nationality_help" id="nationality" name="nationality">
-          <small id="nationality_help" class="form-text text-muted">We prefer members of similar (or fairly close) timezones</small>
-          <div class="d-none nationality_error-msg error-msg text-danger"></div>
+          <div class="d-none nationality_error-msg error-msg text-danger mt-1"></div>
+        </div>
+        <div class="form-group">
+          <label for="timezone">What timezone are you in?</label>
+          <input type="text" class="form-control" aria-describedby="timezone_help" id="timezone" name="timezone">
+          <div class="d-none timezone_error-msg error-msg text-danger mt-1"></div>
         </div>
         <div class="form-group">
           <label for="age">What is your age?</label>
           <input type="text" class="form-control" aria-describedby="age_help" id="age" name="age">
-          <small id="age_help" class="form-text text-muted">To help preserve the sanity of our members</small>
-          <div class="d-none age_error-msg error-msg text-danger"></div>
+          <div class="d-none age_error-msg error-msg text-danger mt-1"></div>
         </div>
         <div class="form-group">
           <label for="expansion">What is your latest expansion owned?</label>
-          <input type="text" class="form-control" id="expansion" name="expansion" placeholder="e.g. Forsaken / Shadowkeep">
+          <input type="text" class="form-control" id="expansion" name="expansion">
           <div class="d-none expansion_error-msg error-msg text-danger mt-1"></div>
         </div>
         <div class="form-group">
@@ -72,13 +74,11 @@
     <div class="form_success d-none">Application submitted.</div>
 
     <div class="mt-5 mb-3 text-yellow">
-      <h6>Step 3 of 3: Join our Discord</h6>
+      <h4>Step 3 of 3: Join our Discord</h4>
     </div>
 
     <div class="mb-5">
-      Join our Discord <a href="{{env('DISCORD_LINK')}}" target="_blank">here</a>. Message a Mod to expedite your application and feel free to say hi to the clan!
-      <br/>
-      As all raid scheduling and communication happens through Discord, we require all clan applicants to be in it.
+      <p>Join our Discord <a href="{{env('DISCORD_LINK')}}" target="_blank">here</a>. Message a Mod to expedite your application.
     </div>
   </div>
 </section>
@@ -100,7 +100,7 @@ $(document).ready(function(){
 
     $.ajax({
       method: 'POST',
-      url: '/join',
+      url: '/apply',
       data: $(this).serialize(),
       dataType: "json"
     })
@@ -126,7 +126,7 @@ $(document).ready(function(){
 <style>
 .form-control,
 .form-control:focus {
-  background-color: rgba(255,255,255,0.09);
+  background-color: rgba(255,255,255,0.05);
   color: #fff;
   border: none;
   border-radius: 0;
@@ -136,6 +136,16 @@ $(document).ready(function(){
 .form-control:focus {
   box-shadow: none;
   border-color: #ffca00;
+}
+form label {
+  letter-spacing: 1px;
+  margin-left: .1rem;
+}
+#application-section p {
+  letter-spacing: 1px;
+}
+.error-msg {
+  font-size: .8rem;
 }
 </style>
 @endsection

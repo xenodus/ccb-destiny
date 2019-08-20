@@ -4,7 +4,11 @@ $(document).ready(function(){
     headers: {
       'X-API-Key': ccbNS.bungie_api
     }
-  }).done(function(data){
+  })
+  .fail(function(){
+    $('.loader-text').html('Unable to retrieve members 😟 <br/>Bungie API might be under maintenance');
+  })
+  .done(function(data){
 
     if( data.Response.results && data.Response.results.length > 0 ) {
 
@@ -16,14 +20,14 @@ $(document).ready(function(){
 
         var tableData = [];
         var tableColumns = [
-          {title:"Name", field:"name", formatter:"html", frozen:true},
+          {title:"Name", field:"name", frozen:true},
         ];
 
         for(var i=0; i<sealData.length; i++) {
           var username = memberData.filter(function(member){ return member.destinyUserInfo.membershipId == sealData[i].id }).map(function(member){ return member.destinyUserInfo.displayName })[0];
 
           var tableDataEntry = {
-            name: username+'<a href="/clan/seals/member/'+sealData[i].id+'"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+            name: username
           };
 
           var memberSealData = JSON.parse( sealData[i].data );
@@ -40,10 +44,12 @@ $(document).ready(function(){
           }
 
           tableDataEntry["total"] = memberSealTotal;
+          tableDataEntry["link"] = '<a href="/clan/seals/member/'+sealData[i].id+'">Go</a>';
           tableData.push(tableDataEntry);
         }
 
-        tableColumns.push({title:"Total", field:"total", visible:true});
+        tableColumns.push({title:"Total", field:"total", cssClass: "text-center", visible:true});
+        tableColumns.push({title:"Details", field:"link", formatter:"html", cssClass: "text-center"});
 
         $('.stats-container').append('<div id="stats-table"></div>');
         $('.loader').hide();

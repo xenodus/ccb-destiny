@@ -37,6 +37,8 @@ $(document).ready(function(){
   var memberData = JSON.parse('{!! $members->toJson() !!}');
   var id2query = [];
 
+  //console.log(memberData);
+
   for(var i=0; i<memberData.length; i++) {
 
       if( memberData[i].raid_buddies[0] ) {

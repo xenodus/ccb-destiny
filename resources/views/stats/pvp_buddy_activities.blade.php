@@ -97,7 +97,7 @@ $(document).ready(function(){
         'kd': 0
       };
 
-      // your kda
+      // your kad
       var memberData = pgcr.entries.filter(function(p){
         return p.player.destinyUserInfo.membershipId == member.id;
       });
@@ -106,10 +106,10 @@ $(document).ready(function(){
       if( memberData.length > 0 ) {
         your_stats['kill'] = memberData[0].values.kills.basic.value;
         your_stats['death'] = memberData[0].values.deaths.basic.value;
-        your_stats['kda'] = memberData[0].values.efficiency.basic.value;
+        your_stats['kad'] = memberData[0].values.efficiency.basic.value;
       }
 
-      // your buddy's kda
+      // your buddy's kad
       var buddyData = pgcr.entries.filter(function(p){
         return p.player.destinyUserInfo.membershipId == buddy_id;
       });
@@ -118,15 +118,15 @@ $(document).ready(function(){
       if( buddyData.length > 0 ) {
         buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
         buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
-        buddy_stats['kda'] = buddyData[0].values.efficiency.basic.value;
+        buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
       }
 
       tableData.push({
         id: activity_instances.activity_id,
         activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
         date: moment(pgcr.period).format('D MMM Y, h:mm A'),
-        your_kda: Number(your_stats['kda'].toFixed(2)),
-        buddy_kda: Number(buddy_stats['kda'].toFixed(2)),
+        your_kad: Number(your_stats['kad'].toFixed(2)),
+        buddy_kad: Number(buddy_stats['kad'].toFixed(2)),
         link: '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
       });
     }
@@ -145,8 +145,8 @@ $(document).ready(function(){
       {title:"Date", field:"date", cssClass: 'text-center', sorter:"date", headerSort:false, sorterParams:{
         format:"D MMM Y, h:mm A"
       }},
-      {title: member.display_name + " KDA", field:"your_kda", cssClass: 'text-center', headerSort:false},
-      {title:"<span class='table_header_buddy_name'>"+buddy_id+"</span> KDA", field:"buddy_kda", cssClass: 'text-center', headerSort:false},
+      {title: member.display_name + " KAD", field:"your_kad", cssClass: 'text-center', headerSort:false},
+      {title:"<span class='table_header_buddy_name'>"+buddy_id+"</span> KAD", field:"buddy_kad", cssClass: 'text-center', headerSort:false},
       {title:"Guardian.GG", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
     ],
     initialSort: [

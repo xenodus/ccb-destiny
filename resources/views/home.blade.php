@@ -9,7 +9,7 @@
     </div>
     <div id="about-us-description" class="text-justify">
       <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p><a href="https://www.bungie.net/en-us/ClanV2?groupid=3717919" target="_blank">We're recruiting for PC (Battle.net/Steam) in preparation for Shadowkeep.</a> We have an active & friendly Discord, internal progression systems and 9+ raids / week. All experience levels are welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord to say hi</a> 👋</p>
+      <p><a href="/apply">We're recruiting for PC (Battle.net/Steam) in preparation for Shadowkeep.</a> We have an active & friendly Discord, internal progression systems and 9+ raids / week. All experience levels are welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord to say hi</a> 👋</p>
     </div>
 
     <div class="row mt-5">

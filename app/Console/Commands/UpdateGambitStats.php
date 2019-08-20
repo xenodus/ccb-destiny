@@ -75,7 +75,7 @@ class UpdateGambitStats extends Command
 
                     // Gambit Stats
                     $member_gambit_stats_response = $client->get(
-                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .env('BUNGIE_PC_PLATFORM_ID'). '/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63',
+                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .env('BUNGIE_PC_PLATFORM_ID'). '/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63,75',
                         ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 
@@ -105,6 +105,33 @@ class UpdateGambitStats extends Command
                             $member->gambitStats['smallBlockersSent'] = $gs->smallBlockersSent->basic->displayValue;
                             $member->gambitStats['mediumBlockersSent'] = $gs->mediumBlockersSent->basic->displayValue;
                             $member->gambitStats['largeBlockersSent'] = $gs->largeBlockersSent->basic->displayValue;
+                        }
+
+                        if( isset($member_gambit_stats['Response']->pvecomp_mamba->allTime) ) {
+
+                            $prime_gs = $member_gambit_stats['Response']->pvecomp_gambit->allTime;
+
+                            $member->gambitStats['activitiesEntered'] += $prime_gs->activitiesEntered->basic->displayValue;
+                            $member->gambitStats['activitiesWon'] += $prime_gs->activitiesWon->basic->displayValue;
+                            $member->gambitStats['kills'] += $prime_gs->kills->basic->displayValue;
+                            $member->gambitStats['deaths'] += $prime_gs->deaths->basic->displayValue;
+                            $member->gambitStats['killsDeathsRatio'] = round($member->gambitStats['kills'] / $member->gambitStats['deaths'], 2);
+                            $member->gambitStats['suicides'] += $prime_gs->suicides->basic->displayValue;
+
+                            $member->gambitStats['efficiency'] = $prime_gs->efficiency->basic->displayValue ??
+                            round((($member->gambitStats['efficiency'] + $prime_gs->efficiency->basic->displayValue) / 2), 2) : $member->gambitStats['efficiency'];
+
+                            $member->gambitStats['invasionKills'] += $prime_gs->invasionKills->basic->displayValue;
+                            $member->gambitStats['invaderKills'] += $prime_gs->invaderKills->basic->displayValue;
+                            $member->gambitStats['invaderDeaths'] += $prime_gs->invaderDeaths->basic->displayValue;
+                            $member->gambitStats['primevalDamage'] += $prime_gs->primevalDamage->basic->displayValue;
+                            $member->gambitStats['primevalHealing'] += str_replace('%', '', $prime_gs->primevalHealing->basic->displayValue);
+                            $member->gambitStats['motesDeposited'] += $prime_gs->motesDeposited->basic->displayValue;
+                            $member->gambitStats['motesDenied'] += $prime_gs->motesDenied->basic->displayValue;
+                            $member->gambitStats['motesLost'] += $prime_gs->motesLost->basic->displayValue;
+                            $member->gambitStats['smallBlockersSent'] += $prime_gs->smallBlockersSent->basic->displayValue;
+                            $member->gambitStats['mediumBlockersSent'] += $prime_gs->mediumBlockersSent->basic->displayValue;
+                            $member->gambitStats['largeBlockersSent'] += $prime_gs->largeBlockersSent->basic->displayValue;
                         }
                     }
                     else {

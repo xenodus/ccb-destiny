@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('body')
-<section id="roster" class="container text-center mb-4">
+<section id="roster" class="container-fluid text-center mb-4">
   <div class="my-4">
     @include('clan.breadcrumbs', ['nav_link' => '/clan/roster', 'nav_name' => 'Roster'])
     <h1 class="text-yellow text-left">Roster</h1>
