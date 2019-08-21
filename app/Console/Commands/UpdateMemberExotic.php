@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
-use Exotic;
+use Cache;
 
 class UpdateMemberExotic extends Command
 {

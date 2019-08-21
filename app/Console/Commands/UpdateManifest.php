@@ -74,21 +74,6 @@ class UpdateManifest extends Command
             $this->info("Processing: " . $name);
             $data_json = json_encode($data);
             file_put_contents(storage_path('manifest/'.$name.'.json'), $data_json);
-
-            /*
-            if( $name == 'DestinyInventoryItemDefinitionnnn' ) {
-              foreach( $data as $id => $val ) {
-                DB::table('DestinyInventoryItemDefinition')->updateOrInsert(
-                  ['id' => $id],
-                  ['data' => json_encode($val), 'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')]
-                );
-              }
-            }
-            else {
-              $data_json = json_encode($data);
-              file_put_contents(storage_path('manifest/'.$name.'.json'), $data_json);
-            }
-            */
           }
         }
       }
