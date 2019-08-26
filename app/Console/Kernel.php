@@ -51,8 +51,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:vendors')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'vendors.log'); // After Reset
 
         // Clan Activity Buddy
-        $schedule->command('update:clanRaidActivityBuddies')->dailyAt('03:00')->withoutOverlapping()->appendOutputTo($baseFilePath . 'raid_buddy.log');
-        $schedule->command('update:clanPvPActivityBuddies')->dailyAt('03:00')->withoutOverlapping()->appendOutputTo($baseFilePath . 'pvp_buddy.log');
+        $schedule->command('update:clanRaidActivityBuddies')->dailyAt('03:00')->runInBackground()->appendOutputTo($baseFilePath . 'raid_buddy.log');
+        $schedule->command('update:clanPvPActivityBuddies')->dailyAt('03:00')->runInBackground()->appendOutputTo($baseFilePath . 'pvp_buddy.log');
+        $schedule->command('update:clanGambitActivityBuddies')->dailyAt('03:00')->runInBackground()->appendOutputTo($baseFilePath . 'gambit_buddy.log');
+        $schedule->command('update:clanGambitPrimeActivityBuddies')->dailyAt('03:00')->runInBackground()->appendOutputTo($baseFilePath . 'gambit_prime_buddy.log');
 
         // Raid lockouts
         $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');

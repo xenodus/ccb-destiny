@@ -34,6 +34,7 @@ $(document).ready(function(){
 
       $('.loader').hide();
       $('.loader-text').hide();
+      $('.filter-container').show();
 
       var table = new Tabulator("#roster-container", {
         data:tableData, //assign data to table
@@ -53,6 +54,10 @@ $(document).ready(function(){
         layout:"fitDataFill",
         height:"500px",
         resizableColumns:false,
+      });
+
+      $("#nameFilter").on("input", function(){
+        table.setFilter("name", "like", $(this).val());
       });
     }
     else {

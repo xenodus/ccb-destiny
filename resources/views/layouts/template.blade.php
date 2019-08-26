@@ -100,7 +100,7 @@
                   </ul>
                 </div>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities', 'gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">
                   <i class="far fa-chart-bar animated pulse slower infinite delay-0.5s"></i>
                   <div>Stats</div>
@@ -127,6 +127,9 @@
                     </li>
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/pvp/buddy">PvP Buddies</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities'])) ? 'active' : ''  }}">
+                      <a href="/stats/gambit/buddy">Gambit Buddies</a>
                     </li>
                   </ul>
                 </div>
@@ -179,11 +182,9 @@
         <div>
           <small class="text-white">&copy; 2019 ccboys.xyz</small>
         </div>
-        @if(!isset($hide_footer))
         <div>
           <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/4/4611686018474971535" target="_blank">xenodus</a></small>
         </div>
-        @endif
       </div>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

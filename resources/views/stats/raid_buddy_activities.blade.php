@@ -40,10 +40,6 @@
     <h1 class="text-yellow text-left">Raid Activities between {{ $member->display_name }} & <span class="buddy_name"></span></h1>
   </div>
 
-  <div class="mt-3 text-left mt-4">
-    <div><small>Data updated daily. Data includes any raid activity regardless of completion status.</small></div>
-  </div>
-
   <div class="stats-container mt-3"></div>
 </section>
 @endsection
@@ -88,7 +84,8 @@ $(document).ready(function(){
       var your_stats = {
         'kill': 0,
         'death': 0,
-        'kd': 0
+        'kd': 0,
+        'completed': 0
       };
 
       var buddy_stats = {
@@ -107,6 +104,7 @@ $(document).ready(function(){
         your_stats['kill'] = memberData[0].values.kills.basic.value;
         your_stats['death'] = memberData[0].values.deaths.basic.value;
         your_stats['kd'] = memberData[0].values.killsDeathsRatio.basic.value;
+        your_stats['completed'] = memberData[0].values.completed.basic.value;
       }
 
       // your buddy's kda
@@ -125,6 +123,7 @@ $(document).ready(function(){
         id: activity_instances.activity_id,
         activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
         date: moment(pgcr.period).format('D MMM Y, h:mm A'),
+        completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
         your_kd: Number(your_stats['kd'].toFixed(2)),
         buddy_kd: Number(buddy_stats['kd'].toFixed(2)),
         link: '<a class="text-dark" target="_blank" href="https://raid.report/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
@@ -142,11 +141,12 @@ $(document).ready(function(){
       {formatter:"rownum", width:40, headerSort:false},
       {title:"Activity ID", field:"id", visible: false, cssClass: 'activity_id'},
       {title:"Activity", field:"activity_name", cssClass: 'activity_name'},
-      {title:"Date", field:"date", cssClass: 'text-center', sorter:"date", headerSort:false, sorterParams:{
-        format:"D MMM Y, h:mm A"
+      {title:"<div class='text-center'>Date</div>", field:"date", cssClass: 'text-right', sorter:"date", headerSort:false, sorterParams:{
+        format:"D MMM Y, hh:mm A"
       }},
-      {title: member.display_name + " KD", field:"your_kd", cssClass: 'text-center', headerSort:false},
-      {title:"<span class='table_header_buddy_name'>"+buddy_id+"</span> KD", field:"buddy_kd", cssClass: 'text-center', headerSort:false},
+      {title: "Completed", field:"completed", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title: "<div class='mx-3'>KD</div><small>" + member.display_name + "</small>", field:"your_kd", cssClass: 'text-center', headerSort:false},
+      {title:"<div class='mx-3'>KD</div><small><span class='table_header_buddy_name'>"+buddy_id+"</span></small>", field:"buddy_kd", cssClass: 'text-center', headerSort:false},
       {title:"Raid.Report", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
     ],
     initialSort: [

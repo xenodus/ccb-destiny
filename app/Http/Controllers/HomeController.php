@@ -17,6 +17,10 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
+      $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
+
+      dd($activity_mode_definitions->filter(function($a){ return $a->modeType == 57; }));
+
       dd('the end...');
 
       $data['site_title'] = env('SITE_NAME');

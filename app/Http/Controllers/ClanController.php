@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use App;
 use DB;
 use Cache;
 
 class ClanController extends Controller
 {
+  public function activities(Request $request) {
+    $data['site_title'] = 'Past activities for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+    $data['active_page'] = 'activities';
+
+    $data['members'] = App\Classes\Clan_Member::all();
+
+    return view('clan.activities', $data);
+  }
+
   public function roster() {
     $data['site_title'] = 'Roster for the ' . env('SITE_NAME') .' Clan in Destiny 2';
     $data['active_page'] = 'roster';

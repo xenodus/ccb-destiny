@@ -14,6 +14,13 @@
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 
+// Activities
+Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
+
+// Alfred Raid Event Web Create / Edit
+Route::get('/alfred/{token}', 'AlfredController@web_create_edit')->name('alfred_web_create_edit');
+Route::post('/alfred/{token}', 'AlfredController@web_create_edit_process')->name('alfred_web_create_edit_process');
+
 // Join Us
 Route::get('/apply', 'HomeController@join_us')->name('join_us');
 Route::post('/apply', 'HomeController@process_join_us')->name('process_join_us');
@@ -26,6 +33,10 @@ Route::get('/stats/raid/buddy/{member_id}/{buddy_id}', 'StatsController@raid_bud
 Route::get('/stats/pvp/buddy', 'StatsController@clan_pvp_buddy')->name('clan_pvp_buddy');
 Route::get('/stats/pvp/buddy/{member_id}', 'StatsController@pvp_buddy')->name('pvp_buddy');
 Route::get('/stats/pvp/buddy/{member_id}/{buddy_id}', 'StatsController@pvp_buddy_activities')->name('pvp_buddy_activities');
+
+Route::get('/stats/gambit/buddy', 'StatsController@clan_gambit_buddy')->name('clan_gambit_buddy');
+Route::get('/stats/gambit/buddy/{member_id}', 'StatsController@gambit_buddy')->name('gambit_buddy');
+Route::get('/stats/gambit/buddy/{member_id}/{buddy_id}', 'StatsController@gambit_buddy_activities')->name('gambit_buddy_activities');
 
 // Team Glory Balancer
 Route::get('/glory', 'HomeController@glory_cheese')->name('glory_cheese');

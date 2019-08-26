@@ -10,6 +10,69 @@ use Cache;
 
 class StatsController extends Controller
 {
+  public function gambit_buddy_activities($member_id, $buddy_id)
+  {
+      $data['member'] = App\Classes\Clan_Member::find($member_id);
+
+      $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+        with('pgcr')
+        ->whereIn('mode', [63, 75])
+        ->where('member_id', $member_id)
+        ->where('buddy_id', $buddy_id)
+        ->get();
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
+      $data['buddy_id'] = $buddy_id;
+      $data['activity_definition'] = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+
+      $data['site_title'] = 'Gambit activities for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'gambit_buddy_activities';
+
+      return view('stats.gambit_buddy_activities', $data);
+  }
+
+  public function gambit_buddy($member_id)
+  {
+      $cache_timer = 5 * 60;
+
+      $data['member'] = Cache::remember('clan_member_gambit_buddies_' . $member_id, $cache_timer, function () use($member_id) {
+        $member = App\Classes\Clan_Member::find($member_id);
+        $member->gambit_buddies = $member->get_gambit_buddies(50);
+
+        return $member;
+      });
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
+      $data['site_title'] = 'Gambit buddies for '.$data['member']->display_name.' from the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'gambit_buddy';
+
+      return view('stats.gambit_buddy', $data);
+  }
+
+  public function clan_gambit_buddy()
+  {
+      $data['site_title'] = 'Gambit buddies for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'gambit_buddies';
+
+      $data['members'] = Cache::rememberForever('clan_gambit_buddy', function () {
+        $members = App\Classes\Clan_Member::get();
+
+        foreach($members as $m) {
+          $m->gambit_buddies = $m->get_gambit_buddies(1);
+        }
+
+        return $members;
+      });
+
+      return view('stats.clan_gambit_buddies', $data);
+  }
+
   public function pvp_buddy_activities($member_id, $buddy_id)
   {
       $data['member'] = App\Classes\Clan_Member::find($member_id);

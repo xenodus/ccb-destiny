@@ -15,21 +15,21 @@
         </li>
 
         <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/pvp/buddy">
-            <span property="name">PvP (Crucible) Buddies</span>
+          <a property="item" typeof="WebPage" href="/stats/gambit/buddy">
+            <span property="name">Gambit Buddies</span>
           </a>
           <meta property="position" content="2">
         </li>
 
         <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/pvp/buddy/{{$member->id}}">
+          <a property="item" typeof="WebPage" href="/stats/gambit/buddy/{{$member->id}}">
             <span property="name">{{ $member->display_name }}</span>
           </a>
           <meta property="position" content="3">
         </li>
 
         <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/pvp/buddy/{{$member->id}}/{{$buddy_id}}">
+          <a property="item" typeof="WebPage" href="/stats/gambit/buddy/{{$member->id}}/{{$buddy_id}}">
             <span property="name" class="buddy_name">{{ $buddy_id }}</span>
           </a>
           <meta property="position" content="3">
@@ -37,7 +37,7 @@
       </ol>
     </nav>
 
-    <h1 class="text-yellow text-left">PvP (Crucible) Activities between {{ $member->display_name }} & <span class="buddy_name"></span></h1>
+    <h1 class="text-yellow text-left">Gambit Activities between {{ $member->display_name }} & <span class="buddy_name"></span></h1>
   </div>
 
   <div class="stats-container mt-3"></div>
@@ -78,23 +78,33 @@ $(document).ready(function(){
 
     if( pgcr ) {
 
-      console.log(pgcr);
+      // console.log(pgcr);
 
       // pgcr data
       var your_stats = {
         'kill': 0,
         'death': 0,
         'kd': 0,
+        'score': 0,
+        'motes_deposited': 0,
+        'motes_lost': 0,
+        'invasion_kills': 0,
         'team': '',
         'outcome': '',
+        'primeval_dmg': 0
       };
 
       var buddy_stats = {
         'kill': 0,
         'death': 0,
         'kd': 0,
+        'score': 0,
+        'motes_deposited': 0,
+        'motes_lost': 0,
+        'invasion_kills': 0,
         'team': '',
         'outcome': '',
+        'primeval_dmg': 0
       };
 
       // your kad
@@ -107,6 +117,11 @@ $(document).ready(function(){
         your_stats['kill'] = memberData[0].values.kills.basic.value;
         your_stats['death'] = memberData[0].values.deaths.basic.value;
         your_stats['kad'] = memberData[0].values.efficiency.basic.value;
+        your_stats['score'] = memberData[0].values.score.basic.value;
+
+        your_stats['motes_deposited'] = memberData[0].extended.values.motesDeposited.basic.value;
+        your_stats['motes_lost'] = memberData[0].extended.values.motesLost.basic.value;
+        your_stats['invasion_kills'] = memberData[0].extended.values.invasionKills.basic.value;
 
         t = pgcr.teams.filter(function(t){
           return t.teamId == memberData[0].values.team.basic.value;
@@ -115,6 +130,21 @@ $(document).ready(function(){
         if( t.length > 0 ) {
           your_stats['team'] = memberData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
           your_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+
+          // Primeval Dmg %
+          var team_mates = pgcr.entries.filter(function(p){
+            return p.values.team.basic.value == memberData[0].values.team.basic.value;
+          });
+
+          var team_primeval_total_dmg = 0;
+
+          for(var p=0; p<team_mates.length; p++) {
+            team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
+          }
+
+          if( team_primeval_total_dmg > 0 ) {
+            your_stats['primeval_dmg'] = Number(memberData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+          }
         }
       }
 
@@ -128,6 +158,11 @@ $(document).ready(function(){
         buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
         buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
         buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
+        buddy_stats['score'] = buddyData[0].values.score.basic.value;
+
+        buddy_stats['motes_deposited'] = buddyData[0].extended.values.motesDeposited.basic.value;
+        buddy_stats['motes_lost'] = buddyData[0].extended.values.motesLost.basic.value;
+        buddy_stats['invasion_kills'] = buddyData[0].extended.values.invasionKills.basic.value;
 
         t = pgcr.teams.filter(function(t){
           return t.teamId == buddyData[0].values.team.basic.value;
@@ -136,8 +171,26 @@ $(document).ready(function(){
         if( t.length > 0 ) {
           buddy_stats['team'] = buddyData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
           buddy_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+
+          // Primeval Dmg %
+          var team_mates = pgcr.entries.filter(function(p){
+            return p.values.team.basic.value == buddyData[0].values.team.basic.value;
+          });
+
+          var team_primeval_total_dmg = 0;
+
+          for(var p=0; p<team_mates.length; p++) {
+            team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
+          }
+
+          if( team_primeval_total_dmg > 0 ) {
+            buddy_stats['primeval_dmg'] = Number(buddyData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+          }
         }
       }
+
+      console.log( your_stats['motes_deposited'] );
+      console.log( buddy_stats['motes_deposited'] );
 
       tableData.push({
         id: activity_instances.activity_id,
@@ -145,9 +198,13 @@ $(document).ready(function(){
         date: moment(pgcr.period).format('D MMM Y, hh:mm A'),
         same_team: your_stats['team'] == buddy_stats['team'] ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
         outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
-        your_kad: Number(your_stats['kad'].toFixed(2)),
-        buddy_kad: Number(buddy_stats['kad'].toFixed(2)),
-        link: '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
+        your_motes_deposited: your_stats['motes_deposited'],
+        buddy_motes_deposited: buddy_stats['motes_deposited'],
+        your_invasion_kills: your_stats['invasion_kills'],
+        buddy_invasion_kills: buddy_stats['invasion_kills'],
+        your_primeval_dmg: your_stats['primeval_dmg'] + "%",
+        buddy_primeval_dmg: buddy_stats['primeval_dmg'] + "%",
+        link: '<a class="text-dark" target="_blank" href="https://destinytracker.com/d2/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
       });
     }
   }
@@ -162,14 +219,18 @@ $(document).ready(function(){
       {formatter:"rownum", width:40, headerSort:false},
       {title:"Activity ID", field:"id", visible: false, cssClass: 'activity_id'},
       {title:"Activity", field:"activity_name", cssClass: 'activity_name'},
-      {title:"Date", field:"date", cssClass: 'text-right', sorter:"date", headerSort:false, sorterParams:{
-        format:"D MMM Y, hh:mm A"
-      }},
-      {title: "Same Team", field:"same_team", formatter:"html", cssClass: 'text-center', headerSort:false},
-      {title: "Outcome", field:"outcome", formatter:"html", cssClass: 'text-center', headerSort:false},
-      {title: "<div class='mx-3'>Efficiency</div><div><small>" + member.display_name + "</small></div>", field:"your_kad", cssClass: 'text-center', headerSort:false},
-      {title:"<div class='mx-3'>Efficiency</div><div><small><span class='table_header_buddy_name'>"+buddy_id+"</span></small></div>", field:"buddy_kad", cssClass: 'text-center', headerSort:false},
-      {title:"Guardian.GG", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title:"<div class='text-center'>Date</div>", field:"date", cssClass: 'text-right', sorter:"date", headerSort:false,
+        sorterParams:{ format:"D MMM Y, hh:mm A" }
+      },
+      {title: "Teammate", field:"same_team", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title: "<div class='mx-3'>Result</div>", field:"outcome", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title: "Motes Depo.<br/><small>" + member.display_name + "</small>", field:"your_motes_deposited", cssClass: 'text-center', headerSort:false},
+      {title: "Motes Depo.<br/><small><span class='table_header_buddy_name'>"+buddy_id+"</span></small>", field:"buddy_motes_deposited", cssClass: 'text-center', headerSort:false},
+      {title: "Invasion Kills<br/><small>" + member.display_name + "</small>", field:"your_invasion_kills", cssClass: 'text-center', headerSort:false},
+      {title: "Invasion Kills<br/><small><span class='table_header_buddy_name'>"+buddy_id+"</span></small>", field:"buddy_invasion_kills", cssClass: 'text-center', headerSort:false},
+      {title: "Boss DMG<br/><small>" + member.display_name + "</small>", field:"your_primeval_dmg", cssClass: 'text-center', headerSort:false},
+      {title: "Boss DMG<br/><small><span class='table_header_buddy_name'>"+buddy_id+"</span></small>", field:"buddy_primeval_dmg", cssClass: 'text-center', headerSort:false},
+      {title:"D2 Tracker", field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
     ],
     initialSort: [
       {column:"date", dir:"desc"}

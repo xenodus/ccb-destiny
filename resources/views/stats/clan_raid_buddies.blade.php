@@ -12,8 +12,7 @@
   <div class="loader-text">Fetching Members...</div>
 
   <div class="mt-3 text-left mt-4">
-    <div><small>If your name is not listed here, go to your Bungie privacy settings and ensure "Show my Destiny game Activity Feed on Bungie.net" is checked. Come back in 24 hours.</small></div>
-    <div><small>Data updated daily. Data includes any crucible activity regardless of completion status.</small></div>
+    <div><small>Data updated daily. Data includes any raid activity regardless of completion status.</small></div>
     <div><small>* Not clan mate</small></div>
   </div>
 

@@ -10,4 +10,6 @@ class Raid_Signup extends Model
   protected $primaryKey = 'event_signup_id';
   protected $connection = 'discord';
   public $timestamps = false;
+
+  protected $fillable = ['event_id'];
 }

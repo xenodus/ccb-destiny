@@ -37,11 +37,6 @@
     <canvas id="buddiesChart" style="background: rgba(255,255,255,.05);"></canvas>
   </div>
 
-  <div class="mt-3 text-left mt-4">
-    <div><small>Data updated daily. Data includes any crucible activity regardless of completion status.</small></div>
-    <div><small>* Not clan mate</small></div>
-  </div>
-
   <div class="stats-container mt-1"></div>
 </section>
 @endsection

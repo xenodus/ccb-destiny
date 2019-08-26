@@ -41,6 +41,32 @@ class Clan_Member extends Model
       ->where('mode', 5);
   }
 
+  public function gambit_activities()
+  {
+    return $this->hasMany('App\Classes\Clan_Member_Activity_Buddy_Instance', 'member_id')
+      ->select("activity_id")
+      ->whereIn('mode', [63, 75]);
+  }
+
+  public function get_gambit_buddies($limit=0)
+  {
+    $buddies = App\Classes\Clan_Member_Activity_Buddy_Instance::
+      selectRaw("member_id, buddy_id, activity_id, count(buddy_id) as activity_count")
+      ->where('member_id', $this->id)
+      ->whereIn('mode', [63, 75])
+      ->groupBy('member_id')
+      ->groupBy('buddy_id')
+      ->orderBy('activity_count', 'desc');
+
+    if($limit>0) {
+      $buddies = $buddies->limit($limit);
+    }
+
+    $buddies = $buddies->get();
+
+    return $buddies;
+  }
+
   public function get_raid_buddies($limit=0)
   {
     $buddies = App\Classes\Clan_Member_Activity_Buddy_Instance::

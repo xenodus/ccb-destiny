@@ -406,7 +406,7 @@ class ApiController extends Controller
 
                     $membership_id = $member->membershipId;
 
-                    if( $membership_id == '4611686018474971535' && self::HIDE_ACTIVITY == true ) continue;
+                    if( in_array($membership_id, ['4611686018474971535', '4611686018472137936']) && self::HIDE_ACTIVITY == true ) continue;
 
                     $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
 

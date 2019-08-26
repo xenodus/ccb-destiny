@@ -4,15 +4,15 @@
 <section class="stats text-center container-fluid mb-4">
 
   <div class="mt-4">
-    @include('stats.breadcrumbs', ['nav_link' => '/stats/pvp/buddy', 'nav_name' => 'PvP (Crucible) Buddies'])
-    <h1 class="text-yellow text-left">Who's Your PvP (Crucible) Buddy? <i class="fas fa-user-friends"></i></h1>
+    @include('stats.breadcrumbs', ['nav_link' => '/stats/gambit/buddy', 'nav_name' => 'Gambit Buddies'])
+    <h1 class="text-yellow text-left">Who's Your Gambit Buddy? <i class="fas fa-user-friends"></i></h1>
   </div>
 
   <div class="loader"></div>
   <div class="loader-text">Fetching Members...</div>
 
   <div class="mt-3 text-left mt-4">
-    <div><small>Data updated daily. Data includes any crucible activity regardless of completion status.</small></div>
+    <div><small>Data updated daily. Data includes any gambit activity regardless of completion status.</small></div>
     <div><small>* Not clan mate</small></div>
   </div>
 
@@ -41,10 +41,10 @@ $(document).ready(function(){
 
   for(var i=0; i<memberData.length; i++) {
 
-      if( memberData[i].pvp_buddies[0] ) {
+      if( memberData[i].gambit_buddies[0] ) {
 
         var buddy = memberData.filter(function(m){
-          return m.id == memberData[i].pvp_buddies[0].buddy_id;
+          return m.id == memberData[i].gambit_buddies[0].buddy_id;
         });
 
         var buddy_name = '';
@@ -53,16 +53,16 @@ $(document).ready(function(){
           buddy_name = buddy[0].display_name;
         }
         else {
-          id2query.push( memberData[i].pvp_buddies[0].buddy_id );
+          id2query.push( memberData[i].gambit_buddies[0].buddy_id );
         }
 
       tableData.push({
         id: memberData[i].id,
         name: memberData[i].display_name,
         buddy_name: buddy_name,
-        buddy_id: memberData[i].pvp_buddies[0] ? memberData[i].pvp_buddies[0].buddy_id : '',
-        activity_count: memberData[i].pvp_buddies[0] ? memberData[i].pvp_buddies[0].activity_count : '',
-        link: '<a class="text-dark" href="/stats/pvp/buddy/'+memberData[i].id+'">Go</a>'
+        buddy_id: memberData[i].gambit_buddies[0] ? memberData[i].gambit_buddies[0].buddy_id : '',
+        activity_count: memberData[i].gambit_buddies[0] ? memberData[i].gambit_buddies[0].activity_count : '',
+        link: '<a class="text-dark" href="/stats/gambit/buddy/'+memberData[i].id+'">Go</a>'
       });
     }
   }
