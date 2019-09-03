@@ -165,6 +165,7 @@ class ApiController extends Controller
         return response()->json([]);
     }
 
+    /*
     function update_glory_from_db(Request $request) {
         $names = explode(',', $request->input('names'));
         $results = [];
@@ -177,6 +178,46 @@ class ApiController extends Controller
                     'name' => $name,
                     'glory' => $member->pvp_stats->glory
                 ];
+            }
+        }
+
+        return response()->json($results);
+    }
+    */
+
+    function update_glory_from_db(Request $request) {
+
+        $glory_hash = 2000925172;
+        $names = explode(',', $request->input('names'));
+        $results = [];
+
+        foreach($names as $name) {
+            $member = App\Classes\Clan_Member::where('display_name', $name)->first();
+
+            if( $member ) {
+
+                $result = [
+                    'name' => $name,
+                    'glory' => 0
+                ];
+
+                $client = new Client(); //GuzzleHttp\Client
+
+                $member_profile_response = $client->get(
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->id.'?components=100,202,900',
+                    ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+                );
+
+                if( $member_profile_response->getStatusCode() == 200 ) {
+                    $member_profile = json_decode($member_profile_response->getBody()->getContents());
+                    $member_profile = collect($member_profile);
+
+                    $character_id =  key(collect($member_profile['Response']->characterProgressions->data)->toArray());
+
+                    $result['glory'] = $member_profile['Response']->characterProgressions->data->$character_id->progressions->$glory_hash->currentProgress;
+                }
+
+                $results[] = $result;
             }
         }
 
@@ -266,7 +307,7 @@ class ApiController extends Controller
 
     function get_news($category='') {
 
-        // ALl news
+        // All news
         $cache_time = 15 * 60;
         $all_news = Cache::remember('all_news', $cache_time, function () {
             return App\Classes\News_Feed::where('status', 'active')->get();

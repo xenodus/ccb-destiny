@@ -28,9 +28,9 @@
               <button type="button" class="btn btn-danger btn-sm" id="reset"><i class="fas fa-sync-alt"></i> Reset</button>
             </div>
             <div class="col-md-12 mt-2 text-left">
-              <button type="button" class="btn btn-danger btn-sm" id="fetchGlory"><i class="fas fa-retweet"></i> Fetch Glory From Records</button>
-              <div>
-                <small>Records last updated at {{ $glory_last_update }}. Only use this at the start of a session.</small>
+              <button type="button" class="btn btn-danger btn-sm" id="fetchGlory"><i class="fas fa-retweet"></i> Fetch Members' Glory From Bungie API</button>
+              <div class="fetch-status">
+                <small></small>
               </div>
             </div>
           </div>

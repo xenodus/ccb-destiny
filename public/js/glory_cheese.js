@@ -23,6 +23,10 @@ $(document).ready(function(){
   });
 
   $("#fetchGlory").on("click", function(){
+
+    $(".fetch-status > small").text('Fetching . . .').show();
+    $(".player-point").val(0);
+
     var playerPoints = [];
 
     $('.player-points').each(function(){
@@ -47,6 +51,8 @@ $(document).ready(function(){
         for(var i=0; i<data.length; i++) {
           $('input.player-name').filter(function() { return this.value == data[i].name }).parent().siblings().find('.player-point').val( data[i].glory );
         }
+
+        $(".fetch-status > small").text('Done!').fadeOut('1000');
 
         getCheese();
       }
