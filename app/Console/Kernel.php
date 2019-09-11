@@ -46,6 +46,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($baseFilePath . 'milestones.log');
         $schedule->command('update:milestones')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'milestones.log'); // After Reset
 
+        $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($baseFilePath . 'nightfalls.log');
+        $schedule->command('update:nightfalls')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'nightfalls.log'); // After Reset
+
         // Vendor Stuff
         $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($baseFilePath . 'vendors.log');
         $schedule->command('update:vendors')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'vendors.log'); // After Reset

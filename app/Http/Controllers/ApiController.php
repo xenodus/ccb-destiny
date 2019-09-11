@@ -165,26 +165,6 @@ class ApiController extends Controller
         return response()->json([]);
     }
 
-    /*
-    function update_glory_from_db(Request $request) {
-        $names = explode(',', $request->input('names'));
-        $results = [];
-
-        foreach($names as $name) {
-            $member = App\Classes\Clan_Member::where('display_name', $name)->first();
-
-            if( $member ) {
-                $results[] = [
-                    'name' => $name,
-                    'glory' => $member->pvp_stats->glory
-                ];
-            }
-        }
-
-        return response()->json($results);
-    }
-    */
-
     function update_glory_from_db(Request $request) {
 
         $glory_hash = 2000925172;
@@ -449,7 +429,7 @@ class ApiController extends Controller
 
                     if( in_array($membership_id, ['4611686018474971535', '4611686018472137936']) && self::HIDE_ACTIVITY == true ) continue;
 
-                    $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
+                    $res = $client->get( env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->membershipType.'/Profile/'.$membership_id.'?components=100,204', ['headers' => ['X-API-Key' => env('BUNGIE_API')]] );
 
                     if( $res->getStatusCode() == 200 ) {
                         $member_profile = collect(json_decode($res->getBody()->getContents()));

@@ -21,8 +21,14 @@ $(document).ready(function(){
         return char.class == 'warlock';
       });
 
+      // Decode html entities
+      var txt = document.createElement("textarea");
+      txt.innerHTML = members[i].platform_profile[0] ? members[i].platform_profile[0].steamDisplayName : '';
+      var steamID = txt.value;
+
       tableData.push({
         name: members[i].display_name,
+        steam: steamID,
         warlock: warlock.length > 0 ? warlock[0].light : 0,
         hunter: hunter.length > 0 ? hunter[0].light : 0,
         titan: titan.length > 0 ? titan[0].light : 0,
@@ -38,10 +44,11 @@ $(document).ready(function(){
 
       var table = new Tabulator("#roster-container", {
         data:tableData, //assign data to table
-        layout:"fitColumns", //fit columns to width of table (optional)
+        layout:"fitDataFill", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
           {title:"Name", field:"name", headerSort:false},
+          {title:"Steam", field:"steam", headerSort:false},
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false},
@@ -51,9 +58,9 @@ $(document).ready(function(){
           {column:"name", dir:"asc"},
           {column:"last_online", dir:"desc"}
         ],
-        layout:"fitDataFill",
         height:"500px",
-        resizableColumns:false,
+        resizableColumns:true,
+        layoutColumnsOnNewData:true,
       });
 
       $("#nameFilter").on("input", function(){

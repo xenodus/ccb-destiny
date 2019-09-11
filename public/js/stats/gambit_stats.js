@@ -140,6 +140,10 @@ $(document).ready(function(){
             resizableColumns:false,
           });
 
+         $("#nameFilter").on("input", function(){
+            table.setFilter("name", "like", $(this).val());
+          });
+
           $('.stats-container').append('<div id="weapon-stats-info" class="text-center"><small>Last checked: '+gambitData.last_updated+'</small></div>');
         });
       }

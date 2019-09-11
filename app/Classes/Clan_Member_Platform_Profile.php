@@ -11,7 +11,7 @@ class Clan_Member_Platform_Profile extends Model
   protected $primaryKey = 'id';
   public $timestamps = false;
 
-  protected $fillable = ['id', 'profilePicturePath', 'blizzardDisplayName', 'date_added'];
+  protected $fillable = ['id', 'profilePicturePath', 'blizzardDisplayName', 'steamDisplayName', 'blizzardID', 'date_added'];
 
   public function member()
   {

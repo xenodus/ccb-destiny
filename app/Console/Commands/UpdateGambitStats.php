@@ -75,7 +75,7 @@ class UpdateGambitStats extends Command
 
                     // Gambit Stats
                     $member_gambit_stats_response = $client->get(
-                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .env('BUNGIE_PC_PLATFORM_ID'). '/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63,75',
+                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .$member->destinyUserInfo->membershipType. '/Account/'.$member->destinyUserInfo->membershipId.'/Character/0/Stats/?groups=0,0&periodType=0&modes=63,75',
                         ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 
@@ -140,7 +140,7 @@ class UpdateGambitStats extends Command
 
                     // Profile
                     $member_profile_response = $client->get(
-                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .env('BUNGIE_PC_PLATFORM_ID'). '/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900',
+                        env('BUNGIE_API_ROOT_URL') . '/Destiny2/' .$member->destinyUserInfo->membershipType. '/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,202,900',
                         ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 

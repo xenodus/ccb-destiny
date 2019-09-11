@@ -62,7 +62,7 @@ class AlfredController extends Controller
         // Process Post Request
         Validator::make($request->all(), [
           'event_name' => 'required|max:255',
-          'event_description' => 'max:255',
+          'event_description' => 'max:1000',
           'event_datetime' => 'required|date_format:j M Y g:i A',
         ])->validate();
 

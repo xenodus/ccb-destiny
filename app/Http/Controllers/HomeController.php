@@ -111,6 +111,84 @@ class HomeController extends Controller
       return view('home', $data);
     }
 
+    function draft(Request $request, $event_id)
+    {
+      $data['site_title'] = 'Raid drafting ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'raid_draft';
+
+      // Raid Events
+      $data['raid_event'] = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
+        ->where('event_id', $event_id)
+        ->where('status', 'active')
+        ->orderBy('event_date', 'asc')
+        ->with('signups')
+        ->first();
+
+      $players = $data['raid_event']->signups->where('type', 'confirmed');
+
+      $player_ids = $data['raid_event']->signups->pluck('event_signup_id');
+
+      // Cleanup
+      App\Classes\Raid_Draft::where('event_id', $event_id)->whereNotIn('signup_id', $player_ids)->delete();
+
+      // Populate
+      foreach( $players as $player ) {
+        $raid_draft_player = App\Classes\Raid_Draft::firstOrCreate(
+            ['signup_id' => $player->event_signup_id],
+            [
+              'event_id' => $event_id,
+              'team' => 0,
+              'is_lead' => 0,
+              'date_added' => Carbon::now()->format('Y-m-d H:i:s')
+            ]
+        );
+      }
+
+      return response()->json(['status' => 1]);
+    }
+
+    function draft_set_leader(Request $request)
+    {
+      $signup_id = $request->input('signup_id');
+      $event_id = $request->input('event_id');
+
+      $player = App\Classes\Raid_Draft::where('event_id', $event_id)->where('signup_id', $signup_id)->first();
+      $player->is_lead = 1;
+      $player->save();
+
+      $players = App\Classes\Raid_Draft::where('event_id', $event_id)->get();
+
+      return response()->json(['status' => 1, 'players' => $players]);
+    }
+
+    function draft_randomize(Request $request)
+    {
+      $event_id = $request->input('event_id');
+      $team_size = $request->input('team_size', 6);
+
+      $players = App\Classes\Raid_Draft::where('event_id', $event_id)->get();
+
+      $no_of_teams = ceil( $players->count() / $team_size );
+
+      $team = 1;
+
+      foreach( $players as $player ) {
+
+        if( $team > $no_of_teams ) {
+          $team = 1;
+        }
+
+        $player->team = $team;
+        $player->save();
+
+        $team++;
+      }
+
+      $players = App\Classes\Raid_Draft::where('event_id', $event_id)->get();
+
+      return response()->json(['status' => 1, 'players' => $players]);
+    }
+
     public function raids()
     {
       $data['site_title'] = 'Scheduled raid events for the ' . env('SITE_NAME') .' Clan in Destiny 2';
@@ -148,15 +226,6 @@ class HomeController extends Controller
       $data['active_page'] = 'Chalice Recipes';
 
       return view('chalice', $data);
-    }
-
-    public function raidReport($memberID)
-    {
-      $data['site_title'] = env('SITE_NAME');
-      $data['active_page'] = 'Raid Report';
-      $data['memberID'] = $memberID;
-
-      return view('raidReport', $data);
     }
 
     public function outbreak()

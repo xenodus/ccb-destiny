@@ -73,7 +73,7 @@ class UpdateSeals extends Command
             $n++;
 
             $response = $client->get(
-              env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->id.'?components=900',
+              env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->membershipType.'/Profile/'.$member->id.'?components=900',
               [
                 'headers' => [
                   'X-API-Key' => env('BUNGIE_API')

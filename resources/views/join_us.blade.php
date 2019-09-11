@@ -27,7 +27,7 @@
     <div style="max-width: 550px;">
       <form action="/" id="join_form" method="POST">
         <div class="form-group">
-          <label for="ig_name">What is your in-game name?</label>
+          <label for="ig_name">What is your in-game name (Full Bnet ID)?</label>
           <input type="text" class="form-control" id="ig_name" name="ig_name" aria-describedby="ig_name_help">
           <div class="d-none ig_name_error-msg error-msg text-danger mt-1"></div>
         </div>
@@ -52,7 +52,7 @@
           <div class="d-none expansion_error-msg error-msg text-danger mt-1"></div>
         </div>
         <div class="form-group">
-          <label for="activity">What is your level of activity / average hours played per week?</label>
+          <label for="activity">What is your level of activity / average hours online in-game per week?</label>
           <input type="text" class="form-control" id="activity" name="activity">
           <div class="d-none activity_error-msg error-msg text-danger mt-1"></div>
         </div>

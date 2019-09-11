@@ -24,9 +24,9 @@ class UpdateRaidStats extends Command
         'eowp'  => [809170886],
         'sos'   => [119944200],
         'sosp'  => [3213556450],
-        'lw'    => [2122313384],
-        'sotp'  => [548750096],
-        'cos'   => [3333172150]
+        'lw'    => [2122313384, 1661734046],
+        'sotp'  => [548750096, 2812525063],
+        'cos'   => [3333172150, 960175301]
     ];
 
     /**
@@ -95,7 +95,7 @@ class UpdateRaidStats extends Command
 
                     // Check Triumphs for flawless runs
                     $member_profile_response = $client->get(
-                        env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,900',
+                        env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->destinyUserInfo->membershipType.'/Profile/'.$member->destinyUserInfo->membershipId.'?components=100,900',
                         ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
                     );
 

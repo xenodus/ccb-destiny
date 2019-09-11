@@ -8,9 +8,76 @@ use Illuminate\Http\Request;
 use App;
 use DB;
 use Cache;
+use Carbon\Carbon;
 
 class ClanController extends Controller
 {
+  public function report() {
+
+    // GET DISCORD USERS THAT HAS NO NICKNAME OR NOT FOUND IN CLAN
+
+    $discord_white_list = ['alv86'];
+    $id_white_list = ['4611686018484199706']; // val jordan
+
+    $discord_member_nicknames = DB::connection('ccbbot')->table('member_roles')
+      ->whereNotIn('nickname', $discord_white_list)
+      ->where('role', 'Member')->get()->pluck('nickname');
+
+    $clan_member_bnet_ids = App\Classes\Clan_Member_Platform_Profile::
+      whereNotIn('id', $id_white_list)
+      ->get()->pluck('blizzardID');
+
+
+    // To lower case
+    $discord_member_nicknames = $discord_member_nicknames->transform(function($item, $key){
+      return strtolower( $item );
+    });
+
+    $clan_member_bnet_ids = $clan_member_bnet_ids->transform(function($item, $key){
+      return strtolower( $item );
+    });
+
+    // Get Diff
+    $diff = $discord_member_nicknames->diff( $clan_member_bnet_ids );
+
+    echo "<div><strong>1. Discord members without bnet nickname or not found in clan</strong></div>";
+
+    if( $diff->count() ) {
+      echo '<div style="margin-top: 15px;">'. implode('<br/>', $diff->toArray()) . '</div>';
+    }
+    else {
+
+    }
+
+    // GET IN-ACTIVE
+
+    $members = App\Classes\Clan_Member::whereRaw('last_online < NOW() - INTERVAL 2 WEEK')->orderBy('last_online', 'desc')->get();
+
+    echo "<br/>";
+    echo "<div><strong>2. In-active members</strong></div>";
+
+    if( $members ) {
+      echo '<table style="margin-top: 15px; border-spacing: 0;">';
+      echo '<thead><tr style="text-align: left;"><th>Name</th><th>Last Online</th><th>Days</th></tr></thead><tbody>';
+
+      foreach( $members as $member ) {
+        echo '<tr>';
+        echo '<td>'.$member->display_name . '</td>';
+        echo '<td>'.Carbon::parse($member->last_online)->format('j M Y'). '</td>';
+        echo '<td>'.Carbon::now('America/Los_Angeles')->diffInDays( Carbon::parse($member->last_online) ).'</td>';
+        echo '</tr>';
+      }
+
+      echo '</tbody></table>';
+      echo '<style>td, th { padding: 0 15px 0 0; } th { padding-bottom: 5px; }</style>';
+    }
+    else {
+      echo "<div>Woohoo, nobody.</div>";
+    }
+
+    dd();
+  }
+
   public function activities(Request $request) {
     $data['site_title'] = 'Past activities for the ' . env('SITE_NAME') .' Clan in Destiny 2';
     $data['active_page'] = 'activities';
@@ -29,7 +96,7 @@ class ClanController extends Controller
 
   public function get_roster() {
     $roster = Cache::rememberForever('clan_members_characters', function () {
-      return App\Classes\Clan_Member::with('characters')->get();
+      return App\Classes\Clan_Member::with('characters')->with('platform_profile')->get();
     });
     return response()->json($roster);
   }

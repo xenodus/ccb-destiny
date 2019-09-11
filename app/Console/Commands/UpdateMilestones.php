@@ -70,6 +70,7 @@ class UpdateMilestones extends Command
             $milestones = collect($milestones->Response);
 
             // Nightfalls
+            /*
             if( $milestones->get( $this->nightfallHash ) ) {
                 $nightfalls = $milestones->get( $this->nightfallHash );
 
@@ -94,6 +95,7 @@ class UpdateMilestones extends Command
                 Cache::forget('milestones_nightfall');
                 Cache::forever('milestones_nightfall', App\Classes\Nightfall::get());
             }
+            */
 
             // Reckoning Modifiers
             if( $milestones->get( $this->reckoningHash ) ) {

@@ -73,7 +73,7 @@ class UpdatePVEStats extends Command
                   $member->pveStats = App\Classes\Pve_Stats::get_default_pve_stats();
 
                   $member_pve_stats_response = $client->get(
-                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/'.$member->destinyUserInfo->membershipId.'/Stats/',
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->destinyUserInfo->membershipType.'/Account/'.$member->destinyUserInfo->membershipId.'/Stats/',
                     ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
                   );
 

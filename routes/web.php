@@ -14,6 +14,9 @@
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 
+// Member Check
+Route::get('/clan/report', 'ClanController@report')->name('clan_member_report');
+
 // Activities
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
 
@@ -74,10 +77,10 @@ Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
 
 // Raid Events
 Route::get('/raids', 'HomeController@raids')->name('raid_events');
+Route::get('/draft/{event_id}', 'HomeController@draft')->name('raid_draft');
 
 // Static / iFrames
 Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');
-Route::get('/raidreport/{memberID}', 'HomeController@raidReport')->name('raid_report');
 
 // Clan Roster
 Route::redirect('/clan', '/clan/roster', 301);

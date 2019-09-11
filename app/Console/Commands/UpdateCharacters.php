@@ -68,7 +68,7 @@ class UpdateCharacters extends Command
                 $n++;
 
                 $member_characters_response = $client->get(
-                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'?components=200,204',
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->destinyUserInfo->membershipType.'/Profile/'.$member->destinyUserInfo->membershipId.'?components=200,204',
                     [
                         'headers' => [
                             'X-API-Key' => env('BUNGIE_API')
@@ -107,7 +107,7 @@ class UpdateCharacters extends Command
 
             // Refresh Cache
             Cache::forget('clan_members_characters');
-            Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->get());
+            Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->get());
 
             $this->info('Completed: Characters update');
             return 1;

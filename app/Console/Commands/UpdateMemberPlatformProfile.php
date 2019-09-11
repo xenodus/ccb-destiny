@@ -56,9 +56,11 @@ class UpdateMemberPlatformProfile extends Command
             $n++;
 
             $member_profile_response = $client->get(
-                env('BUNGIE_API_ROOT_URL') . '/User/GetMembershipsById/' .$member->id. '/'.env('BUNGIE_PC_PLATFORM_ID').'/',
+                env('BUNGIE_API_ROOT_URL') . '/User/GetMembershipsById/' .$member->id. '/'.$member->membershipType.'/',
                 ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
             );
+
+            $this->info( env('BUNGIE_API_ROOT_URL') . '/User/GetMembershipsById/' .$member->id. '/'.$member->membershipType.'/' );
 
             if( $member_profile_response->getStatusCode() == 200 ) {
                 $member_profile = json_decode($member_profile_response->getBody()->getContents());
@@ -70,13 +72,42 @@ class UpdateMemberPlatformProfile extends Command
                 $clan_member_pp = App\Classes\Clan_Member_Platform_Profile::updateOrCreate(
                   ['id' => $member->id],
                   [
-                    'profilePicturePath' => $member_profile['Response']->bungieNetUser->profilePicturePath,
-                    'blizzardDisplayName' => $member_profile['Response']->bungieNetUser->blizzardDisplayName,
+                    'profilePicturePath' => $member_profile['Response']->bungieNetUser->profilePicturePath ?? '',
+                    'blizzardDisplayName' => $member_profile['Response']->bungieNetUser->blizzardDisplayName ?? '',
+                    'steamDisplayName' => $member_profile['Response']->bungieNetUser->steamDisplayName ?? '',
                     'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
                   ]
                 );
 
                 $this->info('Updated: ' . $member->display_name);
+            }
+        }
+
+        // Update BNet ID
+        $discord_members = DB::connection('ccbbot')->table('member_roles')->where('role', 'Member')->get();
+
+        foreach($discord_members as $discord_member) {
+            $response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/SearchDestinyPlayer/'.env('BUNGIE_PC_PLATFORM_ID').'/'.urlencode($discord_member->nickname).'/',
+                [
+                    'headers' => ['X-API-Key' => env('BUNGIE_API')],
+                    'http_errors' => false
+                ]
+            );
+
+            if( $response->getStatusCode() == 200 ) {
+
+                $member = json_decode($response->getBody()->getContents());
+                $member = collect($member);
+
+                if( count($member['Response']) > 0 ) {
+                    $clan_member_platform_profile = App\Classes\Clan_Member_Platform_Profile::where('id', $member['Response'][0]->membershipId)->first();
+
+                    if( $clan_member_platform_profile ) {
+                        $clan_member_platform_profile->blizzardID = $member['Response'][0]->displayName;
+                        $clan_member_platform_profile->save();
+                    }
+                }
             }
         }
 

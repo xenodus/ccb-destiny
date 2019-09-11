@@ -15,7 +15,7 @@ class Clan_Member extends Model
   protected $primaryKey = 'id';
   public $timestamps = false;
   protected $casts = ['id' => 'string', 'bungie_id' => 'string'];
-  protected $fillable = ['id', 'bungie_id', 'display_name', 'last_online', 'date_added'];
+  protected $fillable = ['id', 'bungie_id', 'display_name', 'membershipType', 'last_online', 'date_added'];
 
   public function characters()
   {
@@ -145,7 +145,8 @@ class Clan_Member extends Model
         return [
           'membershipId' => $member->destinyUserInfo->membershipId,
           'displayName' => $member->destinyUserInfo->displayName,
-          'avatar' => $member->bungieNetUserInfo->iconPath,
+          'membershipType' => $member->destinyUserInfo->membershipType,
+          'avatar' => isset($member->bungieNetUserInfo) ? $member->bungieNetUserInfo->iconPath : '',
           'lastOnlineStatusChange' => $member->lastOnlineStatusChange
         ];
       });
@@ -172,7 +173,7 @@ class Clan_Member extends Model
 
       // Get all current member ids and delete those are ain't in clan anymore
       $ids = collect($payload->Response->results)->filter(function($member){
-        return $member->destinyUserInfo->membershipType == 4;
+        return in_array(4, $member->destinyUserInfo->applicableMembershipTypes);
       })
       ->map(function($member){
         return $member->destinyUserInfo->membershipId;
@@ -181,15 +182,16 @@ class Clan_Member extends Model
       DB::table('clan_members')->whereNotIn('id', $ids)->delete();
 
       foreach($payload->Response->results as $key => $result) {
-        if( $result->destinyUserInfo->membershipType == 4 ) {
+        if( in_array(4, $result->destinyUserInfo->applicableMembershipTypes) ) {
           $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
           $last_online->setTimezone('Asia/Singapore');
 
           $clan_member = \App\Classes\Clan_Member::updateOrCreate(
             ['id' => $result->destinyUserInfo->membershipId],
             [
-              'bungie_id' => $result->bungieNetUserInfo->membershipId,
+              'bungie_id' => isset($result->bungieNetUserInfo) ? $result->bungieNetUserInfo->membershipId : '',
               'display_name' => $result->destinyUserInfo->displayName,
+              'membershipType' => $result->destinyUserInfo->membershipType,
               'last_online' => $last_online->format('Y-m-d H:i:s'),
               'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
             ]
