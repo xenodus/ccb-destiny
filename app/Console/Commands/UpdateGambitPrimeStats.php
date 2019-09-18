@@ -9,7 +9,7 @@ use App;
 use DB;
 use Cache;
 
-class UpdateGambitStats extends Command
+class UpdateGambitPrimeStats extends Command
 {
     // gambit
     private $infamy_hash = 2772425241;
@@ -20,14 +20,14 @@ class UpdateGambitStats extends Command
      *
      * @var string
      */
-    protected $signature = 'update:GambitStats';
+    protected $signature = 'update:GambitPrimeStats';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update clan member\'s gambit stats';
+    protected $description = 'Update clan member\'s gambit prime stats';
 
     /**
      * Create a new command instance.
@@ -46,14 +46,14 @@ class UpdateGambitStats extends Command
      */
     public function handle()
     {
-        if( App\Classes\Work_Progress::where('type', 'gambit')->where('status', 'running')
+        if( App\Classes\Work_Progress::where('type', 'gambit_prime')->where('status', 'running')
               ->whereRaw('start > NOW() - INTERVAL 5 MINUTE')
               ->count() == 0 )
         {
-            $this->info('Begin: Gambit stats update');
+            $this->info('Begin: Gambit Prime stats update');
 
             $work_progress = new App\Classes\Work_Progress();
-            $work_progress->type = 'gambit';
+            $work_progress->type = 'gambit_prime';
             $work_progress->start = date('Y-m-d H:i:s');
             $work_progress->status = 'running';
             $work_progress->save();
@@ -103,31 +103,6 @@ class UpdateGambitStats extends Command
                         $member_gambit_stats = json_decode($member_gambit_stats_response->getBody()->getContents());
                         $member_gambit_stats = collect($member_gambit_stats);
 
-                        if( isset($member_gambit_stats['Response']->pvecomp_gambit->allTime) ) {
-
-                            $gs = $member_gambit_stats['Response']->pvecomp_gambit->allTime;
-
-                            $member->gambitStats['activitiesEntered'] += $gs->activitiesEntered->basic->displayValue;
-                            $member->gambitStats['activitiesWon'] += $gs->activitiesWon->basic->displayValue;
-                            $member->gambitStats['kills'] += $gs->kills->basic->displayValue;
-                            $member->gambitStats['deaths'] += $gs->deaths->basic->displayValue;
-                            $member->gambitStats['killsDeathsRatio'] += $gs->killsDeathsRatio->basic->displayValue;
-                            $member->gambitStats['suicides'] += $gs->suicides->basic->displayValue;
-                            $member->gambitStats['efficiency'] += $gs->efficiency->basic->displayValue;
-                            $member->gambitStats['invasionKills'] += $gs->invasionKills->basic->displayValue;
-                            $member->gambitStats['invaderKills'] += $gs->invaderKills->basic->displayValue;
-                            $member->gambitStats['invaderDeaths'] += $gs->invaderDeaths->basic->displayValue;
-                            $member->gambitStats['primevalDamage'] += $gs->primevalDamage->basic->displayValue;
-                            $member->gambitStats['primevalHealing'] += str_replace('%', '', $gs->primevalHealing->basic->displayValue);
-                            $member->gambitStats['motesDeposited'] += $gs->motesDeposited->basic->displayValue;
-                            $member->gambitStats['motesDenied'] += $gs->motesDenied->basic->displayValue;
-                            $member->gambitStats['motesLost'] += $gs->motesLost->basic->displayValue;
-                            $member->gambitStats['smallBlockersSent'] += $gs->smallBlockersSent->basic->displayValue;
-                            $member->gambitStats['mediumBlockersSent'] += $gs->mediumBlockersSent->basic->displayValue;
-                            $member->gambitStats['largeBlockersSent'] += $gs->largeBlockersSent->basic->displayValue;
-                        }
-
-                        /*
                         if( isset($member_gambit_stats['Response']->pvecomp_mamba->allTime) ) {
 
                             $prime_gs = $member_gambit_stats['Response']->pvecomp_mamba->allTime;
@@ -154,7 +129,6 @@ class UpdateGambitStats extends Command
                             $member->gambitStats['mediumBlockersSent'] += $prime_gs->mediumBlockersSent->basic->displayValue;
                             $member->gambitStats['largeBlockersSent'] += $prime_gs->largeBlockersSent->basic->displayValue;
                         }
-                        */
                     }
                     else {
                         continue;
@@ -192,7 +166,7 @@ class UpdateGambitStats extends Command
                     $updated_members->push($member);
                 }
 
-                App\Classes\Gambit_Stats::update_members($updated_members);
+                App\Classes\Gambit_Prime_Stats::update_members($updated_members);
 
                 $work_progress->end = date('Y-m-d H:i:s');
                 $work_progress->status = 'completed';
@@ -200,15 +174,15 @@ class UpdateGambitStats extends Command
             }
         }
         else {
-            $this->info('Error: Gambit stats update already in progress');
+            $this->info('Error: Gambit Prime stats update already in progress');
             return 0;
         }
 
         // Refresh Cache
-        Cache::forget('gambit_stats');
-        Cache::forever('gambit_stats', App\Classes\Gambit_Stats::get());
+        Cache::forget('gambit_prime_stats');
+        Cache::forever('gambit_prime_stats', App\Classes\Gambit_Prime_Stats::get());
 
-        $this->info('Completed: Gambit stats update');
+        $this->info('Completed: Gambit Prime stats update');
         return 1;
     }
 }

@@ -82,6 +82,8 @@ class ClanController extends Controller
 
     $items_per_page = 250;
 
+    $data['active_page'] = 'clan_member_activities_listing';
+
     $data['clan_members'] = Cache::rememberForever('clan_members', function () {
       return App\Classes\Clan_Member::get();
     });

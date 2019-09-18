@@ -78,14 +78,14 @@
                   <div>Home</div>
                 </a>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'clan_member_activities_listing', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/clan/lockouts">
                   <i class="ra ra-double-team"></i>
                   <div>Clan</div>
                 </a>
                 <div class="drop-down-menu animated fadeIn faster">
                   <ul>
-                    <li class="nav-item {{ (isset($active_page) && $active_page == 'roster') ? 'active' : ''  }}">
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['roster', 'clan_member_activities_listing'])) ? 'active' : ''  }}">
                       <a href="/clan/roster">Roster</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
@@ -100,7 +100,7 @@
                   </ul>
                 </div>
               </li>
-              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities', 'gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities']) ) ? 'active' : ''  }}">
+              <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'gambit', 'gambit_prime', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities', 'gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">
                   <i class="far fa-chart-bar animated pulse slower infinite delay-0.5s"></i>
                   <div>Stats</div>
@@ -121,6 +121,9 @@
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit') ? 'active' : ''  }}">
                       <a href="/stats/gambit">Gambit</a>
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit_prime') ? 'active' : ''  }}">
+                      <a href="/stats/gambit-prime">Gambit Prime</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies', 'raid_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/raid/buddy">Raid Buddies</a>

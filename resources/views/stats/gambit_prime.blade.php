@@ -3,10 +3,10 @@
 @section('body')
 <section class="stats text-center container-fluid mb-4">
 
-	<div class="mt-4">
-  	@include('stats.breadcrumbs', ['nav_link' => '/stats/raid', 'nav_name' => 'Raid Completions'])
-  	<h1 class="text-yellow text-left">Raid Completion Stats</h1>
-	</div>
+  <div class="mt-4">
+    @include('stats.breadcrumbs', ['nav_link' => '/stats/gambit_prime', 'nav_name' => 'Gambit Prime'])
+    <h1 class="text-yellow text-left">Gambit Prime Stats</h1>
+  </div>
 
   <div class="loader"></div>
   <div class="loader-text">Fetching Members...</div>
@@ -25,6 +25,5 @@
 @endsection
 
 @section('footer')
-<!--script src="/js/stats/raid_numbers.js?<?=time()?>"></script-->
-<script src="{{ mix('/js/compiled/raid_numbers.js') }}"></script>
+<script src="{{ mix('/js/compiled/gambit_prime_numbers.js') }}"></script>
 @endsection

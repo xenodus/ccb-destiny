@@ -67,6 +67,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:PVEStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
         $schedule->command('update:PVPStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
         $schedule->command('update:GambitStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitPrimeStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
     }
 
     /**

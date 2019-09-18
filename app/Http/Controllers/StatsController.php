@@ -231,6 +231,14 @@ class StatsController extends Controller
       return view('stats.pvp', $data);
   }
 
+  public function gambit_prime()
+  {
+      $data['site_title'] = 'Gambit Prime stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'gambit_prime';
+
+      return view('stats.gambit_prime', $data);
+  }
+
   public function gambit()
   {
       $data['site_title'] = 'Gambit stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
@@ -282,5 +290,14 @@ class StatsController extends Controller
     });
 
     return response()->json($gambit_stats);
+  }
+
+  public function get_gambit_prime_stats()
+  {
+    $gambit_prime_stats = Cache::rememberForever('gambit_prime_stats', function () {
+      return App\Classes\Gambit_Prime_Stats::get();
+    });
+
+    return response()->json($gambit_prime_stats);
   }
 }

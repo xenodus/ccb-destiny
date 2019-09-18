@@ -75,6 +75,7 @@ Route::get('/stats/weapons', 'StatsController@weapons')->name('stats_weapons');
 Route::get('/stats/pve', 'StatsController@pve')->name('stats_pve');
 Route::get('/stats/pvp', 'StatsController@pvp')->name('stats_pvp');
 Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
+Route::get('/stats/gambit-prime', 'StatsController@gambit_prime')->name('stats_gambit_prime');
 
 // Raid Events
 Route::get('/raids', 'HomeController@raids')->name('raid_events');
@@ -112,3 +113,4 @@ Route::get('/bungie/pvp/get', 'StatsController@get_pvp_stats')->name('get_pvp_st
 
 // Gambit
 Route::get('/bungie/gambit/get', 'StatsController@get_gambit_stats')->name('get_gambit_stats');
+Route::get('/bungie/gambit_prime/get', 'StatsController@get_gambit_prime_stats')->name('get_gambit_prime_stats');

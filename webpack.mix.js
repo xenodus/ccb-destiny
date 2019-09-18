@@ -108,26 +108,30 @@ mix.scripts([
 ], 'public/js/compiled/post.js');
 
 // STATS PAGES
-// Stats keyword will trigger ad blockers
+// "stats" keyword will trigger ad blockers. Hence, using "numbers".
 
 mix.scripts([
-    'public/js/stats/raid_stats.js',
+    'public/js/stats/raid_numbers.js',
 ], 'public/js/compiled/raid_numbers.js');
 
 mix.scripts([
-    'public/js/stats/weapon_stats.js',
+    'public/js/stats/weapon_numbers.js',
 ], 'public/js/compiled/weapon_numbers.js');
 
 mix.scripts([
-    'public/js/stats/pve_stats.js',
+    'public/js/stats/pve_numbers.js',
 ], 'public/js/compiled/pve_numbers.js');
 
 mix.scripts([
-    'public/js/stats/pvp_stats.js',
+    'public/js/stats/pvp_numbers.js',
 ], 'public/js/compiled/pvp_numbers.js');
 
 mix.scripts([
-    'public/js/stats/gambit_stats.js',
+    'public/js/stats/gambit_numbers.js',
 ], 'public/js/compiled/gambit_numbers.js');
+
+mix.scripts([
+    'public/js/stats/gambit_prime_numbers.js',
+], 'public/js/compiled/gambit_prime_numbers.js');
 
 mix.version();
