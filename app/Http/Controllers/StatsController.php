@@ -204,7 +204,7 @@ class StatsController extends Controller
       $data['site_title'] = 'Raid stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'stats';
 
-      return view('stats.index', $data);
+      return view('stats.raid', $data);
   }
 
   public function weapons()

@@ -25,5 +25,5 @@
 @endsection
 
 @section('footer')
-<script src="{{ mix('/js/compiled/pvp_stats.js') }}"></script>
+<script src="{{ mix('/js/compiled/pvp_numbers.js') }}"></script>
 @endsection

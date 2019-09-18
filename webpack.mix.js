@@ -108,24 +108,26 @@ mix.scripts([
 ], 'public/js/compiled/post.js');
 
 // STATS PAGES
+// Stats keyword will trigger ad blockers
+
 mix.scripts([
     'public/js/stats/raid_stats.js',
-], 'public/js/compiled/raid_stats.js');
+], 'public/js/compiled/raid_numbers.js');
 
 mix.scripts([
     'public/js/stats/weapon_stats.js',
-], 'public/js/compiled/weapon_stats.js');
+], 'public/js/compiled/weapon_numbers.js');
 
 mix.scripts([
     'public/js/stats/pve_stats.js',
-], 'public/js/compiled/pve_stats.js');
+], 'public/js/compiled/pve_numbers.js');
 
 mix.scripts([
     'public/js/stats/pvp_stats.js',
-], 'public/js/compiled/pvp_stats.js');
+], 'public/js/compiled/pvp_numbers.js');
 
 mix.scripts([
     'public/js/stats/gambit_stats.js',
-], 'public/js/compiled/gambit_stats.js');
+], 'public/js/compiled/gambit_numbers.js');
 
 mix.version();
