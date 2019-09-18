@@ -33,7 +33,7 @@
 $(document).ready(function(){
   $.get('/bungie/roster/get', function(members){
 
-    console.log( members );
+    // console.log( members );
 
     if( members.length > 0 ) {
 
@@ -42,9 +42,9 @@ $(document).ready(function(){
       for(var i=0; i<members.length; i++) {
         tableData.push({
           name: members[i].display_name,
-          raid_activities: '<a href="/clan/activities/raid/'+members[i].id +'">Go</a>',
-          pvp_activities: '<a href="/clan/activities/pvp/'+members[i].id +'">Go</a>',
-          gambit_activities: '<a href="/clan/activities/gambit/'+members[i].id +'">Go</a>',
+          raid_activities: '<a href="/clan/activities/raid/'+members[i].id +'">View</a>',
+          pvp_activities: '<a href="/clan/activities/pvp/'+members[i].id +'">View</a>',
+          gambit_activities: '<a href="/clan/activities/gambit/'+members[i].id +'">View</a>',
         });
       }
 

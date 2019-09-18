@@ -277,6 +277,9 @@ class UpdateVendors extends Command
 
                 return 1;
             }
+            else {
+                $this->info('Unable To Get Vendor Data');
+            }
         }
     }
 }

@@ -35,11 +35,6 @@ class Post extends WP_Post
       if( isset($this->thumbnail) && isset( $this->thumbnail->size($size)['url'] ) ) {
         return $this->thumbnail->size($size)['url'];
       }
-      /*
-      else if ( isset( $this->thumbnail->size('medium')['url'] ) ) {
-        return $this->thumbnail->size('medium')['url'];
-      }
-      */
       else {
         return $this->thumbnail;
       }

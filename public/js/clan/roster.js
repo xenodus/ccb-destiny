@@ -33,6 +33,9 @@ $(document).ready(function(){
         hunter: hunter.length > 0 ? hunter[0].light : 0,
         titan: titan.length > 0 ? titan[0].light : 0,
         last_online: moment(members[i].last_online).year() == '1970' ? 'n/a' : moment(members[i].last_online).format('DD MMM YYYY'),
+        raid_activities: '<a href="/clan/activities/raid/'+members[i].id +'">View</a>',
+        pvp_activities: '<a href="/clan/activities/pvp/'+members[i].id +'">View</a>',
+        gambit_activities: '<a href="/clan/activities/gambit/'+members[i].id +'">View</a>',
       });
     }
 
@@ -53,6 +56,9 @@ $(document).ready(function(){
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false},
           {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"}, headerSort:false},
+          {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
+          {title:"<div class='mx-3'>PvP</div><small>Activities</small>", field:"pvp_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
+          {title:"<div class='mx-3'>Gambit</div><small>Activities</small>", field:"gambit_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
         ],
         initialSort: [
           {column:"name", dir:"asc"},

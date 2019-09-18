@@ -70,6 +70,9 @@ class UpdateNightfalls extends Command
             $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
 
             foreach($characters_activities as $activity) {
+
+                // $this->info( $activity_definitions[ $activity->activityHash ]->displayProperties->name . ': ' . $activity->activityHash );
+
                 if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0 ) {
 
                     $nf = new App\Classes\Nightfall();

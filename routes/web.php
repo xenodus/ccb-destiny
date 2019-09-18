@@ -19,6 +19,7 @@ Route::get('/clan/report', 'ClanController@report')->name('clan_member_report');
 
 // Activities
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
+Route::get('/clan/activities/{type}/{member_id}', 'ClanController@member_activities_listing')->name('clan_member_activities_listing');
 
 // Alfred Raid Event Web Create / Edit
 Route::get('/alfred/{token}', 'AlfredController@web_create_edit')->name('alfred_web_create_edit');
@@ -77,7 +78,6 @@ Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
 
 // Raid Events
 Route::get('/raids', 'HomeController@raids')->name('raid_events');
-Route::get('/draft/{event_id}', 'HomeController@draft')->name('raid_draft');
 
 // Static / iFrames
 Route::get('/outbreak', 'HomeController@outbreak')->name('outbreak_solution');

@@ -120,7 +120,7 @@ $(document).ready(function(){
       }
 
       tableData.push({
-        id: activity_instances.activity_id,
+        id: activity_instances[i].activity_id,
         activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
         date: moment(pgcr.period).format('D MMM Y, h:mm A'),
         completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',

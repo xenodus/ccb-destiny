@@ -78,7 +78,82 @@ class ClanController extends Controller
     dd();
   }
 
-  public function activities(Request $request) {
+  public function member_activities_listing(Request $request, $type, $member_id) {
+
+    $items_per_page = 250;
+
+    $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+      return App\Classes\Clan_Member::get();
+    });
+
+    $data['member'] = $data['clan_members']->where('id', $member_id)->first();
+
+    $data['activity_definition'] = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+
+    switch($type) {
+      case "pvp":
+
+        $data['activity_type'] = 'PvP';
+        $data['link'] = route('clan_member_activities_listing', ['pvp', $member_id]);
+
+        $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+          with('pgcr')
+          ->where('mode', 5)
+          ->where('member_id', $member_id)
+          ->orderBy('activity_id', 'desc')
+          ->groupBy('activity_id')
+          ->paginate($items_per_page);
+
+        break;
+
+      case "raid":
+
+        $data['activity_type'] = 'Raid';
+        $data['link'] = route('clan_member_activities_listing', ['raid', $member_id]);
+
+        $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+          with('pgcr')
+          ->where('mode', 4)
+          ->where('member_id', $member_id)
+          ->orderBy('activity_id', 'desc')
+          ->groupBy('activity_id')
+          ->paginate($items_per_page);
+
+        break;
+
+      case "gambit":
+
+        $data['activity_type'] = 'Gambit';
+        $data['link'] = route('clan_member_activities_listing', ['gambit', $member_id]);
+
+        $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+          with('pgcr')
+          ->whereIn('mode', [63, 75])
+          ->where('member_id', $member_id)
+          ->orderBy('activity_id', 'desc')
+          ->groupBy('activity_id')
+          ->paginate($items_per_page);
+
+        break;
+
+      case "all":
+      default:
+
+        $data['activity_type'] = 'All';
+        $data['link'] = route('clan_member_activities_listing', ['all', $member_id]);
+
+        $data['activity_instances'] = App\Classes\Clan_Member_Activity_Buddy_Instance::
+          with('pgcr')
+          ->where('member_id', $member_id)
+          ->orderBy('activity_id', 'desc')
+          ->groupBy('activity_id')
+          ->paginate($items_per_page);
+    }
+
+    return view('clan.member_activities', $data);
+  }
+
+  public function activities() {
     $data['site_title'] = 'Past activities for the ' . env('SITE_NAME') .' Clan in Destiny 2';
     $data['active_page'] = 'activities';
 

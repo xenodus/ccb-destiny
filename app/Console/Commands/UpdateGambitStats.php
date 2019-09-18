@@ -79,6 +79,26 @@ class UpdateGambitStats extends Command
                         ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 
+                    // Defaults cuz some peeps nv touched gambit before
+                    $member->gambitStats['activitiesEntered'] = 0;
+                    $member->gambitStats['activitiesWon'] = 0;
+                    $member->gambitStats['kills'] = 0;
+                    $member->gambitStats['deaths'] = 0;
+                    $member->gambitStats['killsDeathsRatio'] = 0;
+                    $member->gambitStats['suicides'] = 0;
+                    $member->gambitStats['efficiency'] = 0;
+                    $member->gambitStats['invasionKills'] = 0;
+                    $member->gambitStats['invaderKills'] = 0;
+                    $member->gambitStats['invaderDeaths'] = 0;
+                    $member->gambitStats['primevalDamage'] = 0;
+                    $member->gambitStats['primevalHealing'] = 0;
+                    $member->gambitStats['motesDeposited'] = 0;
+                    $member->gambitStats['motesDenied'] = 0;
+                    $member->gambitStats['motesLost'] = 0;
+                    $member->gambitStats['smallBlockersSent'] = 0;
+                    $member->gambitStats['mediumBlockersSent'] = 0;
+                    $member->gambitStats['largeBlockersSent'] = 0;
+
                     if( $member_gambit_stats_response->getStatusCode() == 200 ) {
                         $member_gambit_stats = json_decode($member_gambit_stats_response->getBody()->getContents());
                         $member_gambit_stats = collect($member_gambit_stats);
@@ -87,29 +107,29 @@ class UpdateGambitStats extends Command
 
                             $gs = $member_gambit_stats['Response']->pvecomp_gambit->allTime;
 
-                            $member->gambitStats['activitiesEntered'] = $gs->activitiesEntered->basic->displayValue;
-                            $member->gambitStats['activitiesWon'] = $gs->activitiesWon->basic->displayValue;
-                            $member->gambitStats['kills'] = $gs->kills->basic->displayValue;
-                            $member->gambitStats['deaths'] = $gs->deaths->basic->displayValue;
-                            $member->gambitStats['killsDeathsRatio'] = $gs->killsDeathsRatio->basic->displayValue;
-                            $member->gambitStats['suicides'] = $gs->suicides->basic->displayValue;
-                            $member->gambitStats['efficiency'] = $gs->efficiency->basic->displayValue;
-                            $member->gambitStats['invasionKills'] = $gs->invasionKills->basic->displayValue;
-                            $member->gambitStats['invaderKills'] = $gs->invaderKills->basic->displayValue;
-                            $member->gambitStats['invaderDeaths'] = $gs->invaderDeaths->basic->displayValue;
-                            $member->gambitStats['primevalDamage'] = $gs->primevalDamage->basic->displayValue;
-                            $member->gambitStats['primevalHealing'] = str_replace('%', '', $gs->primevalHealing->basic->displayValue);
-                            $member->gambitStats['motesDeposited'] = $gs->motesDeposited->basic->displayValue;
-                            $member->gambitStats['motesDenied'] = $gs->motesDenied->basic->displayValue;
-                            $member->gambitStats['motesLost'] = $gs->motesLost->basic->displayValue;
-                            $member->gambitStats['smallBlockersSent'] = $gs->smallBlockersSent->basic->displayValue;
-                            $member->gambitStats['mediumBlockersSent'] = $gs->mediumBlockersSent->basic->displayValue;
-                            $member->gambitStats['largeBlockersSent'] = $gs->largeBlockersSent->basic->displayValue;
+                            $member->gambitStats['activitiesEntered'] += $gs->activitiesEntered->basic->displayValue;
+                            $member->gambitStats['activitiesWon'] += $gs->activitiesWon->basic->displayValue;
+                            $member->gambitStats['kills'] += $gs->kills->basic->displayValue;
+                            $member->gambitStats['deaths'] += $gs->deaths->basic->displayValue;
+                            $member->gambitStats['killsDeathsRatio'] += $gs->killsDeathsRatio->basic->displayValue;
+                            $member->gambitStats['suicides'] += $gs->suicides->basic->displayValue;
+                            $member->gambitStats['efficiency'] += $gs->efficiency->basic->displayValue;
+                            $member->gambitStats['invasionKills'] += $gs->invasionKills->basic->displayValue;
+                            $member->gambitStats['invaderKills'] += $gs->invaderKills->basic->displayValue;
+                            $member->gambitStats['invaderDeaths'] += $gs->invaderDeaths->basic->displayValue;
+                            $member->gambitStats['primevalDamage'] += $gs->primevalDamage->basic->displayValue;
+                            $member->gambitStats['primevalHealing'] += str_replace('%', '', $gs->primevalHealing->basic->displayValue);
+                            $member->gambitStats['motesDeposited'] += $gs->motesDeposited->basic->displayValue;
+                            $member->gambitStats['motesDenied'] += $gs->motesDenied->basic->displayValue;
+                            $member->gambitStats['motesLost'] += $gs->motesLost->basic->displayValue;
+                            $member->gambitStats['smallBlockersSent'] += $gs->smallBlockersSent->basic->displayValue;
+                            $member->gambitStats['mediumBlockersSent'] += $gs->mediumBlockersSent->basic->displayValue;
+                            $member->gambitStats['largeBlockersSent'] += $gs->largeBlockersSent->basic->displayValue;
                         }
 
                         if( isset($member_gambit_stats['Response']->pvecomp_mamba->allTime) ) {
 
-                            $prime_gs = $member_gambit_stats['Response']->pvecomp_gambit->allTime;
+                            $prime_gs = $member_gambit_stats['Response']->pvecomp_mamba->allTime;
 
                             $member->gambitStats['activitiesEntered'] += $prime_gs->activitiesEntered->basic->displayValue;
                             $member->gambitStats['activitiesWon'] += $prime_gs->activitiesWon->basic->displayValue;
