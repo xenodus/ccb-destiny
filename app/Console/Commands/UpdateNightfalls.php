@@ -64,7 +64,6 @@ class UpdateNightfalls extends Command
                 return isset($activity->displayLevel) && $activity->displayLevel == 50;
             });
 
-
             DB::table('nightfall')->truncate(); // cleanup db
 
             $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));

@@ -65,7 +65,7 @@ $(document).ready(function(){
   var clan_members_ids = {!! $clan_members->pluck('id')->toJson() !!};
   var activity_definition = {!! $activity_definition->toJson() !!};
 
-  console.log(activity_instances);
+  // console.log(activity_instances);
 
   if( activity_instances.data.length > 0 ) {
 
@@ -81,11 +81,12 @@ $(document).ready(function(){
 
       if( pgcr ) {
 
-        // console.log(pgcr);
+        console.log(pgcr);
 
         // pgcr data
         var your_stats = {
-          'completed': 0
+          'completed': 0,
+          'outcome': 1,
         };
 
         // your kda
@@ -96,6 +97,10 @@ $(document).ready(function(){
         // Ignore multiple characters
         if( member_data.length > 0 ) {
           your_stats['completed'] = member_data[0].values.completed.basic.value;
+
+          if( activity_type == "PvP" || activity_type == "Gambit" ) {
+            your_stats['outcome'] = member_data[0].standing; // 0 == win
+          }
         }
 
         // Has clan mate check
@@ -143,7 +148,8 @@ $(document).ready(function(){
           date: moment(pgcr.period).format('D MMM Y, h:mm A'),
           completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
           has_clan_mate: has_clan_mate == true ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
-          link: link
+          link: link,
+          outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
         });
       }
     }
@@ -155,19 +161,24 @@ $(document).ready(function(){
 
     var format = {precision: 0};
 
+    var tableColumns = [
+      {title:"No.", field:"no", headerSort:false},
+      {title:"Activity ID", field:"id", visible: false, cssClass: 'activity_id'},
+      {title:"Activity", field:"activity_name", cssClass: 'activity_name', headerSort:false},
+      {title:"<div class='text-center'>Date</div>", field:"date", cssClass: 'text-right', sorter:"date", headerSort:false, sorterParams:{ format:"D MMM Y, hh:mm A"} },
+      {title: "Completed", field:"completed", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title: "With Clan Mate", field:"has_clan_mate", formatter:"html", cssClass: 'text-center', headerSort:false},
+      {title: link_name, field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
+    ];
+
+    if( activity_type == 'PvP' || activity_type == "Gambit" ) {
+      var outcome = {title: "Outcome", field:"outcome", formatter:"html", cssClass: 'text-center', headerSort:false};
+      tableColumns.splice(4, 0, outcome);
+    }
+
     var table = new Tabulator("#raid-stats-table", {
-      data:tableData, //assign data to table
-      columns:[ //Define Table Columns
-        {title:"No.", field:"no", headerSort:false},
-        {title:"Activity ID", field:"id", visible: false, cssClass: 'activity_id'},
-        {title:"Activity", field:"activity_name", cssClass: 'activity_name', headerSort:false},
-        {title:"<div class='text-center'>Date</div>", field:"date", cssClass: 'text-right', sorter:"date", headerSort:false, sorterParams:{
-          format:"D MMM Y, hh:mm A"
-        }},
-        {title: "Completed", field:"completed", formatter:"html", cssClass: 'text-center', headerSort:false},
-        {title: "With Clan Mate", field:"has_clan_mate", formatter:"html", cssClass: 'text-center', headerSort:false},
-        {title: link_name, field:"link", formatter:"html", cssClass: 'text-center', headerSort:false},
-      ],
+      data:tableData,
+      columns: tableColumns,
       initialSort: [
         {column:"date", dir:"desc"}
       ],
