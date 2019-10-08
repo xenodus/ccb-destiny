@@ -14,6 +14,7 @@ class UpdateMemberExotic extends Command
     private $exoticHashes = [
         'weapons' => [
             'kinetic' => [
+                1501322721, // monte carlo
                 4207100358, // bad juju
                 564802912,  // crimson
                 564802914,  // huckleberry
@@ -37,8 +38,10 @@ class UpdateMemberExotic extends Command
                 1660030047  // chaperone
             ],
             'energy' => [
+                1988948484, // divinity
                 1642951317, // borealis
                 1657028070, // coldheart
+                2741465947, // eriana's vow
                 1657028071, // fighting lion
                 1657028069, // graviton
                 1657028064, // hard light
@@ -56,6 +59,7 @@ class UpdateMemberExotic extends Command
                 1642951314  // lord of wolves
             ],
             'power' => [
+                888224289,  // deathbringer
                 199171388,  // colony
                 3695595899, // darci
                 199171389,  // acrius
@@ -76,6 +80,7 @@ class UpdateMemberExotic extends Command
         ],
         'armor' => [
             'warlock' => [
+                1902498454, // Stormdancer's Brace
                 846189249,  // Apotheosis Veil
                 4659035,    // Astrocyte Verse
                 846189254,  // Crown of Tempests
@@ -103,6 +108,7 @@ class UpdateMemberExotic extends Command
                 875969608   // Transversive Steps
             ],
             'hunter' => [
+                899828456,  // Assassin's Cowl
                 1234605995, // Celestial Nighthawk
                 1234605992, // Foetracer
                 1234605993, // Graviton Forfeit
@@ -130,6 +136,7 @@ class UpdateMemberExotic extends Command
                 975121095   // St0mp-EE5
             ],
             'titan' => [
+                3073431847, // PHOENIX CRADLE
                 2115530086, // An Insurmountable Skullfort
                 2115530082, // Eternal Warrior
                 2115530085, // Helm of Saint-14

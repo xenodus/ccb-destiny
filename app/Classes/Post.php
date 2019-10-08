@@ -296,12 +296,12 @@ class Post extends WP_Post
 
     $html = '
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent pl-0" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
+      <ol class="breadcrumb bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage"
               href="'.route('guide_index').'">
-            <span property="name">Guides</span></a>
-          <meta property="position" content="1">
+            <span itemprop="name">Guides</span></a>
+          <meta itemprop="position" content="1">
         </li>';
 
     $i = 1;
@@ -312,20 +312,20 @@ class Post extends WP_Post
       $category_post_count = Post::published()->taxonomy('category', $cat->term->slug)->count();
 
       $html .= '
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage"
               href="'.route('guide_category', ['slug' => $cat->term->slug, 'id' => $cat->term_taxonomy_id]).'">
-            <span property="name">'.$cat->term->name.'</span></a>
-          <meta property="position" content="'.++$i.'">
+            <span itemprop="name">'.$cat->term->name.'</span></a>
+          <meta itemprop="position" content="'.++$i.'">
         </li>';
     }
 
     $html .= '
-        <li class="breadcrumb-item active" aria-current="page" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
+        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage"
               href="'.route('guide_post', ['slug' => $this->slug, 'id' => $this->ID]).'">
-            <span property="name">'.$this->post_title.'</span></a>
-          <meta property="position" content="'.++$i.'">
+            <span itemprop="name">'.$this->post_title.'</span></a>
+          <meta itemprop="position" content="'.++$i.'">
         </li>
       </ol>
     </nav>';

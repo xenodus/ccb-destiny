@@ -72,7 +72,10 @@ class UpdateNightfalls extends Command
 
                 // $this->info( $activity_definitions[ $activity->activityHash ]->displayProperties->name . ': ' . $activity->activityHash );
 
-                if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0 ) {
+                if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash
+                    && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0
+                    && strpos($activity_definitions[ $activity->activityHash ]->displayProperties->name, 'Ordeal') === false
+                ) {
 
                     $nf = new App\Classes\Nightfall();
                     $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;

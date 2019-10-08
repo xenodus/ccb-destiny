@@ -9,6 +9,7 @@ class Weapon_Stats extends Model
 {
   protected $table = 'clan_weapon_stats';
   protected $primaryKey = 'user_id';
+  protected $keyType = 'string';
   public $timestamps = false;
 
   public function __construct(array $attributes = array())

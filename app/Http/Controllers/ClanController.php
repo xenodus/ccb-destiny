@@ -80,7 +80,7 @@ class ClanController extends Controller
 
   public function member_activities_listing(Request $request, $type, $member_id) {
 
-    $items_per_page = 250;
+    $items_per_page = 100;
 
     $data['active_page'] = 'clan_member_activities_listing';
 

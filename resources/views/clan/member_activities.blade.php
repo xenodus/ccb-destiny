@@ -5,26 +5,26 @@
 
   <div class="mt-4">
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/clan">
-            <span property="name">Clan</span>
+      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="/clan">
+            <span itemprop="name">Clan</span>
           </a>
-          <meta property="position" content="1">
+          <meta itemprop="position" content="1">
         </li>
 
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/clan/roster">
-            <span property="name">Roster</span>
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="/clan/roster">
+            <span itemprop="name">Roster</span>
           </a>
-          <meta property="position" content="2">
+          <meta itemprop="position" content="2">
         </li>
 
-        <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="{{ $link }}">
-            <span property="name">{{$activity_type}} Activities</span>
+        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="{{ $link }}">
+            <span itemprop="name">{{$activity_type}} Activities</span>
           </a>
-          <meta property="position" content="3">
+          <meta itemprop="position" content="3">
         </li>
       </ol>
     </nav>
@@ -81,12 +81,16 @@ $(document).ready(function(){
 
       if( pgcr ) {
 
-        console.log(pgcr);
+        // console.log(pgcr);
 
         // pgcr data
         var your_stats = {
           'completed': 0,
           'outcome': 1,
+          'efficiency': 0,
+          'kills': 0,
+          'deaths': 0,
+          'assists': 0,
         };
 
         // your kda
@@ -100,6 +104,10 @@ $(document).ready(function(){
 
           if( activity_type == "PvP" || activity_type == "Gambit" ) {
             your_stats['outcome'] = member_data[0].standing; // 0 == win
+            your_stats['efficiency'] = member_data[0].values.efficiency.basic.displayValue;
+            your_stats['kills'] = member_data[0].values.kills.basic.displayValue;
+            your_stats['deaths'] = member_data[0].values.deaths.basic.displayValue;
+            your_stats['assists'] = member_data[0].values.assists.basic.displayValue;
           }
         }
 
@@ -150,6 +158,10 @@ $(document).ready(function(){
           has_clan_mate: has_clan_mate == true ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
           link: link,
           outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
+          efficiency: your_stats['efficiency'],
+          kills: your_stats['kills'],
+          deaths: your_stats['deaths'],
+          assists: your_stats['assists'],
         });
       }
     }
@@ -174,6 +186,18 @@ $(document).ready(function(){
     if( activity_type == 'PvP' || activity_type == "Gambit" ) {
       var outcome = {title: "Outcome", field:"outcome", formatter:"html", cssClass: 'text-center', headerSort:false};
       tableColumns.splice(4, 0, outcome);
+    }
+
+    if( activity_type == 'PvP' ) {
+      var efficiency = {title: "Efficiency", field:"efficiency", cssClass: 'text-center', headerSort:false};
+      var kills = {title: "Kills", field:"kills", cssClass: 'text-center', headerSort:false};
+      var deaths = {title: "Deaths", field:"deaths", cssClass: 'text-center', headerSort:false};
+      var assists = {title: "Assists", field:"assists", cssClass: 'text-center', headerSort:false};
+
+      tableColumns.splice(5, 0, efficiency);
+      tableColumns.splice(5, 0, assists);
+      tableColumns.splice(5, 0, deaths);
+      tableColumns.splice(5, 0, kills);
     }
 
     var table = new Tabulator("#raid-stats-table", {

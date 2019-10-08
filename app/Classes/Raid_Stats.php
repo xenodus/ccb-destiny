@@ -9,6 +9,7 @@ class Raid_Stats extends Model
 {
   protected $table = 'clan_raid_stats';
   protected $primaryKey = 'user_id';
+  protected $keyType = 'string';
   public $timestamps = false;
 
   protected $casts = array(

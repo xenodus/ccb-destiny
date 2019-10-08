@@ -81,7 +81,7 @@ $(document).ready(function(){
 
         spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
 
-        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' });
+        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' && item.name != 'Solstice of Heroes Warlock Armor Upgrade' });
 
         xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
 
@@ -398,7 +398,7 @@ $(document).ready(function(){
       }
 
       str += `
-      <div class="d-flex mb-1 align-items-center vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+      <div class="d-flex mb-1 align-items-center vendor-item text-left" data-toggle="tooltip" title="`+tooltip+`">
         <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
       </div>
       `;
@@ -485,7 +485,7 @@ $(document).ready(function(){
       }
 
       str += `
-      <div class="d-flex mb-1 align-items-center vendor-item" data-toggle="tooltip" title="`+tooltip+`">
+      <div class="d-flex mb-1 align-items-center vendor-item text-left" data-toggle="tooltip" title="`+tooltip+`">
         <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
       </div>
       `;

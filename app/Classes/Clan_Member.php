@@ -173,7 +173,7 @@ class Clan_Member extends Model
 
       // Get all current member ids and delete those are ain't in clan anymore
       $ids = collect($payload->Response->results)->filter(function($member){
-        return in_array(4, $member->destinyUserInfo->applicableMembershipTypes);
+        return in_array(env('BUNGIE_PC_PLATFORM_ID'), $member->destinyUserInfo->applicableMembershipTypes);
       })
       ->map(function($member){
         return $member->destinyUserInfo->membershipId;
@@ -182,7 +182,7 @@ class Clan_Member extends Model
       DB::table('clan_members')->whereNotIn('id', $ids)->delete();
 
       foreach($payload->Response->results as $key => $result) {
-        if( in_array(4, $result->destinyUserInfo->applicableMembershipTypes) ) {
+        if( in_array(env('BUNGIE_PC_PLATFORM_ID'), $result->destinyUserInfo->applicableMembershipTypes) ) {
           $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
           $last_online->setTimezone('Asia/Singapore');
 

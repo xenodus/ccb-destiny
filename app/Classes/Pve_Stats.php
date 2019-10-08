@@ -9,6 +9,7 @@ class Pve_Stats extends Model
 {
   protected $table = 'clan_pve_stats';
   protected $primaryKey = 'user_id';
+  protected $keyType = 'string';
   public $timestamps = false;
 
   public function __construct(array $attributes = array())

@@ -23,12 +23,11 @@ $(document).ready(function(){
 
       // Decode html entities
       var txt = document.createElement("textarea");
-      txt.innerHTML = members[i].platform_profile[0] ? members[i].platform_profile[0].steamDisplayName : '';
+      txt.innerHTML = members[i].display_name;
       var steamID = txt.value;
 
       tableData.push({
-        name: members[i].display_name,
-        steam: steamID,
+        name: steamID,
         warlock: warlock.length > 0 ? warlock[0].light : 0,
         hunter: hunter.length > 0 ? hunter[0].light : 0,
         titan: titan.length > 0 ? titan[0].light : 0,
@@ -51,7 +50,6 @@ $(document).ready(function(){
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
           {title:"Name", field:"name", headerSort:false},
-          {title:"Steam", field:"steam", headerSort:false},
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false},

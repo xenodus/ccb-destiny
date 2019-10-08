@@ -144,6 +144,8 @@ class UpdateLockouts extends Command
                         }
                     }
                     else {
+                        $this->info('Unable to retrieve activity stats for: ' . $character->id);
+
                         $error = true;
                         $failures = $characters_activities_response;
                     }

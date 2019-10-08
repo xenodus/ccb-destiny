@@ -17,21 +17,14 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
+      $members = App\Classes\Clan_Member::get_members();
 
-      dd($activity_mode_definitions->filter(function($a){ return $a->modeType == 57; }));
+      dd($members);
+      // $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
+
+      // dd($activity_mode_definitions->filter(function($a){ return $a->modeType == 57; }));
 
       dd('the end...');
-
-      $data['site_title'] = env('SITE_NAME');
-      $data['active_page'] = 'home';
-
-      // Extra Stats
-      $data['raids_completed'] = App\Classes\Raid_Stats::get_total_raids_completed();
-      $data['pve_kills'] = App\Classes\Pve_Stats::get_total_kills();
-      $data['clan_members_count'] = App\Classes\Clan_Member::count();
-
-      return view('test', $data);
     }
 
     public function process_join_us(Request $request)

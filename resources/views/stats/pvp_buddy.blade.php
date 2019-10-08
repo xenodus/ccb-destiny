@@ -6,26 +6,26 @@
   <div class="mt-4">
 
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats">
-            <span property="name">Stats</span>
+      <ol class="breadcrumb bg-transparent pl-0 py-0 mb-3" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="/stats">
+            <span itemprop="name">Stats</span>
           </a>
-          <meta property="position" content="1">
+          <meta itemprop="position" content="1">
         </li>
 
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/pvp/buddy">
-            <span property="name">PvP (Crucible) Buddies</span>
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="/stats/pvp/buddy">
+            <span itemprop="name">PvP (Crucible) Buddies</span>
           </a>
-          <meta property="position" content="2">
+          <meta itemprop="position" content="2">
         </li>
 
-        <li class="breadcrumb-item active" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage" href="/stats/pvp/buddy/{{$member->id}}">
-            <span property="name">{{ $member->display_name }}</span>
+        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage" href="/stats/pvp/buddy/{{$member->id}}">
+            <span itemprop="name">{{ $member->display_name }}</span>
           </a>
-          <meta property="position" content="3">
+          <meta itemprop="position" content="3">
         </li>
       </ol>
     </nav>

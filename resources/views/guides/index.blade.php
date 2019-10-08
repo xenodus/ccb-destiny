@@ -15,12 +15,12 @@
 <section id="guide-listing" class="text-center container mt-5 mb-5">
   <div>
     <nav aria-label="breadcrumb" style="display: none;">
-      <ol class="breadcrumb bg-transparent pl-0" vocab="https://schema.org/" typeof="BreadcrumbList">
-        <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
-          <a property="item" typeof="WebPage"
+      <ol class="breadcrumb bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" itemtype="https://schema.org/WebPage"
               href="{{ route('guide_index') }}">
-            <span property="name">Guides</span></a>
-          <meta property="position" content="1">
+            <span itemprop="name">Guides</span></a>
+          <meta itemprop="position" content="1">
         </li>
       </ol>
     </nav>

@@ -18,8 +18,11 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div id="post-meta" class="border-secondary border-bottom d-flex flex-column justify-content-end text-left mb-4" style="<?=($post->thumbnail?'min-height: 450px; background-image: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)), url('.$post->thumbnail.');':'background: #000;')?>">
-        <div style="background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.5));" class="pt-md-4 pb-md-4 p-3">
+      <!--div id="post-meta" class="border-secondary border-bottom d-flex flex-column justify-content-end text-left mb-4" style="<?=($post->thumbnail?'min-height: 450px; background-image: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)), url('.$post->thumbnail.');':'background: #000;')?>"-->
+        <!--div style="background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.5));" class="pt-md-4 pb-md-4 p-3"-->
+
+      <div id="post-meta" class="border-secondary border-bottom d-flex flex-column justify-content-end text-left mb-4">
+        <div class="pt-md-4 pb-md-4 p-3">
           <div>
             <h1 class="mb-0">{{ $post->post_title }}</h1>
           </div>

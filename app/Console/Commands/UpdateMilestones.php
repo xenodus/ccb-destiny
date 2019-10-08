@@ -11,11 +11,17 @@ use Cache;
 
 class UpdateMilestones extends Command
 {
+    private $debug_mode = false;
+    private $debug_show_detailed_milestones = false;
+
+    // Not found in SK update
     private $nightfallHash = '2171429505';
     private $reckoningHash = '601087286';
+    private $strikeHash = '1437935813';
+
+    // Functional
     private $y1PrestigeRaidHash = '2683538554';
     private $leviRaidChallengeHash = '3660836525';
-    private $strikeHash = '1437935813';
     private $flashpointHash = '463010297';
 
     /**
@@ -61,6 +67,7 @@ class UpdateMilestones extends Command
         ]);
 
         $activity_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityDefinition.json'))));
+        $milestone_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyMilestoneDefinition.json'))));
         $modifier_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModifierDefinition.json'))));
         $item_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyInventoryItemDefinition.json'))));
         $item_category_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyItemCategoryDefinition.json'))));
@@ -68,6 +75,21 @@ class UpdateMilestones extends Command
         if( $response->getStatusCode() == 200 ) {
             $milestones = json_decode($response->getBody()->getContents());
             $milestones = collect($milestones->Response);
+
+            // Print all milestones in console
+            if( $this->debug_mode ) {
+                foreach( $milestones as $milestone  ) {
+                    // dd($milestone);
+
+                    $this->info( $milestone_definitions[ $milestone->milestoneHash ]->displayProperties->name . ': ' .  $milestone->milestoneHash);
+
+                    if( $this->debug_show_detailed_milestones ) {
+                        $this->info( print_r($milestone) );
+                    }
+                }
+
+                dd();
+            }
 
             // Nightfalls
             /*
@@ -98,6 +120,7 @@ class UpdateMilestones extends Command
             */
 
             // Reckoning Modifiers
+            /*
             if( $milestones->get( $this->reckoningHash ) ) {
                 DB::table('activity_modifiers')->where('type', 'reckoning')->delete(); // cleanup db
 
@@ -123,6 +146,7 @@ class UpdateMilestones extends Command
                     }
                 }
             }
+            */
 
             // Y1 Prestige EoW / SOS Modifiers
             if( $milestones->get( $this->y1PrestigeRaidHash ) ) {
@@ -222,6 +246,7 @@ class UpdateMilestones extends Command
             }
 
             // Strike / Heroic Story / Menagerie Modifiers
+            /*
             if( $milestones->get( $this->strikeHash ) ) {
                 DB::table('activity_modifiers')->where('type', 'strike')->delete(); // cleanup db
 
@@ -247,6 +272,7 @@ class UpdateMilestones extends Command
                     }
                 }
             }
+            */
 
             // Flashpoint
             if( $milestones->get( $this->flashpointHash ) ) {

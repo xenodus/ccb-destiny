@@ -9,6 +9,7 @@ class Gambit_Prime_Stats extends Model
 {
   protected $table = 'clan_gambit_prime_stats';
   protected $primaryKey = 'user_id';
+  protected $keyType = 'string';
   public $timestamps = false;
 
   public function __construct(array $attributes = array())
