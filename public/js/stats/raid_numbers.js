@@ -50,7 +50,9 @@ $(document).ready(function(){
                 diamond: raidData.diamond > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
                 cos: raidData.cos,
                 crown: raidData.crown > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
-                total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp+raidData.cos),
+                gos: raidData.gos,
+                perfection: raidData.perfection > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                total: (raidData.levi+raidData.levip+raidData.eow+raidData.eowp+raidData.sos+raidData.sosp+raidData.lw+raidData.sotp+raidData.cos+raidData.gos),
               });
             }
             else {
@@ -69,6 +71,8 @@ $(document).ready(function(){
                 diamond: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
                 cos: 0,
                 crown: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
+                gos: 0,
+                perfection: '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
                 total: 0,
               });
 
@@ -109,6 +113,8 @@ $(document).ready(function(){
               {title:"Flawless SoTP", field:"diamond", formatter:"html"},
               {title:"CoS", field:"cos", formatter:"money", formatterParams: format, cssClass: 'text-center'},
               {title:"Flawless CoS", field:"crown", formatter:"html"},
+              {title:"GoS", field:"gos", formatter:"money", formatterParams: format, cssClass: 'text-center'},
+              {title:"Flawless GoS", field:"perfection", formatter:"html"},
               {title:"Total", field:"total", formatter:"money", formatterParams: format, cssClass: 'text-center'},
             ],
             initialSort: [

@@ -14,9 +14,6 @@
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 
-// Member Check
-Route::get('/clan/report', 'ClanController@report')->name('clan_member_report');
-
 // Activities
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
 Route::get('/clan/activities/{type}/{member_id}', 'ClanController@member_activities_listing')->name('clan_member_activities_listing');

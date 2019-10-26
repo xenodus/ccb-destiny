@@ -39,7 +39,7 @@ class GuideController extends Controller
             ->newest()
             ->get();
 
-        $posts = $featured_posts->merge($non_featured_posts);
+        $posts = $featured_posts->merge($non_featured_posts)->where('post_type', 'post');
 
         if( !$posts->count() ) return redirect()->route('guide_index'); // category don't exists
 
@@ -88,7 +88,7 @@ class GuideController extends Controller
             ->newest()
             ->get();
 
-        $posts = $featured_posts->merge($non_featured_posts)->take(3);;
+        $posts = $featured_posts->merge($non_featured_posts)->where('post_type', 'post')->take(3);;
 
         $payload = [];
 
@@ -152,7 +152,7 @@ class GuideController extends Controller
             ->get();
 
         // featured first
-        $data['posts'] = $featured_posts->merge($non_featured_posts)->paginate( 10 );
+        $data['posts'] = $featured_posts->merge($non_featured_posts)->where('post_type', 'post')->paginate( 10 );
         $data['site_title'] = 'Guides | ' . env('SITE_NAME');
         $data['active_page'] = 'guides';
 

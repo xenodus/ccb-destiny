@@ -14,9 +14,10 @@ class UpdateRaidStats extends Command
     private $raid_report_root_path = 'https://b9bv2wd97h.execute-api.us-west-2.amazonaws.com/prod/api/player/';
 
     // raid
-    private $petra_run_hash = '4177910003';
-    private $diamond_run_hash = '2648109757';
-    private $crown_run_hash = '1558682416';
+    private $petra_run_hash = '4177910003'; // last wish flawless
+    private $diamond_run_hash = '2648109757'; // sotp flawless
+    private $crown_run_hash = '1558682416'; // cos flawless
+    private $perfection_run_hash = '3144827156'; // gos flawless
     private $raid_activity_hash = [
         'levi'  => [2693136600, 2693136601, 2693136602, 2693136603, 2693136604, 2693136605],
         'levip' => [417231112, 757116822, 1685065161, 2449714930, 3446541099, 3879860661],
@@ -26,7 +27,8 @@ class UpdateRaidStats extends Command
         'sosp'  => [3213556450],
         'lw'    => [2122313384, 1661734046],
         'sotp'  => [548750096, 2812525063],
-        'cos'   => [3333172150, 960175301]
+        'cos'   => [3333172150, 960175301],
+        'gos'   => [2659723068]
     ];
 
     /**
@@ -77,6 +79,7 @@ class UpdateRaidStats extends Command
             $petra_run_hash = $this->petra_run_hash;
             $diamond_run_hash = $this->diamond_run_hash;
             $crown_run_hash = $this->crown_run_hash;
+            $perfection_run_hash = $this->perfection_run_hash;
 
             $client = new Client(['http_errors' => false]); //GuzzleHttp\Client
 
@@ -108,11 +111,29 @@ class UpdateRaidStats extends Command
                         $member->raidClears['diamond'] = $member_profile['Response']->profileRecords->data->records->$diamond_run_hash->objectives[0]->progress ?? 0;
 
                         $member->raidClears['crown'] = $member_profile['Response']->profileRecords->data->records->$crown_run_hash->objectives[0]->progress ?? 0;
+
+                        $member->raidClears['perfection'] = $member_profile['Response']->profileRecords->data->records->$perfection_run_hash->objectives[0]->progress ?? 0;
+
+                          // Check chars for gos flawless
+                          if( isset($member_profile['Response']->characterRecords->data) ) {
+                            $chars = collect($member_profile['Response']->characterRecords->data);
+
+                            if( count($chars) ) {
+                              foreach($chars as $char) {
+                                if( isset($char->records->$perfection_run_hash) ) {
+                                    if( $char->records->$perfection_run_hash->objectives[0]->progress > 0 ) {
+                                        $member->raidClears['perfection'] = $char->records->$perfection_run_hash->objectives[0]->progress ?? 0;
+                                    }
+                                }
+                              }
+                            }
+                          }
                     }
                     else {
                         $member->raidClears['petra'] = 0;
                         $member->raidClears['diamond'] = 0;
                         $member->raidClears['crown'] = 0;
+                        $member->raidClears['perfection'] = 0;
 
                         $this->info('Setting 0 flawless for ' . $member->destinyUserInfo->displayName .' / '. $member->destinyUserInfo->membershipId . ' Reason: Unable to get member profile.');
                     }

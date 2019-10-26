@@ -17,6 +17,11 @@ class Clan_Member extends Model
   protected $casts = ['id' => 'string', 'bungie_id' => 'string'];
   protected $fillable = ['id', 'bungie_id', 'display_name', 'membershipType', 'last_online', 'date_added'];
 
+  public function aliases()
+  {
+      return $this->hasMany('App\Classes\Clan_Member_Alias', 'user_id');
+  }
+
   public function characters()
   {
       return $this->hasMany('App\Classes\Clan_Member_Character', 'user_id');

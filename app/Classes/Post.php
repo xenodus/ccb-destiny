@@ -20,7 +20,8 @@ class Post extends WP_Post
     $this->replaceOriginalImages();
     $this->convertBootstrapEmbed();
     $this->replaceYoutubeEmbed();
-    $this->applyLightbox();
+    // $this->applyLightbox();
+    $this->applyOpenImgLink();
     $this->applyMTG();
 
     return $this->stripShortcodes($this->post_content);
@@ -231,6 +232,17 @@ class Post extends WP_Post
     if( count($matches) ) {
         foreach($matches[0] as $key => $img_src) {
             $new_img_src = '<a href="'.$matches[1][$key].'" data-lightbox="'.$matches[2][$key].'">'.$img_src.'</a>';
+            $this->post_content = str_replace($img_src, $new_img_src, $this->post_content);
+        }
+    }
+  }
+
+  function applyOpenImgLink() {
+    preg_match_all('/<img src="(.*)" alt=".*" class="wp-image-(\d*)".*\/>/', $this->post_content, $matches);
+
+    if( count($matches) ) {
+        foreach($matches[0] as $key => $img_src) {
+            $new_img_src = '<a href="'.$matches[1][$key].'" target="_blank">'.$img_src.'</a>';
             $this->post_content = str_replace($img_src, $new_img_src, $this->post_content);
         }
     }

@@ -50,6 +50,10 @@ $(document).ready(function(){
         'Shader'
       ];
 
+      var tessExcludeFilter = [
+      'Consumable'
+      ];
+
       // excludes
       var benedictFilter = [
         'Buff',
@@ -85,7 +89,7 @@ $(document).ready(function(){
 
         xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
 
-        tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name != 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
+        tess_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name == 'Bright Dust' && tessExcludeFilter.includes(item.itemTypeDisplayName) == false });
 
         tess_silver_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Tess Everis'] && item.cost_name == 'Silver' && tessFilter.includes(item.itemTypeDisplayName) });
 
@@ -122,6 +126,13 @@ $(document).ready(function(){
         var y1RaidModifiers = milestonesData['milestones'].filter(function(d){ return d.type == 'y1_prestige_raid' });
         if( y1RaidModifiers.length > 0 ) {
           weekliesItems.push( getVendorStr(y1RaidModifiers, 'Y1 Prestige Raid Modifiers <small class="text-yellow" style="font-size: 70%;font-style: italic;">EOW / SOS</small>') );
+        }
+
+        // Crucible Rotators
+        var crucibleRotators = milestonesData['milestones'].filter(function(d){ return d.type == 'crucible_rotator' });
+
+        if( crucibleRotators.length > 0 ) {
+          weekliesItems.push( getVendorStr(crucibleRotators, 'Crucible Rotators') );
         }
 
         // Daily Modifiers
@@ -180,7 +191,7 @@ $(document).ready(function(){
         curse_level = getCurseLevel();
 
         if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
-          var title = 'Dreaming City <small style="font-size: 70%;font-style: italic;"><a href="https://i.imgur.com/LA9TMcS.jpg" data-title="https://i.imgur.com/LA9TMcS.jpg" data-lightbox="Ascendant Challenge Map" target="_blank">Ascendant Challenge Map <i class="fas fa-external-link-alt"></i></a></small>';
+          var title = 'Dreaming City';
           weekliesItems.push( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , title) );
         }
 
@@ -361,6 +372,17 @@ $(document).ready(function(){
           cost = `<div class='mt-2'>Price: `+data[i].cost+` `+data[i].cost_name+`</div>`;
         }
 
+        // Price
+        if( data[i].costs && data[i].costs.length > 0 ) {
+          costs = [];
+
+          for(var j=0; j<data[i].costs.length; j++) {
+            costs.push( data[i].costs[j].cost_quantity + " " + data[i].costs[j].cost_name );
+          }
+
+          cost = `<div class='mt-2'>Price: <br/>`+ costs.join('<br/>') +`</div>`;
+        }
+
         if( title == 'Nightfalls' && Object.keys(nightfall_loot).includes(data[i].name) )
         {
           tooltip = `
@@ -380,6 +402,32 @@ $(document).ready(function(){
             </div>
           </div>
           `;
+        }
+        else if ( title == 'Nightfalls' &&  data[i].name.includes('Ordeal')) {
+
+          nf_key = Object.keys(nightfall_loot).filter(function(name){
+            return name.includes( data[i].name.replace('Nightfall The Ordeal: ', '') );
+          });
+
+          if( nf_key.length > 0 ) {
+            tooltip = `
+            <div>
+              <h6 class='font-weight-bold mb-1'>`+data[i].name+`</h6>
+              <div class='mb-1'>
+                `+nightfall_loot[nf_key].description.replace(/"/g, "'")+`
+              </div>
+              <div class='d-flex align-items-start mt-2'>
+                <div>
+                  <img src='https://bungie.net`+nightfall_loot[nf_key].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>
+                </div>
+                <div>
+                  <div class='text-weight-bold'><h6 class='mb-1'>`+nightfall_loot[nf_key].name+`</h6></div>
+                  <div>`+nightfall_loot[nf_key].type.replace(/"/g, "'")+`</div>
+                </div>
+              </div>
+            </div>
+            `;
+          }
         }
         else {
           tooltip = `
@@ -897,9 +945,6 @@ $(document).ready(function(){
     }
 
     var description = 'The curse level is <u>' + curseLevels[index].toLowerCase() + '</u> in the Dreaming City.';
-
-    if( index == 2 )
-      description += ' Shattered Throne is up.';
 
     return [{
       name: 'Curse Level: ' + curseLevels[index],

@@ -155,12 +155,12 @@
                   <div>Discord</div>
                 </a>
               </li>
-              <li class="nav-item {{ (isset($active_page) && $active_page == 'join_us') ? 'active' : ''  }}">
+              <!--li class="nav-item {{ (isset($active_page) && $active_page == 'join_us') ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/apply">
                   <i class="fas fa-door-open animated pulse slower infinite delay-0.5s"></i>
                   <div>Join Us</div>
                 </a>
-              </li>
+              </li-->
             </ul>
           </div>
         </nav>

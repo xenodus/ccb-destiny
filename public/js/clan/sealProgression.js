@@ -196,7 +196,7 @@ var sealHashes = {
     ]
   },
   'MMXIX': {
-    'name': 'A Shadow Rises',
+    'name': 'Moments of Triumph 2019',
     'description': 'Complete these feats of strength before 8/27/2019 to claim your unique rewards.',
     'hash': '2254764897',
     'objectives': [
@@ -224,6 +224,67 @@ var sealHashes = {
       2195455623,
       4060320345,
       1558682421
+    ]
+  },
+  'Undying': {
+    'name': 'Undying',
+    'description': 'Complete all Triumphs for Season of the Undying.',
+    'hash': '2707428411',
+    'objectives': [
+      697150349,
+      1341533303,
+      2589331138,
+      810213052,
+      2923920213,
+      3672750091,
+      2818354043,
+      912770300,
+      2653351430,
+      3020697345,
+      184258406,
+      630510424,
+      1624361599,
+      55098543,
+    ]
+  },
+  'Harbinger': {
+    'name': 'Shadowkeep',
+    'description': 'Complete all Triumphs for Shadowkeep.',
+    'hash': '3793754396',
+    'objectives': [
+      96478725,
+      4175541463,
+      3015116930,
+      1375269962,
+      2140812264,
+      1925803581,
+      376114010,
+      4011899423,
+      3232448575,
+      1842542594,
+    ]
+  },
+  'Enlightened': {
+    'name': 'Garden of Salvation',
+    'description': 'Complete all Triumphs for the "Garden of Salvation" raid.',
+    'hash': '3387213440',
+    'objectives': [
+      3737200951,
+      1120290476,
+      4084913407,
+      2841179989,
+      4019629605,
+      3382024472,
+      4135952126,
+      3281243931,
+      1415847174,
+      1925300422,
+      1289529921,
+      1661612473,
+      1405614232,
+      3167166053,
+      2398673548,
+      1872013791
     ]
   },
 };
@@ -418,7 +479,13 @@ $(document).ready(function(){
 
           $('.loader').hide();
           $('.loader-text').hide();
-          $("h1#member-name").show();
+
+          // Decode html entities
+          var txt = document.createElement("textarea");
+          txt.innerHTML = $("h1#member-name").text();
+          var steamID = txt.value;
+          $("h1#member-name").text(steamID).show();
+
           $("#back-nav").show();
           $('#sub-menu').show();
           $('[data-toggle="tooltip"]').tooltip({

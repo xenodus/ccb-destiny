@@ -4,7 +4,7 @@
 <section class="about-us text-center container-fluid mt-2 border-bottom border-dark">
   <div class="container mb-4 py-5" id="about-us-container">
 
-    <div class="text-left mb-4 text-yellow"><small>Note: Various Destiny 2 stats and game information may be broken temporarily as Bungie.Net API has been disabled during the Shadowkeep launch week.</small></div>
+    <!--div class="text-left mb-4 text-yellow"><small>Note: Various Destiny 2 stats and game information may be broken temporarily as Bungie.Net API has been disabled during the Shadowkeep launch week.</small></div-->
 
     <div id="about-us-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="about-us-header-icon"></div>
@@ -12,7 +12,7 @@
     </div>
     <div id="about-us-description" class="text-justify">
       <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p><a href="/apply">We're recruiting for Shadowkeep on PC (Steam).</a> We have an active & friendly Discord, internal progression systems and 9+ raids / week. All experience levels are welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord to say hi</a> 👋</p>
+      <p><!--a href="/apply"-->We're recruiting for Shadowkeep on PC (Steam).<!--/a--> We have an active & friendly Discord, internal progression systems and 9+ raids / week. All experience levels are welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord to say hi</a> 👋</p>
     </div>
 
     <div class="row mt-5">

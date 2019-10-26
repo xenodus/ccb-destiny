@@ -7,7 +7,12 @@
 @section('body')
 <section id="application-section">
   <div class="container">
-    <div class="standard-header mt-5 mb-5 text-yellow d-flex justify-content-start align-items-center">
+    <div class="m-3 text-center">
+      <p>Web application is <strong>closed</strong> for now as the clan is nearing max capacity (100).
+      <br/><a href="{{env('DISCORD_LINK')}}" target="_blank">Join our Discord</a> and DM a Mod if you'll like to reserve a spot.
+      </p>
+    </div>
+    <!--div class="standard-header mt-5 mb-5 text-yellow d-flex justify-content-start align-items-center">
       <div id="milestones-header-icon"></div>
       <h1>Apply to join the {{ env('SITE_NAME') }}</h1>
     </div>
@@ -27,7 +32,7 @@
     <div style="max-width: 550px;">
       <form action="/" id="join_form" method="POST">
         <div class="form-group">
-          <label for="ig_name">What is your in-game name (Full Bnet ID)?</label>
+          <label for="ig_name">What is your in-game name (Steam ID)?</label>
           <input type="text" class="form-control" id="ig_name" name="ig_name" aria-describedby="ig_name_help">
           <div class="d-none ig_name_error-msg error-msg text-danger mt-1"></div>
         </div>
@@ -79,7 +84,7 @@
 
     <div class="mb-5">
       <p>Join our Discord <a href="{{env('DISCORD_LINK')}}" target="_blank">here</a>. Message a Mod to expedite your application.
-    </div>
+    </div-->
   </div>
 </section>
 @endsection

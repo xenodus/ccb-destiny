@@ -26,8 +26,13 @@ $(document).ready(function(){
         for(var i=0; i<sealData.length; i++) {
           var username = memberData.filter(function(member){ return member.destinyUserInfo.membershipId == sealData[i].id }).map(function(member){ return member.destinyUserInfo.displayName })[0];
 
+          // Decode html entities
+          var txt = document.createElement("textarea");
+          txt.innerHTML = username;
+          var steamID = txt.value;
+
           var tableDataEntry = {
-            name: username
+            name: steamID
           };
 
           var memberSealData = JSON.parse( sealData[i].data );
@@ -54,6 +59,7 @@ $(document).ready(function(){
         $('.stats-container').append('<div id="stats-table"></div>');
         $('.loader').hide();
         $('.loader-text').hide();
+        $('.filter-container').show();
 
         var table = new Tabulator("#stats-table", {
           data:tableData, //assign data to table
@@ -65,6 +71,10 @@ $(document).ready(function(){
           layout:"fitDataFill",
           height: "500px",
           resizableColumns:false,
+        });
+
+        $("#nameFilter").on("input", function(){
+          table.setFilter("name", "like", $(this).val());
         });
 
       });

@@ -33,8 +33,14 @@ $(document).ready(function(){
             pveData = memberPveData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
             if( pveData ) {
+
+              // Decode html entities
+              var txt = document.createElement("textarea");
+              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
+              var steamID = txt.value;
+
               tableData.push({
-                name: memberData[i].destinyUserInfo.displayName,
+                name: steamID,
                 kills: pveData.kills,
                 deaths: pveData.deaths,
                 suicides: pveData.suicides,

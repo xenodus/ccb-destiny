@@ -107,7 +107,7 @@ class UpdateCharacters extends Command
 
             // Refresh Cache
             Cache::forget('clan_members_characters');
-            Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->get());
+            Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->with('aliases')->get());
 
             $this->info('Completed: Characters update');
             return 1;

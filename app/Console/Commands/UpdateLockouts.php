@@ -20,7 +20,8 @@ class UpdateLockouts extends Command
     'sosp'  => [3213556450],
     'lw'    => [2122313384],
     'sotp'  => [548750096],
-    'cos'   => [3333172150]
+    'cos'   => [3333172150],
+    'gos'   => [2659723068]
     ];
 
     // characters

@@ -34,8 +34,13 @@ $(document).ready(function(){
 
             if( weaponData ) {
 
+              // Decode html entities
+              var txt = document.createElement("textarea");
+              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
+              var steamID = txt.value;
+
               tableData.push({
-                name: memberData[i].destinyUserInfo.displayName,
+                name: steamID,
                 weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
                 //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
                 weaponKillsBow: weaponData.weaponKillsBow,

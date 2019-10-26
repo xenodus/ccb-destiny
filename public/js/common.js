@@ -7,7 +7,7 @@ gtag('config', 'UA-35918300-6');
 // Store globals inside our own NS
 window.ccbNS = {};
 
-ccbNS.platform_id = 4;
+ccbNS.platform_id = 3;
 ccbNS.bungie_api_url = 'https://www.bungie.net/Platform';
 ccbNS.bungie_api = '856136fabe704c149dd4bd41344b54c8';
 ccbNS.clan_id = 3717919;

@@ -111,7 +111,14 @@ class UpdateGambitPrimeStats extends Command
                             $member->gambitStats['activitiesWon'] += $prime_gs->activitiesWon->basic->displayValue;
                             $member->gambitStats['kills'] += $prime_gs->kills->basic->displayValue;
                             $member->gambitStats['deaths'] += $prime_gs->deaths->basic->displayValue;
-                            $member->gambitStats['killsDeathsRatio'] = round($member->gambitStats['kills'] / $member->gambitStats['deaths'], 2);
+
+                            if( $member->gambitStats['deaths'] > 0 ) {
+                                $member->gambitStats['killsDeathsRatio'] = round($member->gambitStats['kills'] / $member->gambitStats['deaths'], 2);
+                            }
+                            else {
+                                $member->gambitStats['killsDeathsRatio'] = round($member->gambitStats['kills']);
+                            }
+
                             $member->gambitStats['suicides'] += $prime_gs->suicides->basic->displayValue;
 
                             $member->gambitStats['efficiency'] = $prime_gs->efficiency->basic->displayValue ?

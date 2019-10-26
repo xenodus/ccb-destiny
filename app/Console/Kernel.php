@@ -30,6 +30,9 @@ class Kernel extends ConsoleKernel
         // D2 Manifest
         $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
 
+        // Member Aliases
+        $schedule->command('update:memberAlias')->hourly()->appendOutputTo($baseFilePath . 'alias.log');
+
         // Member Characters
         $schedule->command('update:characters')->hourly()->appendOutputTo($baseFilePath . 'characters.log');
 

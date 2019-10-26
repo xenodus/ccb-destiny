@@ -17,12 +17,12 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      $members = App\Classes\Clan_Member::get_members();
+      $post = Post::published()
+                ->with('taxonomies')
+                ->with('attachment')
+                ->find(260);
 
-      dd($members);
-      // $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
-
-      // dd($activity_mode_definitions->filter(function($a){ return $a->modeType == 57; }));
+      dd($post->acf->event_date);
 
       dd('the end...');
     }

@@ -28,8 +28,13 @@ $(document).ready(function(){
 
           for(var i=0; i<memberData.length; i++) {
 
+            // Decode html entities
+            var txt = document.createElement("textarea");
+            txt.innerHTML = memberData[i].destinyUserInfo.displayName;
+            var steamID = txt.value;
+
             var tableDataEntry = {
-              name: memberData[i].destinyUserInfo.displayName
+              name: steamID
             };
 
             var missingWeapons = [];
@@ -93,7 +98,7 @@ $(document).ready(function(){
             missingArmorsTitan = _.sortBy(missingArmorsTitan, ['name']);
             missingArmorsHunter = _.sortBy(missingArmorsHunter, ['name']);
 
-            console.log(missingArmorsWarlock);
+            // console.log(missingArmorsWarlock);
 
             for(var j=0; j<missingWeapons.length; j++) {
               missingWeaponsStr += `

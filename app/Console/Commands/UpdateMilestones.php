@@ -24,6 +24,9 @@ class UpdateMilestones extends Command
     private $leviRaidChallengeHash = '3660836525';
     private $flashpointHash = '463010297';
 
+    private $crucibleRotator = '4191379729';
+    private $crucibleCore = '2434762343';
+
     /**
      * The name and signature of the console command.
      *
@@ -273,6 +276,58 @@ class UpdateMilestones extends Command
                 }
             }
             */
+
+            // Crucible Rotator
+            if( $milestones->get( $this->crucibleRotator ) ) {
+                DB::table('activity_modifiers')->where('type', 'crucible_rotator')->delete(); // cleanup db
+
+                $crucibleRotator = $milestones->get( $this->crucibleRotator );
+
+                if( isset( $crucibleRotator->activities ) ) {
+
+                    if( count($crucibleRotator->activities) ) {
+
+                        foreach($crucibleRotator->activities as $crucibleRotatorActivity) {
+                            $am = new App\Classes\Activity_Modifier();
+                            $am->type = 'crucible_rotator';
+                            $am->hash = $crucibleRotatorActivity->activityHash;
+                            $am->description = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->description;
+                            $am->name = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->name;
+                            $am->icon = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->icon;
+                            $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                            $am->save();
+
+                            $this->info('Inserted Crucible Rotator: ' . $am->name);
+                        }
+                    }
+                }
+            }
+
+            // Crucible Core
+            if( $milestones->get( $this->crucibleCore ) ) {
+                DB::table('activity_modifiers')->where('type', 'crucible_core')->delete(); // cleanup db
+
+                $crucibleCore = $milestones->get( $this->crucibleCore );
+
+                if( isset( $crucibleCore->activities ) ) {
+
+                    if( count($crucibleCore->activities) ) {
+
+                        foreach($crucibleCore->activities as $crucibleCoreActivity) {
+                            $am = new App\Classes\Activity_Modifier();
+                            $am->type = 'crucible_core';
+                            $am->hash = $crucibleCoreActivity->activityHash;
+                            $am->description = $activity_definitions[$crucibleCoreActivity->activityHash]->displayProperties->description;
+                            $am->name = $activity_definitions[$crucibleCoreActivity->activityHash]->displayProperties->name;
+                            $am->icon = $activity_definitions[$crucibleCoreActivity->activityHash]->displayProperties->icon ?? '';
+                            $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                            $am->save();
+
+                            $this->info('Inserted Crucible Core: ' . $am->name);
+                        }
+                    }
+                }
+            }
 
             // Flashpoint
             if( $milestones->get( $this->flashpointHash ) ) {

@@ -22,7 +22,10 @@ class UpdateSeals extends Command
       'Blacksmith' => 2053985130,
       'Shadow' => 1883929036,
       'Reckoner' => 1313291220,
-      'MMXIX' => 2254764897
+      'MMXIX' => 2254764897,
+      'Undying' => 2707428411,
+      'Harbinger' => 3793754396,
+      'Enlightened' => 3387213440
     ];
 
     /**

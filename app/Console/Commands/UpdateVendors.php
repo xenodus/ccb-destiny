@@ -229,6 +229,21 @@ class UpdateVendors extends Command
                                 $this->info("Error: " . $vendor_sales->name);
                             }
 
+                            // Detailed Sale Item Cost
+                            if( $vendor_sales->id && isset($sale_item['cost']) && count( $sale_item['cost'] ) ) {
+                                foreach( $sale_item['cost'] as $cost ) {
+                                    $vendor_sales_item_cost = new App\Classes\Vendor_Sales_Item_Cost();
+                                    $vendor_sales_item_cost->vendor_sales_id = $vendor_sales->id;
+                                    $vendor_sales_item_cost->cost_hash = $cost->itemHash ?? null;
+                                    $vendor_sales_item_cost->cost_quantity = $cost->quantity ?? null;
+                                    $vendor_sales_item_cost->cost_name = $item_definitions[ $cost->itemHash ]->displayProperties->name ?? null;
+                                    $vendor_sales_item_cost->cost_icon = $item_definitions[ $cost->itemHash ]->displayProperties->hasIcon == true ? $item_definitions[ $cost->itemHash ]->displayProperties->icon : '';
+                                    $vendor_sales_item_cost->date_added = $date_added;
+
+                                    $vendor_sales_item_cost->save();
+                                }
+                            }
+
                             // 8. Create Perks for Sale Item
                             if( count($sale_item['perks']) > 0 && $vendor_sales->id ) {
                                 foreach($sale_item['perks'] as $perk_group_index => $perk_group) { // perk group
@@ -253,15 +268,17 @@ class UpdateVendors extends Command
 
                 $deletedRows1 = App\Classes\Vendor_Sales::where('date_added', '!=', $date_added)->delete();
                 $deletedRows2 = App\Classes\Vendor_Sales_Item_Perks::where('date_added', '!=', $date_added)->delete();
+                $deletedRows3 = App\Classes\Vendor_Sales_Item_Cost::where('date_added', '!=', $date_added)->delete();
 
                 $this->info('Cleanup: '.$deletedRows1.' Vendor Sale Records Deleted');
                 $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
+                $this->info('Cleanup: '.$deletedRows3.' Vendor Sale Item Cost Records Deleted');
 
                 $this->info('Completed: Vendor Updates');
 
                 // Refresh Cache
                 Cache::forget('vendor_sales');
-                Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
+                Cache::forever('vendor_sales', App\Classes\Vendor_Sales::with('costs')->orderBy('vendor_hash')->get());
 
                 // Refresh Cache
                 Cache::forget('vendor_sales_item_perks');

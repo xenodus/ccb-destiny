@@ -51,7 +51,7 @@ class ApiController extends Controller
         });
 
         $vendor_sales = Cache::rememberForever('vendor_sales', function () {
-            return App\Classes\Vendor_Sales::orderBy('vendor_hash')->get();
+            return App\Classes\Vendor_Sales::with('costs')->orderBy('vendor_hash')->get();
         });
 
         // Xur Items' Perks
@@ -79,7 +79,7 @@ class ApiController extends Controller
 
         // clan members characters
         Cache::forget('clan_members_characters');
-        Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->get());
+        Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->with('aliases')->get());
 
         // Stats
         Cache::forget('pve_stats');
@@ -105,11 +105,11 @@ class ApiController extends Controller
         })->get();
 
         Cache::forget('vendor_sales_item_perks_xur');
-        Cache::forever('vendor_sales_item_perks_xur', $vendor_sales_item_perks_xur);
+        // Cache::forever('vendor_sales_item_perks_xur', $vendor_sales_item_perks_xur);
         Cache::forget('vendor_sales');
-        Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
+        // Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
         Cache::forget('vendor_sales_item_perks');
-        Cache::forever('vendor_sales_item_perks', App\Classes\Vendor_Sales_Item_Perks::get());
+        // Cache::forever('vendor_sales_item_perks', App\Classes\Vendor_Sales_Item_Perks::get());
 
         // Raid Lockouts
         Cache::forget('clan_raid_lockouts');

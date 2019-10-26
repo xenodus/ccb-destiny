@@ -74,18 +74,28 @@ class UpdateNightfalls extends Command
 
                 if( $activity_definitions[ $activity->activityHash ]->activityTypeHash == $this->nightfallActivityTypeHash
                     && count($activity_definitions[ $activity->activityHash ]->modifiers) > 0
-                    && strpos($activity_definitions[ $activity->activityHash ]->displayProperties->name, 'Ordeal') === false
+                    // && strpos($activity_definitions[ $activity->activityHash ]->displayProperties->name, 'Ordeal') === false
                 ) {
 
-                    $nf = new App\Classes\Nightfall();
-                    $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
-                    $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;
-                    $nf->icon = $activity_definitions[ $activity->activityHash ]->displayProperties->icon;
-                    $nf->hash = $activity->activityHash;
-                    $nf->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                    $nf->save();
+                    if( in_array($activity_definitions[ $activity->activityHash ]->displayProperties->name, ['Nightfall: The Ordeal: Hero', 'Nightfall: The Ordeal: Legend', 'Nightfall: The Ordeal: Master']) == false ) {
 
-                    $this->info('Inserted: ' . $nf->name);
+                        $nf = new App\Classes\Nightfall();
+
+                        if( $activity_definitions[ $activity->activityHash ]->displayProperties->name == 'Nightfall: The Ordeal: Adept' ) {
+                            $nf->name = "Nightfall The Ordeal: " . $activity_definitions[ $activity->activityHash ]->displayProperties->description;
+                        }
+                        else {
+                            $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
+                        }
+
+                        $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;
+                        $nf->icon = $activity_definitions[ $activity->activityHash ]->displayProperties->icon;
+                        $nf->hash = $activity->activityHash;
+                        $nf->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                        $nf->save();
+
+                        $this->info('Inserted: ' . $nf->name);
+                    }
                 }
             }
 

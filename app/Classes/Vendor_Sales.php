@@ -15,4 +15,9 @@ class Vendor_Sales extends Model
   {
       return $this->hasMany('App\Classes\Vendor_Sales_Item_Perks', 'vendor_sales_id', 'id');
   }
+
+  public function costs()
+  {
+      return $this->hasMany('App\Classes\Vendor_Sales_Item_Cost', 'vendor_sales_id', 'id');
+  }
 }

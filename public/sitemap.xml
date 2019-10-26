@@ -2,139 +2,145 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://ccboys.xyz</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/clan/exotics</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/clan/lockouts</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/clan/roster</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/clan/seals</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://ccboys.xyz/guides/armor-mods-2-0-quick-reference/300</loc>
+        <lastmod>2019-10-24T21:34:14+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/clan/41</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/destiny/3</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/gambit/39</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/last-wish/20</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/leviathan/19</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/magic-the-gathering/4</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/menagerie/40</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/operation-dark-hours/37</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/others-the-division-2/38</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/others/31</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/raid-the-division-2/34</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/raid/7</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/scourge-of-the-past/23</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/shattered-throne/35</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/strike/8</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/the-division-2/33</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/category/zero-hour-outbreak-perfected/36</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -152,7 +158,13 @@
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/destiny-mods-breakdown/63</loc>
-        <lastmod>2019-05-28T19:06:42+08:00</lastmod>
+        <lastmod>2019-10-08T10:40:50+08:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://ccboys.xyz/guides/field_5da6d7a699fdf/317</loc>
+        <lastmod>2019-10-16T16:48:47+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -175,14 +187,14 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ccboys.xyz/guides/gambit-tips-for-solo/290</loc>
-        <lastmod>2019-08-17T10:01:56+08:00</lastmod>
+        <loc>https://ccboys.xyz/guides/group_5da6d797d01ac/316</loc>
+        <lastmod>2019-10-16T16:48:47+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/how-to-trigger-heroic-public-events/61</loc>
-        <lastmod>2019-05-28T15:38:24+08:00</lastmod>
+        <lastmod>2019-10-18T17:53:42+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -219,6 +231,12 @@
     <url>
         <loc>https://ccboys.xyz/guides/menageries-secret-triumphs/224</loc>
         <lastmod>2019-07-09T11:42:39+08:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://ccboys.xyz/guides/moon-underground-map/327</loc>
+        <lastmod>2019-10-21T21:54:30+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -302,7 +320,7 @@
     </url>
     <url>
         <loc>https://ccboys.xyz/guides/where-to-get-every-destiny-2-exotic-weapon-catalyst-how-to-complete-them/260</loc>
-        <lastmod>2019-07-11T08:21:21+08:00</lastmod>
+        <lastmod>2019-10-16T16:47:33+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
@@ -314,37 +332,37 @@
     </url>
     <url>
         <loc>https://ccboys.xyz/outbreak</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/stats/gambit</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/stats/pve</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/stats/pvp</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/stats/raid</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ccboys.xyz/stats/weapons</loc>
-        <lastmod>2019-10-08T01:59:01+08:00</lastmod>
+        <lastmod>2019-10-26T01:59:01+08:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>

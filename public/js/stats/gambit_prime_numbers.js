@@ -73,8 +73,13 @@ $(document).ready(function(){
 
               infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
 
+              // Decode html entities
+              var txt = document.createElement("textarea");
+              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
+              var steamID = txt.value;
+
               tableData.push({
-                name: memberData[i].destinyUserInfo.displayName,
+                name: steamID,
                 infamy: gambitData.infamy,
                 infamy_step: infamy_rank,
                 infamy_resets: gambitData.infamy_resets,

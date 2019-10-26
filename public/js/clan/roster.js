@@ -6,6 +6,26 @@ $(document).ready(function(){
 
     for(var i=0; i<members.length; i++) {
 
+      aliases = members[i].aliases.filter(function(alias){
+        return alias.name != members[i].display_name;
+      });
+
+      if( aliases.length > 0 ) {
+        known_aliases =  aliases.map(function(alias){
+          return alias.name;
+        });
+      }
+      else {
+        known_aliases = '';
+      }
+
+      if( members[i].platform_profile[0] ) {
+        blizzardDisplayName = members[i].platform_profile[0].blizzardDisplayName ? members[i].platform_profile[0].blizzardDisplayName : '';
+      }
+      else {
+        blizzardDisplayName = '';
+      }
+
       if( members[i].characters.length > 0 )
         charExist = true;
 
@@ -35,6 +55,8 @@ $(document).ready(function(){
         raid_activities: '<a href="/clan/activities/raid/'+members[i].id +'">View</a>',
         pvp_activities: '<a href="/clan/activities/pvp/'+members[i].id +'">View</a>',
         gambit_activities: '<a href="/clan/activities/gambit/'+members[i].id +'">View</a>',
+        known_aliases: known_aliases,
+        blizzardDisplayName: blizzardDisplayName,
       });
     }
 
@@ -49,7 +71,7 @@ $(document).ready(function(){
         layout:"fitDataFill", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
-          {title:"Name", field:"name", headerSort:false},
+          {title:"Name", field:"name", headerSort:false, minWidth:180},
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false},
@@ -57,6 +79,8 @@ $(document).ready(function(){
           {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>PvP</div><small>Activities</small>", field:"pvp_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Gambit</div><small>Activities</small>", field:"gambit_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
+          {title:"Battle.net", field:"blizzardDisplayName", headerSort:false},
+          {title:"Past Steam Aliases", field:"known_aliases", headerSort:false},
         ],
         initialSort: [
           {column:"name", dir:"asc"},
@@ -64,7 +88,7 @@ $(document).ready(function(){
         ],
         height:"500px",
         resizableColumns:true,
-        layoutColumnsOnNewData:true,
+        // layoutColumnsOnNewData:true,
       });
 
       $("#nameFilter").on("input", function(){
