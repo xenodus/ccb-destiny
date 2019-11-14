@@ -4,6 +4,8 @@ const mix = require('laravel-mix');
 mix.copy('node_modules/rpg-awesome/fonts/*', 'public/css/fonts/');
 // FONT AWESOME
 mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/*', 'public/css/webfonts/');
+// FLAG-ICONS
+mix.copy('node_modules/flag-icon-css/flags', 'public/css/flags');
 
 
 /*********************************
@@ -19,6 +21,7 @@ mix.styles([
     'public/css/normalize.css',
     'node_modules/bootstrap/dist/css/bootstrap.css',
     'node_modules/rpg-awesome/css/rpg-awesome.css',
+    'node_modules/flag-icon-css/css/flag-icon.css',
     'node_modules/@fortawesome/fontawesome-free/css/all.css',
     'node_modules/animate.css/animate.css',
     'node_modules/lightbox2/src/css/lightbox.css',

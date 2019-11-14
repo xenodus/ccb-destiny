@@ -10,7 +10,7 @@ window.ccbNS = {};
 ccbNS.platform_id = 3;
 ccbNS.bungie_api_url = 'https://www.bungie.net/Platform';
 ccbNS.bungie_api = '856136fabe704c149dd4bd41344b54c8';
-ccbNS.clan_id = 3717919;
+ccbNS.clan_id = 4003874;
 
 var lazyLoadInstance = new LazyLoad({
   elements_selector: ".lazy"

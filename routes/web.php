@@ -11,6 +11,12 @@
 |
 */
 
+/*
+Route::get('/', function(){
+  return redirect('https://www.bungie.net/', 302);
+});
+*/
+
 // Test Page
 Route::get('/test', 'HomeController@test')->name('test');
 

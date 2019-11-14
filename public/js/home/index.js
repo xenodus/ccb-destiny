@@ -33,8 +33,10 @@ $(document).ready(function(){
       };
 
       var gambitBountiesFilter = [
-        'Gambit Bounty',
-        'Weekly Drifter Bounty'
+        'Prime "Civic Duty" Bounty',
+        //'Prime Daily Bounty',
+        //'Daily Bounty',
+        // 'Prime Weekly Bounty'
       ];
 
       // includes
@@ -81,7 +83,7 @@ $(document).ready(function(){
 
         power_surge_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['The Drifter'] && item.itemTypeDisplayName == 'Power Surge Bounty' });
 
-        spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.name.includes('Purchase') && item.itemTypeDisplayName == '' });
+        spider_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == '' });
 
         spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
 
@@ -105,6 +107,14 @@ $(document).ready(function(){
         // Nightfall
         if( milestonesData['nightfalls'].length > 0 ) {
           weekliesItems.push( getVendorStr(milestonesData['nightfalls'], 'Nightfalls') );
+        }
+
+        // Altars of Sorrow
+        altar_rotation = getAltarRotation();
+
+        if( altar_rotation.length > 0 ) {
+          var title = 'Altars of Sorrow';
+          weekliesItems.push( getVendorStr( altar_rotation, title) );
         }
 
         // Leviathan
@@ -162,7 +172,7 @@ $(document).ready(function(){
 
         // Vendors
         if( eva_bounties.length > 0 ) {
-          weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
+          // weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante\'s Bounties') );
         }
 
         if( raid_bounties.length > 0 ) {
@@ -193,6 +203,10 @@ $(document).ready(function(){
         if( ascendant_challenge.length > 0 && weekly_dc_mission.length > 0  && curse_level.length > 0 ) {
           var title = 'Dreaming City';
           weekliesItems.push( getVendorStr( ascendant_challenge.concat(weekly_dc_mission).concat(curse_level) , title) );
+        }
+
+        if( gambit_bounties.length > 0 ) {
+          weekliesItems.push( getVendorStr(gambit_bounties, 'Gambit Bounties (World)') );
         }
 
         reckoning = getReckoning();
@@ -445,11 +459,13 @@ $(document).ready(function(){
         }
       }
 
-      str += `
-      <div class="d-flex mb-1 align-items-center vendor-item text-left" data-toggle="tooltip" title="`+tooltip+`">
-        <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
-      </div>
-      `;
+      if( data[i].icon ) {
+        str += `
+        <div class="d-flex mb-1 align-items-center vendor-item text-left" data-toggle="tooltip" title="`+tooltip+`">
+          <img class="img-fluid" src="https://bungie.net`+data[i].icon+`" style="width: 20px; height: 20px; margin-right: 5px;"/>`+data[i].name+`
+        </div>
+        `;
+      }
     }
 
     str += `
@@ -951,5 +967,62 @@ $(document).ready(function(){
       icon: '/common/destiny2_content/icons/8f755eb3a9109ed7adfc4a8b27871e7a.png',
       description: description
     }];
+  }
+
+  function getAltarRotation() {
+
+    var weapons = [
+      {
+        "name": "Apostate",
+        "description": '<span class=\'color-arc\'>Arc</span> Sniper Rifle<br/><br/>"Survival is our most holy writ. Heterodoxy will be its own undoing." — Kuldax',
+        "icon": "/common/destiny2_content/icons/b990412136d220fd641078418a4903fe.jpg",
+        "boss": "Nightmare of Taniks (Fallen Captain)",
+      },
+      {
+        "name": "Heretic",
+        "description": '<span class=\'color-arc\'>Arc</span> Rocker Launcher<br/><br/>"Death is only and forever an ending. All else is sacrilege." — Kuldax',
+        "icon": "/common/destiny2_content/icons/eaf113dbb5cea03526009e6030b8c8ee.jpg",
+        "boss": "Nightmare of Zydron (Vex Minotaur)",
+      },
+      {
+        "name": "Blasphemer",
+        "description": 'Kinetic Shotgun<br/><br/>"The logic is ineluctable: Those who die deserve oblivion." — Kuldax',
+        "icon": "/common/destiny2_content/icons/2f61559b7c57894703b6aaa52a44630c.jpg",
+        "boss": "Nightmare of Phogoth (Hive Ogre)",
+      },
+    ];
+
+    var startDate = moment('2019-11-11 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment().hour(1).minute(0).second(0).millisecond(0);
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(weapons).length ) {
+        index = 0;
+      }
+
+      nextDay = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(1, 'days');
+
+      if( currDate.isSame(startDate) ) {
+        found = true;
+      }
+      else {
+        startDate = nextDay;
+        index++;
+      }
+    }
+
+    var data = [{
+      name: weapons[index].boss,
+      icon: '/common/destiny2_content/icons/58bf5b93ae8cfefc55852fe664179757.png',
+      description: 'The final boss is ' + weapons[index].boss
+    }];
+
+    data = data.concat(weapons[index]);
+
+    return data;
   }
 });

@@ -3,7 +3,7 @@
     <div class="post mb-4 d-flex flex-md-row flex-column align-items-stretch bg-white">
       <div class="post-overlay {{ $post->getColorCodedPostBorderCSS() }}"></div>
       <div class="text-center post-category {{ $post->getColorCodedPostBorderCSS(true) }}">{{ $post->getMainCategory() ? $post->getMainCategory()->term->name : '' }}</div>
-      <div class="post-tn post-tn-horizontal lazy" style="background: url('{{ $post->getThumbnail('medium') ?? 'https://ccboys.xyz/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;" data-bg="url({{ $post->getThumbnail('large') ?? 'https://ccboys.xyz/images/og-banner-ccb.jpg' }})">
+      <div class="post-tn post-tn-horizontal lazy" style="background: url('{{ $post->getThumbnail('medium') ?? 'https://ccb-destiny.com/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;" data-bg="url({{ $post->getThumbnail('large') ?? 'https://ccb-destiny.com/images/og-banner-ccb.jpg' }})">
       </div>
       <div class="post-info p-4 text-left">
         <div class="post-title mb-2 mt-1">{{ $post->post_title }}</div>

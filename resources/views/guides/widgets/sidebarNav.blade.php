@@ -9,8 +9,10 @@
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/raid/7">Raids</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/leviathan/19">Leviathan</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/last-wish/20">Last Wish</a></div>
-      <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/scourge-of-the-past/23">SoTP</a></div>
-      <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/strike/8">Strikes</a></div>
+      <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/scourge-of-the-past/23">Scourge of the Past</a></div>
+      <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/garden-of-salvation/43">Garden of Salvation</a></div>
+      <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/strike/8">Dungeons</a></div>
+      <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/pit-of-heresy/42">Pit of Heresy</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/shattered-throne/35">Shattered Throne</a></div>
       <div class="ml-4"><i class="fas fa-angle-right"></i> <a href="/guides/category/zero-hour-outbreak-perfected/36">Zero Hour / Outbreak Perfected</a></div>
       <div class="ml-1"><i class="fas fa-angle-right"></i> <a href="/guides/category/gambit/39">Gambit</a></div>

@@ -82,10 +82,10 @@ class UpdateNightfalls extends Command
                         $nf = new App\Classes\Nightfall();
 
                         if( $activity_definitions[ $activity->activityHash ]->displayProperties->name == 'Nightfall: The Ordeal: Adept' ) {
-                            $nf->name = "Nightfall The Ordeal: " . $activity_definitions[ $activity->activityHash ]->displayProperties->description;
+                            $nf->name = "The Ordeal: " . $activity_definitions[ $activity->activityHash ]->displayProperties->description;
                         }
                         else {
-                            $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
+                            $nf->name = str_replace('Nightfall: ', '', $activity_definitions[ $activity->activityHash ]->displayProperties->name);
                         }
 
                         $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;

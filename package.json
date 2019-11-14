@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "animate.css": "^3.7.2",
+        "flag-icon-css": "^3.4.5",
         "lightbox2": "^2.11.1",
         "moment": "^2.24.0",
         "rpg-awesome": "^0.2.0",

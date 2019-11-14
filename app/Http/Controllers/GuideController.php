@@ -164,12 +164,14 @@ class GuideController extends Controller
         if( $request->query('preview') ) {
             $post = WP_Post::with('taxonomies')
                 ->with('attachment')
+                ->where('post_type', 'post')
                 ->find($id);
         }
         else {
             $post = WP_Post::published()
                 ->with('taxonomies')
                 ->with('attachment')
+                ->where('post_type', 'post')
                 ->find($id);
         }
 

@@ -65,7 +65,7 @@
               <div class="col-md-4 {{ $loop->iteration > 3 ? 'mobile-hide' : '' }}">
                 <a href="{{ route('guide_post', ['slug' => $p->slug, 'id' => $p->ID]) }}" title="{{$p->title}}">
                   <div class="related-posts-item mb-3">
-                    <div class="related-posts-tn d-flex flex-column justify-content-center lazy" style="background: url('{{ $p->getThumbnail('medium') ?? 'https://ccboys.xyz/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;" data-bg="url({{ $p->getThumbnail('large') ?? 'https://ccboys.xyz/images/og-banner-ccb.jpg' }})">
+                    <div class="related-posts-tn d-flex flex-column justify-content-center lazy" style="background: url('{{ $p->getThumbnail('medium') ?? 'https://ccb-destiny.com/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;" data-bg="url({{ $p->getThumbnail('large') ?? 'https://ccb-destiny.com/images/og-banner-ccb.jpg' }})">
                     </div>
                     <div class="related-posts-title bg-white text-dark {{ $post->getColorCodedPostBorderCSS() }}">
                       <div class="p-2">

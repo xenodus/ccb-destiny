@@ -12,7 +12,7 @@ class SitemapController extends Controller
 {
     public function crawl()
     {
-        SitemapGenerator::create('https://ccboys.xyz')->writeToFile( public_path().'/sitemap.xml' );
+        SitemapGenerator::create('https://ccb-destiny.com')->writeToFile( public_path().'/sitemap.xml' );
 
         return response()->json(['status' => 1]);
     }
@@ -34,7 +34,7 @@ class SitemapController extends Controller
                   ->add(Url::create( str_replace('http://', 'https://', route('outbreak_solution')) ));
 
       // Posts
-      $posts = Post::published()->get();
+      $posts = Post::published()->where('post_type', 'post')->get();
 
       foreach($posts as $post) {
         $sitemap->add(

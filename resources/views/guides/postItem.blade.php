@@ -1,7 +1,7 @@
 <div class="<?=(( isset($category) && $category->term_taxonomy_id == 4 ) ? 'col-md-6' : 'col-md-4')?> grid-item">
   <div class="post mb-4">
     <a href="{{ route('guide_post', ['slug' => $post->slug, 'id' => $post->ID]) }}">
-      <div class="post-tn {{ $post->getColorCodedPostBorderCSS() }}" style="background: url('{{ $post->thumbnail ?? 'https://ccboys.xyz/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;">
+      <div class="post-tn {{ $post->getColorCodedPostBorderCSS() }}" style="background: url('{{ $post->thumbnail ?? 'https://ccb-destiny.com/images/og-banner-ccb.jpg' }}') no-repeat center 20%/cover;">
         <div class="post-overlay"></div>
       </div>
       <div class="post-info p-3 text-left">

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $baseFilePath = '/var/www/sites/ccb/storage/logs/';
 
         // D2 Manifest
-        $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
+        $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:03')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
 
         // Member Aliases
         $schedule->command('update:memberAlias')->hourly()->appendOutputTo($baseFilePath . 'alias.log');

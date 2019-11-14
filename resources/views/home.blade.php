@@ -11,8 +11,13 @@
       <h1>About Us</h1>
     </div>
     <div id="about-us-description" class="text-justify">
-      <p>{{ env('SITE_DESCRIPTION') }}</p>
-      <p><!--a href="/apply"-->We're recruiting for Shadowkeep on PC (Steam).<!--/a--> We have an active & friendly Discord, internal progression systems and 9+ raids / week. All experience levels are welcome! <a href="{{ env('DISCORD_LINK') }}" target="_blank">Drop by our Discord to say hi</a> 👋</p>
+      <p>Greetings from the Carrot Cake for Breakfast [CCB] clan in Destiny 2.</p>
+
+      <p>We are a laid back group of guardians from <span class="flag-icon flag-icon-sg"></span> Singapore that seeks to build a clan filled with positive vibes. Most of us are PvE oriented and raid on a weekly basis. While the majority of us are working adults, we also have students and retirees among our ranks.</p>
+
+      <p>All fellow Singlish speaking guardians are welcome to join us in Shadowkeep and beyond. Our only criteria is that all members treat each other with respect. <a href="{{ env('DISCORD_LINK') }}" target="_blank">Come say 👋 hi to us in Discord!</a></p>
+
+      <p>PS: We meet up every other month for 🍲 hotpot.</p>
     </div>
 
     <div class="row mt-5">

@@ -213,7 +213,7 @@ class UpdateVendors extends Command
                             $vendor_sales->hash = $item_definitions[$itemHash]->hash;
                             $vendor_sales->vendor_hash = $this->vendorHash[$vendor_name];
                             $vendor_sales->description = $item_definitions[$itemHash]->displayProperties->description;
-                            $vendor_sales->name = $item_definitions[$itemHash]->displayProperties->name;
+                            $vendor_sales->name = str_replace('Purchase ', '', $item_definitions[$itemHash]->displayProperties->name);
                             $vendor_sales->icon = $item_definitions[$itemHash]->displayProperties->hasIcon == true ? $item_definitions[$itemHash]->displayProperties->icon : '';
                             $vendor_sales->cost = $costAmount;
                             $vendor_sales->cost_hash = $costHash;

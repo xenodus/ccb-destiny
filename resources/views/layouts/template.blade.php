@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-35918300-6"></script>
-    <meta name="google-site-verification" content="D9-BceHdaxycglc0RlAFxr_nlEh5GGiNgdK8pT7Y1PY" />
+    <meta name="google-site-verification" content="hnu-itE1iSYqoffQF3M4kFGOIUyeGVe6HoYNlzfnCpA" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{ isset($site_title) ? $site_title : env('SITE_NAME') }}</title>
@@ -37,12 +37,12 @@
     <meta property="og:title" content="{{ $site_title ?? env('SITE_NAME') }}"/>
     <meta property="og:type" content="{{ $site_type ?? 'website' }}"/>
     <meta property="og:url" content="{{ $site_url ?? Illuminate\Support\Facades\URL::current() }}"/>
-    <meta property="og:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb.jpg') }}"/>
+    <meta property="og:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb-7-nov.jpg') }}"/>
     <meta property="og:description" content="{{ $site_description ?? env('SITE_DESCRIPTION') }}"/>
 
     <meta name="twitter:title" content="{{ $site_title ?? env('SITE_NAME') }}">
     <meta name="twitter:description" content="{{ $site_description ?? env('SITE_DESCRIPTION') }}">
-    <meta name="twitter:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb.jpg') }}">
+    <meta name="twitter:image" content="{{ $site_image ?? secure_url('/images/og-banner-ccb-7-nov.jpg') }}">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
@@ -61,7 +61,7 @@
 
           <a href="/" class="text-white">
             <div class="d-md-none d-flex align-items-center" style="line-height: 1rem;">
-              <img src="/images/crab.svg" onerror="this.onerror=null; this.src='/images/crab.png'" alt="CCB" class="img-fluid mr-3" style="width: 36px;">
+              <!--img src="/images/crab.svg" onerror="this.onerror=null; this.src='/images/crab.png'" alt="CCB" class="img-fluid mr-3" style="width: 36px;"-->
               <div style="letter-spacing: 3px; font-size: .8rem;">The CCBs</div>
             </div>
           </a>
@@ -155,12 +155,12 @@
                   <div>Discord</div>
                 </a>
               </li>
-              <!--li class="nav-item {{ (isset($active_page) && $active_page == 'join_us') ? 'active' : ''  }}">
-                <a class="nav-link text-md-center" href="/apply">
+              <li class="nav-item {{ (isset($active_page) && $active_page == 'join_us') ? 'active' : ''  }}">
+                <a class="nav-link text-md-center" href="https://www.bungie.net/en/ClanV2/Chat?groupId=4003874" target="_blank">
                   <i class="fas fa-door-open animated pulse slower infinite delay-0.5s"></i>
                   <div>Join Us</div>
                 </a>
-              </li-->
+              </li>
             </ul>
           </div>
         </nav>
@@ -183,7 +183,7 @@
     <footer class="border-top border-dark">
       <div id="footer" class="text-center py-4 px-3">
         <div>
-          <small class="text-white">&copy; 2019 ccboys.xyz</small>
+          <small class="text-white">&copy; 2019 {{ env('APP_DISPLAY_URL') }}</small>
         </div>
         <div>
           <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/4/4611686018474971535" target="_blank">xenodus</a></small>

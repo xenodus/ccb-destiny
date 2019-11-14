@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 use DB;
+use Cache;
 
 class UpdateMemberPlatformProfile extends Command
 {
@@ -113,6 +114,10 @@ class UpdateMemberPlatformProfile extends Command
 
         // delete member profile data that does not belong to members anymore
         DB::table('clan_member_platform_profile')->whereNotIn('id', $member_ids)->delete();
+
+        // Refresh Cache
+        Cache::forget('clan_members_characters');
+        Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->with('aliases')->get());
 
         $this->info('Completed: Character Platform Profile Update');
         return 1;

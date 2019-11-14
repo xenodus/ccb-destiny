@@ -148,10 +148,10 @@ class Post extends WP_Post
       },
        "publisher": {
         "@type": "Organization",
-        "name": "CCBoys",
+        "name": "Carrot Cake for Breakfast",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://ccboys.xyz/images/og-banner-ccb.jpg"
+          "url": "https://ccb-destiny.com/images/og-banner-ccb.jpg"
         }
       },
       "description": "'.$this->getExcerpt().'"
