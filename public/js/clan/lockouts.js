@@ -38,7 +38,7 @@ $(document).ready(function(){
 
       $.get('/clan/lockouts/get', function(data){
         $('#weekly-lockout-dates').html(data['start_of_week'] + " to " + data['end_of_week']);
-        $('#sub-menu > ul').append('<li class="nav-item pt-0 pt-md-4"><a class="nav-link disabled" href="#" aria-disabled="true">Year 3 Raids</a></li>');
+        $('#sub-menu > ul').append('<li class="nav-item pt-0 pt-md-4"><a class="nav-link disabled" href="#" aria-disabled="true">Year 3 Raid</a></li>');
         makeTable(y3RaidNameMap, data['raid_lockouts'], memberData);
         $('#sub-menu > ul').append('<li class="nav-item pt-0 pt-md-4"><a class="nav-link disabled" href="#" aria-disabled="true">Year 2 Raids</a></li>');
         makeTable(y2RaidNameMap, data['raid_lockouts'], memberData);

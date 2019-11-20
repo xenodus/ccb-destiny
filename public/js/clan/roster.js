@@ -14,6 +14,8 @@ $(document).ready(function(){
         known_aliases =  aliases.map(function(alias){
           return alias.name;
         });
+
+        known_aliases = known_aliases.join(', ');
       }
       else {
         known_aliases = '';

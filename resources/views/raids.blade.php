@@ -4,7 +4,7 @@
 <section id="outbreak-solution" class="text-center container-fluid mt-4 mb-4">
   <div class="p-1">
     <h1 class="text-yellow mb-1">Raid Events</h1>
-    <div class="text-left">Create / sign up for raids in our Discord's #raid-noticeboard / #lfg-noticeboard channels.</div>
+    <div class="text-left">Create / sign up for raids in our Discord's #raid-lfg / #other-lfg channels.</div>
 
     <div class="mt-3">
       @if($raid_events->count())

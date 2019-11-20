@@ -992,7 +992,7 @@ $(document).ready(function(){
       },
     ];
 
-    var startDate = moment('2019-11-11 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var startDate = moment('2019-11-18 01:00:00', 'YYYY-MM-DD H:mm:ss');
     var currDate = moment().hour(1).minute(0).second(0).millisecond(0);
 
     var index = 0;

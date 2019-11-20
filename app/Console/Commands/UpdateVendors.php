@@ -69,9 +69,9 @@ class UpdateVendors extends Command
         $token = json_decode($token->data);
         $refresh_token = $token->refresh_token;
 
-        // dd($refresh_token);
-        // dd('https://www.bungie.net/en/oauth/authorize?client_id='.env('BUNGIE_OAUTH_CLIENT_ID').'&response_type=code');
-        // $authorization_code = '16a799c6744f93e046812e9fdec5ddc7';
+        //dd($refresh_token);
+        //dd('https://www.bungie.net/en/oauth/authorize?client_id='.env('BUNGIE_OAUTH_CLIENT_ID').'&response_type=code');
+        //$authorization_code = 'e5fad4d63d8a8c09b7cdefccd0c37b70';
 
         $tokenRefreshEndpoint = 'https://www.bungie.net/platform/app/oauth/token/';
 
@@ -84,8 +84,8 @@ class UpdateVendors extends Command
                 ],
                 'http_errors' => false,
                 'form_params' => [
-                    // 'grant_type' => 'authorization_code',
-                    // 'code' => $authorization_code,
+                    //'grant_type' => 'authorization_code',
+                    //'code' => $authorization_code,
                     'grant_type' => 'refresh_token',
                     'refresh_token' => $refresh_token,
                     'client_id' => env('BUNGIE_OAUTH_CLIENT_ID'),
@@ -297,6 +297,9 @@ class UpdateVendors extends Command
             else {
                 $this->info('Unable To Get Vendor Data');
             }
+        }
+        else {
+          $this->info('Unable To Authenticate with Refresh Token');
         }
     }
 }
