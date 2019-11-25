@@ -103,6 +103,11 @@ mix.scripts([
     'public/js/clan/exotics.js',
 ], 'public/js/compiled/exotics.js');
 
+// MEMBER EXOTIC COLLECTION PAGE
+mix.scripts([
+    'public/js/clan/member_exotics.js',
+], 'public/js/compiled/member_exotics.js');
+
 // POST + LISTING PAGE
 mix.scripts([
     'public/js/mtg/mtgtooltip.js',

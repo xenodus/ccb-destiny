@@ -22,7 +22,7 @@ Route::get('/test', 'HomeController@test')->name('test');
 
 // Activities
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
-Route::get('/clan/activities/{type}/{member_id}', 'ClanController@member_activities_listing')->name('clan_member_activities_listing');
+Route::get('/clan/activities/{type}/{member_id}/{member_name?}', 'ClanController@member_activities_listing')->name('clan_member_activities_listing');
 
 // Alfred Raid Event Web Create / Edit
 Route::get('/alfred/{token}', 'AlfredController@web_create_edit')->name('alfred_web_create_edit');
@@ -97,12 +97,13 @@ Route::get('/clan/lockouts/get', 'ClanController@get_clan_raid_lockout')->name('
 
 // Clan Seal Triumph Completions
 Route::get('/clan/seals', 'ClanController@clan_seal_progression')->name('clan_seal_progression');
-Route::get('/clan/seals/member/{member_id}', 'ClanController@member_seal_progression')->name('member_seal_progression');
+Route::get('/clan/seals/member/{member_id}/{member_name?}', 'ClanController@member_seal_progression')->name('member_seal_progression');
 Route::get('/clan/seals/get', 'ClanController@get_clan_seal_progression')->name('get_clan_seal_progression');
 
 // Clan Exotic
 Route::get('/clan/exotics', 'ClanController@clan_exotic_collection')->name('clan_exotic');
 Route::get('/clan/exotics/get', 'ClanController@get_clan_exotic_collection')->name('get_clan_exotic_collection');
+Route::get('/clan/exotics/{member_id}/{member_name?}', 'ClanController@member_exotic_collection')->name('member_exotic');
 
 // Raid Stats
 Route::get('/bungie/raid/get', 'StatsController@get_raid_stats')->name('get_raid_stats');

@@ -37,5 +37,4 @@
 
 @section('footer')
 <script src="{{ mix('/js/compiled/exotics.js') }}"></script>
-<!--script src="/js/clan/exotics.js?<?=time()?>"></script-->
 @endsection

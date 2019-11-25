@@ -75,7 +75,9 @@ class UpdateMemberExotic extends Command
                 3249389111, // thunderlord
                 1763840761, // truth
                 199171384,  // 2 tailed
-                199171383   // black talon
+                199171383,  // black talon
+                1258579677, // Xenophage
+                3552855013  // Leviathan's Breath
             ]
         ],
         'armor' => [

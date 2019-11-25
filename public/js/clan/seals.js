@@ -20,7 +20,7 @@ $(document).ready(function(){
 
         var tableData = [];
         var tableColumns = [
-          {title:"Name", field:"name", frozen:true},
+          {title:"Name", field:"name", formatter:"html", frozen:true},
         ];
 
         for(var i=0; i<sealData.length; i++) {
@@ -32,7 +32,7 @@ $(document).ready(function(){
           var steamID = txt.value;
 
           var tableDataEntry = {
-            name: steamID
+            name: steamID + '<a href="/clan/seals/member/'+sealData[i].id+'/'+slugify(steamID)+'/" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
           };
 
           var memberSealData = JSON.parse( sealData[i].data );
@@ -49,12 +49,12 @@ $(document).ready(function(){
           }
 
           tableDataEntry["total"] = memberSealTotal;
-          tableDataEntry["link"] = '<a href="/clan/seals/member/'+sealData[i].id+'">Go</a>';
+          // tableDataEntry["link"] = '<a href="/clan/seals/member/'+sealData[i].id+'">Go</a>';
           tableData.push(tableDataEntry);
         }
 
         tableColumns.push({title:"Total", field:"total", cssClass: "text-center", visible:true});
-        tableColumns.push({title:"Details", field:"link", formatter:"html", cssClass: "text-center"});
+        // tableColumns.push({title:"Details", field:"link", formatter:"html", cssClass: "text-center"});
 
         $('.stats-container').append('<div id="stats-table"></div>');
         $('.loader').hide();
@@ -70,7 +70,7 @@ $(document).ready(function(){
           ],
           layout:"fitDataFill",
           height: "500px",
-          resizableColumns:false,
+          resizableColumns:true,
         });
 
         $("#nameFilter").on("input", function(){

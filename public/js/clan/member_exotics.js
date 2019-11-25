@@ -10,12 +10,16 @@ $(document).ready(function(){
 
       memberData = data.Response.results;
 
+      memberData = memberData.filter(function(m){
+        return m.destinyUserInfo.membershipId == member.id;
+      });
+
       $('.loader-text').text('Fetching Collection...');
 
         $.get('/clan/exotics/get', function(exoticData){
           var tableData = [];
           var tableColumns = [
-            {title:"Name", field:"name", frozen:true, formatter:"html", widthGrow:1},
+            {title:"Name", field:"name", frozen:true, widthGrow:1},
             {title:"Weapon", field:"missingWeapons", formatter:"html", widthGrow:1, headerSort:false},
             {title:"Warlock", field:"missingArmorsWarlock", formatter:"html", widthGrow:1, headerSort:false},
             {title:"Titan", field:"missingArmorsTitan", formatter:"html", widthGrow:1, headerSort:false},
@@ -34,7 +38,7 @@ $(document).ready(function(){
             var steamID = txt.value;
 
             var tableDataEntry = {
-              name: steamID + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+              name: steamID
             };
 
             var missingWeapons = [];
@@ -151,7 +155,6 @@ $(document).ready(function(){
               {column:"name", dir:"asc"},
             ],
             layout:"fitDataFill",
-            height: "600px",
             resizableColumns:false,
           });
 

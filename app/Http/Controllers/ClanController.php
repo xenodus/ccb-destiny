@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class ClanController extends Controller
 {
-  public function member_activities_listing(Request $request, $type, $member_id) {
+  public function member_activities_listing(Request $request, $type, $member_id, $member_name='') {
 
     $items_per_page = 100;
 
@@ -132,7 +132,22 @@ class ClanController extends Controller
     return view('clan.exotics', $data);
   }
 
-  public function member_seal_progression($member_id) {
+  public function member_exotic_collection($member_id, $member_name='') {
+
+    $member = App\Classes\Clan_Member::find($member_id);
+
+    if( !$member ) {
+      return redirect()->route('clan_exotic');
+    }
+
+    $data['site_title'] = 'Exotic Collection Progress for ' . $member->display_name;
+    $data['active_page'] = 'clan_exotic';
+    $data['member'] = $member;
+
+    return view('clan.member_exotics', $data);
+  }
+
+  public function member_seal_progression($member_id, $member_name='') {
 
     $member = App\Classes\Clan_Member::find($member_id);
 

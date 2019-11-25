@@ -5,8 +5,10 @@ use Spatie\Sitemap\SitemapGenerator;
 use Carbon\Carbon;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use App\Classes\Clan_Member;
 use App\Classes\Post;
 use App\Classes\Post_Taxonomy;
+use Illuminate\Support\Str;
 
 class SitemapController extends Controller
 {
@@ -55,6 +57,21 @@ class SitemapController extends Controller
             ->setLastModificationDate(Carbon::parse($post->post_modified))
           );
         }
+      }
+
+      // Member Seals
+      // Member Exotics
+
+      $members = Clan_Member::get();
+
+      foreach($members as $member) {
+        $sitemap->add(
+          Url::create( str_replace('http://', 'https://', route('member_seal_progression', ['member_id' => $member->id])) )
+        );
+
+        $sitemap->add(
+          Url::create( str_replace('http://', 'https://', route('member_exotic', ['member_id' => $member->id, 'member_name' => Str::slug($member->display_name)])) )
+        );
       }
 
       $sitemap->writeToFile( public_path().'/sitemap.xml' );

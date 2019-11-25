@@ -17,7 +17,7 @@
 
       <p>All fellow Singlish speaking guardians are welcome to join us in Shadowkeep and beyond. Our only criteria is that all members treat each other with respect. <a href="{{ env('DISCORD_LINK') }}" target="_blank">Come say 👋 hi to us in Discord!</a></p>
 
-      <p>PS: We meet up every other month for 🍲 hotpot.</p>
+      <p>PS: We meet up every other month for 🍲 hotpot</p>
     </div>
 
     <div class="row mt-5">
@@ -30,7 +30,7 @@
       <div class="col-md-4">
         <div class="border border-yellow traits-box p-3">
           <div class="traits-title pl-2 pr-2"><i class="ra ra-heart-bottle mr-1"></i>Age</div>
-          18+
+          21+
         </div>
       </div>
       <div class="col-md-4">

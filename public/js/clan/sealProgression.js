@@ -368,7 +368,7 @@ $(document).ready(function(){
                 }
 
                 if( memberData.profileRecords.data.records[recordID].objectives.length == 1 && memberData.profileRecords.data.records[recordID].objectives[0].complete == false ) {
-                  if ( memberData.profileRecords.data.records[recordID].objectives[0].progress != 0 && memberData.profileRecords.data.records[recordID].objectives[0].completionValue != 0 ) {
+                  if ( memberData.profileRecords.data.records[recordID].objectives[0].progress > 0 && memberData.profileRecords.data.records[recordID].objectives[0].completionValue != 0 ) {
                     objectProgress = memberData.profileRecords.data.records[recordID].objectives[0].progress + "/" + memberData.profileRecords.data.records[recordID].objectives[0].completionValue;
                   }
                 }
@@ -436,7 +436,7 @@ $(document).ready(function(){
                   var objectivesProgressStr = '';
 
                   if( inProgress[key] in multipleObjectivesProgress ) {
-                    objectivesProgressStr = ' (' + multipleObjectivesProgress[inProgress[key]]['completed'] + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
+                    objectivesProgressStr = ' (' + (multipleObjectivesProgress[inProgress[key]]['completed'] > 0 ? multipleObjectivesProgress[inProgress[key]]['completed'] : 0) + '/' + multipleObjectivesProgress[inProgress[key]]['total'] + ')';
                   }
 
                   if( inProgress[key] in singleObjectivesProgress ) {
@@ -491,6 +491,11 @@ $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip({
             html: true
           });
+
+          // Scroll to on load
+          if( window.location.hash ) {
+            $('html,body').animate({scrollTop: $(window.location.hash).offset().top},'fast');
+          }
         });
       }
       else {
