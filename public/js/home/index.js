@@ -109,6 +109,14 @@ $(document).ready(function(){
           weekliesItems.push( getVendorStr(milestonesData['nightfalls'], 'Nightfalls') );
         }
 
+        // GOS Challenge
+        gos_challenge = getGOSChallenge();
+
+        if( gos_challenge.length > 0 ) {
+          var title = 'Garden of Salvation Challenge';
+          weekliesItems.push( getVendorStr( gos_challenge, title) );
+        }
+
         // Altars of Sorrow
         altar_rotation = getAltarRotation();
 
@@ -506,7 +514,8 @@ $(document).ready(function(){
 
           for(var j=0; j<item_perks.length; j++) {
             if( j == 0 ) {
-              perks += `<div class='mb-1'>Perk `+roll+`</div><div class='mb-2 border border-secondary rounded'>`;
+              // perks += `<div class='mb-1'>Perk `+roll+`</div><div class='mb-2 border border-secondary rounded'>`;
+              perks += `<div class='mb-2 border border-secondary'>`;
             }
             else if( prev_perk_group != item_perks[j].perk_group ) {
               roll++;
@@ -966,6 +975,52 @@ $(document).ready(function(){
       name: 'Curse Level: ' + curseLevels[index],
       icon: '/common/destiny2_content/icons/8f755eb3a9109ed7adfc4a8b27871e7a.png',
       description: description
+    }];
+  }
+
+  function getGOSChallenge() {
+
+    var challenges = [
+      'Zero to One Hundred',
+      'To The Top',
+      'A Link on The Chain',
+      'Staying Alive'
+    ];
+
+    var challengesDescription = [
+      'Encounter 4: Bank 30 motes within 10s for each relay. 3 guardians with 10 motes each bank one after another.',
+      'Encounter 3: Each guardian must only bank 10 motes.',
+      'Encounter 2: Everyone tether within 5s of each other.',
+      'Encounter 1: Leave double Cyclops spawns alive.'
+    ];
+
+    var startDate = moment('2019-11-27 01:00:00', 'YYYY-MM-DD H:mm:ss');
+    var currDate = moment();
+
+    var index = 0;
+    var found = false;
+
+    while(found == false) {
+
+      if( index == Object.keys(challenges).length ) {
+        index = 0;
+      }
+
+      nextWeek = moment( startDate.format('YYYY-MM-DD H:mm:ss'), 'YYYY-MM-DD H:mm:ss' ).add(7, 'days');
+
+      if( currDate.isBetween(startDate, nextWeek) ) {
+        found = true;
+      }
+      else {
+        startDate = nextWeek;
+        index++;
+      }
+    }
+
+    return [{
+      name: challenges[index],
+      icon: '/common/destiny2_content/icons/6c13fd357e95348a3ab1892fc22ba3ac.png',
+      description: challengesDescription[index]
     }];
   }
 

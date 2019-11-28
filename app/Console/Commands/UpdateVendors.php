@@ -28,7 +28,7 @@ class UpdateVendors extends Command
     ];
 
     // traits = stats, restore default == shader
-    private $perksExcluded = ['Trait', 'Restore Defaults'];
+    private $perksExcluded = ['Trait', 'Restore Defaults', 'General Armor Mod'];
 
     /**
      * The name and signature of the console command.
@@ -158,19 +158,24 @@ class UpdateVendors extends Command
                                             isset($socket->plugHash) &&
                                             isset($item_definitions[$socket->plugHash]) &&
                                             isset($item_definitions[$socket->plugHash]->itemTypeDisplayName) &&
-                                            isset($socket->reusablePlugs) &&
-                                            in_array($item_definitions[$socket->plugHash]->itemTypeDisplayName, $this->perksExcluded) == false &&
-                                            count($socket->reusablePlugs) > 0
+                                            isset($socket->isVisible) && $socket->isVisible == true &&
+                                            $item_definitions[$socket->plugHash]->itemTypeDisplayName != '' &&
+                                            $item_definitions[$socket->plugHash]->displayProperties->name != 'Empty Mod Socket' &&
+                                            in_array($item_definitions[$socket->plugHash]->itemTypeDisplayName, $this->perksExcluded) == false
                                         ) {
+                                            /*
                                             $perkGroup = [];
 
-                                            foreach($socket->reusablePlugs as $plug) {
-                                                if( $plug->canInsert == true ) {
-                                                    $perkGroup[] = $item_definitions[ $plug->plugItemHash ];
-                                                }
+                                            if( $v->itemHash == 1508896098 ) {
+                                                if( !in_array($item_definitions[$socket->plugHash]->hash, [2473404935, 2420895100, 3465198467]) )
+                                                dd( $item_definitions[$socket->plugHash] );
                                             }
 
+                                            $perkGroup[] = $item_definitions[ $socket->plugHash ];
                                             $perks[] = $perkGroup;
+                                            */
+
+                                            $perks[] = $item_definitions[ $socket->plugHash ];
                                         }
                                     }
                                 }
@@ -186,6 +191,9 @@ class UpdateVendors extends Command
                         }
                     }
                 }
+
+                //dd();
+                //dd( $saleItems['Xur'] );
 
                 // 6. Process Data
                 $n = 1;
@@ -246,6 +254,22 @@ class UpdateVendors extends Command
 
                             // 8. Create Perks for Sale Item
                             if( count($sale_item['perks']) > 0 && $vendor_sales->id ) {
+
+                                foreach($sale_item['perks'] as $perk) {
+                                    $vendor_sales_item_perk = new App\Classes\Vendor_Sales_Item_Perks();
+                                    $vendor_sales_item_perk->vendor_sales_id = $vendor_sales->id;
+                                    $vendor_sales_item_perk->perk_group = 0;
+                                    $vendor_sales_item_perk->date_added = $date_added;
+                                    $vendor_sales_item_perk->description = $perk->displayProperties->description;
+                                    $vendor_sales_item_perk->name = $perk->displayProperties->name;
+                                    $vendor_sales_item_perk->icon = $perk->displayProperties->hasIcon == true ? $perk->displayProperties->icon : '';
+                                    $vendor_sales_item_perk->itemTypeDisplayName = $perk->itemTypeDisplayName;
+                                    $vendor_sales_item_perk->itemTypeAndTierDisplayName = $perk->itemTypeAndTierDisplayName;
+                                    $vendor_sales_item_perk->hash = $perk->hash;
+                                    $vendor_sales_item_perk->save();
+                                }
+
+                                /*
                                 foreach($sale_item['perks'] as $perk_group_index => $perk_group) { // perk group
                                     foreach($perk_group as $perk) { // individual perk hash
                                         $vendor_sales_item_perk = new App\Classes\Vendor_Sales_Item_Perks();
@@ -261,6 +285,7 @@ class UpdateVendors extends Command
                                         $vendor_sales_item_perk->save();
                                     }
                                 }
+                                */
                             }
                         }
                     }
