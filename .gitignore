@@ -1,10 +1,13 @@
 /node_modules
 /public/hot
 /public/storage
+/public/sitemap.xml
 /storage/*.key
 /storage/manifest
 /storage/manifest/*
 /vendor
+/public/mix-manifest.json
+/public/css/autoprefix
 /public/css/compiled
 /public/css/compiled/*
 /public/js/compiled
