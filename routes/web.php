@@ -24,6 +24,11 @@ Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');
 Route::get('/clan/activities/{type}/{member_id}/{member_name?}', 'ClanController@member_activities_listing')->name('clan_member_activities_listing');
 
+// CCB Clan Bot Web Create / Edit
+Route::post('/funfacts/{token}/create', 'FunFactController@web_create_process')->name('funfact_web_create');
+Route::get('/funfacts/{token}/{type?}', 'FunFactController@web_admin')->name('funfact_web_admin');
+Route::post('/funfacts/{token}/edit', 'FunFactController@web_edit_process')->name('funfact_web_edit');
+
 // Alfred Raid Event Web Create / Edit
 Route::get('/alfred/{token}', 'AlfredController@web_create_edit')->name('alfred_web_create_edit');
 Route::post('/alfred/{token}', 'AlfredController@web_create_edit_process')->name('alfred_web_create_edit_process');
