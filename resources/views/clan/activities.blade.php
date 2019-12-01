@@ -33,8 +33,6 @@
 $(document).ready(function(){
   $.get('/bungie/roster/get', function(members){
 
-    // console.log( members );
-
     if( members.length > 0 ) {
 
       var tableData = [];

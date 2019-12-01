@@ -54,10 +54,10 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  var member = {!! $member->toJson() !!};
-  var activity_instances = {!! $activity_instances->toJson() !!};
-  var clan_members = {!! $clan_members->toJson() !!};
-  var activity_definition = {!! $activity_definition->toJson() !!};
+  var member = @json($member);
+  var activity_instances = @json($activity_instances);
+  var clan_members = @json($clan_members);
+  var activity_definition = @json($activity_definition);
   var buddy_id = '{{ $buddy_id }}';
 
   getBuddyName();

@@ -51,8 +51,8 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  var member = JSON.parse('{!! $member->toJson() !!}');
-  var clan_members = JSON.parse('{!! $clan_members->toJson() !!}');
+  var member = @json($member);
+  var clan_members = @json($clan_members);
 
   var chartLimit = 10;
   var id2query = [];

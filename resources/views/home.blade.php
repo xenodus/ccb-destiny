@@ -24,7 +24,7 @@
       <div class="col-md-4">
         <div class="border border-yellow traits-box p-3">
           <div class="traits-title pl-2 pr-2"><i class="ra ra-hammer-drop mr-1"></i>Playstyle</div>
-          Raid-centric PVEVP
+          Raid-centric PVE
         </div>
       </div>
       <div class="col-md-4">
@@ -57,7 +57,7 @@
       <div class="col-md-4">
         <div class="border border-yellow traits-box p-3">
           <div class="traits-title pl-2 pr-2"><i class="ra ra-double-team mr-1"></i>Members</div>
-          {{ $clan_members_count }} / 100
+          {{ $clan_members_count }}
         </div>
       </div>
     </div>

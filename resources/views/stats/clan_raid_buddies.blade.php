@@ -33,7 +33,7 @@
 <script>
 $(document).ready(function(){
   var tableData = [];
-  var memberData = JSON.parse('{!! $members->toJson() !!}');
+  var memberData = @json($members);
   var id2query = [];
 
   //console.log(memberData);

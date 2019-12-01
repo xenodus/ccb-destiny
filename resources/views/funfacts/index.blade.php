@@ -163,6 +163,8 @@ $(document).ready(function(){
 
           <div class="mb-3">Logged in as {{ $ff_token->discord_nickname }} ({{ $ff_token->discord_id }})</div>
 
+          <div class="mb-3 text-warning">Author's note: Please do not use this tool to insult or attack a clan mate. You may disable any comments without judgement. All new entries & modifications are tracked.</div>
+
           <div class="mb-3">
             <a class="btn btn-success <?=($type=='active'?'active':'non-active')?>" href="{{ route('funfact_web_admin', [$token, 'active']) }}" role="button">Active ({{$active_count}})</a>
             <a class="btn btn-danger <?=($type=='disabled'?'active':'non-active')?>" href="{{ route('funfact_web_admin', [$token, 'disabled']) }}" role="button">Disabled ({{$deleted_count}})</a>
@@ -227,7 +229,7 @@ $(document).ready(function(){
                   <th class="border-0" scope="col">Added By</th>
                   <th class="border-0" scope="col">Updated By</th>
                   <th class="border-0" scope="col">Last Modified</th>
-                  <th class="border-0" scope="col"></th>
+                  <th class="border-0 w-25" scope="col"></th>
                 </tr>
               </thead>
               <tbody style="font-size:.9rem; background: rgba(255,255,255,.05);">
@@ -249,7 +251,7 @@ $(document).ready(function(){
                     <button type="button" class="btn btn-warning btn-sm edit-ff-btn" data-ffid="{{ $fun_fact->id }}">Edit</button>
                     <button type="button" class="btn btn-danger btn-sm ml-lg-1 mt-lg-0 disable-ff-btn" data-ffid="{{ $fun_fact->id }}">Disable</button>
                     @else
-                    <button type="button" class="btn btn-success btn-sm ml-1 enable-ff-btn" data-ffid="{{ $fun_fact->id }}">Enable</button>
+                    <!--button type="button" class="btn btn-success btn-sm ml-1 enable-ff-btn" data-ffid="{{ $fun_fact->id }}">Enable</button-->
                     @endif
                   </td>
                 </tr>

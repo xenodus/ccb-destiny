@@ -58,14 +58,12 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  var member = {!! $member->toJson() !!};
+  var member = @json($member);
   var activity_type = '{{ $activity_type }}';
   var item_start_no = {{ $activity_instances->firstItem() ?? 0 }};
-  var activity_instances = {!! $activity_instances->toJson() !!};
-  var clan_members_ids = {!! $clan_members->pluck('id')->toJson() !!};
-  var activity_definition = {!! $activity_definition->toJson() !!};
-
-  // console.log(activity_instances);
+  var activity_instances = @json($activity_instances);
+  var clan_members_ids = @json($clan_members->pluck('id'));
+  var activity_definition = @json($activity_definition);
 
   if( activity_instances.data.length > 0 ) {
 
