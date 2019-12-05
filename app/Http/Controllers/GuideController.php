@@ -103,12 +103,20 @@ class GuideController extends Controller
             else
                 $color_code = '#ffc107';
 
+            // Large TN
+            if( isset( $post->getThumbnail('large')->attachment->url ) )
+                $thumbnail_large = $post->getThumbnail('large')->attachment->url;
+            elseif( $post->getThumbnail('large') )
+                $thumbnail_large = $post->getThumbnail('large');
+            else
+                $thumbnail_large = '';
+
             $payload[] = [
                 'id' => $post->ID,
                 'title' => $post->post_title,
                 'image' => $post->image,
                 'thumbnail' => $post->getThumbnail('medium') ?? '',
-                'thumbnail_large' => $post->getThumbnail('large') ?? '',
+                'thumbnail_large' => $thumbnail_large,
                 'url' => route('guide_post', ['slug' => $post->slug, 'id' => $post->ID]),
                 'excerpt' => $post->getExcerpt(),
                 'color_code' => $color_code,

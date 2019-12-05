@@ -273,8 +273,8 @@ class ApiController extends Controller
 
         if( $crawler->filter('table.table.table-condensed.sample_deck')->count() ) {
             $t = $crawler->filter('table.sample_deck')->each(function($node) use (&$decks) {
-                $deck_set['event_name'] = str_replace("\n", " ", trim($node->previousAll()->filter('h4')->first()->text()));
-                $deck_set['event_link'] = $node->previousAll()->filter('h4 a')->first()->link()->getUri();
+                $deck_set['event_name'] = str_replace("\n", " ", trim($node->previousAll()->filter('h3')->first()->text()));
+                $deck_set['event_link'] = $node->previousAll()->filter('h3 a')->first()->link()->getUri();
 
                 $node->filter('td.col-deck > span.deck-price-paper')->each(function ($node) use (&$deck_set) {
                     $html = trim(str_replace('<a href="/deck/', '<a target="_blank" href="https://www.mtggoldfish.com/deck/', $node->html()));

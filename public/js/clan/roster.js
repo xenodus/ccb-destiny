@@ -50,9 +50,9 @@ $(document).ready(function(){
 
       tableData.push({
         name: steamID,
-        warlock: warlock.length > 0 ? warlock[0].light : 0,
-        hunter: hunter.length > 0 ? hunter[0].light : 0,
-        titan: titan.length > 0 ? titan[0].light : 0,
+        warlock: warlock.length > 0 ? warlock[0].light : '-',
+        hunter: hunter.length > 0 ? hunter[0].light : '-',
+        titan: titan.length > 0 ? titan[0].light : '-',
         last_online: moment(members[i].last_online).year() == '1970' ? 'n/a' : moment(members[i].last_online).format('DD MMM YYYY'),
         member_exotics: '<a href="/clan/exotics/'+members[i].id +'/'+slugify(members[i].display_name)+'">View</a>',
         raid_activities: '<a href="/clan/activities/raid/'+members[i].id+'/'+slugify(members[i].display_name)+'">View</a>',
@@ -75,9 +75,9 @@ $(document).ready(function(){
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
           {title:"Name", field:"name", headerSort:false, minWidth:180},
-          {title:"Warlock", field:"warlock", sorter:"number", headerSort:false},
-          {title:"Hunter", field:"hunter", sorter:"number", headerSort:false},
-          {title:"Titan", field:"titan", sorter:"number", headerSort:false},
+          {title:"Warlock", field:"warlock", sorter:"number", headerSort:false, cssClass: 'text-center'},
+          {title:"Hunter", field:"hunter", sorter:"number", headerSort:false, cssClass: 'text-center'},
+          {title:"Titan", field:"titan", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"}, headerSort:false},
           {title:"<div class='mx-3'>Exotics</div><small>Uncollected</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},

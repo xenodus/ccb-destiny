@@ -24,8 +24,6 @@ $(document).ready(function(){
 
         $.get('/bungie/raid/get', function(memberRaidData){
 
-          //console.log(memberData);
-
           var tableData = [];
 
           for(var i=0; i<memberData.length; i++) {
@@ -39,11 +37,8 @@ $(document).ready(function(){
                 membershipId: memberData[i].destinyUserInfo.membershipId,
                 name: memberData[i].destinyUserInfo.displayName+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
                 levi: ( raidData.levi == 0 && raidData.levip ==0 ) ? 0 : ( raidData.levi + raidData.levip + "<div class='mx-1'><small>N: " + raidData.levi + " <span class='ml-1'>P: " + raidData.levip + "</span></small></div>" ),
-                //levip: raidData.levip,
                 eow: ( raidData.eow == 0 && raidData.eowp == 0 ) ? 0 : ( raidData.eow + raidData.eowp + "<div class='mx-1'><small>N: " + raidData.eow + " <span class='ml-1'>P: " + raidData.eowp + "</span></small></div>" ),
-                //eowp: raidData.eowp,
                 sos: ( raidData.sos == 0 && raidData.sosp == 0 ) ? 0 : ( raidData.sos + raidData.sosp + "<div class='mx-1'><small>N: " + raidData.sos + " <span class='ml-1'>P: " + raidData.sosp + "</span></small></div>" ),
-                //sosp: raidData.sosp,
                 lw: raidData.lw,
                 petra: raidData.petra > 0 ? '<div class="text-center"><i class="fas fa-check text-success"></i></div>' : '<div class="text-center"><i class="fas fa-times text-danger"></i></div>',
                 sotp: raidData.sotp,
@@ -81,9 +76,7 @@ $(document).ready(function(){
           }
 
           $('.loader-text').text('Generating Table...');
-
           $('.stats-container').append('<div id="raid-stats-table"></div>');
-
           $('.loader').hide();
           $('.loader-text').hide();
           $('.filter-container').show();
@@ -95,18 +88,14 @@ $(document).ready(function(){
           var format = {precision: 0};
 
           var table = new Tabulator("#raid-stats-table", {
-            data:tableData, //assign data to table
-            layout:"fitColumns", //fit columns to width of table (optional)
-            columns:[ //Define Table Columns
-              //{formatter:autoNumFormatter, width:40},
+            data:tableData,
+            layout:"fitColumns",
+            columns:[
               {title:"Name", field:"name", formatter:"html", formatterParams: format, frozen:true},
               {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
               {title:"Levi", field:"levi", headerSort:false, formatter:"html", cssClass: 'text-center'},
-              // {title:"P Levi", field:"levip", formatter:"money", formatterParams: format},
               {title:"EOW", field:"eow", headerSort:false, formatter:"html", cssClass: 'text-center'},
-              //{title:"P EOW", field:"eowp", formatter:"money", formatterParams: format},
               {title:"SOS", field:"sos", headerSort:false, formatter:"html", cssClass: 'text-center'},
-              //{title:"P SOS", field:"sosp", formatter:"money", formatterParams: format},
               {title:"LW", field:"lw", formatter:"money", formatterParams: format, cssClass: 'text-center'},
               {title:"Flawless LW", field:"petra", formatter:"html"},
               {title:"SoTP", field:"sotp", formatter:"money", formatterParams: format, cssClass: 'text-center'},

@@ -982,16 +982,16 @@ $(document).ready(function(){
 
     var challenges = [
       'Zero to One Hundred',
-      'To The Top',
+      'Staying Alive',
       'A Link on The Chain',
-      'Staying Alive'
+      'To The Top',
     ];
 
     var challengesDescription = [
       'Encounter 4: Bank 30 motes within 10s for each relay. 3 guardians with 10 motes each bank one after another.',
-      'Encounter 3: Each guardian must only bank 10 motes.',
+      'Encounter 1: Leave double Cyclops spawns alive.',
       'Encounter 2: Everyone tether within 5s of each other.',
-      'Encounter 1: Leave double Cyclops spawns alive.'
+      'Encounter 3: Each guardian must only bank 10 motes.',
     ];
 
     var startDate = moment('2019-11-27 01:00:00', 'YYYY-MM-DD H:mm:ss');

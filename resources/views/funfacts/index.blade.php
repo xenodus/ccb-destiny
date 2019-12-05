@@ -167,7 +167,7 @@ $(document).ready(function(){
 
           <div class="mb-3">
             <a class="btn btn-success <?=($type=='active'?'active':'non-active')?>" href="{{ route('funfact_web_admin', [$token, 'active']) }}" role="button">Active ({{$active_count}})</a>
-            <a class="btn btn-danger <?=($type=='disabled'?'active':'non-active')?>" href="{{ route('funfact_web_admin', [$token, 'disabled']) }}" role="button">Disabled ({{$deleted_count}})</a>
+            <!--a class="btn btn-danger <?=($type=='disabled'?'active':'non-active')?>" href="{{ route('funfact_web_admin', [$token, 'disabled']) }}" role="button">Disabled ({{$deleted_count}})</a-->
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFFModal">
               Create <i class="fas fa-plus fa-sm"></i>
