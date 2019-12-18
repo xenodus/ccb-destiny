@@ -4,8 +4,6 @@
 <section class="about-us text-center container-fluid mt-2 border-bottom border-dark">
   <div class="container mb-4 py-5" id="about-us-container">
 
-    <!--div class="text-left mb-4 text-yellow"><small>Note: Various Destiny 2 stats and game information may be broken temporarily as Bungie.Net API has been disabled during the Shadowkeep launch week.</small></div-->
-
     <div id="about-us-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="about-us-header-icon"></div>
       <h1>About Us</h1>
@@ -64,7 +62,7 @@
   </div>
 </section>
 
-<section id="weeklies" class="text-center container-fluid border-bottom border-dark">
+<!--section id="weeklies" class="text-center container-fluid border-bottom border-dark">
   <div class="container py-5 mb-4">
     <div id="milestones-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center">
       <div id="milestones-header-icon" class="mr-1"></div>
@@ -81,7 +79,7 @@
 
   <div class="loader"></div>
   <div class="loader-text mb-5">Fetching Milestones...</div>
-</section>
+</section-->
 
 <section id="guides" class="text-center container-fluid mb-4 border-bottom border-dark">
   <div class="container py-5">

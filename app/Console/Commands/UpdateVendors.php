@@ -130,6 +130,10 @@ class UpdateVendors extends Command
 
                 $this->info('Begin: Vendor Updates');
 
+                DB::table('vendor_sales')->delete(); // cleanup db
+                DB::table('vendor_sales_item_cost')->delete(); // cleanup db
+                DB::table('vendor_sales_item_perks')->delete(); // cleanup db
+
                 $vendor_data = json_decode($vendor_response->getBody()->getContents());
                 $vendor_data = collect($vendor_data);
 
@@ -291,6 +295,7 @@ class UpdateVendors extends Command
                     }
                 }
 
+                /*
                 $deletedRows1 = App\Classes\Vendor_Sales::where('date_added', '!=', $date_added)->delete();
                 $deletedRows2 = App\Classes\Vendor_Sales_Item_Perks::where('date_added', '!=', $date_added)->delete();
                 $deletedRows3 = App\Classes\Vendor_Sales_Item_Cost::where('date_added', '!=', $date_added)->delete();
@@ -298,6 +303,7 @@ class UpdateVendors extends Command
                 $this->info('Cleanup: '.$deletedRows1.' Vendor Sale Records Deleted');
                 $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
                 $this->info('Cleanup: '.$deletedRows3.' Vendor Sale Item Cost Records Deleted');
+                */
 
                 $this->info('Completed: Vendor Updates');
 

@@ -78,6 +78,12 @@
                   <div>Home</div>
                 </a>
               </li>
+              <li class="nav-item {{ (isset($active_page) && $active_page == 'weeklies') ? 'active' : ''  }}">
+                <a class="nav-link text-md-center" href="/weeklies">
+                  <i class="fas fa-info animated pulse slower infinite delay-0.5s"></i>
+                  <div>Weeklies</div>
+                </a>
+              </li>
               <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'clan_member_activities_listing', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/clan/lockouts">
                   <i class="ra ra-double-team"></i>

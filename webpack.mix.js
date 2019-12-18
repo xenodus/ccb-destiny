@@ -68,10 +68,14 @@ mix.scripts([
 
 // HOME PAGE
 mix.scripts([
-    'public/js/home/index.js',
     'public/js/home/index_news.js',
     'public/js/home/index_guides.js',
 ], 'public/js/compiled/index.js');
+
+// WEEKLIES
+mix.scripts([
+    'public/js/weeklies/weeklies.js',
+], 'public/js/compiled/weeklies.js');
 
 // GLORY CHEESE PAGE
 mix.scripts([

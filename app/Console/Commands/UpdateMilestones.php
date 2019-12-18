@@ -248,34 +248,47 @@ class UpdateMilestones extends Command
                 }
             }
 
-            // Strike / Heroic Story / Menagerie Modifiers
-            /*
-            if( $milestones->get( $this->strikeHash ) ) {
+            // Vanguard Strike + Normal Menagerie + Heroic Story
+            $character_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
+                ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+            );
+
+            if( $character_response->getStatusCode() == 200 ) {
+
                 DB::table('activity_modifiers')->where('type', 'strike')->delete(); // cleanup db
 
-                $strike = $milestones->get( $this->strikeHash );
+                $character = json_decode($character_response->getBody()->getContents());
+                $character = collect($character);
 
-                foreach($strike->activities as $activity) {
-                    if( isset( $activity->modifierHashes ) ) {
+                $strikeHash = '4252456044';
 
-                        foreach($activity->modifierHashes as $modifier_hash) {
-                            $am = new App\Classes\Activity_Modifier();
-                            $am->type = 'strike';
-                            $am->hash = $modifier_hash;
-                            $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
-                            $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
-                            $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                            $am->save();
+                if( isset($character['Response']) ) {
 
-                            $this->info('Inserted Strike / Story / Mena Modifier: ' . $am->name);
+                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($strikeHash) {
+                        return $v->activityHash == $strikeHash;
+                    });
+
+                    if( $search->count() > 0 ) {
+
+                        if( isset($search->first()->modifierHashes) ) {
+                            foreach($search->first()->modifierHashes as $modifier_hash) {
+
+                                $am = new App\Classes\Activity_Modifier();
+                                $am->type = 'strike';
+                                $am->hash = $modifier_hash;
+                                $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
+                                $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                                $am->save();
+
+                                $this->info('Inserted Heroic Strike Modifier: ' . $am->name);
+                            }
                         }
-
-                        break;
                     }
                 }
             }
-            */
 
             // Crucible Rotator
             if( $milestones->get( $this->crucibleRotator ) ) {
@@ -342,7 +355,7 @@ class UpdateMilestones extends Command
                         $am->type = 'flashpoint';
                         $am->hash = $flashpoint->availableQuests[0]->questItemHash;
                         $am->description = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->description;
-                        $am->name = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name;
+                        $am->name = str_replace('FLASHPOINT: ', '', $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name);
                         $am->icon = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->icon;
                         $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                         $am->save();
@@ -399,6 +412,90 @@ class UpdateMilestones extends Command
                 }
             }
 
+            // Reckoning Tier 3 Modifiers
+            $character_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
+                ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+            );
+
+            if( $character_response->getStatusCode() == 200 ) {
+
+                DB::table('activity_modifiers')->where('type', 'reckoning')->delete(); // cleanup db
+
+                $character = json_decode($character_response->getBody()->getContents());
+                $character = collect($character);
+
+                $reckoningHash = '1446606128';
+
+                if( isset($character['Response']) ) {
+
+                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($reckoningHash) {
+                        return $v->activityHash == $reckoningHash;
+                    });
+
+                    if( $search->count() > 0 ) {
+
+                        if( isset($search->first()->modifierHashes) ) {
+                            foreach($search->first()->modifierHashes as $modifier_hash) {
+
+                                $am = new App\Classes\Activity_Modifier();
+                                $am->type = 'reckoning';
+                                $am->hash = $modifier_hash;
+                                $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
+                                $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                                $am->save();
+
+                                $this->info('Inserted Reckoning Modifier: ' . $am->name);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Sundial Modifiers
+            $character_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
+                ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+            );
+
+            if( $character_response->getStatusCode() == 200 ) {
+
+                DB::table('activity_modifiers')->where('type', 'sundial')->delete(); // cleanup db
+
+                $character = json_decode($character_response->getBody()->getContents());
+                $character = collect($character);
+
+                $sundialHash = '787912925'; // Normal Difficulty
+
+                if( isset($character['Response']) ) {
+
+                    $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($sundialHash) {
+                        return $v->activityHash == $sundialHash;
+                    });
+
+                    if( $search->count() > 0 ) {
+
+                        if( isset($search->first()->modifierHashes) ) {
+                            foreach($search->first()->modifierHashes as $modifier_hash) {
+
+                                $am = new App\Classes\Activity_Modifier();
+                                $am->type = 'sundial';
+                                $am->hash = $modifier_hash;
+                                $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
+                                $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                                $am->save();
+
+                                $this->info('Inserted Sundial Modifier: ' . $am->name);
+                            }
+                        }
+                    }
+                }
+            }
+
             // Heroic Menagerie Modifiers
             $character_response = $client->get(
                 env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
@@ -413,12 +510,21 @@ class UpdateMilestones extends Command
                 $character = collect($character);
 
                 $menagerieHashes = [
-                    '2509539867',
-                    '2509539865',
-                    '2509539864',
+                    '2509539867' => [
+                        'name' => 'Hasapiko',
+                        'description' => 'The Boss for this week is Hasapiko, a Vex Minotaur. The related flawless triumph is, <u>Break a Leg</u>.'
+                    ],
+                    '2509539865' => [
+                        'name' => 'Pagouri',
+                        'description' => 'The Boss for this week is Pagouri, a Vex Hydra. The related flawless triumph is, <u>Lambs to the Slaughter</u>.'
+                    ],
+                    '2509539864' => [
+                        'name' => 'Arunak',
+                        'description' => 'The Boss for this week is Arunak, a Hive Ogre. The related flawless triumph is, <u>Uncontrolled Rage</u>.'
+                    ],
                 ];
 
-                foreach($menagerieHashes as $hash) {
+                foreach($menagerieHashes as $hash => $menagerieInfo) {
 
                     if( isset($character['Response']) ) {
 
@@ -429,6 +535,19 @@ class UpdateMilestones extends Command
                         if( $search->count() > 0 ) {
 
                             if( isset($activity_definitions[$hash]->modifiers) ) {
+
+                                // Specific Boss
+                                $am = new App\Classes\Activity_Modifier();
+                                $am->type = 'menagerie';
+                                $am->hash = $hash;
+                                $am->description = $menagerieInfo['description'];
+                                $am->name = 'Boss: ' . $menagerieInfo['name'];
+                                $am->icon = '/common/destiny2_content/icons/52c7544a41c3c7b2d0514991fe77d8b7.png';
+                                $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                                $am->save();
+
+                                $this->info('Inserted Heroic Menegerie Modifier: ' . $am->name);
+
                                 foreach($activity_definitions[$hash]->modifiers as $modifier) {
 
                                     $am = new App\Classes\Activity_Modifier();

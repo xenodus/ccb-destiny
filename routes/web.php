@@ -76,6 +76,9 @@ Route::get('/', 'HomeController@home')->name('home');
 Route::get('/milestones/refresh/{status?}', 'HomeController@setMilestoneRefresh')->name('setMilestoneRefresh');
 Route::get('/lightmode/{status?}', 'HomeController@setLightmode')->name('lightmode');
 
+// Weeklies
+Route::get('/weeklies', 'HomeController@weeklies')->name('weeklies');
+
 // Stats Display
 Route::redirect('/stats', '/stats/raid', 301);
 Route::get('/stats/raid', 'StatsController@raid')->name('stats_raid');

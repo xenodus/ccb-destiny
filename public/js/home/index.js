@@ -63,6 +63,11 @@ $(document).ready(function(){
         'Quest Step',
       ];
 
+      var bansheeFilter = [
+        'Solstice of Heroes Warlock Armor Upgrade',
+        'Additional Bounties'
+      ];
+
       var spiderRareBounty = [
         'WANTED: Combustor Valus',
         'WANTED: Arcadian Chord',
@@ -87,7 +92,7 @@ $(document).ready(function(){
 
         spider_powerful_bounty = data.filter(function(item){ return item.vendor_hash == vendorHash['Spider'] && item.itemTypeDisplayName == 'Weekly Bounty' && spiderRareBounty.includes(item.name) });
 
-        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' && item.name != 'Solstice of Heroes Warlock Armor Upgrade' });
+        banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' && bansheeFilter.includes(item.name) == false });
 
         xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
 
@@ -289,85 +294,85 @@ $(document).ready(function(){
   }
 
   var nightfall_loot = {
-    'Nightfall: Tree of Probabilities': {
+    'Tree of Probabilities': {
       'name': 'D.F.A.',
       'icon': '/common/destiny2_content/icons/6e692a14162839d0489e11cf9d84746e.jpg',
       'description': '"Osiris said that he started to pity the Red Legion, getting trapped in here for infinite eternities. I think they\'re getting exactly what they deserve." —Sagira',
       'type': 'Legendary Hand Cannon'
     },
-    'Nightfall: Strange Terrain': {
+    'Strange Terrain': {
       'name': 'BrayTech Osprey',
       'icon': '/common/destiny2_content/icons/659ebe95206951d7c97022b47a93c459.jpg',
       'description': 'Expected Use Timeframe: UNKNOWN.',
       'type': 'Legendary Rocket Launcher'
     },
-    'Nightfall: Savathûn\'s Song': {
+    'Savathûn\'s Song': {
       'name': 'Duty Bound',
       'icon': '/common/destiny2_content/icons/0497af906c184a43fa7e2accae899c35.jpg',
       'description': '"Due respect, Commander? I was there when the Hive found us on Earth. I was there when we stopped them on Titan. And I\'ll be there when we wipe them out." —Sloane',
       'type': 'Legendary Auto Rifle'
     },
-    'Nightfall: The Pyramidion': {
+    'The Pyramidion': {
       'name': 'Silicon Neuroma',
       'icon': '/common/destiny2_content/icons/77364d95fdc16bb1d23f6f00817dc6ab.jpg',
       'description': '"My future is concurrently irreversible and unknowable. Before it overtakes me, I desire a more abrupt end to those responsible." —Asher Mir',
       'type': 'Legendary Sniper Rifle'
     },
-    'Nightfall: The Arms Dealer': {
+    'The Arms Dealer': {
       'name': 'Tilt Fuse',
       'icon': '/common/destiny2_content/icons/a2dd642b18b15f764db069f845f5173c.jpg',
       'description': '"[whistle] With a few more revs, Zahn woulda turned this thing into the fastest bomb you never saw. Good thing for all of us he never got the chance." —Amanda Holliday',
       'type': 'Exotic Sparrow'
     },
-    'Nightfall: Exodus Crash': {
+    'Exodus Crash': {
       'name': 'Impact Velocity',
       'icon': '/common/destiny2_content/icons/4d0ecd27dd8a6d02a8a0f3b2618a097e.jpg',
       'description': '"Captain, this conveyance\'s top speed is a fraction of the Exodus Black\'s when it crashed into Nessus!" "Try not to find out for yourself." —Failsafe',
       'type': 'Exotic Sparrow'
     },
-    'Nightfall: The Inverted Spire': {
+    'The Inverted Spire': {
       'name': 'Trichromatica',
       'icon': '/common/destiny2_content/icons/bb72e6b7b2a7ac6165431d4a47171b2f.jpg',
       'description': '"Void, Solar, then Arc. Hmm. We\'re not naive enough to think the order is a coincidence. But we\'ve got bigger things to worry about." —Zavala',
       'type': 'Exotic Ghost Shell'
     },
-    'Nightfall: A Garden World': {
+    'A Garden World': {
       'name': 'Universal Wavefunction',
       'icon': '/common/destiny2_content/icons/d6c77755df5761e5626b052d440cf5c7.jpg',
       'description': '"I believed your presence at the genesis of the Infinite Forest would lead to a comprehensive understanding of the Vex. When will I learn that things are never so simple?" —Ikora',
       'type': 'Exotic Ship'
     },
-    'Nightfall: Lake of Shadows': {
+    'Lake of Shadows': {
       'name': 'The Militia\'s Birthright',
       'icon': '/common/destiny2_content/icons/39b67dae56153d70e935bfad21faecc7.jpg',
       'description': '"Earth is our home. Not Mars, not Venus, not even the Reef. We must ensure it is a place we can continue to live for many generations to come." —Devrim Kay',
       'type': 'Legendary Grenade Launcher'
     },
-    'Nightfall: Will of the Thousands': {
+    'Will of the Thousands': {
       'name': 'Worm God Incarnation',
       'icon': '/common/destiny2_content/icons/2d6ff9e9e65253a82ec0856f310e2b94.jpg',
       'description': 'Modifications for your ship\'s transmat systems, so you\'ll always arrive in style.',
       'type': 'Legendary Transmat Effect'
     },
-    'Nightfall: The Insight Terminus': {
+    'The Insight Terminus': {
       'name': 'The Long Goodbye',
       'icon': '/common/destiny2_content/icons/fe07633a2ee87f0c00d5b0c0f3838a7d.jpg',
       'description': 'Yeah… I lost a lot of these out on Nessus. Long story. Lots of dead Vex." —The Drifter',
       'type': 'Legendary Sniper Rifle'
     },
-    'Nightfall: The Hollowed Lair': {
+    'The Hollowed Lair': {
       'name': 'Mindbender\'s Ambition',
       'icon': '/common/destiny2_content/icons/0d39a47ea705e188a3674fa5f41b99a5.jpg',
       'description': '"Hiraks always did like to leave an impression." —The Spider',
       'type': 'Legendary Shotgun'
     },
-    'Nightfall: Warden of Nothing': {
+    'Warden of Nothing': {
       'name': 'Warden\'s Law',
       'icon': '/common/destiny2_content/icons/89a68f864854dd80155eb194ee8f5cb7.jpg',
       'description': 'Fight. Win. Li- Li- Li- Li- Li- FATAL EXCEPTION HAS OCCURRED AT 0028:C001E36',
       'type': 'Legendary Hand Cannon'
     },
-    'Nightfall: The Corrupted': {
+    'The Corrupted': {
       'name': 'Horror\'s Least',
       'icon': '/common/destiny2_content/icons/c5454c80b15ecb3b3abf2d69d4bfe5ff.jpg',
       'description': '"Some things should not be saved." —Techeun Sedia',
@@ -710,7 +715,7 @@ $(document).ready(function(){
 
     return [{
       name: 'Mission: ' + Object.keys(weeklyDCMission)[index],
-      icon: '/common/destiny2_content/icons/a6ce21a766375f5bcfb6cc01b093a383.png',
+      icon: '/common/destiny2_content/icons/43541be45952e7eec59b7b57a0bf15a3.png',
       description: weeklyDCMission[ Object.keys(weeklyDCMission)[index] ]
     }];
   }
@@ -784,11 +789,7 @@ $(document).ready(function(){
       }
     }
 
-    var boss = [{
-      name: 'Boss: ' + menagerieBosses[index].name,
-      icon: '/common/destiny2_content/icons/52c7544a41c3c7b2d0514991fe77d8b7.png',
-      description: menagerieBosses[index].description
-    }];
+    var boss = [];
 
     return boss.concat(modifiers);
   }

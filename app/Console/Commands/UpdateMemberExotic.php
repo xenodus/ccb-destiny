@@ -56,7 +56,9 @@ class UpdateMemberExotic extends Command
                 3573051804, // le monarque
                 1642951312, // trinity ghoul
                 3584311877, // jotuun
-                1642951314  // lord of wolves
+                1642951314, // lord of wolves
+                47014674,   // Symmetry
+                2190071629  // Devil's Ruin
             ],
             'power' => [
                 888224289,  // deathbringer
@@ -107,7 +109,8 @@ class UpdateMemberExotic extends Command
                 860077155,  // Wings of Sacred Dawn
                 875969610,  // Geomag Stabilizers
                 875969609,  // Lunafaction Boots
-                875969608   // Transversive Steps
+                875969608,  // Transversive Steps
+                875969611   // Promethium Spur
             ],
             'hunter' => [
                 899828456,  // Assassin's Cowl
@@ -135,7 +138,8 @@ class UpdateMemberExotic extends Command
                 975121094,  // Gemini Jester
                 975121093,  // Lucky Pants
                 975121092,  // Orpheus Rig
-                975121095   // St0mp-EE5
+                975121095,  // St0mp-EE5
+                975121088   // The Bombardiers
             ],
             'titan' => [
                 3073431847, // PHOENIX CRADLE
@@ -163,7 +167,8 @@ class UpdateMemberExotic extends Command
                 2471990489, // Lion Rampant
                 2471990490, // Mk. 44 Stand Asides
                 2471990488, // Peacekeepers
-                657854178   // Peregrine Greaves
+                657854178,  // Peregrine Greaves
+                3934937988  // Severance Enclosure
             ],
         ]
     ];

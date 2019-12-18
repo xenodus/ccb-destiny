@@ -17,14 +17,26 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      $post = Post::published()
-                ->with('taxonomies')
-                ->with('attachment')
-                ->find(260);
+      $data['site_title'] = 'TEMP TESTING ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'home';
 
-      dd($post->acf->event_date);
+      // Extra Stats
+      $cache_time = 15 * 60;
+      $data['raids_completed'] = Cache::remember('home_raids_completed', $cache_time, function () {
+        return App\Classes\Raid_Stats::get_total_raids_completed();
+      });
 
-      dd('the end...');
+      $data['pve_kills'] = Cache::remember('home_pve_kills', $cache_time, function () {
+        return App\Classes\Pve_Stats::get_total_kills();
+      });
+
+      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
+        return App\Classes\Clan_Member::get();
+      });
+
+      $data['clan_members_count'] = $data['clan_members']->count();
+
+      return view('home_temp', $data);
     }
 
     public function process_join_us(Request $request)
@@ -102,6 +114,14 @@ class HomeController extends Controller
       $data['clan_members_count'] = $data['clan_members']->count();
 
       return view('home', $data);
+    }
+
+    public function weeklies()
+    {
+      $data['site_title'] = 'Weeklies / Dailies | ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'weeklies';
+
+      return view('weeklies.weeklies', $data);
     }
 
     public function raids()

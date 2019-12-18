@@ -20,12 +20,13 @@ class UpdateSeals extends Command
       'Dredgen' => 3798931976,
       'Wayfarer' => 2757681677,
       'Blacksmith' => 2053985130,
-      'Shadow' => 1883929036,
       'Reckoner' => 1313291220,
+      'Shadow' => 1883929036,
       'MMXIX' => 2254764897,
       'Undying' => 2707428411,
       'Harbinger' => 3793754396,
-      'Enlightened' => 3387213440
+      'Enlightened' => 3387213440,
+      'Savior' => 2460356851
     ];
 
     /**
@@ -62,6 +63,8 @@ class UpdateSeals extends Command
         $error = false;
         $failures = [];
         $results = [];
+
+        $this->seal_hash = array_reverse($this->seal_hash);
 
         $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
         $clan_members = \App\Classes\Clan_Member::get();

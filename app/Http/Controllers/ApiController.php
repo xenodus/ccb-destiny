@@ -65,10 +65,533 @@ class ApiController extends Controller
             'milestones' => $activity_modifiers,
             'nightfalls' => $nightfalls,
             'vendor_sales' => $vendor_sales,
-            'xur_sales_item_perks' => $xur_sales_item_perks
+            'xur_sales_item_perks' => $xur_sales_item_perks,
+            'escalation_protocol' => $this->get_escalation_protocol(),
+            'ascendant_challenge' => $this->get_ascendant_challenge(),
+            'dreaming_city_curse_level' => $this->get_dc_curse_level(),
+            'dreaming_city_mission' => $this->get_dc_mission(),
+            'whisper_singe' => $this->get_whisper_singe(),
+            'outbreak_singe' => $this->get_outbreak_singe(),
+            'reckoning' => $this->get_reckoning(),
+            'gos_challenge' => $this->get_gos_challenge(),
+            'altar_of_sorrows' => $this->get_altar_of_sorrows()
         ];
 
         return response()->json($milestones);
+    }
+
+    public static function get_escalation_protocol() {
+
+      $epRotations = [
+        [
+          'boss' => 'Kathok, Roar of Xol',
+          'name' => 'IKELOS_SMG_v1.0.1',
+          'icon' => '/common/destiny2_content/icons/85ad82abdfc13537325b45a85d6f4462.jpg'
+        ],
+        [
+          'boss' => 'Damkath, The Mask',
+          'name' => 'IKELOS_SR_v1.0.1',
+          'icon' => '/common/destiny2_content/icons/52630df015ef0e839555982c478d78f3.jpg'
+        ],
+        [
+          'boss' => 'Naksud, the Famine',
+          'name' => 'All 3 Weapons',
+          'icon' => '/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg'
+        ],
+        [
+          'boss' => 'Bok Litur, Hunger of Xol',
+          'name' => 'All 3 Weapons',
+          'icon' => '/common/destiny2_content/icons/d316fa414f16795f5f0674a35d2bdae7.jpg'
+        ],
+        [
+          'boss' => 'Nur Abath, Crest of Xol',
+          'name' => 'IKELOS_SG_v1.0.1',
+          'icon' => '/common/destiny2_content/icons/edfdd807c9d604e80b48ad8fe39c8f36.jpg'
+        ]
+      ];
+
+      $startDate = Carbon::create(2019, 1, 16, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($epRotations) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => $epRotations[$index]['name'],
+        'icon' => $epRotations[$index]['icon'],
+        'description' => 'Boss: ' . $epRotations[$index]['boss']
+      ];
+    }
+
+    public static function get_ascendant_challenge() {
+
+      $acRotations = [
+        [
+          'name' => 'Gardens of Esila',
+          'description' => 'At the overlook\'s edge, the garden grows onward.'
+        ],
+        [
+          'name' => 'Spine of Keres',
+          'description' => 'Climb the bones and you\'ll find your ruin.'
+        ],
+        [
+          'name' => 'Harbinger’s Seclude',
+          'description' => 'Crush the first queen\'s crown beneath your bootheel.'
+        ],
+        [
+          'name' => 'Bay of Drowned Wishes',
+          'description' => 'Drown in your wishes, dear squanderer.'
+        ],
+        [
+          'name' => 'Chamber of Starlight',
+          'description' => 'Starlight, star bright, first untruth she\'ll craft tonight...'
+        ],
+        [
+          'name' => 'Aphelion’s Rest',
+          'description' => 'They call it a \'rest\', but it is more truly a haunt.'
+        ],
+      ];
+
+      $startDate = Carbon::create(2019, 1, 16, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($acRotations) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => 'Ascendant: ' . $acRotations[$index]['name'],
+        'icon' => '/common/destiny2_content/icons/2f9e7dd03c415eb158c16bb59cc24c84.jpg',
+        'description' => $acRotations[$index]['description']
+      ];
+    }
+
+    public static function get_dc_mission() {
+
+      $dcMissionRotations = [
+        [
+          'name' => 'Broken Courier',
+          'description' => 'Respond to a distress call in the Strand.'
+        ],
+        [
+          'name' => 'Oracle Engine',
+          'description' => 'The Taken threaten to take control of an irreplaceable Awoken communications device.'
+        ],
+        [
+          'name' => 'Dark Monastery',
+          'description' => 'Provide recon for Petra\'s forces by investigating strange enemy activity in Rheasilvia.'
+        ]
+      ];
+
+      $startDate = Carbon::create(2019, 1, 16, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($dcMissionRotations) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => 'Mission: ' . $dcMissionRotations[$index]['name'],
+        'icon' => '/common/destiny2_content/icons/43541be45952e7eec59b7b57a0bf15a3.png',
+        'description' => $dcMissionRotations[$index]['description']
+      ];
+    }
+
+    public static function get_dc_curse_level() {
+
+      $curseLevel = [
+          'Low',
+          'Medium',
+          'High'
+      ];
+
+      $startDate = Carbon::create(2019, 1, 16, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($curseLevel) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      $description = 'The curse level is <u>'.strtolower($curseLevel[$index]).'</u> in the Dreaming City.';
+
+      return [
+        'name' => 'Curse Level: ' . $curseLevel[$index],
+        'icon' => '/common/destiny2_content/icons/8f755eb3a9109ed7adfc4a8b27871e7a.png',
+        'description' => $description
+      ];
+    }
+
+    public static function get_whisper_singe() {
+
+      $whisperSinges = [
+        [
+          'name' => 'Void',
+          'icon' => '/common/destiny2_content/icons/150c14552f0138feadcc157571e0b0e6.png',
+          'description' => 'Void damage increases slightly from all sources.'
+        ],
+        [
+          'name' => 'Arc',
+          'icon' => '/common/destiny2_content/icons/ee1536e4ab72c6286ab68980d1ce6ecb.png',
+          'description' => 'Arc damage increases slightly from all sources.'
+        ],
+        [
+          'name' => 'Solar',
+          'icon' => '/common/destiny2_content/icons/608fb3a03d42f16f85788abe799b0af0.png',
+          'description' => 'Solar damage increases slightly from all sources.'
+        ],
+      ];
+
+      $startDate = Carbon::create(2019, 7, 31, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($whisperSinges) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => $whisperSinges[$index]['name'] . ' Singe',
+        'icon' => '/common/destiny2_content/icons/b760b737519af909e26f21009d6a1487.jpg',
+        'description' => $whisperSinges[$index]['description']
+      ];
+    }
+
+    public static function get_outbreak_singe() {
+
+      $outbreakSinges = [
+        'Void',
+        'Arc',
+        'Solar'
+      ];
+
+      $startDate = Carbon::create(2019, 5, 8, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($outbreakSinges) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => $outbreakSinges[$index] . ' Configuration',
+        'icon' => '/common/destiny2_content/icons/c013e41cdb32779bc2322337614ea06b.jpg',
+        'description' => 'The configuration type is <u class="color-'.strtolower($outbreakSinges[$index]).'">'.strtolower($outbreakSinges[$index]).'</u> for Zero Hour (Heroic).'
+      ];
+    }
+
+    public static function get_reckoning() {
+
+      $bosses = [
+        'Sword Knights',
+        'Likeness of Oryx'
+      ];
+
+      $startDate = Carbon::create(2019, 5, 29, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($bosses) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      if( $index == 0 )
+        $description = 'The bosses for this week\'s reckoning activity are the <u>' . $bosses[$index] . '</u>.';
+      else
+        $description = 'The boss for this week\'s reckoning activity is the <u>' . $bosses[$index] . '</u>.';
+
+      $data[] = [
+        'name' => 'Tier 2/3 Boss: ' . $bosses[$index],
+        'icon' => '/common/destiny2_content/icons/fc31e8ede7cc15908d6e2dfac25d78ff.png',
+        'description' => $description
+      ];
+
+      if( $index == 0 ) {
+        $data[] = [
+            [
+              "name" => "Lonesome",
+              "description" => "Kinetic Sidearm<br/><br/>Am I the only one who sees?",
+              "icon" => "/common/destiny2_content/icons/abd91ac904ddb37308898c9a5fd38b02.jpg",
+            ],
+            [
+              "name" => "Night Watch",
+              "description" => "Kinetic Scout Rifle<br/><br/>Sleep with both eyes open.",
+              "icon" => "/common/destiny2_content/icons/f32f6b8896ca5b2684c6e02d447f5182.jpg",
+            ],
+            [
+              "name" => "Sole Survivor",
+              "description" => "<span class='color-arc'>Arc</span> Sniper Rifle<br/><br/>Names mean nothing to the dead.",
+              "icon" => "/common/destiny2_content/icons/0ae824a841009f28327d905c0610b03c.jpg",
+            ],
+            [
+              "name" => "Last Man Standing",
+              "description" => "<span class='color-solar'>Solar</span> Shotgun<br/><br/>Call me Ozymandias.",
+              "icon" => "/common/destiny2_content/icons/d39006fe5498ec8720622da5a31dd066.jpg",
+            ],
+            [
+              "name" => "Just in Case (Tier 3 Only)",
+              "description" => "<span class='color-solar'>Solar</span> Sword<br/><br/>Even contingencies need contingencies.",
+              "icon" => "/common/destiny2_content/icons/c32e9275a505a1e39bfc146dca3702b6.jpg",
+            ]
+        ];
+      }
+      else {
+        $data[] = [
+            [
+              "name" => "Spare Rations",
+              "description" => "Kinetic Hand Cannon<br/><br/>Whether times are lean or fat.",
+              "icon" => "/common/destiny2_content/icons/7106d949c81a1b2b281964ae2184d6b2.jpg",
+            ],
+            [
+              "name" => "Bug-Out Bag",
+              "description" => "<span class='color-solar'>Solar</span> SMG<br/><br/>Grab and go.",
+              "icon" => "/common/destiny2_content/icons/870aa58f8314ca60ec3075f937735885.jpg",
+            ],
+            [
+              "name" => "Outlast",
+              "description" => "<span class='color-solar'>Solar</span> Pulse Rifle<br/><br/>No such word as extinction.",
+              "icon" => "/common/destiny2_content/icons/7967ce5273a19ca50fe3ec1fd1b1b375.jpg",
+            ],
+            [
+              "name" => "Gnawing Hunger",
+              "description" => "<span class='color-void'>Void</span> Auto Rifle<br/><br/>Don't let pride keep you from a good meal.",
+              "icon" => "/common/destiny2_content/icons/48037e6416c3c9da07030a72931e0ca9.jpg",
+            ],
+            [
+              "name" => "Doomsday (Tier 3 Only)",
+              "description" => "<span class='color-arc'>Arc</span> Grenade Launcher<br/><br/>The age-old chant: The end of days draws nigh.",
+              "icon" => "/common/destiny2_content/icons/f689eb2328e786599701352b9c01b64d.jpg",
+            ],
+        ];
+      }
+
+      return $data;
+    }
+
+    public static function get_gos_challenge() {
+
+      $challenges = [
+        [
+          'name' => 'Zero to One Hundred',
+          'description' => 'Encounter 4: Bank 30 motes within 10s for each relay. 3 guardians with 10 motes each bank one after another.'
+        ],
+        [
+          'name' => 'Staying Alive',
+          'description' => 'Encounter 1: Leave double Cyclops spawns alive.'
+        ],
+        [
+          'name' => 'A Link on The Chain',
+          'description' => 'Encounter 2: Everyone tether within 5s of each other.'
+        ],
+        [
+          'name' => 'To The Top',
+          'description' => 'Encounter 3: Each guardian must only bank 10 motes.'
+        ],
+      ];
+
+      $startDate = Carbon::create(2019, 11, 27, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($challenges) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      return [
+        'name' => $challenges[$index]['name'],
+        'icon' => '/common/destiny2_content/icons/6c13fd357e95348a3ab1892fc22ba3ac.png',
+        'description' => $challenges[$index]['description']
+      ];
+    }
+
+    public static function get_altar_of_sorrows() {
+
+      $altarRotations = [
+        [
+          'name' => 'Apostate',
+          'icon' => '/common/destiny2_content/icons/b990412136d220fd641078418a4903fe.jpg',
+          'description' => '<span class=\'color-arc\'>Arc</span> Sniper Rifle<br/><br/>"Survival is our most holy writ. Heterodoxy will be its own undoing." — Kuldax',
+          'boss' => 'Nightmare of Taniks (Fallen Captain)'
+        ],
+        [
+          'name' => 'Heretic',
+          'icon' => '/common/destiny2_content/icons/eaf113dbb5cea03526009e6030b8c8ee.jpg',
+          'description' => '<span class=\'color-arc\'>Arc</span> Rocker Launcher<br/><br/>"Death is only and forever an ending. All else is sacrilege." — Kuldax',
+          'boss' => 'Nightmare of Zydron (Vex Minotaur)'
+        ],
+        [
+          'name' => 'Blasphemer',
+          'icon' => '/common/destiny2_content/icons/2f61559b7c57894703b6aaa52a44630c.jpg',
+          'description' => 'Kinetic Shotgun<br/><br/>"The logic is ineluctable: Those who die deserve oblivion." — Kuldax',
+          'boss' => 'Nightmare of Phogoth (Hive Ogre)'
+        ],
+      ];
+
+      $startDate = Carbon::create(2019, 11, 18, 1, 0, 0);
+      $currDate = Carbon::now();
+
+      $index = 0;
+      $found = false;
+
+      while($found == false) {
+
+        // Reset rotations
+        if( $index == count($altarRotations) ) {
+          $index = 0;
+        }
+
+        $nextWeek = $startDate->copy()->addDays(7);
+
+        if( $currDate->between($startDate, $nextWeek) ) {
+          $found = true;
+        }
+        else {
+          $startDate = $nextWeek;
+          $index++;
+        }
+      }
+
+      $data[] = [
+        'name' => $altarRotations[$index]['boss'],
+        'icon' => '/common/destiny2_content/icons/58bf5b93ae8cfefc55852fe664179757.png',
+        'description' => 'The final boss is ' . $altarRotations[$index]['boss']
+      ];
+
+      $data[] = $altarRotations[$index];
+
+      return $data;
     }
 
     function refresh_cache() {
