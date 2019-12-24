@@ -35,7 +35,7 @@ $(document).ready(function(){
             if( raidData ) {
               tableData.push({
                 membershipId: memberData[i].destinyUserInfo.membershipId,
-                name: memberData[i].destinyUserInfo.displayName+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+                name: _.escape(memberData[i].destinyUserInfo.displayName)+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
                 levi: ( raidData.levi == 0 && raidData.levip ==0 ) ? 0 : ( raidData.levi + raidData.levip + "<div class='mx-1'><small>N: " + raidData.levi + " <span class='ml-1'>P: " + raidData.levip + "</span></small></div>" ),
                 eow: ( raidData.eow == 0 && raidData.eowp == 0 ) ? 0 : ( raidData.eow + raidData.eowp + "<div class='mx-1'><small>N: " + raidData.eow + " <span class='ml-1'>P: " + raidData.eowp + "</span></small></div>" ),
                 sos: ( raidData.sos == 0 && raidData.sosp == 0 ) ? 0 : ( raidData.sos + raidData.sosp + "<div class='mx-1'><small>N: " + raidData.sos + " <span class='ml-1'>P: " + raidData.sosp + "</span></small></div>" ),
@@ -53,7 +53,7 @@ $(document).ready(function(){
             else {
               tableData.push({
                 membershipId: memberData[i].destinyUserInfo.membershipId,
-                name: memberData[i].destinyUserInfo.displayName+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+                name: _.escape(memberData[i].destinyUserInfo.displayName)+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
                 levi: 0,
                 levip: 0,
                 eow: 0,
@@ -91,7 +91,7 @@ $(document).ready(function(){
             data:tableData,
             layout:"fitColumns",
             columns:[
-              {title:"Name", field:"name", formatter:"html", formatterParams: format, frozen:true},
+              {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
               {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
               {title:"Levi", field:"levi", headerSort:false, formatter:"html", cssClass: 'text-center'},
               {title:"EOW", field:"eow", headerSort:false, formatter:"html", cssClass: 'text-center'},
@@ -111,7 +111,7 @@ $(document).ready(function(){
             ],
             layout:"fitDataFill",
             height:"500px",
-            resizableColumns:false,
+            resizableColumns:true,
           });
 
           $("#nameFilter").on("input", function(){

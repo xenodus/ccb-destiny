@@ -79,7 +79,7 @@ $(document).ready(function(){
     data:tableData, //assign data to table
     layout:"fitColumns", //fit columns to width of table (optional)
     columns:[ //Define Table Columns
-      {title:"Name", field:"name", formatter:"html", frozen:true, cssClass: 'member_name'},
+      {title:"Name", field:"name", frozen:true, cssClass: 'member_name'},
       {title:"Member ID", field:"id", visible: false, cssClass: 'member_id'},
       {title:"Buddy ID", field:"buddy_id", visible: false, cssClass: 'buddy_id'},
       {title:"No. 1 Buddy", field:"buddy_name", cssClass: 'buddy_name'},

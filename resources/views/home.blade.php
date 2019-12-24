@@ -116,6 +116,5 @@
 @endsection
 
 @section('footer')
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{{ mix('/js/compiled/index.js') }}"></script>
 @endsection

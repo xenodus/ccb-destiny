@@ -20,7 +20,7 @@ $(document).ready(function(){
 
         var tableData = [];
         var tableColumns = [
-          {title:"Name", field:"name", formatter:"html", frozen:true},
+          {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
         ];
 
         for(var i=0; i<sealData.length; i++) {
@@ -32,7 +32,7 @@ $(document).ready(function(){
           var steamID = txt.value;
 
           var tableDataEntry = {
-            name: steamID + '<a href="/clan/seals/member/'+sealData[i].id+'/'+slugify(steamID)+'/" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+            name: _.escape(steamID) + '<a href="/clan/seals/member/'+sealData[i].id+'/'+slugify(steamID)+'/" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
           };
 
           var memberSealData = JSON.parse( sealData[i].data );

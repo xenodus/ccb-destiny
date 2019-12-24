@@ -19,7 +19,7 @@ $(document).ready(function(){
         $.get('/clan/exotics/get', function(exoticData){
           var tableData = [];
           var tableColumns = [
-            {title:"Name", field:"name", frozen:true, widthGrow:1},
+            {title:"Name", field:"name", frozen:true, widthGrow:1, minWidth:180},
             {title:"Weapon", field:"missingWeapons", formatter:"html", widthGrow:1, headerSort:false},
             {title:"Warlock", field:"missingArmorsWarlock", formatter:"html", widthGrow:1, headerSort:false},
             {title:"Titan", field:"missingArmorsTitan", formatter:"html", widthGrow:1, headerSort:false},
@@ -38,7 +38,7 @@ $(document).ready(function(){
             var steamID = txt.value;
 
             var tableDataEntry = {
-              name: steamID
+              name: _.escape(steamID)
             };
 
             var missingWeapons = [];
@@ -155,7 +155,7 @@ $(document).ready(function(){
               {column:"name", dir:"asc"},
             ],
             layout:"fitDataFill",
-            resizableColumns:false,
+            resizableColumns:true,
           });
 
           $('[data-toggle="tooltip"]').tooltip();

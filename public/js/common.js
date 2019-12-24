@@ -97,7 +97,7 @@ function checkMembersOnline() {
       member_activities = _.sortBy(member_activities, ['latestActivity', 'name']);
 
       for(var i=0; i<member_activities.length; i++) {
-        tableHtml += '<tr><td class="pl-1 pr-1">'+member_activities[i].name+'</td><td class="pl-1 pr-1">'+member_activities[i].latestActivity+'</td><td class="pl-1 pr-1">'+member_activities[i].lastSeen+'</td></tr>';
+        tableHtml += '<tr><td class="pl-1 pr-1">'+_.escape(member_activities[i].name)+'</td><td class="pl-1 pr-1">'+member_activities[i].latestActivity+'</td><td class="pl-1 pr-1">'+member_activities[i].lastSeen+'</td></tr>';
       }
 
       tableHtml += '</table>';

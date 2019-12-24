@@ -73,7 +73,7 @@
 @endsection
 
 @section('footer')
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{{ mix('/js/compiled/weeklies.js') }}"></script>
-<!--script src="/js/weeklies/weeklies.js?<?=time()?>"></script-->
+<!--script src="../node_modules/masonry-layout/dist/masonry.pkgd.min.js?<?=time()?>"></script>
+<script src="/js/weeklies/weeklies.js?<?=time()?>"></script-->
 @endsection

@@ -569,6 +569,55 @@ class UpdateMilestones extends Command
                 }
             }
 
+            // Nightmare Hunts
+            $character_response = $client->get(
+                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'?components=204',
+                ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
+            );
+
+            if( $character_response->getStatusCode() == 200 ) {
+
+                DB::table('activity_modifiers')->where('type', 'nightmare_hunt')->delete(); // cleanup db
+
+                $character = json_decode($character_response->getBody()->getContents());
+                $character = collect($character);
+
+                $nightmareHuntHashes = [
+                    '571058904'  => 'Omnigul',
+                    '1188363426' => 'Zydron, Gate Lord',
+                    '1342492675' => 'Phogoth',
+                    '1907493625' => 'Skolas, Kell of Kells',
+                    '2450170731' => 'Crota, Son of Oryx',
+                    '2639701103' => 'Fanatic',
+                    '3205253945' => 'Taniks, the Scarred.',
+                    '4098556693' => 'Dominus Ghaul'
+                ];
+
+                foreach($nightmareHuntHashes as $hash => $name) {
+
+                    if( isset($character['Response']) ) {
+
+                        $search = collect($character['Response']->activities->data->availableActivities)->filter(function($v) use ($hash) {
+                            return $v->activityHash == $hash;
+                        });
+
+                        if( $search->count() > 0 ) {
+
+                            $am = new App\Classes\Activity_Modifier();
+                            $am->type = 'nightmare_hunt';
+                            $am->hash = $hash;
+                            $am->description = $activity_definitions[$hash]->displayProperties->description;
+                            $am->name = $nightmareHuntHashes[$hash];
+                            $am->icon = '/common/destiny2_content/icons/58bf5b93ae8cfefc55852fe664179757.png';
+                            $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+                            $am->save();
+
+                            $this->info('Inserted NM Hunt: ' . $am->name);
+                        }
+                    }
+                }
+            }
+
             // Refresh Cache
             Cache::forget('milestones_activity_modifier');
             Cache::forever('milestones_activity_modifier', App\Classes\Activity_Modifier::get());

@@ -79,7 +79,7 @@ function makeTable(raidMap, raidLockoutData, memberData) {
       }
 
       tableData.push({
-        name: username + '<a href="https://raid.report/pc/'+raidLockoutData[i].id+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+        name: _.escape(username) + '<a href="https://raid.report/pc/'+raidLockoutData[i].id+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
         warlock: userData['warlock'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',
         hunter: userData['hunter'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',
         titan: userData['titan'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',

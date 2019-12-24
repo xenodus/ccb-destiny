@@ -177,6 +177,13 @@ $(document).ready(function(){
           weekliesItems.push( getVendorStr(flashpoint, 'Flashpoint') );
         }
 
+        // Nightmare Hunts
+        var nmHunts = milestonesData['milestones'].filter(function(d){ return d.type == 'nightmare_hunt' });
+
+        if( nmHunts.length > 0 ) {
+          weekliesItems.push( getVendorStr(nmHunts, 'Nightmare Hunts') );
+        }
+
         // Altar of Sorrows
         weekliesItems.push( getVendorStr(milestonesData['altar_of_sorrows'], 'Altars of Sorrow') );
 
@@ -373,6 +380,8 @@ $(document).ready(function(){
             gutter: '.gutter-sizer',
             percentPosition: true
           });
+
+          get_xur_location();
         }
       }
     });
@@ -669,7 +678,7 @@ $(document).ready(function(){
     $.get('/api/xur', function(data){
       if( data.location ) {
         $("a#xur-link").html(data.location+' <i class="fas fa-external-link-alt"></i>');
-        $('.grid').masonry('layout');
+        $('#weeklies-vendors-item-container.grid').masonry('layout');
       }
     });
   }

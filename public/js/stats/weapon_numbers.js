@@ -80,7 +80,7 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", frozen:true},
+              {title:"Name", field:"name", frozen:true, minWidth:180},
               {title:"Auto Rifle", field:"weaponKillsAutoRifle", formatter:"money", formatterParams: format},
               //{title:"Beam Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
               {title:"Bow", field:"weaponKillsBow", formatter:"money", formatterParams: format},
@@ -100,7 +100,7 @@ $(document).ready(function(){
             ],
             layout:"fitDataFill",
             height:"500px",
-            resizableColumns:false,
+            resizableColumns:true,
           });
 
           $("#nameFilter").on("input", function(){

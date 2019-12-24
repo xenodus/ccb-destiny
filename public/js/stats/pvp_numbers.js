@@ -126,7 +126,7 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", formatter:"money", formatterParams: format, frozen:true},
+              {title:"Name", field:"name", frozen:true, minWidth:180},
               {title:"KD", field:"kd", formatter:"money", formatterParams: {precision: 2}},
               {title:"KDA", field:"kda", formatter:"money", formatterParams: {precision: 2}},
               {title:"KAD", field:"kad", formatter:"money", formatterParams: {precision: 2}},
@@ -144,7 +144,7 @@ $(document).ready(function(){
             ],
             layout:"fitDataFill",
             height:"500px",
-            resizableColumns:false,
+            resizableColumns:true,
           });
 
           $("#nameFilter").on("input", function(){

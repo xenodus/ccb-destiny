@@ -68,12 +68,14 @@ mix.scripts([
 
 // HOME PAGE
 mix.scripts([
+    'node_modules/masonry-layout/dist/masonry.pkgd.js',
     'public/js/home/index_news.js',
     'public/js/home/index_guides.js',
 ], 'public/js/compiled/index.js');
 
 // WEEKLIES
 mix.scripts([
+    'node_modules/masonry-layout/dist/masonry.pkgd.js',
     'public/js/weeklies/weeklies.js',
 ], 'public/js/compiled/weeklies.js');
 

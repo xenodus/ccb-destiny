@@ -49,7 +49,7 @@ $(document).ready(function(){
       var steamID = txt.value;
 
       tableData.push({
-        name: steamID,
+        name: _.escape(steamID),
         warlock: warlock.length > 0 ? warlock[0].light : '-',
         hunter: hunter.length > 0 ? hunter[0].light : '-',
         titan: titan.length > 0 ? titan[0].light : '-',
@@ -92,7 +92,6 @@ $(document).ready(function(){
         ],
         height:"500px",
         resizableColumns:true,
-        // layoutColumnsOnNewData:true,
       });
 
       $("#nameFilter").on("input", function(){

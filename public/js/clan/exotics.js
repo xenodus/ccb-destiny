@@ -34,7 +34,7 @@ $(document).ready(function(){
             var steamID = txt.value;
 
             var tableDataEntry = {
-              name: steamID + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+              name: _.escape(steamID) + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
             };
 
             var missingWeapons = [];
@@ -152,7 +152,7 @@ $(document).ready(function(){
             ],
             layout:"fitDataFill",
             height: "600px",
-            resizableColumns:false,
+            resizableColumns:true,
           });
 
           $('[data-toggle="tooltip"]').tooltip();
