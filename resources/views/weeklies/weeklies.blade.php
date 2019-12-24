@@ -11,6 +11,14 @@
       </div>
     </div>
 
+    <div id="weeklies-event-item-container-wrapper">
+      <div class="weeklies-sub-header text-left d-flex align-items-center">
+        <img src="https://bungie.net/common/destiny2_content/icons/5659e5fc95912c079962376dfe4504ab.png" style="height: 40px; margin-right: 7px;">
+        Event
+      </div>
+      <div id="weeklies-event-item-container" class="grid row"></div>
+    </div>
+
     <div id="weeklies-raid-item-container-wrapper">
       <div class="weeklies-sub-header text-left d-flex align-items-center">
         <img src="https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_bfe80e3dafe6686a9dc42df0606bdc9b.png" style="height: 45px; margin-left: -5px;">
@@ -53,6 +61,7 @@
   </div>
 
   <style>
+    #weeklies-event-item-container-wrapper,
     #weeklies-raid-item-container-wrapper,
     #weeklies-vanguard-item-container-wrapper,
     #weeklies-gambit-item-container-wrapper,

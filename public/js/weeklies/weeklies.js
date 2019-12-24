@@ -5,9 +5,9 @@ $(document).ready(function(){
   function fetchMilestones() {
 
     $('section#weeklies > div.loader, section#weeklies > div.loader-text').show();
-    $('#weeklies-raid-item-container, #weeklies-vanguard-item-container, #weeklies-gambit-item-container, #weeklies-crucible-item-container, #weeklies-vendors-item-container').empty();
-    $('#weeklies-raid-item-container, #weeklies-vanguard-item-container, #weeklies-gambit-item-container, #weeklies-crucible-item-container, #weeklies-vendors-item-container').append('<div class="grid-sizer"></div><div class="gutter-sizer"></div>');
-    $('#weeklies-raid-item-container-wrapper, #weeklies-vanguard-item-container-wrapper, #weeklies-gambit-item-container-wrapper, #weeklies-crucible-item-container-wrapper, #weeklies-vendors-item-container-wrapper').hide();
+    $('#weeklies-event-item-container, #weeklies-raid-item-container, #weeklies-vanguard-item-container, #weeklies-gambit-item-container, #weeklies-crucible-item-container, #weeklies-vendors-item-container').empty();
+    $('#weeklies-event-item-container, #weeklies-raid-item-container, #weeklies-vanguard-item-container, #weeklies-gambit-item-container, #weeklies-crucible-item-container, #weeklies-vendors-item-container').append('<div class="grid-sizer"></div><div class="gutter-sizer"></div>');
+    $('#weeklies-event-item-container-wrapper, #weeklies-raid-item-container-wrapper, #weeklies-vanguard-item-container-wrapper, #weeklies-gambit-item-container-wrapper, #weeklies-crucible-item-container-wrapper, #weeklies-vendors-item-container-wrapper').hide();
     $('.tooltip').remove();
 
     $.get('/api/milestones', function(milestonesData){
@@ -75,6 +75,52 @@ $(document).ready(function(){
       console.log( milestonesData );
 
       if( data.length > 0 ) {
+
+        /*************************
+        ****** Special Vendor Section
+        *************************/
+
+        var weekliesItems = [];
+
+        // Xur
+        xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
+
+        if( xur_wares.length > 1 ) {
+          weekliesItems.push( getXurVendorStr(xur_wares, 'Xûr <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', milestonesData['xur_sales_item_perks']) );
+        }
+
+        // Eva Granny
+        eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null && item.name != 'Additional Bounties' });
+
+        if( eva_bounties.length > 0 ) {
+          weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante') );
+        }
+
+        if( weekliesItems.length > 0 ) {
+
+          // Append items to DOM
+          for(var i=0; i<weekliesItems.length; i++) {
+            $('#weeklies-event-item-container.grid').append( weekliesItems[i] );
+          }
+
+          // Enable tooltips
+          $('[data-toggle="tooltip"]').tooltip({
+            html: true
+          });
+
+          $('section#weeklies > div.loader, section#weeklies > div.loader-text').hide();
+          $('#weeklies-event-item-container-wrapper').fadeIn();
+
+          $('#weeklies-event-item-container.grid').masonry({
+            itemSelector: '.grid-item',
+            gutter: 0,
+            columnWidth: '.grid-sizer',
+            gutter: '.gutter-sizer',
+            percentPosition: true
+          });
+
+          get_xur_location();
+        }
 
         /*************************
         ****** Raid Section
@@ -314,13 +360,6 @@ $(document).ready(function(){
 
         var weekliesItems = [];
 
-        // Xur
-        xur_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Xur'] && item.itemTypeDisplayName != 'Challenge Card' && item.itemTypeDisplayName != 'Invitation of the Nine' });
-
-        if( xur_wares.length > 1 ) {
-          weekliesItems.push( getXurVendorStr(xur_wares, 'Xûr <small style="font-size: 70%;font-style: italic;"><a href="https://wherethefuckisxur.com/" target="_blank" id="xur-link">Where is Xur? <i class="fas fa-external-link-alt"></i></a></small>', 'vertical', milestonesData['xur_sales_item_perks']) );
-        }
-
         // Banshee
         banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' && bansheeFilter.includes(item.name) == false });
 
@@ -351,13 +390,6 @@ $(document).ready(function(){
           weekliesItems.push( getVendorStr(benedict_wares, 'Benedict 99-40') );
         }
 
-        // Eva Granny
-        eva_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Eva Levante'] && item.cost != null && item.name != 'Additional Bounties' });
-
-        if( eva_bounties.length > 0 ) {
-          weekliesItems.push( getVendorStr(eva_bounties, 'Eva Levante') );
-        }
-
         if( weekliesItems.length > 0 ) {
 
           // Append items to DOM
@@ -380,8 +412,6 @@ $(document).ready(function(){
             gutter: '.gutter-sizer',
             percentPosition: true
           });
-
-          get_xur_location();
         }
       }
     });
@@ -678,7 +708,7 @@ $(document).ready(function(){
     $.get('/api/xur', function(data){
       if( data.location ) {
         $("a#xur-link").html(data.location+' <i class="fas fa-external-link-alt"></i>');
-        $('#weeklies-vendors-item-container.grid').masonry('layout');
+        $('#weeklies-event-item-container.grid').masonry('layout');
       }
     });
   }
