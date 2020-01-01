@@ -6,6 +6,7 @@ $(document).ready(function(){
 
     for(var i=0; i<members.length; i++) {
 
+      // Past Steam IDs
       aliases = members[i].aliases.filter(function(alias){
         return alias.name != members[i].display_name;
       });
@@ -21,6 +22,7 @@ $(document).ready(function(){
         known_aliases = '';
       }
 
+      // BNet Name
       if( members[i].platform_profile[0] ) {
         blizzardDisplayName = members[i].platform_profile[0].blizzardDisplayName ? members[i].platform_profile[0].blizzardDisplayName : '';
       }
@@ -28,6 +30,7 @@ $(document).ready(function(){
         blizzardDisplayName = '';
       }
 
+      // Characters' Light
       if( members[i].characters.length > 0 )
         charExist = true;
 
@@ -50,6 +53,7 @@ $(document).ready(function(){
 
       tableData.push({
         name: steamID,
+        artifact_level: members[i].artifact_level,
         warlock: warlock.length > 0 ? warlock[0].light : '-',
         hunter: hunter.length > 0 ? hunter[0].light : '-',
         titan: titan.length > 0 ? titan[0].light : '-',
@@ -75,10 +79,11 @@ $(document).ready(function(){
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
           {title:"Name", field:"name", headerSort:false, minWidth:180},
+        {title:"Artifact", field:"artifact_level", cssClass: 'text-center' /*, headerSort:false*/ },
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false, cssClass: 'text-center'},
-          {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"}, headerSort:false},
+          {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"} /*, headerSort:false*/ },
           {title:"<div class='mx-3'>Exotics</div><small>Uncollected</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>PvP</div><small>Activities</small>", field:"pvp_activities", formatter: "html", cssClass: 'text-center', headerSort:false},

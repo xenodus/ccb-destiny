@@ -225,7 +225,7 @@ class UpdateMemberExotic extends Command
                 $n++;
 
                 $member_profile_response = $client->get(
-                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'/?components=800,104',
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->destinyUserInfo->membershipType.'/Profile/'.$member->destinyUserInfo->membershipId.'/?components=800,104',
                     ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
                 );
 
