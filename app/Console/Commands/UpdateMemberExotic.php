@@ -225,13 +225,18 @@ class UpdateMemberExotic extends Command
                 $n++;
 
                 $member_profile_response = $client->get(
-                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'/?components=800',
+                    env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.$member->destinyUserInfo->membershipId.'/?components=800,104',
                     ['headers' => ['X-API-Key' => env('BUNGIE_API')]]
                 );
 
                 if( $member_profile_response->getStatusCode() == 200 ) {
                     $member_profile = json_decode($member_profile_response->getBody()->getContents());
                     $member_profile = collect($member_profile);
+
+                    // Update Artifact Level
+                    $m = App\Classes\Clan_Member::find( $member->destinyUserInfo->membershipId );
+                    $m->artifact_level = $member_profile['Response']->profileProgression->data->seasonalArtifact->powerBonusProgression->level ?? 0;
+                    $m->save();
 
                     foreach($this->exoticHashes['weapons'] as $type => $ids) {
                         foreach($ids as $id) {

@@ -167,6 +167,12 @@ class UpdateMilestones extends Command
                             $am->hash = $modifier_hash;
                             $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
                             $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
+
+                            // Armsmaster is bugged atm and only returning anything, fusion, fusion
+                            if( $am->name == 'Armsmaster' ) {
+                                $am->description = 'Check for loadout restriction ingame. API is bugged and returning the wrong information.';
+                            }
+
                             $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
                             $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
 

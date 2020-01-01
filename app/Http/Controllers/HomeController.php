@@ -36,7 +36,7 @@ class HomeController extends Controller
 
       $data['clan_members_count'] = $data['clan_members']->count();
 
-      return view('home_temp', $data);
+      return view('temp', $data);
     }
 
     public function process_join_us(Request $request)
