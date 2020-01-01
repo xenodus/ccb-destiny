@@ -107,7 +107,7 @@ class UpdateLockouts extends Command
 
                     $client = new Client(); //GuzzleHttp\Client
                     $characters_activities_response = $client->get(
-                      env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
+                      env('BUNGIE_API_ROOT_URL').'/Destiny2/'.$member->membershipType.'/Account/'.$member->id.'/Character/'.$character->id.'/Stats/Activities?mode=4&count=250',
                       ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false]
                     );
 
