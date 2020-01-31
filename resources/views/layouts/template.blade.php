@@ -101,7 +101,7 @@
                       <a href="/clan/seals">Seal Completions</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'clan_exotic') ? 'active' : ''  }}">
-                      <a href="/clan/exotics">Uncollected Exotics</a>
+                      <a href="/clan/exotics">Exotic Collection</a>
                     </li>
                   </ul>
                 </div>

@@ -397,6 +397,17 @@ $(document).ready(function(){
                     }
                   }
                 }
+
+                // New intervalObjectives since Sundial Season
+                if( memberData.profileRecords.data.records[recordID].intervalObjectives ) {
+                  var intervalObjectivesCompleted = memberData.profileRecords.data.records[recordID].intervalObjectives.filter(function(obj){
+                    return obj.complete == true;
+                  }).length;
+
+                  if( intervalObjectivesCompleted == memberData.profileRecords.data.records[recordID].intervalObjectives.length ) {
+                    isCompleted = true;
+                  }
+                }
               }
 
               if( isCompleted )

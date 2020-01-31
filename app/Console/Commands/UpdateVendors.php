@@ -24,7 +24,8 @@ class UpdateVendors extends Command
       'Tess Everis' => '3361454721',
       'Petra Venj' => '1841717884',
       'Benedict 99-40' => '1265988377',
-      'Eva Levante' => '919809084'
+      'Eva Levante' => '919809084',
+      'Saint-14' => '765357505'
     ];
 
     // traits = stats, restore default == shader
@@ -71,7 +72,7 @@ class UpdateVendors extends Command
 
         //dd($refresh_token);
         //dd('https://www.bungie.net/en/oauth/authorize?client_id='.env('BUNGIE_OAUTH_CLIENT_ID').'&response_type=code');
-        //$authorization_code = 'e5fad4d63d8a8c09b7cdefccd0c37b70';
+        //$authorization_code = 'eadbaac552d0edb2aafbfac2e37cb09a';
 
         $tokenRefreshEndpoint = 'https://www.bungie.net/platform/app/oauth/token/';
 

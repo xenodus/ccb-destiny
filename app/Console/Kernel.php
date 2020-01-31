@@ -27,6 +27,9 @@ class Kernel extends ConsoleKernel
         $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
         $baseFilePath = '/var/www/sites/ccb/storage/logs/';
 
+        // Telegram Raid Event Notification
+        $schedule->command('send:TelegramNotifications')->everyMinute();
+
         // D2 Manifest
         $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:03')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
 

@@ -78,8 +78,8 @@ $(document).ready(function(){
         layout:"fitDataFill", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
-          {title:"Name", field:"name", headerSort:false, minWidth:180},
-        {title:"Artifact", field:"artifact_level", cssClass: 'text-center' /*, headerSort:false*/ },
+          {title:"Name", field:"name", minWidth:180},
+          {title:"Artifact Level", field:"artifact_level", cssClass: 'text-center' /*, headerSort:false*/ },
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false, cssClass: 'text-center'},

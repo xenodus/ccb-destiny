@@ -89,7 +89,9 @@
         @if($top_category->term->slug == 'magic-the-gathering')
           @include('guides.widgets.mtgTopDecks')
         @endif
-        @include('guides.widgets.news')
+        @if( in_array($top_category->term->slug, ['destiny', 'magic-the-gathering ', 'the-division-2']) )
+          @include('guides.widgets.news')
+        @endif
       </div>
     </div>
   </div>

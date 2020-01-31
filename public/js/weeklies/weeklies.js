@@ -27,7 +27,8 @@ $(document).ready(function(){
         'Xur': '2190858386',
         'Tess Everis': '3361454721',
         'Benedict 99-40': '1265988377',
-        'Eva Levante': '919809084'
+        'Eva Levante': '919809084',
+        'Saint-14': '765357505'
       };
 
       var gambitBountiesFilter = [
@@ -359,6 +360,13 @@ $(document).ready(function(){
         *************************/
 
         var weekliesItems = [];
+
+        // Saint-14
+        saint14_bounties = data.filter(function(item){ return item.vendor_hash == vendorHash['Saint-14'] && item.icon != '' });
+
+        if( saint14_bounties.length > 0 ) {
+          weekliesItems.push( getVendorStr(saint14_bounties, 'Saint-14') );
+        }
 
         // Banshee
         banshee_wares = data.filter(function(item){ return item.vendor_hash == vendorHash['Banshee-44'] && item.icon != '' && bansheeFilter.includes(item.name) == false });

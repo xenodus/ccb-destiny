@@ -35,7 +35,8 @@ class UpdateMemberExotic extends Command
                 3074058273, // last word
                 4009683574, // thorn
                 2036397919, // arbalest
-                1660030047  // chaperone
+                1660030047, // chaperone
+                3207791447  // Bastion
             ],
             'energy' => [
                 1988948484, // divinity
