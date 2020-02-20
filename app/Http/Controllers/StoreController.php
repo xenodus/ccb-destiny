@@ -6,6 +6,7 @@ use App;
 use DB;
 use Stripe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
@@ -95,8 +96,8 @@ class StoreController extends Controller
     $data['inventory'] = $product->inventory;
     $data['sku'] = $product->sku;
 
-    if( $slug != str_slug($data['site_title']) )
-      return redirect()->route('product_cos_code', [str_slug($data['site_title'])]);
+    if( $slug != Str::slug($data['site_title']) )
+      return redirect()->route('product_cos_code', [Str::slug($data['site_title'])]);
 
     return view('store.cos', $data);
   }
@@ -114,8 +115,8 @@ class StoreController extends Controller
     $product = \App\Classes\Product::find($id);
 
     if($id==1)
-      return redirect()->route('product_cos_code', [str_slug($product->name)]);
+      return redirect()->route('product_cos_code', [Str::slug($product->name)]);
     else
-      return redirect()->route('product_cos_code', [str_slug($product->name)]);
+      return redirect()->route('product_cos_code', [Str::slug($product->name)]);
   }
 }

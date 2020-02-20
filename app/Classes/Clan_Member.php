@@ -191,6 +191,9 @@ class Clan_Member extends Model
           $last_online = \Carbon\Carbon::createFromTimestamp($result->lastOnlineStatusChange, 'UTC');
           $last_online->setTimezone('Asia/Singapore');
 
+          if( bin2hex($result->destinyUserInfo->displayName) == 'f3a080a1f3a080a1' )
+            $result->destinyUserInfo->displayName = '- empty name -';
+
           $clan_member = \App\Classes\Clan_Member::updateOrCreate(
             ['id' => $result->destinyUserInfo->membershipId],
             [

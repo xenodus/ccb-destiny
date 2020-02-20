@@ -28,10 +28,10 @@ class Kernel extends ConsoleKernel
         $baseFilePath = '/var/www/sites/ccb/storage/logs/';
 
         // Telegram Raid Event Notification
-        $schedule->command('send:TelegramNotifications')->everyMinute();
+        $schedule->command('send:TelegramRaidNotifications')->everyMinute();
 
         // D2 Manifest
-        $schedule->command('update:manifest')->timezone('America/Los_Angeles')->weeklyOn(2, '10:03')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
+        $schedule->command('update:manifest')->weeklyOn(env('DESTINY_RESET_DAY'), env('DESTINY_RESET_HOUR').':03')->appendOutputTo($baseFilePath . 'manifest.log'); // After Reset
 
         // Member Aliases
         $schedule->command('update:memberAlias')->hourly()->appendOutputTo($baseFilePath . 'alias.log');
@@ -50,14 +50,17 @@ class Kernel extends ConsoleKernel
 
         // Milestones
         $schedule->command('update:milestones')->hourlyAt(2)->appendOutputTo($baseFilePath . 'milestones.log');
-        $schedule->command('update:milestones')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'milestones.log'); // After Reset
+        $schedule->command('update:milestones')->weeklyOn(env('DESTINY_RESET_DAY'), env('DESTINY_RESET_HOUR').':05')->appendOutputTo($baseFilePath . 'milestones.log'); // After Reset
 
         $schedule->command('update:nightfalls')->hourlyAt(2)->appendOutputTo($baseFilePath . 'nightfalls.log');
-        $schedule->command('update:nightfalls')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'nightfalls.log'); // After Reset
+        $schedule->command('update:nightfalls')->weeklyOn(env('DESTINY_RESET_DAY'), env('DESTINY_RESET_HOUR').':05')->appendOutputTo($baseFilePath . 'nightfalls.log'); // After Reset
 
         // Vendor Stuff
         $schedule->command('update:vendors')->hourlyAt(2)->appendOutputTo($baseFilePath . 'vendors.log');
-        $schedule->command('update:vendors')->timezone('America/Los_Angeles')->weeklyOn(2, '10:05')->appendOutputTo($baseFilePath . 'vendors.log'); // After Reset
+        $schedule->command('update:vendors')->weeklyOn(env('DESTINY_RESET_DAY'), env('DESTINY_RESET_HOUR').':05')->appendOutputTo($baseFilePath . 'vendors.log'); // After Reset
+
+        // Telegram Xur Notification - Ensure after Vendor
+        $schedule->command('send:TelegramXurNotifications')->weeklyOn(6, env('XUR_TELEGRAM_NOTIFY_TIME'))->appendOutputTo($baseFilePath . 'telegram.log'); // After Reset
 
         // Clan Activity Buddy
         $schedule->command('update:clanRaidActivityBuddies')->twiceDaily(3, 15)->runInBackground()->appendOutputTo($baseFilePath . 'raid_buddy.log');

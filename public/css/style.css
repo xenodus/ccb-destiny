@@ -223,6 +223,10 @@ footer {
   text-decoration: underline;
 }
 
+.tabulator a.member-name {
+  text-decoration: none;
+}
+
 #stats-sub-menu li > a {
   color: rgba(255, 255, 255, 0.5);
 }
@@ -292,15 +296,11 @@ section#members-online {
   z-index: 999;
 }
 
-#destiny-news-container,
-#division-news-container,
-#magic-news-container {
+.news-container {
   font-size: 0.8rem;
 }
 
-#destiny-news-container h2,
-#division-news-container h2,
-#magic-news-container h2 {
+.news-container h2 {
   font-size: 1rem;
 }
 

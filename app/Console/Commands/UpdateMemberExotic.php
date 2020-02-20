@@ -14,73 +14,73 @@ class UpdateMemberExotic extends Command
     private $exoticHashes = [
         'weapons' => [
             'kinetic' => [
-                1501322721, // monte carlo
-                4207100358, // bad juju
-                564802912,  // crimson
-                564802914,  // huckleberry
-                24541428,   // izanagi
-                564802915,  // jade rabbit
-                564802913,  // mida multi tool
-                2500286745, // outbreak
-                564802918,  // rat king
-                564802916,  // sturm
-                564802925,  // suros
-                564802917,  // sweet business
-                564802919,  // vigilance
-                564802924,  // cerberus
-                1660030044, // wish-ender
-                1660030046, // ace of spades
-                2924632392, // lumina
-                1660030045, // malfeasance
-                3074058273, // last word
-                4009683574, // thorn
-                2036397919, // arbalest
-                1660030047, // chaperone
-                3207791447  // Bastion
+                1501322721  => '',  // monte carlo
+                4207100358  => 'https://www.polygon.com/destiny-2-guide-walkthrough/2019/7/9/20687892', // bad juju
+                564802912   => '',  // crimson
+                564802914   => '',  // huckleberry
+                24541428    => 'https://www.pcgamer.com/how-to-get-izanagis-burden-in-destiny-2/',   // izanagi
+                564802915   => '',  // jade rabbit
+                564802913   => 'https://www.pcgamer.com/destiny-2-mida-multi-tool-guide/',  // mida multi tool
+                2500286745  => 'https://www.pcgamer.com/destiny-2-outbreak-perfected-exotic-guide/', // outbreak
+                564802918   => 'https://www.forbes.com/sites/paultassi/2020/01/25/my-1205-day-destiny-2-rat-king-quest-reveals-how-the-game-has-changed-for-me/#1fb2dec55807',  // rat king
+                564802916   => 'https://www.usgamer.net/articles/18-12-2018-destiny-2-weapons-and-armor-guide-exotic-weapons-and-armor-how-to-get-them/how-to-get-the-sturm',  // sturm
+                564802925   => '',  // suros
+                564802917   => '',  // sweet business
+                564802919   => '',  // vigilance
+                564802924   => '',  // cerberus
+                1660030044  => 'https://progameguides.com/destiny/how-to-get-wish-ender-quest-steps-guide/',  // wish-ender
+                1660030046  => 'https://www.eurogamer.net/articles/2018-09-21-destiny-2-ace-of-spades-quest-5382',  // ace of spades
+                2924632392  => 'https://www.pcgamer.com/lumina-exotic-guide-destiny-2/', // lumina
+                1660030045  => 'https://www.eurogamer.net/articles/2019-03-06-destiny-2-malfeasance-quest-5382', // malfeasance
+                3074058273  => 'https://www.pcgamer.com/destiny-2-last-word-guide/', // last word
+                4009683574  => 'https://www.pcgamer.com/how-to-get-thorn-in-destiny-2s-season-of-the-drifter/', // thorn
+                2036397919  => '',  // arbalest
+                1660030047  => 'https://www.psu.com/news/destiny-2-how-to-get-chaperone/', // chaperone
+                3207791447  => 'https://www.eurogamer.net/articles/2012-01-20-destiny-2-bastion-quest-aksiniks-reysk-grave-7004'  // Bastion
             ],
             'energy' => [
-                1988948484, // divinity
-                1642951317, // borealis
-                1657028070, // coldheart
-                2741465947, // eriana's vow
-                1657028071, // fighting lion
-                1657028069, // graviton
-                1657028064, // hard light
-                1657028078, // merciless
-                1642951318, // polars
-                1642951316, // prometheus
-                1657028067, // riskrunner
-                1657028066, // skyburner
-                1657028068, // sunshot
-                1642951319, // telesto
-                2329697053, // tarrabah
-                3573051804, // le monarque
-                1642951312, // trinity ghoul
-                3584311877, // jotuun
-                1642951314, // lord of wolves
-                47014674,   // Symmetry
-                2190071629  // Devil's Ruin
+                1988948484  => 'https://www.eurogamer.net/articles/2019-10-08-destiny-2-divinity-quest-divine-fragmentation-6007', // divinity
+                1642951317  => '',  // borealis
+                1657028070  => '',  // coldheart
+                2741465947  => '',  // eriana's vow
+                1657028071  => '',  // fighting lion
+                1657028069  => '',  // graviton
+                1657028064  => '',  // hard light
+                1657028078  => '',  // merciless
+                1642951318  => 'https://www.gamerevolution.com/guides/606576-destiny-2-polaris-lance-how-to-get-guide', // polaris lance
+                1642951316  => '',  // prometheus
+                1657028067  => '',  // riskrunner
+                1657028066  => '',  // skyburner
+                1657028068  => '',  // sunshot
+                1642951319  => '',  // telesto
+                2329697053  => 'https://www.shacknews.com/article/112941/how-to-get-tarrabah-in-destiny-2', // tarrabah
+                3573051804  => 'https://www.fanbyte.com/guides/destiny-2-how-to-get-jotunn-and-le-monarque/', // le monarque
+                1642951312  => '',  // trinity ghoul
+                3584311877  => 'https://www.fanbyte.com/guides/destiny-2-how-to-get-jotunn-and-le-monarque/', // jotuun
+                1642951314  => 'https://www.fanbyte.com/guides/how-to-get-lord-of-wolves-in-destiny-2/',  // lord of wolves
+                47014674    => '',  // Symmetry
+                2190071629  => 'https://www.eurogamer.net/articles/2012-01-08-destiny-2-devils-ruin-quest-7004'  // Devil's Ruin
             ],
             'power' => [
-                888224289,  // deathbringer
-                199171388,  // colony
-                3695595899, // darci
-                199171389,  // acrius
-                199171391,  // prospector
-                199171386,  // sleeper
-                2094776121, // tractor
-                199171390,  // wardcliff
-                3875807583, // whisper
-                199171387,  // worldline
-                199171385,  // 1k voice
-                2220014607, // anarchy
-                199171382,  // queenbreaker
-                3249389111, // thunderlord
-                1763840761, // truth
-                199171384,  // 2 tailed
-                199171383,  // black talon
-                1258579677, // Xenophage
-                3552855013  // Leviathan's Breath
+                888224289   => 'https://www.eurogamer.net/articles/2019-10-04-destiny-2-deathbringer-core-system-vault-bone-collector-6007',  // deathbringer
+                199171388   => '',  // colony
+                3695595899  => '',  // darci
+                199171389   => 'https://www.psu.com/news/destiny-2-how-to-get-legend-of-acrius/',  // acrius
+                199171391   => '',  // prospector
+                199171386   => 'https://www.eurogamer.net/articles/2018-09-19-destiny-2-sleeper-simulant-ikelos-violent-intel-5782',  // sleeper
+                2094776121  => '',  // tractor
+                199171390   => '',  // wardcliff
+                3875807583  => 'https://www.eurogamer.net/articles/2019-01-31-destiny-2-whisper-quest-whisper-of-the-worm-5382', // whisper
+                199171387   => 'https://www.eurogamer.net/articles/2018-08-03-destiny-2-lost-memory-fragment-locations-latent-memories-worldline-zero-5782',  // worldline
+                199171385   => 'https://www.shacknews.com/article/115743/one-thousand-voices-exotic-fusion-rifle-destiny-2',  // 1k voice
+                2220014607  => 'https://www.shacknews.com/article/109037/how-to-get-anarchy-exotic-grenade-launcher-in-destiny-2', // anarchy
+                199171382   => '',  // queenbreaker
+                3249389111  => '',  // thunderlord
+                1763840761  => 'https://www.pcgamer.com/how-to-complete-the-truth-exotic-quest-in-destiny-2s-season-of-opulence/', // truth
+                199171384   => '',  // 2 tailed
+                199171383   => '',  // black talon
+                1258579677  => 'https://www.pcgamer.com/destiny-2-xenophage-guide/', // Xenophage
+                3552855013  => 'https://www.pcgamer.com/how-to-get-destiny-2-leviathans-breath-quest-steps/'  // Leviathan's Breath
             ]
         ],
         'armor' => [
@@ -240,14 +240,16 @@ class UpdateMemberExotic extends Command
                     $m->save();
 
                     foreach($this->exoticHashes['weapons'] as $type => $ids) {
-                        foreach($ids as $id) {
+                        foreach($ids as $id => $guide) {
+
                             if( isset($item_definitions->$id) ) {
-                                $exotic_weapon = App\Classes\Exotic::updateOrCreate(
+                                $exotic = App\Classes\Exotic::updateOrCreate(
                                     ['id' => $id],
                                     [
                                         'name' => $item_definitions->$id->displayProperties->name,
                                         'description' => $item_definitions->$id->displayProperties->description,
                                         'icon' => $item_definitions->$id->displayProperties->hasIcon == true ? $item_definitions->$id->displayProperties->icon : '',
+                                        'guide' => $guide ?? '',
                                         'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
                                     ]
                                 );
@@ -277,7 +279,7 @@ class UpdateMemberExotic extends Command
                         foreach($ids as $id) {
                             if( isset($item_definitions->$id) ) {
 
-                                $exotic_weapon = App\Classes\Exotic::updateOrCreate(
+                                $exotic = App\Classes\Exotic::updateOrCreate(
                                     ['id' => $id],
                                     [
                                         'name' => $item_definitions->$id->displayProperties->name,

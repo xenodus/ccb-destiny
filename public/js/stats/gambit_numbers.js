@@ -73,13 +73,10 @@ $(document).ready(function(){
 
               infamy_rank = gambitData.infamy_step == infamyRanks.length ? infamyRanks[infamyRanks.length-1] : infamyRanks[ gambitData.infamy_step ];
 
-              // Decode html entities
-              var txt = document.createElement("textarea");
-              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-              var steamID = txt.value;
+              displayName = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
               tableData.push({
-                name: steamID,
+                name: displayName,
                 infamy: gambitData.infamy,
                 infamy_step: infamy_rank,
                 infamy_resets: gambitData.infamy_resets,
@@ -119,7 +116,7 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", frozen:true, minWidth:180},
+              {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
               {title:"Infamy", field:"infamy", formatter:"money", formatterParams: format},
               {title:"Infamy Rank", field:"infamy_step"},
               {title:"Resets", field:"infamy_resets", formatter:"money", formatterParams: format},

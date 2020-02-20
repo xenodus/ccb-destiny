@@ -67,6 +67,8 @@ function makeTable(raidMap, raidLockoutData, memberData) {
 
     for(var i=0; i<raidLockoutData.length; i++) {
       username = memberData.filter(function(member){ return member.destinyUserInfo.membershipId == raidLockoutData[i].id }).map(function(member){ return member.destinyUserInfo.displayName })[0];
+      username = getSanitizedName(username);
+
       userData = JSON.parse(raidLockoutData[i].data);
 
       // If prestige y1 raids done, normal = done too
@@ -79,7 +81,7 @@ function makeTable(raidMap, raidLockoutData, memberData) {
       }
 
       tableData.push({
-        name: _.escape(username) + '<a href="https://raid.report/pc/'+raidLockoutData[i].id+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+        name: username + '<a href="https://raid.report/pc/'+raidLockoutData[i].id+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
         warlock: userData['warlock'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',
         hunter: userData['hunter'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',
         titan: userData['titan'][key] == 1 ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>',

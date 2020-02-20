@@ -28,13 +28,10 @@ $(document).ready(function(){
 
         for(var i=0; i<memberData.length; i++) {
 
-          // Decode html entities
-          var txt = document.createElement("textarea");
-          txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-          var steamID = txt.value;
+          var steamID = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
           var tableDataEntry = {
-            name: _.escape(steamID) + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+            name: '<a data-sort-name="'+steamID+'" href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark member-name">'+steamID+'<i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
           };
 
           var memberWeaponCollectionData = weaponCollectionData.filter(function(data){
@@ -145,7 +142,7 @@ $(document).ready(function(){
         $('.filter-container').show();
 
         var table = new Tabulator("#exotics-table", {
-          data:tableData, //assign data to table
+          data:tableData,
           columns: tableColumns,
           initialSort: [
             {column:"name", dir:"asc"},

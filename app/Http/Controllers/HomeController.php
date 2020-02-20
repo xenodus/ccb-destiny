@@ -9,6 +9,7 @@ use Cookie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Cache;
+use Goutte;
 use Illuminate\Support\Facades\Validator;
 
 use App\Classes\Post;
@@ -17,6 +18,53 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
+      dd( Carbon::parse('next Wednesday') );
+
+      // Update Xur Record in DB
+      $resetHour = 1;
+
+      if( in_array(Carbon::now()->dayOfWeek, [6, 0, 1, 2, 3]) ) {
+
+        // Before Sat reset
+        if( Carbon::now()->dayOfWeek == 6 && Carbon::now()->hour < $resetHour ) {
+          return false;
+        }
+
+        // After Wed reset
+        if( Carbon::now()->dayOfWeek == 3 && Carbon::now()->hour >= $resetHour ) {
+          return false;
+        }
+
+        // Check if already in DB
+
+        // Get Date Range Start
+        if( Carbon::now()->dayOfWeek == 6 ) {
+          $startDate = Carbon::now();
+        }
+        else {
+          $startDate = Carbon::parse('last Saturday');
+        }
+
+        $startDate->hour = $resetHour;
+        $startDate->minute = 0;
+        $startDate->second = 0;
+
+        // Get Date Range End
+        if( Carbon::now()->dayOfWeek == 3 ) {
+          $endDate = Carbon::now();
+        }
+        else {
+          $endDate = Carbon::parse('next Wednesday');
+        }
+
+        $endDate->hour = $resetHour;
+        $endDate->minute = 0;
+        $endDate->second = 0;
+      }
+
+      dd( $endDate );
+      dd( Carbon::now()->dayOfWeek );
+
       $data['site_title'] = 'TEMP TESTING ' . env('SITE_NAME') .' Clan in Destiny 2';
       $data['active_page'] = 'home';
 

@@ -11,5 +11,5 @@ class Exotic extends Model
   protected $primaryKey = 'id';
   public $timestamps = false;
 
-  protected $fillable = ['id', 'name', 'description', 'icon', 'date_added'];
+  protected $fillable = ['id', 'name', 'description', 'icon', 'guide', 'date_added'];
 }

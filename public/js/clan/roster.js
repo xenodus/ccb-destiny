@@ -16,7 +16,7 @@ $(document).ready(function(){
           return alias.name;
         });
 
-        known_aliases = known_aliases.join(', ');
+        known_aliases = known_aliases.join(',<br/>');
       }
       else {
         known_aliases = '';
@@ -46,10 +46,7 @@ $(document).ready(function(){
         return char.class == 'warlock';
       });
 
-      // Decode html entities
-      var txt = document.createElement("textarea");
-      txt.innerHTML = members[i].display_name;
-      var steamID = txt.value;
+      steamID = getSanitizedName(members[i].display_name);
 
       tableData.push({
         name: steamID,
@@ -78,24 +75,24 @@ $(document).ready(function(){
         layout:"fitDataFill", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
           {formatter:"rownum", width:40, headerSort:false},
-          {title:"Name", field:"name", minWidth:180},
-          {title:"Artifact Level", field:"artifact_level", cssClass: 'text-center' /*, headerSort:false*/ },
+          {title:"Name", field:"name", formatter:"html", minWidth:180},
+          {title:"Artifact", field:"artifact_level", cssClass: 'text-center' /*, headerSort:false*/ },
           {title:"Warlock", field:"warlock", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"} /*, headerSort:false*/ },
-          {title:"<div class='mx-3'>Exotics</div><small>Uncollected</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
+          {title:"<div class='mx-3'>Exotics</div><small>Collection</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>PvP</div><small>Activities</small>", field:"pvp_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Gambit</div><small>Activities</small>", field:"gambit_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"Battle.net", field:"blizzardDisplayName", headerSort:false},
-          {title:"Past Steam Aliases", field:"known_aliases", headerSort:false},
+          {title:"Past Aliases", field:"known_aliases", formatter:"html", headerSort:false, minWidth:250},
         ],
         initialSort: [
           {column:"name", dir:"asc"},
           {column:"last_online", dir:"desc"}
         ],
-        height:"500px",
+        /* height:"500px", */
         resizableColumns:true,
       });
 

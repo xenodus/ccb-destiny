@@ -32,10 +32,12 @@ $(document).ready(function(){
 
             raidData = memberRaidData.filter(function(member){ return member.user_id == memberData[i].destinyUserInfo.membershipId })[0];
 
+            displayName = getSanitizedName(memberData[i].destinyUserInfo.displayName);
+
             if( raidData ) {
               tableData.push({
                 membershipId: memberData[i].destinyUserInfo.membershipId,
-                name: _.escape(memberData[i].destinyUserInfo.displayName)+'<a href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
+                name: '<a data-sort-name="'+displayName+'" href="https://raid.report/pc/'+memberData[i].destinyUserInfo.membershipId+'" target="_blank" class="text-dark member-name">'+displayName+'<i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>',
                 levi: ( raidData.levi == 0 && raidData.levip ==0 ) ? 0 : ( raidData.levi + raidData.levip + "<div class='mx-1'><small>N: " + raidData.levi + " <span class='ml-1'>P: " + raidData.levip + "</span></small></div>" ),
                 eow: ( raidData.eow == 0 && raidData.eowp == 0 ) ? 0 : ( raidData.eow + raidData.eowp + "<div class='mx-1'><small>N: " + raidData.eow + " <span class='ml-1'>P: " + raidData.eowp + "</span></small></div>" ),
                 sos: ( raidData.sos == 0 && raidData.sosp == 0 ) ? 0 : ( raidData.sos + raidData.sosp + "<div class='mx-1'><small>N: " + raidData.sos + " <span class='ml-1'>P: " + raidData.sosp + "</span></small></div>" ),

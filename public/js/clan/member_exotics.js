@@ -24,13 +24,10 @@ $(document).ready(function(){
 
         for(var i=0; i<memberData.length; i++) {
 
-          // Decode html entities
-          var txt = document.createElement("textarea");
-          txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-          var steamID = txt.value;
+          var steamID = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
           var tableDataEntry = {
-            name: _.escape(steamID) + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
+            name: steamID + '<a href="/clan/exotics/'+memberData[i].destinyUserInfo.membershipId+'/'+memberData[i].destinyUserInfo.displayName+'" class="text-dark"><i class="fas fa-external-link-alt ml-1 fa-xs" style="position: relative; bottom: 1px;"></i></a>'
           };
 
           var memberWeaponCollectionData = weaponCollectionData.filter(function(data){
@@ -115,21 +112,42 @@ $(document).ready(function(){
             $('.exotic-hunter-container').append( getExoticItemHTML(hunterArmors[j]) );
           }
 
-          // Set Title Counts
-          $('.summary-collected-weapons').text( "(" + weapons.filter(w => w.is_collected == true).length + "/" + weapons.length + ")" );
-          $('.summary-collected-warlock').text( "(" + warlockArmors.filter(w => w.is_collected == true).length + "/" + warlockArmors.length + ")" );
-          $('.summary-collected-titan').text( "(" + titanArmors.filter(w => w.is_collected == true).length + "/" + titanArmors.length + ")" );
-          $('.summary-collected-hunter').text( "(" + hunterArmors.filter(w => w.is_collected == true).length + "/" + hunterArmors.length + ")" );
+          // No Collected
+          weapons_collected = weapons.filter(w => w.is_collected == true).length;
+          warlock_collected = warlockArmors.filter(w => w.is_collected == true).length;
+          titan_collected = titanArmors.filter(w => w.is_collected == true).length;
+          hunter_collected = hunterArmors.filter(w => w.is_collected == true).length;
 
-          $('.exotic-weapons h4').text( "Weapons (" + weapons.filter(w => w.is_collected == true).length + "/" + weapons.length + ")" );
-          $('.exotic-warlock h4').text( "Warlock (" + warlockArmors.filter(w => w.is_collected == true).length + "/" + warlockArmors.length + ")" );
-          $('.exotic-titan h4').text( "Titan (" + titanArmors.filter(w => w.is_collected == true).length + "/" + titanArmors.length + ")" );
-          $('.exotic-hunter h4').text( "Hunter (" + hunterArmors.filter(w => w.is_collected == true).length + "/" + hunterArmors.length + ")" );
+          // Progress bar
+          weaponsCompletedPercent = Math.floor(weapons_collected / weapons.length * 100);
+          $('.weapons-progress-bar').append('<div class="progress"><div class="progress-bar bg-success" style="width: '+weaponsCompletedPercent+'%;" role="progressbar" aria-valuenow="'+weaponsCompletedPercent+'" aria-valuemin="0" aria-valuemax="100">'+weaponsCompletedPercent+'%</div></div>');
+          warlockCompletedPercent = Math.floor(warlock_collected / warlockArmors.length * 100);
+          $('.warlock-progress-bar').append('<div class="progress"><div class="progress-bar bg-success" style="width: '+warlockCompletedPercent+'%;" role="progressbar" aria-valuenow="'+warlockCompletedPercent+'" aria-valuemin="0" aria-valuemax="100">'+warlockCompletedPercent+'%</div></div>');
+          titanCompletedPercent = Math.floor(titan_collected / titanArmors.length * 100);
+          $('.titan-progress-bar').append('<div class="progress"><div class="progress-bar bg-success" style="width: '+titanCompletedPercent+'%;" role="progressbar" aria-valuenow="'+titanCompletedPercent+'" aria-valuemin="0" aria-valuemax="100">'+titanCompletedPercent+'%</div></div>');
+          hunterCompletedPercent = Math.floor(hunter_collected / hunterArmors.length * 100);
+          $('.hunter-progress-bar').append('<div class="progress"><div class="progress-bar bg-success" style="width: '+hunterCompletedPercent+'%;" role="progressbar" aria-valuenow="'+hunterCompletedPercent+'" aria-valuemin="0" aria-valuemax="100">'+hunterCompletedPercent+'%</div></div>');
+
+          // Set Title Counts
+          $('.summary-collected-weapons').text( "(" + weapons_collected + "/" + weapons.length + ")" );
+          $('.summary-collected-warlock').text( "(" + warlock_collected + "/" + warlockArmors.length + ")" );
+          $('.summary-collected-titan').text( "(" + titan_collected + "/" + titanArmors.length + ")" );
+          $('.summary-collected-hunter').text( "(" + hunter_collected + "/" + hunterArmors.length + ")" );
+
+          $('.exotic-weapons h4').text( "Weapons (" + weapons_collected + "/" + weapons.length + ")" );
+          $('.exotic-warlock h4').text( "Warlock (" + warlock_collected + "/" + warlockArmors.length + ")" );
+          $('.exotic-titan h4').text( "Titan (" + titan_collected + "/" + titanArmors.length + ")" );
+          $('.exotic-hunter h4').text( "Hunter (" + hunter_collected + "/" + hunterArmors.length + ")" );
 
           // Hide / Show Stuff
           $('.loader').hide();
           $('.loader-text').hide();
           $('.exotic-collection-container').show();
+
+          // Scroll to on load
+          if( window.location.hash ) {
+            $('html,body').animate({scrollTop: $(window.location.hash).offset().top},'fast');
+          }
         }
       });
     }
@@ -138,11 +156,18 @@ $(document).ready(function(){
 
 function getExoticItemHTML(item) {
 
+  // `+((item.is_collected==0 && item.guide!='' && item.guide.includes('http'))?'<div class="exotic-item-guide"><a href="'+item.guide+'" target="_blank">How to get?</a></div>':'')+`
+
   return `
-  <div class="col-md-2 mb-md-3 mb-2">
-    <div class="exotic-item d-flex align-items-center`+(item.is_collected==0?' missing':' collected')+`">
+  <div class="col-lg-3 col-md-4 col-sm-6 mb-md-3 mb-2">
+    `+((item.guide!='' && item.guide.includes('http'))?'<a href="'+item.guide+'" target="_blank" title="View guide in new window" class="exotic-item-guide">':'')+`
+    <div class="exotic-item d-flex align-items-stretch`+(item.is_collected==0?' missing':' collected')+`">
       <img class="img-fluid" src="https://bungie.net`+item.icon+`"/>
-      <div class="text-left">`+item.name+`</div>
+      <div class="d-flex align-items-center justify-content-between text-left p-3 w-100`+((item.guide!='' && item.guide.includes('http'))?' has-exotic-guide':'')+`">
+        <div class="`+(item.is_collected==0?' text-danger':'')+`">`+item.name+`</div>
+        `+((item.guide!='' && item.guide.includes('http'))?'<div><a href="'+item.guide+'" target="_blank" title="View guide in new window" class="exotic-item-guide '+(item.is_collected==0?' text-danger':'')+'"><i class="fas fa-external-link-alt fa-xs"></i></a></div>':'')+`
+      </div>
     </div>
+    `+((item.guide!='' && item.guide.includes('http'))?'</a>':'')+`
   </div>`;
 }

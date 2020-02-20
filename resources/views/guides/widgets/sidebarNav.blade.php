@@ -38,6 +38,7 @@
 </div>
 @endif
 
+<!--
 @if(!isset($top_category) || $top_category->term->slug == 'the-division-2')
 <div class="mb-3 sidebar-nav sidebar-division">
   <div class="p-2 sidebar-nav-header">
@@ -55,3 +56,4 @@
   </div>
 </div>
 @endif
+-->

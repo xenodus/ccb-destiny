@@ -7,14 +7,14 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App;
 
-class SendTelegramNotifications extends Command
+class SendTelegramRaidNotifications extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'send:TelegramNotifications';
+    protected $signature = 'send:TelegramRaidNotifications';
 
     /**
      * The console command description.
@@ -88,10 +88,10 @@ class SendTelegramNotifications extends Command
                 $event->save();
             }
 
-            $this->info('Completed: Finished sending Telegram notifications');
+            $this->info('Completed: Finished sending Telegram raid notifications');
         }
         else {
-            $this->info('Completed: No Telegram notifications to send');
+            $this->info('Completed: No Telegram raid notifications to send');
         }
 
         return 1;

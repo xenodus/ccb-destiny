@@ -34,13 +34,10 @@ $(document).ready(function(){
 
             if( pveData ) {
 
-              // Decode html entities
-              var txt = document.createElement("textarea");
-              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-              var steamID = txt.value;
+              displayName = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
               tableData.push({
-                name: steamID,
+                name: displayName,
                 kills: pveData.kills,
                 deaths: pveData.deaths,
                 suicides: pveData.suicides,
@@ -74,7 +71,7 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", frozen:true, minWidth:180},
+              {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
               {title:"Kills", field:"kills", formatter:"money", formatterParams: format},
               {title:"Deaths", field:"deaths", formatter:"money", formatterParams: format},
               {title:"Suicides", field:"suicides", formatter:"money", formatterParams: format},

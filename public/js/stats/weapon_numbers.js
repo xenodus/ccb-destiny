@@ -34,15 +34,12 @@ $(document).ready(function(){
 
             if( weaponData ) {
 
-              // Decode html entities
-              var txt = document.createElement("textarea");
-              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-              var steamID = txt.value;
+              displayName = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
               tableData.push({
-                name: steamID,
+                name: displayName,
                 weaponKillsAutoRifle: weaponData.weaponKillsAutoRifle,
-                //weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
+                weaponKillsBeamRifle: weaponData.weaponKillsBeamRifle,
                 weaponKillsBow: weaponData.weaponKillsBow,
                 weaponKillsFusionRifle: weaponData.weaponKillsFusionRifle,
                 weaponKillsHandCannon: weaponData.weaponKillsHandCannon,
@@ -80,9 +77,9 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", frozen:true, minWidth:180},
+              {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
               {title:"Auto Rifle", field:"weaponKillsAutoRifle", formatter:"money", formatterParams: format},
-              //{title:"Beam Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
+              {title:"Trace Rifle", field:"weaponKillsBeamRifle", formatter:"money", formatterParams: format},
               {title:"Bow", field:"weaponKillsBow", formatter:"money", formatterParams: format},
               {title:"Fusion Rifle", field:"weaponKillsFusionRifle", formatter:"money", formatterParams: format},
               {title:"Hand Cannon", field:"weaponKillsHandCannon", formatter:"money", formatterParams: format},

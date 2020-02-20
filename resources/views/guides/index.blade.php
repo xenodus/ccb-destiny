@@ -25,7 +25,7 @@
       </ol>
     </nav>
   </div>
-  <div class="row mb-3 categories-img">
+  <!--div class="row mb-3 categories-img">
     <div class="col-md-4 text-center">
       <a href="{{ route('guide_category', ['slug' => $destiny_category->term->slug, 'id' => $destiny_category->term_taxonomy_id]) }}">
         <div class="d-flex flex-column align-items-center justify-content-center item item-destiny mb-3 p-2">
@@ -50,7 +50,7 @@
         </div>
       </a>
     </div>
-  </div>
+  </div-->
   <div class="mb-4 text-yellow d-flex justify-content-start align-items-center">
     <div id="latest-post-header-icon"></div>
     <h1>Latest Guides</h1>
@@ -73,7 +73,7 @@
     </div>
     <div class="col-md-3 col-sm-12">
       @include('guides.widgets.sidebarNav')
-      @include('guides.widgets.mtgTopDecks')
+      <!-- @include('guides.widgets.mtgTopDecks') -->
     </div>
   </div>
   <div class="pagination-container text-center mt-2">

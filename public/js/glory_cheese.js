@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   $(".typeahead").typeahead({
     source: ccbNS.clanMembers,
-    minLength: 0
+    minLength: 1
   });
 
   getCheese();

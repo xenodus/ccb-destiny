@@ -173,7 +173,7 @@ class UpdateMilestones extends Command
                                 $am->description = 'Check for loadout restriction ingame. API is bugged and returning the wrong information.';
                             }
 
-                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon ?? '';
                             $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
 
                             // Get Armsmaster loadout
@@ -242,7 +242,7 @@ class UpdateMilestones extends Command
                             $am->hash = $modifier_hash;
                             $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
                             $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon ?? '';
                             $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                             $am->save();
 
@@ -285,7 +285,7 @@ class UpdateMilestones extends Command
                                 $am->hash = $modifier_hash;
                                 $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
                                 $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon ?? '';
                                 $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                                 $am->save();
 
@@ -312,7 +312,7 @@ class UpdateMilestones extends Command
                             $am->hash = $crucibleRotatorActivity->activityHash;
                             $am->description = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->description;
                             $am->name = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->name;
-                            $am->icon = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->icon;
+                            $am->icon = $activity_definitions[$crucibleRotatorActivity->activityHash]->displayProperties->icon ?? '';
                             $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                             $am->save();
 
@@ -362,7 +362,7 @@ class UpdateMilestones extends Command
                         $am->hash = $flashpoint->availableQuests[0]->questItemHash;
                         $am->description = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->description;
                         $am->name = str_replace('FLASHPOINT: ', '', $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name);
-                        $am->icon = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->icon;
+                        $am->icon = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->icon ?? '';
                         $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                         $am->save();
 
@@ -449,7 +449,7 @@ class UpdateMilestones extends Command
                                 $am->hash = $modifier_hash;
                                 $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
                                 $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon ?? '';
                                 $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                                 $am->save();
 
@@ -491,7 +491,7 @@ class UpdateMilestones extends Command
                                 $am->hash = $modifier_hash;
                                 $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
                                 $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
+                                $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon ?? '';
                                 $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                                 $am->save();
 
@@ -561,7 +561,7 @@ class UpdateMilestones extends Command
                                     $am->hash = $modifier->activityModifierHash;
                                     $am->description = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->description;
                                     $am->name = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->name;
-                                    $am->icon = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->icon;
+                                    $am->icon = $modifier_definitions[ $modifier->activityModifierHash ]->displayProperties->icon ?? '';
                                     $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                                     $am->save();
 
@@ -595,7 +595,7 @@ class UpdateMilestones extends Command
                     '1907493625' => 'Skolas, Kell of Kells',
                     '2450170731' => 'Crota, Son of Oryx',
                     '2639701103' => 'Fanatic',
-                    '3205253945' => 'Taniks, the Scarred.',
+                    '3205253945' => 'Taniks, the Scarred',
                     '4098556693' => 'Dominus Ghaul'
                 ];
 

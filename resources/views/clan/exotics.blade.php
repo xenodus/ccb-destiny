@@ -4,7 +4,7 @@
 <section id="exotic-collection" class="container-fluid text-center mb-4">
   <div class="my-4">
     @include('clan.breadcrumbs', ['nav_link' => '/clan/exotics', 'nav_name' => 'Exotic Collection'])
-    <h1 class="text-yellow text-left">Exotic Collection</h1>
+    <h1 class="text-yellow text-left">Clan Exotic Collection</h1>
   </div>
   <div class="loader"></div>
   <div class="loader-text mb-4">Fetching Members...</div>

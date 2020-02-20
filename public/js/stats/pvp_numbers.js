@@ -67,13 +67,10 @@ $(document).ready(function(){
               glory_rank = pvpData.glory_step == gloryRanks.length ? gloryRanks[gloryRanks.length-1] : gloryRanks[ pvpData.glory_step ];
               valor_rank = pvpData.valor_step == valorRanks.length ? valorRanks[valorRanks.length-1] : valorRanks[ pvpData.valor_step ];
 
-              // Decode html entities
-              var txt = document.createElement("textarea");
-              txt.innerHTML = memberData[i].destinyUserInfo.displayName;
-              var steamID = txt.value;
+              displayName = getSanitizedName(memberData[i].destinyUserInfo.displayName);
 
               tableData.push({
-                name: steamID,
+                name: displayName,
                 kd: pvpData.kd,
                 kda: pvpData.kda,
                 kad: pvpData.kad,
@@ -126,7 +123,7 @@ $(document).ready(function(){
             layout:"fitColumns", //fit columns to width of table (optional)
             columns:[ //Define Table Columns
               //{formatter:autoNumFormatter, width:40},
-              {title:"Name", field:"name", frozen:true, minWidth:180},
+              {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
               {title:"KD", field:"kd", formatter:"money", formatterParams: {precision: 2}},
               {title:"KDA", field:"kda", formatter:"money", formatterParams: {precision: 2}},
               {title:"KAD", field:"kad", formatter:"money", formatterParams: {precision: 2}},

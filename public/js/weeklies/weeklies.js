@@ -73,7 +73,7 @@ $(document).ready(function(){
         'WANTED: Blood Cleaver'
       ];
 
-      console.log( milestonesData );
+      // console.log( milestonesData );
 
       if( data.length > 0 ) {
 

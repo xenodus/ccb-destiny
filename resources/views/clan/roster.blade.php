@@ -29,5 +29,6 @@
 @endsection
 
 @section('footer')
+<!--script src="/js/clan/roster.js?<?=time()?>"></script-->
 <script src="{{ mix('/js/compiled/roster.js') }}"></script>
 @endsection

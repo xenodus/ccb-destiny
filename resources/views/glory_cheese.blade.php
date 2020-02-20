@@ -15,7 +15,7 @@
           @for ($i = 0; $i < 8; $i++)
           <div class="row mb-2 player-points">
             <div class="col-md-6 mb-md-0 mb-2">
-              <input type="text" class="form-control form-control-sm player-name typeahead" name="player{{$i+1}}-name" value="{{ $glory_names[$i] ?? 'Player ' . ($i+1) }}">
+              <input type="text" class="form-control form-control-sm player-name typeahead" name="player{{$i+1}}-name" value="{{ $glory_names[$i] ?? 'Player ' . ($i+1) }}" autocomplete="off">
             </div>
             <div class="col-md-6">
               <input type="number" min="0" class="form-control form-control-sm player-point" name="player{{$i+1}}-point" value="{{ $glory_points[$i] ?? 0 }}">

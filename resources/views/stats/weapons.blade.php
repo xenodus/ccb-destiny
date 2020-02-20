@@ -25,5 +25,6 @@
 @endsection
 
 @section('footer')
+<!--script src="/js/stats/weapon_numbers.js?<?=time()?>"></script-->
 <script src="{{ mix('/js/compiled/weapon_numbers.js') }}"></script>
 @endsection

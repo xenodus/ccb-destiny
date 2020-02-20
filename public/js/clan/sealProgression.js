@@ -516,10 +516,9 @@ $(document).ready(function(){
           $('.loader').hide();
           $('.loader-text').hide();
 
-          // Decode html entities
-          var txt = document.createElement("textarea");
-          txt.innerHTML = $("h1#member-name").text();
-          var steamID = txt.value;
+          var steamID = _.escape( $("h1#member-name").text() );
+          steamID = encodeURI(steamID) == "%F3%A0%80%A1%F3%A0%80%A1" ? "- empty name -" : steamID;
+
           $("h1#member-name").text(steamID).show();
 
           $("#back-nav").show();

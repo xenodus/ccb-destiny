@@ -44,8 +44,14 @@ $(document).ready(function(){
   }
 });
 
-// https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
+function getSanitizedName(name) {
+  displayName = _.escape(name);
+  displayName = encodeURI(displayName) == "%F3%A0%80%A1%F3%A0%80%A1" ? "- empty name -" : displayName;
 
+  return displayName;
+}
+
+// https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
 function slugify(string) {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
   const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'

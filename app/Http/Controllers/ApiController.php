@@ -16,9 +16,10 @@ class ApiController extends Controller
 {
     // values = key words to search in news api
     const NEWS_CATEGORIES = [
-        'destiny' => 'Destiny 2 Bungie',
-        'division' => 'Ubisoft Division',
-        'magic' => 'mtg arena magic'
+        'destiny' => '+"Destiny 2"',
+        'mhw' => '+"Monster Hunter World"',
+        'apex' => '+"Apex Legends"',
+        'deals' => '(pc OR origin OR steam OR blizzard) AND (game OR gaming) AND (deal OR sale OR discount)'
     ];
 
     const HIDE_ACTIVITY = true;
@@ -596,74 +597,9 @@ class ApiController extends Controller
 
     function refresh_cache() {
 
-        // clan members
-        Cache::forget('clan_members');
-        Cache::forever('clan_members', App\Classes\Clan_Member::get());
+      Cache::flush();
 
-        // clan members characters
-        Cache::forget('clan_members_characters');
-        Cache::forever('clan_members_characters', App\Classes\Clan_Member::with('characters')->with('platform_profile')->with('aliases')->get());
-
-        // Stats
-        Cache::forget('pve_stats');
-        Cache::forever('pve_stats', App\Classes\Pve_Stats::get());
-        Cache::forget('weapon_stats');
-        Cache::forever('weapon_stats', App\Classes\Weapon_Stats::get());
-        Cache::forget('pvp_stats');
-        Cache::forever('pvp_stats', App\Classes\Pvp_Stats::get());
-        Cache::forget('raid_stats');
-        Cache::forever('raid_stats', App\Classes\Raid_Stats::get());
-        Cache::forget('gambit_stats');
-        Cache::forever('gambit_stats', App\Classes\Gambit_Stats::get());
-
-        // Milestones
-        Cache::forget('milestones_activity_modifier');
-        Cache::forever('milestones_activity_modifier', App\Classes\Activity_Modifier::get());
-        Cache::forget('milestones_nightfall');
-        Cache::forever('milestones_nightfall', App\Classes\Nightfall::get());
-
-        // Vendors
-        $vendor_sales_item_perks_xur = App\Classes\Vendor_Sales_Item_Perks::whereHas('vendor_sales', function($q) {
-            $q->where('vendor_hash', '2190858386');
-        })->get();
-
-        Cache::forget('vendor_sales_item_perks_xur');
-        // Cache::forever('vendor_sales_item_perks_xur', $vendor_sales_item_perks_xur);
-        Cache::forget('vendor_sales');
-        // Cache::forever('vendor_sales', App\Classes\Vendor_Sales::orderBy('vendor_hash')->get());
-        Cache::forget('vendor_sales_item_perks');
-        // Cache::forever('vendor_sales_item_perks', App\Classes\Vendor_Sales_Item_Perks::get());
-
-        // Raid Lockouts
-        Cache::forget('clan_raid_lockouts');
-        Cache::forever('clan_raid_lockouts', App\Classes\Raid_Lockouts::get());
-
-        // Seals
-        Cache::forget('clan_seal_completions');
-        Cache::forever('clan_seal_completions', App\Classes\Seal_Completions::get());
-
-        // Exotic Collection
-        Cache::forget('clan_exotic_weapon_collection');
-        Cache::forever('clan_exotic_weapon_collection', DB::table("clan_member_exotic_weapons")->get());
-
-        Cache::forget('clan_exotic_armor_collection');
-        Cache::forever('clan_exotic_armor_collection', DB::table("clan_member_exotic_armors")->get());
-
-        Cache::forget('exotic_definition');
-        Cache::forever('exotic_definition', DB::table("exotics")->get());
-
-        // Clan Activity
-        Cache::forget('clan_activity');
-
-        Cache::forget('clan_member_raid_buddies');
-        Cache::forget('clan_pvp_buddy');
-
-        // Home Page Stats
-        Cache::forget('home_raids_completed');
-        Cache::forget('home_pve_kills');
-        Cache::forget('clan_members');
-
-        return response()->json(1);
+      return response()->json(1);
     }
 
     function get_record_definition() {
@@ -828,9 +764,12 @@ class ApiController extends Controller
         }
         else {
             $destiny_news = $all_news->where('status', 'active')->where('category', 'destiny')->take(5);
-            $division_news = $all_news->where('status', 'active')->where('category', 'division')->take(5);
-            $magic_news = $all_news->where('status', 'active')->where('category', 'magic')->take(5);
-            $news = $destiny_news->merge($division_news)->merge($magic_news);
+            $mhw_news = $all_news->where('status', 'active')->where('category', 'mhw')->take(5);
+            $apex_news = $all_news->where('status', 'active')->where('category', 'apex')->take(5);
+
+            $news = $destiny_news
+              ->merge($apex_news)
+              ->merge($mhw_news);
         }
 
         return response()->json($news);
@@ -839,11 +778,43 @@ class ApiController extends Controller
     function update_news() {
         $topics = self::NEWS_CATEGORIES;
 
+        $only_trusted_sources = true;
+
+        $trusted_sources = [
+          'Comicbook.com',
+          'Channelfireball.com',
+          'Digitaltrends.com',
+          'Droidgamers.com',
+          'Forbes.com',
+          'Gamespot.com',
+          'Gamesradar.com',
+          'Gonintendo.com',
+          'Kotaku.com',
+          'newsweek.com',
+          'Polygon.com',
+          'Rockpapershotgun.com',
+          'Slickdeals.net',
+          'Tweaktown.com',
+          'TheVerge.com',
+          'Venturebeat.com',
+          'Vgchartz.com'
+        ];
+
+        $urls = [];
+
         foreach($topics as $key => $topic) {
+
             // top-headlines | everything
             // category: business entertainment general health science sports technology
             // language: ar de en es fr he it nl no pt ru se ud zh
-            $url = 'https://newsapi.org/v2/everything?q='.urlencode($topic).'&language=en&sortBy=publishedAt&sortBy=popularity&sortBy=relevancy&apiKey='.env('NEWS_API');
+            // &sortBy=popularity&sortBy=relevancy
+            $url = 'https://newsapi.org/v2/everything?qInTitle='.urlencode($topic).'&language=en&sortBy=publishedAt&apiKey='.env('NEWS_API');
+
+            if( $only_trusted_sources )
+              $url .= '&domains='.strtolower(implode(',', $trusted_sources));
+
+            // URL dump for debugging - Hiding api key
+            $urls[] = str_replace(env('NEWS_API'), "API_KEY", $url);
 
             $client = new Client(); //GuzzleHttp\Client
             $news_response = $client->get($url);
@@ -886,6 +857,7 @@ class ApiController extends Controller
         }
 
         $news = App\Classes\News_Feed::where('status', 'active')->get();
+        $news['fetched_urls'] = $urls;
 
         return response()->json($news);
     }
@@ -899,33 +871,85 @@ class ApiController extends Controller
         }
     }
 
-    function get_xur_location() {
+    function get_xur_location_test() {
+
+      // Is Xur Up? Check via vendor sales
+      $xur_items = App\Classes\Vendor_Sales::where('vendor_hash', '765357505')
+        ->whereNotIn('itemTypeDisplayName', ['Challenge Card', 'Invitation of the Nine']) // Five of Swords
+        ->get();
+
+      if( $xur_items->count() )
+        $is_xur_up = 1;
+      else
+        $is_xur_up = 0;
+
+      // Location
+      $location = '';
+      $client = new Goutte\Client();
+      $crawler = $client->request('GET', 'https://wherethefuckisxur.com/');
+
+      if( $crawler->filter('div.xur-location > h1')->count() ) {
+          $location = $crawler->filter('div.xur-location > h1')->text();
+      }
+
+      if( $location == "Xur's fucked off" ) {
         $location = '';
-        $client = new Goutte\Client();
-        $crawler = $client->request('GET', 'https://wherethefuckisxur.com/');
+      }
 
-        if( $crawler->filter('div.xur-location > h1')->count() ) {
-            $location = $crawler->filter('div.xur-location > h1')->text();
-        }
+      return response()->json([
+        'is_xur_up' => $is_xur_up,
+        'location' => $location,
+        'items' => $xur_items
+      ]);
+    }
 
-        return response()->json(['location' => $location]);
+    function get_xur_location() {
+
+      // Is Xur Up? Check via vendor sales
+      $xur_items = App\Classes\Vendor_Sales::where('vendor_hash', '2190858386')
+        ->whereNotIn('itemTypeDisplayName', ['Challenge Card', 'Invitation of the Nine'])
+        ->get();
+
+      if( $xur_items->count() )
+        $is_xur_up = 1;
+      else
+        $is_xur_up = 0;
+
+      // Location
+      $location = '';
+      $client = new Goutte\Client();
+      $crawler = $client->request('GET', 'https://wherethefuckisxur.com/');
+
+      if( $crawler->filter('div.xur-location > h1')->count() ) {
+          $location = $crawler->filter('div.xur-location > h1')->text();
+      }
+
+      if( $location == "Xur's fucked off" ) {
+        $location = '';
+      }
+
+      return response()->json([
+        'is_xur_up' => $is_xur_up,
+        'location' => $location,
+        'items' => $xur_items
+      ]);
     }
 
     function get_vendor($vendor_id='') {
 
-        if( $vendor_id )
-            $vendor_sales = App\Classes\Vendor_Sales::where('vendor_hash', $vendor_id);
-        else
-            $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash');
+      if( $vendor_id )
+        $vendor_sales = App\Classes\Vendor_Sales::where('vendor_hash', $vendor_id);
+      else
+        $vendor_sales = App\Classes\Vendor_Sales::orderBy('vendor_hash');
 
-        if($vendor_id=='672118013')
-            $vendor_sales = $vendor_sales->orderBy('cost_name');
-        else
-            $vendor_sales = $vendor_sales->orderBy('itemTypeDisplayName');
+      if($vendor_id=='672118013')
+        $vendor_sales = $vendor_sales->orderBy('cost_name');
+      else
+        $vendor_sales = $vendor_sales->orderBy('itemTypeDisplayName');
 
-        $vendor_sales = $vendor_sales->get();
+      $vendor_sales = $vendor_sales->get();
 
-        return response()->json($vendor_sales);
+      return response()->json($vendor_sales);
     }
 
     function get_sales_item_perks($vendor_id) {
