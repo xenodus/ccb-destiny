@@ -39,6 +39,8 @@ class UpdateMemberExotic extends Command
                 3207791447  => 'https://www.eurogamer.net/articles/2012-01-20-destiny-2-bastion-quest-aksiniks-reysk-grave-7004'  // Bastion
             ],
             'energy' => [
+                778561967   => '',  // tommy's matchbook
+                2318862156  => '',  // fourth horseman
                 1988948484  => 'https://www.eurogamer.net/articles/2019-10-08-destiny-2-divinity-quest-divine-fragmentation-6007', // divinity
                 1642951317  => '',  // borealis
                 1657028070  => '',  // coldheart
@@ -85,6 +87,7 @@ class UpdateMemberExotic extends Command
         ],
         'armor' => [
             'warlock' => [
+                846189263, // Felwinter's Helm
                 1902498454, // Stormdancer's Brace
                 846189249,  // Apotheosis Veil
                 4659035,    // Astrocyte Verse
@@ -114,6 +117,7 @@ class UpdateMemberExotic extends Command
                 875969611   // Promethium Spur
             ],
             'hunter' => [
+                3035639835, // Raiju's Harness
                 899828456,  // Assassin's Cowl
                 1234605995, // Celestial Nighthawk
                 1234605992, // Foetracer
@@ -143,7 +147,8 @@ class UpdateMemberExotic extends Command
                 975121088   // The Bombardiers
             ],
             'titan' => [
-                3073431847, // PHOENIX CRADLE
+                1087913264, // Citan's Ramparts
+                3073431847, // Phoenix Cradle
                 2115530086, // An Insurmountable Skullfort
                 2115530082, // Eternal Warrior
                 2115530085, // Helm of Saint-14
@@ -212,9 +217,12 @@ class UpdateMemberExotic extends Command
         $client = new Client(['http_errors' => false, 'verify' => false]); //GuzzleHttp\Client
 
         $char_ids = [];
+        $exotics_not_found_in_definition = [];
 
         $members = App\Classes\Clan_Member::get_members();
         $members = collect(json_decode($members));
+
+        // $members = $members->take(1);
 
         if( $members->count() > 0 ) {
 
@@ -254,6 +262,9 @@ class UpdateMemberExotic extends Command
                                     ]
                                 );
                             }
+                            else {
+                              $exotics_not_found_in_definition[] = $id;
+                            }
 
                             if( isset($member_profile['Response']->profileCollectibles->data->collectibles) ) {
 
@@ -288,6 +299,9 @@ class UpdateMemberExotic extends Command
                                         'date_added' => \Carbon\Carbon::now()->format('Y-m-d H:i:s')
                                     ]
                                 );
+                            }
+                            else {
+                              $exotics_not_found_in_definition[] = $id;
                             }
 
                             if( isset($member_profile['Response']->characterCollectibles->data) ) {
@@ -327,6 +341,11 @@ class UpdateMemberExotic extends Command
 
         Cache::forget('exotic_definition');
         Cache::forever('exotic_definition', DB::table("exotics")->get());
+
+        if( $exotics_not_found_in_definition ) {
+          $this->info('Exotic not found in definitions: ');
+          $this->info( implode(', ', array_unique($exotics_not_found_in_definition)) );
+        }
 
         $this->info('Completed: member collection update');
     }

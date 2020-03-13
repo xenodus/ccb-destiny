@@ -86,9 +86,6 @@
     <div class="col-md-3 col-sm-12">
       <div>
         @include('guides.widgets.sidebarNav')
-        @if($top_category->term->slug == 'magic-the-gathering')
-          @include('guides.widgets.mtgTopDecks')
-        @endif
         @if( in_array($top_category->term->slug, ['destiny', 'magic-the-gathering ', 'the-division-2']) )
           @include('guides.widgets.news')
         @endif

@@ -11,6 +11,7 @@
 |
 */
 
+// For when clan goes BOOM
 /*
 Route::get('/', function(){
   return redirect('https://www.bungie.net/', 302);
@@ -18,7 +19,10 @@ Route::get('/', function(){
 */
 
 // Test Page
-Route::get('/test', 'HomeController@test')->name('test');
+// Route::get('/test', 'HomeController@test')->name('test');
+
+// MHW
+Route::get('/mhw/monsters', 'MHWController@monsters')->name('mhw_monsters');
 
 // Activities
 Route::get('/clan/activities', 'ClanController@activities')->name('clan_member_activities');

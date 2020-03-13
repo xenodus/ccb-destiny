@@ -25,32 +25,6 @@
       </ol>
     </nav>
   </div>
-  <!--div class="row mb-3 categories-img">
-    <div class="col-md-4 text-center">
-      <a href="{{ route('guide_category', ['slug' => $destiny_category->term->slug, 'id' => $destiny_category->term_taxonomy_id]) }}">
-        <div class="d-flex flex-column align-items-center justify-content-center item item-destiny mb-3 p-2">
-          <div class="item-overlay"></div>
-          <div class="item-name">Destiny 2</div>
-        </div>
-      </a>
-    </div>
-    <div class="col-md-4 text-center">
-      <a href="{{ route('guide_category', ['slug' => $magic_category->term->slug, 'id' => $magic_category->term_taxonomy_id]) }}">
-        <div class="d-flex align-items-center justify-content-center item item-mtg mb-3 p-2">
-          <div class="item-overlay"></div>
-          <div class="item-name">Magic: The Gathering Arena</div>
-        </div>
-      </a>
-    </div>
-    <div class="col-md-4 text-center">
-      <a href="{{ route('guide_category', ['slug' => $division_category->term->slug, 'id' => $division_category->term_taxonomy_id]) }}">
-        <div class="d-flex align-items-center justify-content-center item item-division mb-3 p-2">
-          <div class="item-overlay"></div>
-          <div class="item-name">The Division 2</div>
-        </div>
-      </a>
-    </div>
-  </div-->
   <div class="mb-4 text-yellow d-flex justify-content-start align-items-center">
     <div id="latest-post-header-icon"></div>
     <h1>Latest Guides</h1>
@@ -73,7 +47,6 @@
     </div>
     <div class="col-md-3 col-sm-12">
       @include('guides.widgets.sidebarNav')
-      <!-- @include('guides.widgets.mtgTopDecks') -->
     </div>
   </div>
   <div class="pagination-container text-center mt-2">
