@@ -44,6 +44,7 @@ class SendTelegramRaidNotifications extends Command
         $events = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
         ->where('notified', 0)
         ->where('status', 'active')
+        ->where('channel_id', '!=', env('DISCORD_FOUNDERS_LFG_CHANNEL_ID')) // ignore founders channel
         ->get();
 
         $baseUrl = 'https://api.telegram.org/bot'.env('TELEGRAM_TOKEN').'/sendMessage?parse_mode=html&disable_web_page_preview=true';

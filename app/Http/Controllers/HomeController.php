@@ -19,72 +19,6 @@ class HomeController extends Controller
     public function test(Request $request)
     {
       dd( Carbon::parse('next Wednesday') );
-
-      // Update Xur Record in DB
-      $resetHour = 1;
-
-      if( in_array(Carbon::now()->dayOfWeek, [6, 0, 1, 2, 3]) ) {
-
-        // Before Sat reset
-        if( Carbon::now()->dayOfWeek == 6 && Carbon::now()->hour < $resetHour ) {
-          return false;
-        }
-
-        // After Wed reset
-        if( Carbon::now()->dayOfWeek == 3 && Carbon::now()->hour >= $resetHour ) {
-          return false;
-        }
-
-        // Check if already in DB
-
-        // Get Date Range Start
-        if( Carbon::now()->dayOfWeek == 6 ) {
-          $startDate = Carbon::now();
-        }
-        else {
-          $startDate = Carbon::parse('last Saturday');
-        }
-
-        $startDate->hour = $resetHour;
-        $startDate->minute = 0;
-        $startDate->second = 0;
-
-        // Get Date Range End
-        if( Carbon::now()->dayOfWeek == 3 ) {
-          $endDate = Carbon::now();
-        }
-        else {
-          $endDate = Carbon::parse('next Wednesday');
-        }
-
-        $endDate->hour = $resetHour;
-        $endDate->minute = 0;
-        $endDate->second = 0;
-      }
-
-      dd( $endDate );
-      dd( Carbon::now()->dayOfWeek );
-
-      $data['site_title'] = 'TEMP TESTING ' . env('SITE_NAME') .' Clan in Destiny 2';
-      $data['active_page'] = 'home';
-
-      // Extra Stats
-      $cache_time = 15 * 60;
-      $data['raids_completed'] = Cache::remember('home_raids_completed', $cache_time, function () {
-        return App\Classes\Raid_Stats::get_total_raids_completed();
-      });
-
-      $data['pve_kills'] = Cache::remember('home_pve_kills', $cache_time, function () {
-        return App\Classes\Pve_Stats::get_total_kills();
-      });
-
-      $data['clan_members'] = Cache::rememberForever('clan_members', function () {
-        return App\Classes\Clan_Member::get();
-      });
-
-      $data['clan_members_count'] = $data['clan_members']->count();
-
-      return view('temp', $data);
     }
 
     public function process_join_us(Request $request)
@@ -180,6 +114,7 @@ class HomeController extends Controller
       // Raid Events
       $data['raid_events'] = App\Classes\Raid_Event::where('server_id', env('DISCORD_SERVER_ID'))
         ->where('status', 'active')
+        ->where('channel_id', '!=', env('DISCORD_FOUNDERS_LFG_CHANNEL_ID')) // ignore founders channel
         ->orderBy('event_date', 'asc')
         ->with('signups')
         ->get();

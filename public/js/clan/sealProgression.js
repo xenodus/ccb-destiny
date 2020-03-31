@@ -1,4 +1,43 @@
 var sealHashes = {
+  'Flawless': {
+    'name': 'Flawless',
+    'description': 'Complete all Season of the Worthy flawless Triumphs.',
+    'hash': '2945528800',
+    'objectives': [
+      4214917806,
+      984905675,
+      2178938962,
+      882921135,
+      2822907078
+    ]
+  },
+  'Conqueror': {
+    'name': 'Conqueror',
+    'description': 'Complete all Season of the Worthy Grandmaster Triumphs.',
+    'hash': '1983630873',
+    'objectives': [
+      221623575,
+      745948949,
+      3717583795,
+      1560412314,
+      2438674493,
+      3929418444
+    ]
+  },
+  'Almighty': {
+    'name': 'Almighty',
+    'description': 'Complete all Season of the Worthy Triumphs.',
+    'hash': '2860165064',
+    'objectives': [
+      582114738,
+      1014828242,
+      2397844361,
+      1074336130,
+      1799797321,
+      396038457,
+      2069084282
+    ]
+  },
   'Savior': {
     'name': 'Dawn',
     'description': 'Complete all Triumphs for the Season of Dawn.',
