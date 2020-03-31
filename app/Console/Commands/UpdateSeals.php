@@ -26,7 +26,10 @@ class UpdateSeals extends Command
       'Undying' => 2707428411,
       'Harbinger' => 3793754396,
       'Enlightened' => 3387213440,
-      'Savior' => 2460356851
+      'Savior' => 2460356851,
+      'Flawless' => 2945528800,
+      'Conqueror' => 1983630873,
+      'Almighty' => 2860165064
     ];
 
     /**

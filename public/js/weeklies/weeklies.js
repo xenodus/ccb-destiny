@@ -558,7 +558,7 @@ $(document).ready(function(){
         else if ( title == 'Nightfalls' &&  data[i].name.includes('Ordeal')) {
 
           nf_key = Object.keys(nightfall_loot).filter(function(name){
-            return name.includes( data[i].name.replace('Nightfall The Ordeal: ', '') );
+            return name.includes( data[i].name.replace('The Ordeal: ', '') );
           });
 
           if( nf_key.length > 0 ) {
