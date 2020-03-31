@@ -10,27 +10,29 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.0",
+        "@fortawesome/fontawesome-free": "^5.13.0",
         "axios": "^0.18.1",
         "bootstrap": "^4.4.1",
         "cross-env": "^5.2.1",
         "jquery": "^3.4.1",
         "laravel-mix": "^4.1.4",
         "lodash": "^4.17.15",
-        "popper.js": "^1.16.0",
+        "popper.js": "^1.16.1",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.23.7",
+        "sass": "^1.26.3",
         "sass-loader": "^7.3.1",
         "vue": "^2.6.11"
     },
     "dependencies": {
+        "acorn": ">=6.4.1",
         "animate.css": "^3.7.2",
-        "flag-icon-css": "^3.4.5",
+        "flag-icon-css": "^3.4.6",
         "lightbox2": "^2.11.1",
         "masonry-layout": "^4.2.2",
+        "minimist": ">=1.2.2",
         "moment": "^2.24.0",
         "rpg-awesome": "^0.2.0",
-        "tabulator-tables": "^4.5.2",
-        "vanilla-lazyload": "^12.4.0"
+        "tabulator-tables": "^4.6.0",
+        "vanilla-lazyload": "^12.5.1"
     }
 }
