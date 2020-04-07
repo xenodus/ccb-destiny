@@ -81,7 +81,7 @@ $(document).ready(function(){
           {title:"Hunter", field:"hunter", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Titan", field:"titan", sorter:"number", headerSort:false, cssClass: 'text-center'},
           {title:"Last Online", field:"last_online", sorter:"date", sorterParams:{format:"DD MMM YYYY"} /*, headerSort:false*/ },
-          {title:"<div class='mx-3'>Exotics</div><small>Collection</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
+          {title:"<div class='mx-3'>Exotic</div><small>Collection</small>", field:"member_exotics", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Raid</div><small>Activities</small>", field:"raid_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>PvP</div><small>Activities</small>", field:"pvp_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
           {title:"<div class='mx-3'>Gambit</div><small>Activities</small>", field:"gambit_activities", formatter: "html", cssClass: 'text-center', headerSort:false},
