@@ -27,12 +27,13 @@
         "acorn": ">=6.4.1",
         "animate.css": "^3.7.2",
         "flag-icon-css": "^3.4.6",
+        "kind-of": ">=6.0.3",
         "lightbox2": "^2.11.1",
         "masonry-layout": "^4.2.2",
         "minimist": ">=1.2.2",
         "moment": "^2.24.0",
         "rpg-awesome": "^0.2.0",
-        "tabulator-tables": "^4.6.0",
+        "tabulator-tables": "^4.6.1",
         "vanilla-lazyload": "^12.5.1"
     }
 }
