@@ -89,6 +89,7 @@ Route::get('/stats/raid', 'StatsController@raid')->name('stats_raid');
 Route::get('/stats/weapons', 'StatsController@weapons')->name('stats_weapons');
 Route::get('/stats/pve', 'StatsController@pve')->name('stats_pve');
 Route::get('/stats/pvp', 'StatsController@pvp')->name('stats_pvp');
+Route::get('/stats/trials', 'StatsController@trials')->name('trials_pvp');
 Route::get('/stats/gambit', 'StatsController@gambit')->name('stats_gambit');
 Route::get('/stats/gambit-prime', 'StatsController@gambit_prime')->name('stats_gambit_prime');
 
@@ -126,6 +127,9 @@ Route::get('/bungie/weapon/get', 'StatsController@get_weapon_stats')->name('get_
 
 // PvP
 Route::get('/bungie/pvp/get', 'StatsController@get_pvp_stats')->name('get_pvp_stats');
+
+// Trials
+Route::get('/bungie/trials/get', 'StatsController@get_trials_stats')->name('get_trials_stats');
 
 // Gambit
 Route::get('/bungie/gambit/get', 'StatsController@get_gambit_stats')->name('get_gambit_stats');

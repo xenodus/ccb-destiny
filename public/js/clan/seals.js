@@ -46,12 +46,10 @@ $(document).ready(function(){
           }
 
           tableDataEntry["total"] = memberSealTotal;
-          // tableDataEntry["link"] = '<a href="/clan/seals/member/'+sealData[i].id+'">Go</a>';
           tableData.push(tableDataEntry);
         }
 
-        tableColumns.push({title:"Total", field:"total", cssClass: "text-center", visible:true});
-        // tableColumns.push({title:"Details", field:"link", formatter:"html", cssClass: "text-center"});
+        tableColumns.splice(1, 0, {title:"Total", field:"total", cssClass: "text-center", visible:true});
 
         $('.stats-container').append('<div id="stats-table"></div>');
         $('.loader').hide();

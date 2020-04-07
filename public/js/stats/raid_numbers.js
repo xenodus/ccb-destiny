@@ -94,6 +94,7 @@ $(document).ready(function(){
             layout:"fitColumns",
             columns:[
               {title:"Name", field:"name", formatter:"html", frozen:true, minWidth:180},
+              {title:"Total", field:"total", formatter:"money", formatterParams: format, cssClass: 'text-center'},              
               {title:"Member ID", field:"membershipId", visible: false, cssClass: 'memberID'},
               {title:"Levi", field:"levi", headerSort:false, formatter:"html", cssClass: 'text-center'},
               {title:"EOW", field:"eow", headerSort:false, formatter:"html", cssClass: 'text-center'},
@@ -106,7 +107,6 @@ $(document).ready(function(){
               {title:"Flawless CoS", field:"crown", formatter:"html"},
               {title:"GoS", field:"gos", formatter:"money", formatterParams: format, cssClass: 'text-center'},
               {title:"Flawless GoS", field:"perfection", formatter:"html"},
-              {title:"Total", field:"total", formatter:"money", formatterParams: format, cssClass: 'text-center'},
             ],
             initialSort: [
               {column:"total", dir:"desc"}

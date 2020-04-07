@@ -47,6 +47,28 @@ class UpdateClanRaidActivityBuddies extends Command
         $client = new Client(['http_errors' => false, 'verify' => false]);
         $headers = ['headers' => ['X-API-Key' => env('BUNGIE_API')], 'http_errors' => false];
 
+        /******************************
+                Clean up DB
+        ******************************/
+
+        $activity_ids = DB::select('SELECT distinct(activity_id) FROM clan_member_activity_buddy_instance WHERE member_id NOT in (SELECT id FROM clan_members)');
+        $activity_ids = collect($activity_ids)->pluck("activity_id")->all();
+
+        // Delete PGCRs
+        foreach($activity_ids as $activity_id) {
+            DB::delete('Delete from clan_member_pgcr WHERE id = ?', [$activity_id]);
+        }
+
+        // Delete member buddy activity
+        $deleted = DB::delete('Delete FROM clan_member_activity_buddy_instance WHERE member_id NOT in (SELECT id FROM clan_members)');
+
+        // Delete last processed
+        $deleted = DB::delete('Delete FROM clan_member_activity_last_processed WHERE character_id NOT IN (SELECT id FROM clan_member_characters)');        
+
+        /******************************
+                End clean up DB
+        ******************************/
+
         // Activity Modes
         $activity_mode_definitions = collect(json_decode(file_get_contents(storage_path('manifest/DestinyActivityModeDefinition.json'))));
 

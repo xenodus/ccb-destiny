@@ -74,60 +74,63 @@ $(document).ready(function(){
 
   for(var i=0; i<activity_instances.length; i++) {
 
-    var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
+    if( activity_instances[i].pgcr ) {
 
-    if( pgcr ) {
+      var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
 
-      // console.log(pgcr);
+      if( pgcr ) {
 
-      // pgcr data
-      var your_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0,
-        'completed': 0
-      };
+        // console.log(pgcr);
 
-      var buddy_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0
-      };
+        // pgcr data
+        var your_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0,
+          'completed': 0
+        };
 
-      // your kda
-      var memberData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == member.id;
-      });
+        var buddy_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0
+        };
 
-      // Ignore multiple characters
-      if( memberData.length > 0 ) {
-        your_stats['kill'] = memberData[0].values.kills.basic.value;
-        your_stats['death'] = memberData[0].values.deaths.basic.value;
-        your_stats['kd'] = memberData[0].values.killsDeathsRatio.basic.value;
-        your_stats['completed'] = memberData[0].values.completed.basic.value;
+        // your kda
+        var memberData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == member.id;
+        });
+
+        // Ignore multiple characters
+        if( memberData.length > 0 ) {
+          your_stats['kill'] = memberData[0].values.kills.basic.value;
+          your_stats['death'] = memberData[0].values.deaths.basic.value;
+          your_stats['kd'] = memberData[0].values.killsDeathsRatio.basic.value;
+          your_stats['completed'] = memberData[0].values.completed.basic.value;
+        }
+
+        // your buddy's kda
+        var buddyData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == buddy_id;
+        });
+
+        // Ignore multiple characters
+        if( buddyData.length > 0 ) {
+          buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
+          buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
+          buddy_stats['kd'] = buddyData[0].values.killsDeathsRatio.basic.value;
+        }
+
+        tableData.push({
+          id: activity_instances[i].activity_id,
+          activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
+          date: moment(pgcr.period).format('D MMM Y, h:mm A'),
+          completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
+          your_kd: Number(your_stats['kd'].toFixed(2)),
+          buddy_kd: Number(buddy_stats['kd'].toFixed(2)),
+          link: '<a class="text-dark" target="_blank" href="https://raid.report/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
+        });
       }
-
-      // your buddy's kda
-      var buddyData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == buddy_id;
-      });
-
-      // Ignore multiple characters
-      if( buddyData.length > 0 ) {
-        buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
-        buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
-        buddy_stats['kd'] = buddyData[0].values.killsDeathsRatio.basic.value;
-      }
-
-      tableData.push({
-        id: activity_instances[i].activity_id,
-        activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
-        date: moment(pgcr.period).format('D MMM Y, h:mm A'),
-        completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
-        your_kd: Number(your_stats['kd'].toFixed(2)),
-        buddy_kd: Number(buddy_stats['kd'].toFixed(2)),
-        link: '<a class="text-dark" target="_blank" href="https://raid.report/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
-      });
     }
   }
 

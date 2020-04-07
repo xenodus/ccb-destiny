@@ -223,6 +223,14 @@ class StatsController extends Controller
       return view('stats.pve', $data);
   }
 
+  public function trials()
+  {
+      $data['site_title'] = 'Trials stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
+      $data['active_page'] = 'trials';
+
+      return view('stats.trials', $data);
+  }
+
   public function pvp()
   {
       $data['site_title'] = 'PvP stats for the ' . env('SITE_NAME') .' Clan in Destiny 2';
@@ -263,6 +271,15 @@ class StatsController extends Controller
     });
 
     return response()->json($pve_stats);
+  }
+
+  public function get_trials_stats()
+  {
+    $trials_stats = Cache::rememberForever('trials_stats', function () {
+      return App\Classes\Trials_Stats::get();
+    });
+
+    return response()->json($trials_stats);
   }
 
   public function get_pvp_stats()

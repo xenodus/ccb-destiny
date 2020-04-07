@@ -94,63 +94,6 @@ class UpdateMilestones extends Command
                 dd();
             }
 
-            // Nightfalls
-            /*
-            if( $milestones->get( $this->nightfallHash ) ) {
-                $nightfalls = $milestones->get( $this->nightfallHash );
-
-                DB::table('nightfall')->truncate(); // cleanup db
-
-                foreach( $nightfalls->activities as $activity  ) {
-                    if( isset( $activity->modifierHashes ) ) {
-
-                        $nf = new App\Classes\Nightfall();
-                        $nf->name = $activity_definitions[ $activity->activityHash ]->displayProperties->name;
-                        $nf->description = $activity_definitions[ $activity->activityHash ]->displayProperties->description;
-                        $nf->icon = $activity_definitions[ $activity->activityHash ]->displayProperties->icon;
-                        $nf->hash = $activity->activityHash;
-                        $nf->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                        $nf->save();
-
-                        $this->info('Inserted: ' . $nf->name);
-                    }
-                }
-
-                // Refresh Cache
-                Cache::forget('milestones_nightfall');
-                Cache::forever('milestones_nightfall', App\Classes\Nightfall::get());
-            }
-            */
-
-            // Reckoning Modifiers
-            /*
-            if( $milestones->get( $this->reckoningHash ) ) {
-                DB::table('activity_modifiers')->where('type', 'reckoning')->delete(); // cleanup db
-
-                $reckoning = $milestones->get( $this->reckoningHash );
-
-                foreach($reckoning->activities as $activity) {
-                    if( isset( $activity->modifierHashes ) ) {
-
-                        foreach($activity->modifierHashes as $modifier_hash) {
-                            $am = new App\Classes\Activity_Modifier();
-                            $am->type = 'reckoning';
-                            $am->hash = $modifier_hash;
-                            $am->description = $modifier_definitions[ $modifier_hash ]->displayProperties->description;
-                            $am->name = $modifier_definitions[ $modifier_hash ]->displayProperties->name;
-                            $am->icon = $modifier_definitions[ $modifier_hash ]->displayProperties->icon;
-                            $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                            $am->save();
-
-                            $this->info('Inserted Reckoning Modifier: ' . $am->name);
-                        }
-
-                        break;
-                    }
-                }
-            }
-            */
-
             // Y1 Prestige EoW / SOS Modifiers
             if( $milestones->get( $this->y1PrestigeRaidHash ) ) {
                 DB::table('activity_modifiers')->where('type', 'y1_prestige_raid')->delete(); // cleanup db
@@ -361,7 +304,7 @@ class UpdateMilestones extends Command
                         $am->type = 'flashpoint';
                         $am->hash = $flashpoint->availableQuests[0]->questItemHash;
                         $am->description = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->description;
-                        $am->name = str_replace('FLASHPOINT: ', '', $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name);
+                        $am->name = ucwords( strtolower(str_replace('FLASHPOINT: ', '', $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->name)) );
                         $am->icon = $item_definitions[ $flashpoint->availableQuests[0]->questItemHash ]->displayProperties->icon ?? '';
                         $am->date_added = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                         $am->save();

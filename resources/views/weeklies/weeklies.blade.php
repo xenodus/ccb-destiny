@@ -3,7 +3,7 @@
 @section('body')
 <section id="weeklies" class="text-center container-fluid border-bottom border-dark">
   <div class="container py-5 mb-4">
-    <div id="milestones-header" class="mb-5 text-yellow d-flex justify-content-start align-items-center">
+    <div id="milestones-header" class="mb-5 text-yellow d-flex justify-content-start align-items-center standard-header">
       <!--div id="milestones-header-icon" class="mr-1"></div-->
       <div style="position: relative; bottom: 8px;">
         <h1>Weeklies / Dailies</h1>

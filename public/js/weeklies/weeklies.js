@@ -568,9 +568,6 @@ $(document).ready(function(){
               <div class='mb-1'>
                 `+nightfall_loot[nf_key].description.replace(/"/g, "'")+`
               </div>
-
-              <div>Rare Drop</div>
-
               <div class='d-flex align-items-start mt-2'>
                 <div>
                   <img src='https://bungie.net`+nightfall_loot[nf_key].icon+`' class='mt-1 mb-1 mr-2 tooltip-icon' style='width: 50px; height: 50px;'/>

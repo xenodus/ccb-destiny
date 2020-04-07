@@ -57,6 +57,7 @@ mix.postCss('public/css/stats.css', 'public/css/compiled/stats.css', [
 // COMMON JS
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
+    /* 'node_modules/popper.js/dist/popper.js', */
     'node_modules/lodash/lodash.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
     'node_modules/moment/moment.js',
@@ -139,6 +140,10 @@ mix.scripts([
 mix.scripts([
     'public/js/stats/pvp_numbers.js',
 ], 'public/js/compiled/pvp_numbers.js');
+
+mix.scripts([
+    'public/js/stats/trials_numbers.js',
+], 'public/js/compiled/trials_numbers.js');
 
 mix.scripts([
     'public/js/stats/gambit_numbers.js',

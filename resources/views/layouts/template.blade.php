@@ -125,6 +125,9 @@
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'pvp') ? 'active' : ''  }}">
                       <a href="/stats/pvp">PvP</a>
                     </li>
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'trials') ? 'active' : ''  }}">
+                      <a href="/stats/trials">Trials</a>
+                    </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit') ? 'active' : ''  }}">
                       <a href="/stats/gambit">Gambit</a>
                     </li>

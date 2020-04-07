@@ -74,81 +74,84 @@ $(document).ready(function(){
 
   for(var i=0; i<activity_instances.length; i++) {
 
-    var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
+    if( activity_instances[i].pgcr ) {
 
-    if( pgcr ) {
+      var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
 
-      // console.log(pgcr);
+      if( pgcr ) {
 
-      // pgcr data
-      var your_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0,
-        'team': '',
-        'outcome': '',
-      };
+        // console.log(pgcr);
 
-      var buddy_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0,
-        'team': '',
-        'outcome': '',
-      };
+        // pgcr data
+        var your_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0,
+          'team': '',
+          'outcome': '',
+        };
 
-      // your kad
-      var memberData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == member.id;
-      });
+        var buddy_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0,
+          'team': '',
+          'outcome': '',
+        };
 
-      // Ignore multiple characters
-      if( memberData.length > 0 ) {
-        your_stats['kill'] = memberData[0].values.kills.basic.value;
-        your_stats['death'] = memberData[0].values.deaths.basic.value;
-        your_stats['kad'] = memberData[0].values.efficiency.basic.value;
-
-        t = pgcr.teams.filter(function(t){
-          return t.teamId == memberData[0].values.team.basic.value;
+        // your kad
+        var memberData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == member.id;
         });
 
-        if( t.length > 0 ) {
-          your_stats['team'] = memberData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
-          your_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+        // Ignore multiple characters
+        if( memberData.length > 0 ) {
+          your_stats['kill'] = memberData[0].values.kills.basic.value;
+          your_stats['death'] = memberData[0].values.deaths.basic.value;
+          your_stats['kad'] = memberData[0].values.efficiency.basic.value;
+
+          t = pgcr.teams.filter(function(t){
+            return t.teamId == memberData[0].values.team.basic.value;
+          });
+
+          if( t.length > 0 ) {
+            your_stats['team'] = memberData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
+            your_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+          }
         }
-      }
 
-      // your buddy's kad
-      var buddyData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == buddy_id;
-      });
-
-      // Ignore multiple characters
-      if( buddyData.length > 0 ) {
-        buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
-        buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
-        buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
-
-        t = pgcr.teams.filter(function(t){
-          return t.teamId == buddyData[0].values.team.basic.value;
+        // your buddy's kad
+        var buddyData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == buddy_id;
         });
 
-        if( t.length > 0 ) {
-          buddy_stats['team'] = buddyData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
-          buddy_stats['outcome'] = t[0].standing.basic.value; // 0 == win
-        }
-      }
+        // Ignore multiple characters
+        if( buddyData.length > 0 ) {
+          buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
+          buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
+          buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
 
-      tableData.push({
-        id: activity_instances.activity_id,
-        activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
-        date: moment(pgcr.period).format('D MMM Y, hh:mm A'),
-        same_team: your_stats['team'] == buddy_stats['team'] ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
-        outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
-        your_kad: Number(your_stats['kad'].toFixed(2)),
-        buddy_kad: Number(buddy_stats['kad'].toFixed(2)),
-        link: '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
-      });
+          t = pgcr.teams.filter(function(t){
+            return t.teamId == buddyData[0].values.team.basic.value;
+          });
+
+          if( t.length > 0 ) {
+            buddy_stats['team'] = buddyData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
+            buddy_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+          }
+        }
+
+        tableData.push({
+          id: activity_instances.activity_id,
+          activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
+          date: moment(pgcr.period).format('D MMM Y, hh:mm A'),
+          same_team: your_stats['team'] == buddy_stats['team'] ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
+          outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
+          your_kad: Number(your_stats['kad'].toFixed(2)),
+          buddy_kad: Number(buddy_stats['kad'].toFixed(2)),
+          link: '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances[i].activity_id + '">Go</a>'
+        });
+      }
     }
   }
 

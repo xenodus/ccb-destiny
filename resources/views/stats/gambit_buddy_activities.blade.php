@@ -74,117 +74,120 @@ $(document).ready(function(){
 
   for(var i=0; i<activity_instances.length; i++) {
 
-    var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
+    if( activity_instances[i].pgcr ) {
 
-    if( pgcr ) {
+      var pgcr = JSON.parse( activity_instances[i].pgcr.pgcr );
 
-      // console.log(pgcr);
+      if( pgcr ) {
 
-      // pgcr data
-      var your_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0,
-        'score': 0,
-        'motes_deposited': 0,
-        'motes_lost': 0,
-        'invasion_kills': 0,
-        'team': '',
-        'outcome': '',
-        'primeval_dmg': 0
-      };
+        // console.log(pgcr);
 
-      var buddy_stats = {
-        'kill': 0,
-        'death': 0,
-        'kd': 0,
-        'score': 0,
-        'motes_deposited': 0,
-        'motes_lost': 0,
-        'invasion_kills': 0,
-        'team': '',
-        'outcome': '',
-        'primeval_dmg': 0
-      };
+        // pgcr data
+        var your_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0,
+          'score': 0,
+          'motes_deposited': 0,
+          'motes_lost': 0,
+          'invasion_kills': 0,
+          'team': '',
+          'outcome': '',
+          'primeval_dmg': 0
+        };
 
-      // your kad
-      var memberData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == member.id;
-      });
+        var buddy_stats = {
+          'kill': 0,
+          'death': 0,
+          'kd': 0,
+          'score': 0,
+          'motes_deposited': 0,
+          'motes_lost': 0,
+          'invasion_kills': 0,
+          'team': '',
+          'outcome': '',
+          'primeval_dmg': 0
+        };
 
-      // Ignore multiple characters
-      if( memberData.length > 0 ) {
-        your_stats['kill'] = memberData[0].values.kills.basic.value;
-        your_stats['death'] = memberData[0].values.deaths.basic.value;
-        your_stats['kad'] = memberData[0].values.efficiency.basic.value;
-        your_stats['score'] = memberData[0].values.score.basic.value;
-
-        your_stats['motes_deposited'] = memberData[0].extended.values.motesDeposited.basic.value;
-        your_stats['motes_lost'] = memberData[0].extended.values.motesLost.basic.value;
-        your_stats['invasion_kills'] = memberData[0].extended.values.invasionKills.basic.value;
-
-        t = pgcr.teams.filter(function(t){
-          return t.teamId == memberData[0].values.team.basic.value;
+        // your kad
+        var memberData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == member.id;
         });
 
-        if( t.length > 0 ) {
-          your_stats['team'] = memberData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
-          your_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+        // Ignore multiple characters
+        if( memberData.length > 0 ) {
+          your_stats['kill'] = memberData[0].values.kills.basic.value;
+          your_stats['death'] = memberData[0].values.deaths.basic.value;
+          your_stats['kad'] = memberData[0].values.efficiency.basic.value;
+          your_stats['score'] = memberData[0].values.score.basic.value;
 
-          // Primeval Dmg %
-          var team_mates = pgcr.entries.filter(function(p){
-            return p.values.team.basic.value == memberData[0].values.team.basic.value;
+          your_stats['motes_deposited'] = memberData[0].extended.values.motesDeposited.basic.value;
+          your_stats['motes_lost'] = memberData[0].extended.values.motesLost.basic.value;
+          your_stats['invasion_kills'] = memberData[0].extended.values.invasionKills.basic.value;
+
+          t = pgcr.teams.filter(function(t){
+            return t.teamId == memberData[0].values.team.basic.value;
           });
 
-          var team_primeval_total_dmg = 0;
+          if( t.length > 0 ) {
+            your_stats['team'] = memberData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
+            your_stats['outcome'] = t[0].standing.basic.value; // 0 == win
 
-          for(var p=0; p<team_mates.length; p++) {
-            team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
-          }
+            // Primeval Dmg %
+            var team_mates = pgcr.entries.filter(function(p){
+              return p.values.team.basic.value == memberData[0].values.team.basic.value;
+            });
 
-          if( team_primeval_total_dmg > 0 ) {
-            your_stats['primeval_dmg'] = Number(memberData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+            var team_primeval_total_dmg = 0;
+
+            for(var p=0; p<team_mates.length; p++) {
+              team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
+            }
+
+            if( team_primeval_total_dmg > 0 ) {
+              your_stats['primeval_dmg'] = Number(memberData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+            }
           }
         }
-      }
 
-      // your buddy's kad
-      var buddyData = pgcr.entries.filter(function(p){
-        return p.player.destinyUserInfo.membershipId == buddy_id;
-      });
-
-      // Ignore multiple characters
-      if( buddyData.length > 0 ) {
-        buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
-        buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
-        buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
-        buddy_stats['score'] = buddyData[0].values.score.basic.value;
-
-        buddy_stats['motes_deposited'] = buddyData[0].extended.values.motesDeposited.basic.value;
-        buddy_stats['motes_lost'] = buddyData[0].extended.values.motesLost.basic.value;
-        buddy_stats['invasion_kills'] = buddyData[0].extended.values.invasionKills.basic.value;
-
-        t = pgcr.teams.filter(function(t){
-          return t.teamId == buddyData[0].values.team.basic.value;
+        // your buddy's kad
+        var buddyData = pgcr.entries.filter(function(p){
+          return p.player.destinyUserInfo.membershipId == buddy_id;
         });
 
-        if( t.length > 0 ) {
-          buddy_stats['team'] = buddyData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
-          buddy_stats['outcome'] = t[0].standing.basic.value; // 0 == win
+        // Ignore multiple characters
+        if( buddyData.length > 0 ) {
+          buddy_stats['kill'] = buddyData[0].values.kills.basic.value;
+          buddy_stats['death'] = buddyData[0].values.deaths.basic.value;
+          buddy_stats['kad'] = buddyData[0].values.efficiency.basic.value;
+          buddy_stats['score'] = buddyData[0].values.score.basic.value;
 
-          // Primeval Dmg %
-          var team_mates = pgcr.entries.filter(function(p){
-            return p.values.team.basic.value == buddyData[0].values.team.basic.value;
+          buddy_stats['motes_deposited'] = buddyData[0].extended.values.motesDeposited.basic.value;
+          buddy_stats['motes_lost'] = buddyData[0].extended.values.motesLost.basic.value;
+          buddy_stats['invasion_kills'] = buddyData[0].extended.values.invasionKills.basic.value;
+
+          t = pgcr.teams.filter(function(t){
+            return t.teamId == buddyData[0].values.team.basic.value;
           });
 
-          var team_primeval_total_dmg = 0;
+          if( t.length > 0 ) {
+            buddy_stats['team'] = buddyData[0].values.team.basic.value == 17 ? 'Bravo' : 'Alpha';
+            buddy_stats['outcome'] = t[0].standing.basic.value; // 0 == win
 
-          for(var p=0; p<team_mates.length; p++) {
-            team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
-          }
+            // Primeval Dmg %
+            var team_mates = pgcr.entries.filter(function(p){
+              return p.values.team.basic.value == buddyData[0].values.team.basic.value;
+            });
 
-          if( team_primeval_total_dmg > 0 ) {
-            buddy_stats['primeval_dmg'] = Number(buddyData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+            var team_primeval_total_dmg = 0;
+
+            for(var p=0; p<team_mates.length; p++) {
+              team_primeval_total_dmg += team_mates[p].extended.values.primevalDamage.basic.value;
+            }
+
+            if( team_primeval_total_dmg > 0 ) {
+              buddy_stats['primeval_dmg'] = Number(buddyData[0].extended.values.primevalDamage.basic.value / team_primeval_total_dmg * 100).toFixed(0);
+            }
           }
         }
       }
