@@ -60,7 +60,7 @@
   </div>
 </section>
 
-<section id="guides" class="text-center container-fluid mb-4 border-bottom border-dark">
+<section id="guides" class="text-center container-fluid mb-4">
   <div class="container py-5">
     <div id="guides-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center standard-header">
       <div id="latest-post-header-icon"></div>
@@ -76,7 +76,7 @@
   <div class="loader-text mb-5">Fetching Guides...</div>
 </section>
 
-<section id="news" class="text-center container-fluid mb-4">
+<!--section id="news" class="text-center container-fluid mb-4">
   <div class="container py-5">
     <div id="news-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center standard-header">
       <div id="news-header-icon"></div>
@@ -91,7 +91,7 @@
 
   <div class="loader"></div>
   <div class="loader-text mb-5">Fetching News...</div>
-</section>
+</section-->
 @endsection
 
 @section('footer')

@@ -75,92 +75,95 @@ $(document).ready(function(){
 
     for(var i=0; i<activity_instances.data.length; i++) {
 
-      var pgcr = JSON.parse( activity_instances.data[i].pgcr.pgcr );
+      if( activity_instances.data[i].pgcr ) {
 
-      if( pgcr ) {
+        var pgcr = JSON.parse( activity_instances.data[i].pgcr.pgcr );
 
-        // console.log(pgcr);
+        if( pgcr ) {
 
-        // pgcr data
-        var your_stats = {
-          'completed': 0,
-          'outcome': 1,
-          'efficiency': 0,
-          'kills': 0,
-          'deaths': 0,
-          'assists': 0,
-        };
+          // console.log(pgcr);
 
-        // your kda
-        var member_data = pgcr.entries.filter(function(p){
-          return p.player.destinyUserInfo.membershipId == member.id;
-        });
+          // pgcr data
+          var your_stats = {
+            'completed': 0,
+            'outcome': 1,
+            'efficiency': 0,
+            'kills': 0,
+            'deaths': 0,
+            'assists': 0,
+          };
 
-        // Ignore multiple characters
-        if( member_data.length > 0 ) {
-          your_stats['completed'] = member_data[0].values.completed.basic.value;
+          // your kda
+          var member_data = pgcr.entries.filter(function(p){
+            return p.player.destinyUserInfo.membershipId == member.id;
+          });
 
-          if( activity_type == "PvP" || activity_type == "Gambit" ) {
-            your_stats['outcome'] = member_data[0].standing; // 0 == win
-            your_stats['efficiency'] = member_data[0].values.efficiency.basic.displayValue;
-            your_stats['kills'] = member_data[0].values.kills.basic.displayValue;
-            your_stats['deaths'] = member_data[0].values.deaths.basic.displayValue;
-            your_stats['assists'] = member_data[0].values.assists.basic.displayValue;
+          // Ignore multiple characters
+          if( member_data.length > 0 ) {
+            your_stats['completed'] = member_data[0].values.completed.basic.value;
+
+            if( activity_type == "PvP" || activity_type == "Gambit" ) {
+              your_stats['outcome'] = member_data[0].standing; // 0 == win
+              your_stats['efficiency'] = member_data[0].values.efficiency.basic.displayValue;
+              your_stats['kills'] = member_data[0].values.kills.basic.displayValue;
+              your_stats['deaths'] = member_data[0].values.deaths.basic.displayValue;
+              your_stats['assists'] = member_data[0].values.assists.basic.displayValue;
+            }
           }
-        }
 
-        // Has clan mate check
-        var activity_member_ids = pgcr.entries.filter(function(p){
-          return p.player.destinyUserInfo.membershipId != member.id;
-        }).map(function(p){
-          return p.player.destinyUserInfo.membershipId;
-        });
+          // Has clan mate check
+          var activity_member_ids = pgcr.entries.filter(function(p){
+            return p.player.destinyUserInfo.membershipId != member.id;
+          }).map(function(p){
+            return p.player.destinyUserInfo.membershipId;
+          });
 
-        var has_clan_mate = false;
+          var has_clan_mate = false;
 
-        for(var j=0; j<activity_member_ids.length; j++) {
-          if( clan_members_ids.includes(activity_member_ids[j]) ) {
-            has_clan_mate = true;
-            break;
+          for(var j=0; j<activity_member_ids.length; j++) {
+            if( clan_members_ids.includes(activity_member_ids[j]) ) {
+              has_clan_mate = true;
+              break;
+            }
           }
+
+          // Link
+          if( activity_type == 'Gambit' ) {
+            var link = '<a class="text-dark" target="_blank" href="https://destinytracker.com/d2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
+
+            var link_name = 'D2 Tracker';
+          }
+          else if( activity_type == 'PvP' ) {
+            var link = '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
+
+            var link_name = 'Guardian.GG';
+          }
+          else if( activity_type == 'Raid' ) {
+            var link = '<a class="text-dark" target="_blank" href="https://raid.report/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
+
+            var link_name = 'Raid.Report';
+          }
+          else {
+            var link = '<a class="text-dark" target="_blank" href="https://destinytracker.com/d2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
+
+            var link_name = 'D2 Tracker';
+          }
+
+          tableData.push({
+            no: item_start_no + i,
+            id: activity_instances.data[i].activity_id,
+            activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
+            date: moment(pgcr.period).format('D MMM Y, h:mm A'),
+            completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
+            has_clan_mate: has_clan_mate == true ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
+            link: link,
+            outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
+            efficiency: your_stats['efficiency'],
+            kills: your_stats['kills'],
+            deaths: your_stats['deaths'],
+            assists: your_stats['assists'],
+          });
         }
-
-        // Link
-        if( activity_type == 'Gambit' ) {
-          var link = '<a class="text-dark" target="_blank" href="https://destinytracker.com/d2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
-
-          var link_name = 'D2 Tracker';
-        }
-        else if( activity_type == 'PvP' ) {
-          var link = '<a class="text-dark" target="_blank" href="https://guardian.gg/2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
-
-          var link_name = 'Guardian.GG';
-        }
-        else if( activity_type == 'Raid' ) {
-          var link = '<a class="text-dark" target="_blank" href="https://raid.report/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
-
-          var link_name = 'Raid.Report';
-        }
-        else {
-          var link = '<a class="text-dark" target="_blank" href="https://destinytracker.com/d2/pgcr/' + activity_instances.data[i].activity_id + '">Go</a>';
-
-          var link_name = 'D2 Tracker';
-        }
-
-        tableData.push({
-          no: item_start_no + i,
-          id: activity_instances.data[i].activity_id,
-          activity_name: activity_definition[ pgcr.activityDetails.directorActivityHash ].displayProperties.name,
-          date: moment(pgcr.period).format('D MMM Y, h:mm A'),
-          completed: your_stats['completed'] == 1 ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
-          has_clan_mate: has_clan_mate == true ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>',
-          link: link,
-          outcome: your_stats['outcome'] == 0 ? '<span class="text-success">Victory</span>' : '<span class="text-danger">Defeat</span>',
-          efficiency: your_stats['efficiency'],
-          kills: your_stats['kills'],
-          deaths: your_stats['deaths'],
-          assists: your_stats['assists'],
-        });
       }
     }
 

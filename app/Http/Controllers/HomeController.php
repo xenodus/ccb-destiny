@@ -18,7 +18,9 @@ class HomeController extends Controller
 {
     public function test(Request $request)
     {
-      dd( Carbon::parse('next Wednesday') );
+      $member_streams = App\Classes\Stream::getMemberStreams();
+
+      dd( $member_streams );
     }
 
     public function process_join_us(Request $request)

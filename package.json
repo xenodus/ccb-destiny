@@ -14,7 +14,7 @@
         "axios": "^0.18.1",
         "bootstrap": "^4.4.1",
         "cross-env": "^5.2.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "laravel-mix": "^4.1.4",
         "lodash": "^4.17.15",
         "popper.js": "^1.16.1",
@@ -33,7 +33,7 @@
         "minimist": ">=1.2.2",
         "moment": "^2.24.0",
         "rpg-awesome": "^0.2.0",
-        "tabulator-tables": "^4.6.1",
+        "tabulator-tables": "^4.6.2",
         "vanilla-lazyload": "^12.5.1"
     }
 }

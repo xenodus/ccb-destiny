@@ -195,7 +195,7 @@
           <small class="text-white">&copy; 2019 {{ env('APP_DISPLAY_URL') }}</small>
         </div>
         <div>
-          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/4/4611686018474971535" target="_blank">xenodus</a></small>
+          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/3/4611686018474971535" target="_blank">xenodus</a> | <a href="https://ko-fi.com/xenodus" target="_blank"><img src="https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/5cbee26fcf61ec3358016243_Ko-fi_Icon_RGBforDarkBg.png" style="height: 19px; position: relative; bottom: 1px; margin-right: 2px;">Buy me a Ko-fi</a></small>
         </div>
       </div>
 

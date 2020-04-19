@@ -19,7 +19,7 @@ Route::get('/', function(){
 */
 
 // Test Page
-// Route::get('/test', 'HomeController@test')->name('test');
+Route::get('/test', 'HomeController@test')->name('test');
 
 // MHW
 Route::get('/mhw/monsters', 'MHWController@monsters')->name('mhw_monsters');

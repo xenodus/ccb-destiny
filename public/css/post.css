@@ -37,10 +37,12 @@ li.breadcrumb-item.active a span {
 
 #guide-post-content ul {
   padding-inline-start: 25px;
+  margin-left: 1rem;
+  line-height: 24px;
 }
 
 #guide-post-content img {
-  width: auto;
+  /* width: auto; */
   height: auto;
   /* max-height: 100vh; */
   max-width: 100%;
