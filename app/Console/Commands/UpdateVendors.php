@@ -24,7 +24,7 @@ class UpdateVendors extends Command
       'Tess Everis' => '3361454721',
       'Petra Venj' => '1841717884',
       'Benedict 99-40' => '1265988377',
-      'Eva Levante' => '919809084',
+      // 'Eva Levante' => '919809084',
       'Saint-14' => '765357505'
     ];
 
