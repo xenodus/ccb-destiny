@@ -6,6 +6,8 @@ mix.copy('node_modules/rpg-awesome/fonts/*', 'public/css/fonts/');
 mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/*', 'public/css/webfonts/');
 // FLAG-ICONS
 mix.copy('node_modules/flag-icon-css/flags', 'public/css/flags');
+// Bootstrap source map
+mix.copy('node_modules/bootstrap/dist/js/bootstrap.js.map', 'public/js/compiled/bootstrap.js.map');
 
 
 /*********************************
