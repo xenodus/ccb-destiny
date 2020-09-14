@@ -3,7 +3,9 @@
 @section('body')
 <section id="outbreak-solution" class="text-center container-fluid mt-4 mb-4">
   <div class="p-1">
-    <h1 class="text-yellow mb-1">Raid Events</h1>
+    <h1 class="text-yellow mb-1 text-left" style="font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; margin: 0; position: relative;">
+      Raid Events
+    </h1>
     <div class="text-left">Create / sign up for raids in our Discord's #raid-lfg / #other-lfg channels.</div>
 
     <div class="mt-3">

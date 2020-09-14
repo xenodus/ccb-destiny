@@ -63,21 +63,23 @@ class Kernel extends ConsoleKernel
         $schedule->command('send:TelegramXurNotifications')->weeklyOn(6, env('XUR_TELEGRAM_NOTIFY_TIME'))->appendOutputTo($baseFilePath . 'telegram.log'); // After Reset
 
         // Clan Activity Buddy
+        /*
         $schedule->command('update:clanRaidActivityBuddies')->hourly()->runInBackground()->appendOutputTo($baseFilePath . 'raid_buddy.log');
         $schedule->command('update:clanPvPActivityBuddies')->hourly()->runInBackground()->appendOutputTo($baseFilePath . 'pvp_buddy.log');
         $schedule->command('update:clanGambitActivityBuddies')->hourly()->runInBackground()->appendOutputTo($baseFilePath . 'gambit_buddy.log');
         $schedule->command('update:clanGambitPrimeActivityBuddies')->hourly()->runInBackground()->appendOutputTo($baseFilePath . 'gambit_prime_buddy.log');
+        */
 
         // Raid lockouts
-        $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');
+        // $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');
 
         // Stats
-        $schedule->command('update:raidStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:PVEStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:PVPStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:TrialsStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:GambitStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:GambitPrimeStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:raidStats')->hourly()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVEStats')->hourly()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVPStats')->hourly()->appendOutputTo($baseFilePath . 'stats.log');
+        // $schedule->command('update:TrialsStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitStats')->hourly()->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitPrimeStats')->hourly()->appendOutputTo($baseFilePath . 'stats.log');
     }
 
     /**

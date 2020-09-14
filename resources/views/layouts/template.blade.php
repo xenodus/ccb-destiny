@@ -85,7 +85,7 @@
                 </a>
               </li>
               <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'clan_member_activities_listing', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
-                <a class="nav-link text-md-center" href="/clan/lockouts">
+                <a class="nav-link text-md-center" href="/clan/roster">
                   <i class="ra ra-double-team"></i>
                   <div>Clan</div>
                 </a>
@@ -94,11 +94,11 @@
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['roster', 'clan_member_activities_listing'])) ? 'active' : ''  }}">
                       <a href="/clan/roster">Roster</a>
                     </li>
-                    <li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
+                    <!--li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
                       <a href="/clan/lockouts">Raid Lockouts</a>
-                    </li>
-                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])) ? 'active' : ''  }}">
-                      <a href="/clan/seals">Seal Completions</a>
+                    </li-->
+                    <!--li class="nav-item {{ (isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])) ? 'active' : ''  }}">
+                      <a href="/clan/seals">Seal Completions</a-->
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'clan_exotic') ? 'active' : ''  }}">
                       <a href="/clan/exotics">Exotic Collection</a>
@@ -125,23 +125,23 @@
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'pvp') ? 'active' : ''  }}">
                       <a href="/stats/pvp">PvP</a>
                     </li>
-                    <li class="nav-item {{ (isset($active_page) && $active_page == 'trials') ? 'active' : ''  }}">
+                    <!--li class="nav-item {{ (isset($active_page) && $active_page == 'trials') ? 'active' : ''  }}">
                       <a href="/stats/trials">Trials</a>
-                    </li>
+                    </li-->
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit') ? 'active' : ''  }}">
                       <a href="/stats/gambit">Gambit</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'gambit_prime') ? 'active' : ''  }}">
                       <a href="/stats/gambit-prime">Gambit Prime</a>
                     </li>
-                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies', 'raid_buddy_activities'])) ? 'active' : ''  }}">
+                    <!--li class="nav-item {{ (isset($active_page) && in_array($active_page, ['raid_buddy', 'raid_buddies', 'raid_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/raid/buddy">Raid Buddies</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities'])) ? 'active' : ''  }}">
                       <a href="/stats/pvp/buddy">PvP Buddies</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities'])) ? 'active' : ''  }}">
-                      <a href="/stats/gambit/buddy">Gambit Buddies</a>
+                      <a href="/stats/gambit/buddy">Gambit Buddies</a-->
                     </li>
                   </ul>
                 </div>
@@ -192,10 +192,10 @@
     <footer class="border-top border-dark">
       <div id="footer" class="text-center py-4 px-3">
         <div>
-          <small class="text-white">&copy; 2019 {{ env('APP_DISPLAY_URL') }}</small>
+          <small class="text-white">&copy; <?=date('Y')?> {{ env('APP_DISPLAY_URL') }}</small>
         </div>
         <div>
-          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/3/4611686018474971535" target="_blank">xenodus</a> | <a href="https://ko-fi.com/xenodus" target="_blank"><img src="https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/5cbee26fcf61ec3358016243_Ko-fi_Icon_RGBforDarkBg.png" style="height: 19px; position: relative; bottom: 1px; margin-right: 2px;">Buy me a Ko-fi</a></small>
+          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/3/4611686018474971535" target="_blank">xenodus</a> (Retired from Destiny)</small>
         </div>
       </div>
 

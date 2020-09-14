@@ -1,0 +1,220 @@
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=fallback" rel="stylesheet">
+      <style>
+        html {
+          font-family: Verdana, Open Sans;
+          /*
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          */
+        }
+        body {
+          width: 800px;
+          height: 450px;
+          margin: 0;
+          padding: 0;
+          font-size: 28px;
+        }
+        .main-container {
+          display: flex;
+          background: #000;
+          color: #fff;
+          width: 800px;
+        }
+        .left-col {
+          background-image: url("https://img2.finalfantasyxiv.com/f/2ff3f3bb3c69107959feddf826b76247_7bb6b1e488f0e4f01c5314d010b60f31fl0_640x873.jpg?1593779860");
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          width: 40%;
+          border-left: 5px solid #000;
+          border-top: 5px solid #000;
+          border-bottom: 6px solid #000;
+          border-radius: 2px;
+        }
+        .right-col {
+          background: rgba(0,0,0,1);
+          width: 60%;
+          position: relative;
+          padding: 5px;
+        }
+        .title {
+          font-size: .8rem;
+          position: relative;
+        }
+        .name {
+          font-size: 1.8rem;
+        }
+        .right-col > div {
+          width: 100%;
+        }
+        .right-col-item {
+          padding: 10px;
+        }
+        .right-col-content > div {
+          border-radius: 2px;
+          background: rgba(255,255,255,.2);
+          width: 100%;
+          text-align: center;
+        }
+        .right-col-content > div:not(:last-child) {
+          margin-bottom: 5px;
+        }
+        .title,
+        .job-label,
+        .fc-label,
+        .collection-label {
+          font-size: 1rem;
+          color: yellow;
+          margin-bottom: 2px;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
+        .text-left {
+          text-align: left;
+        }
+        .jobs {
+          font-size: 1.2rem;
+        }
+        .job-icon {
+          width: 25px;
+        }
+        .job {
+          text-align: center;
+          display: inline-block;
+        }
+        .job:not(:last-child) {
+          margin-right: 2px;
+        }
+        .job-container {
+          display: flex;
+          position: relative;
+          left: -2px;
+          margin: 5px 0;
+        }
+        .doh-dol {
+          margin-top: 10px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="main-container">
+        <div class="left-col"></div>
+        <div class="right-col">
+          <div class="right-col-overlay"></div>
+          <div class="right-col-content">
+
+            <div>
+              <div class="right-col-item">
+                <div class="title">Little Piggy</div>
+                <div class="name">Boki Toki</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="right-col-item">
+                <div class="fc-label">Free Company</div>
+                <div class="fc-name">6th Century Mosh Pit</div>
+                <div class="fc-tag">[MOSH!]</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="right-col-item">
+                <div class="fc-label">Server</div>
+                <div class="server-dc-name">Tonberry / Elemental</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="right-col-item">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;">
+                  <div style="width: 50%;">
+                    <div class="collection-label">Minions</div>
+                    <div>50%</div>
+                  </div>
+                  <div style="width: 50%;">
+                    <div class="collection-label">Mounts</div>
+                    <div>1%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="jobs text-left right-col-item">
+                <div class="dow">
+                  <div class="job-label">DoW / DoM</div>
+                  <div class="job-container">
+                    <div class="tanks" style="width: 33%;">
+                      <div class="job"><img src="./classjob-icons/icons/paladin.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/warrior.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/darkknight.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/gunbreaker.png" class="job-icon"><br/>50</div>
+                    </div>
+
+                    <div class="healers" style="width: 33%; padding-left: 10px;">
+                      <div class="job"><img src="./classjob-icons/icons/whitemage.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/scholar.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/astrologian.png" class="job-icon"><br/>50</div>
+                    </div>
+
+                    <div class="melee" style="width: 33%;">
+                      <div class="job"><img src="./classjob-icons/icons/dragoon.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/monk.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/ninja.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/samurai.png" class="job-icon"><br/>50</div>
+                    </div>
+                  </div>
+                  <div class="job-container">
+                    <div class="range-physical" style="width: 33%;">
+                      <div class="job"><img src="./classjob-icons/icons/bard.png" class="job-icon"><br/>7</div>
+                      <div class="job"><img src="./classjob-icons/icons/machinist.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/dancer.png" class="job-icon"><br/>50</div>
+                    </div>
+                    <div class="range-magic" style="width: 33%; padding-left: 10px;">
+                      <div class="job"><img src="./classjob-icons/icons/blackmage.png" class="job-icon"><br/>50</div>
+                      <div class="job"><img src="./classjob-icons/icons/summoner.png" class="job-icon"><br/>0</div>
+                      <div class="job"><img src="./classjob-icons/icons/redmage.png" class="job-icon"><br/>50</div>
+                    </div>
+                    <div class="special" style="width: 33%;">
+                      <div class="job"><img src="./classjob-icons/icons/bluemage.png" class="job-icon"><br/>1</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="doh-dol" style="display: flex;">
+                  <div class="doh" style="width: 66%;">
+                    <div class="job-label">DoH</div>
+                    <div class="job-container">
+                      <div class="crafters" style="width: 100%;">
+                        <div class="job"><img src="./classjob-icons/icons/alchemist.png" class="job-icon"><br/>7</div>
+                        <div class="job"><img src="./classjob-icons/icons/culinarian.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/weaver.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/leatherworker.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/carpenter.png" class="job-icon"><br/>0</div>
+                        <div class="job"><img src="./classjob-icons/icons/goldsmith.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/armorer.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/blacksmith.png" class="job-icon"><br/>50</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dol" style="width: 33%;">
+                    <div class="job-label">DoL</div>
+                    <div class="job-container">
+                      <div class="gatherers" style="width: 100%;">
+                        <div class="job"><img src="./classjob-icons/icons/botanist.png" class="job-icon"><br/>7</div>
+                        <div class="job"><img src="./classjob-icons/icons/miner.png" class="job-icon"><br/>50</div>
+                        <div class="job"><img src="./classjob-icons/icons/fisher.png" class="job-icon"><br/>50</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </body>
+  </html>

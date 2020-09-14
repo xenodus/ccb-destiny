@@ -13,7 +13,7 @@
 
       <p>We are a laid back group of guardians from <span class="flag-icon flag-icon-sg"></span> Singapore. Most of us are PvE oriented and raid on a weekly basis. While the majority of us are working adults, we also have students and retirees among our ranks.</p>
 
-      <p>All fellow Singlish speaking guardians are welcome to join us in Shadowkeep and beyond. Our only criteria is that all members treat each other with respect. <a href="{{ env('DISCORD_LINK') }}" target="_blank">Come say 👋 hi to us in Discord!</a></p>
+      <p>All fellow Singlish speaking guardians are welcome to join us in Shadowkeep and Beyond Light. Our only criteria is that all members treat each other with respect. <a href="{{ env('DISCORD_LINK') }}" target="_blank">Come say 👋 hi to us in Discord!</a></p>
     </div>
 
     <div class="row mt-5">

@@ -116,8 +116,9 @@ class UpdateVendors extends Command
             $this->info('Item Definition Count: ' . $item_definitions->count());
 
             // 3. Get Vendor Data
-            $vendor_response = $client->get(
-                env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Vendors?components=402,400,302,305',
+            $url = env('BUNGIE_API_ROOT_URL').'/Destiny2/'.env('BUNGIE_PC_PLATFORM_ID').'/Profile/'.env('DESTINY_ID').'/Character/'.env('DESTINY_CHAR_ID').'/Vendors?components=402,400,302,305';
+
+            $vendor_response = $client->get($url,
                 [
                     'headers' => [
                         'X-API-Key' => env('BUNGIE_API'),
@@ -168,23 +169,11 @@ class UpdateVendors extends Command
                                             $item_definitions[$socket->plugHash]->displayProperties->name != 'Empty Mod Socket' &&
                                             in_array($item_definitions[$socket->plugHash]->itemTypeDisplayName, $this->perksExcluded) == false
                                         ) {
-                                            /*
-                                            $perkGroup = [];
-
-                                            if( $v->itemHash == 1508896098 ) {
-                                                if( !in_array($item_definitions[$socket->plugHash]->hash, [2473404935, 2420895100, 3465198467]) )
-                                                dd( $item_definitions[$socket->plugHash] );
-                                            }
-
-                                            $perkGroup[] = $item_definitions[ $socket->plugHash ];
-                                            $perks[] = $perkGroup;
-                                            */
 
                                             $perks[] = $item_definitions[ $socket->plugHash ];
                                         }
                                     }
                                 }
-                                //dd( $vendor_data['Response']->itemComponents->$vendor_hash->sockets->data->$k->sockets );
                             }
 
                             // 5. Prepare Data
@@ -214,7 +203,7 @@ class UpdateVendors extends Command
                         // 7. Create Sale Item
                         $itemHash = $sale_item['hash'];
 
-                        if( $item_definitions[$itemHash]->displayProperties->name ) {
+                        if( $item_definitions[$itemHash] && $item_definitions[$itemHash]->displayProperties->name ) {
 
                             $costHash = $sale_item['cost'][0]->itemHash ?? null;
                             $costAmount = $sale_item['cost'][0]->quantity ?? null;
@@ -273,38 +262,10 @@ class UpdateVendors extends Command
                                     $vendor_sales_item_perk->hash = $perk->hash;
                                     $vendor_sales_item_perk->save();
                                 }
-
-                                /*
-                                foreach($sale_item['perks'] as $perk_group_index => $perk_group) { // perk group
-                                    foreach($perk_group as $perk) { // individual perk hash
-                                        $vendor_sales_item_perk = new App\Classes\Vendor_Sales_Item_Perks();
-                                        $vendor_sales_item_perk->vendor_sales_id = $vendor_sales->id;
-                                        $vendor_sales_item_perk->perk_group = $perk_group_index;
-                                        $vendor_sales_item_perk->date_added = $date_added;
-                                        $vendor_sales_item_perk->description = $perk->displayProperties->description;
-                                        $vendor_sales_item_perk->name = $perk->displayProperties->name;
-                                        $vendor_sales_item_perk->icon = $perk->displayProperties->hasIcon == true ? $perk->displayProperties->icon : '';
-                                        $vendor_sales_item_perk->itemTypeDisplayName = $perk->itemTypeDisplayName;
-                                        $vendor_sales_item_perk->itemTypeAndTierDisplayName = $perk->itemTypeAndTierDisplayName;
-                                        $vendor_sales_item_perk->hash = $perk->hash;
-                                        $vendor_sales_item_perk->save();
-                                    }
-                                }
-                                */
                             }
                         }
                     }
                 }
-
-                /*
-                $deletedRows1 = App\Classes\Vendor_Sales::where('date_added', '!=', $date_added)->delete();
-                $deletedRows2 = App\Classes\Vendor_Sales_Item_Perks::where('date_added', '!=', $date_added)->delete();
-                $deletedRows3 = App\Classes\Vendor_Sales_Item_Cost::where('date_added', '!=', $date_added)->delete();
-
-                $this->info('Cleanup: '.$deletedRows1.' Vendor Sale Records Deleted');
-                $this->info('Cleanup: '.$deletedRows2.' Vendor Sale Item Perks Records Deleted');
-                $this->info('Cleanup: '.$deletedRows3.' Vendor Sale Item Cost Records Deleted');
-                */
 
                 $this->info('Completed: Vendor Updates');
 
@@ -328,6 +289,7 @@ class UpdateVendors extends Command
             }
             else {
                 $this->info('Unable To Get Vendor Data');
+                $this->info( $url );
             }
         }
         else {
