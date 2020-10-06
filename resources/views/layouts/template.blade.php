@@ -87,24 +87,24 @@
               <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['clan', 'roster', 'clan_member_activities_listing', 'lockouts', 'seals', 'seals_breakdown', 'clan_exotic']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/clan/roster">
                   <i class="ra ra-double-team"></i>
-                  <div>Clan</div>
+                  <div>Roster</div>
                 </a>
-                <div class="drop-down-menu animated fadeIn faster">
+                <!--div class="drop-down-menu animated fadeIn faster">
                   <ul>
                     <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['roster', 'clan_member_activities_listing'])) ? 'active' : ''  }}">
                       <a href="/clan/roster">Roster</a>
                     </li>
-                    <!--li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
+                    <li class="nav-item {{ (isset($active_page) && $active_page == 'lockouts') ? 'active' : ''  }}">
                       <a href="/clan/lockouts">Raid Lockouts</a>
-                    </li-->
-                    <!--li class="nav-item {{ (isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])) ? 'active' : ''  }}">
-                      <a href="/clan/seals">Seal Completions</a-->
+                    </li>
+                    <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['seals', 'seals_breakdown'])) ? 'active' : ''  }}">
+                      <a href="/clan/seals">Seal Completions</a>
                     </li>
                     <li class="nav-item {{ (isset($active_page) && $active_page == 'clan_exotic') ? 'active' : ''  }}">
                       <a href="/clan/exotics">Exotic Collection</a>
                     </li>
                   </ul>
-                </div>
+                </div-->
               </li>
               <li class="nav-item {{ (isset($active_page) && in_array($active_page, ['stats', 'weapons', 'pve', 'pvp', 'trials', 'gambit', 'gambit_prime', 'raid_buddy', 'raid_buddies', 'raid_buddy_activities', 'pvp_buddy', 'pvp_buddies', 'pvp_buddy_activities', 'gambit_buddy', 'gambit_buddies', 'gambit_buddy_activities']) ) ? 'active' : ''  }}">
                 <a class="nav-link text-md-center" href="/stats">

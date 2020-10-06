@@ -1,5 +1,9 @@
 <?php
 
+if (extension_loaded ('newrelic')) {
+  newrelic_set_appname ("ccb-destiny.com");
+}
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
