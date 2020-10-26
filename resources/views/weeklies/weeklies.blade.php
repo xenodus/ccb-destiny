@@ -78,11 +78,13 @@
 
   <div class="loader"></div>
   <div class="loader-text mb-5">Fetching Milestones...</div>
+
+  <div class="overflow-hidden">
+    @include('ads.horizontal')
+  </div>
 </section>
 @endsection
 
 @section('footer')
 <script src="{{ mix('/js/compiled/weeklies.js') }}"></script>
-<!--script src="../node_modules/masonry-layout/dist/masonry.pkgd.min.js?<?=time()?>"></script>
-<script src="/js/weeklies/weeklies.js?<?=time()?>"></script-->
 @endsection

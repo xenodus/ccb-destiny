@@ -60,7 +60,7 @@
   </div>
 </section>
 
-<section id="guides" class="text-center container-fluid mb-4">
+<section id="guides" class="text-center container-fluid border-bottom border-dark">
   <div class="container py-5">
     <div id="guides-header" class="mb-3 text-yellow d-flex justify-content-start align-items-center standard-header">
       <div id="latest-post-header-icon"></div>
@@ -74,6 +74,14 @@
 
   <div class="loader"></div>
   <div class="loader-text mb-5">Fetching Guides...</div>
+</section>
+
+<section class="text-center container-fluid border-bottom border-dark">
+  <div class="container py-3">
+    <div class="overflow-hidden">
+      @include('ads.horizontal')
+    </div>
+  </div>
 </section>
 
 <!--section id="news" class="text-center container-fluid mb-4">

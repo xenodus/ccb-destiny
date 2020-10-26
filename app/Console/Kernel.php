@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $filePath = '/var/www/sites/ccb/storage/logs/artisan.log';
-        $baseFilePath = '/var/www/sites/ccb/storage/logs/';
+        $filePath = '/var/data/www/sites/ccb/storage/logs/artisan.log';
+        $baseFilePath = '/var/data/www/sites/ccb/storage/logs/';
 
         // Telegram Raid Event Notification
         $schedule->command('send:TelegramRaidNotifications')->everyMinute();

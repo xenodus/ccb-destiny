@@ -43,8 +43,15 @@ return [
         ],
 
         'mysql' => [
+            'read' => [
+                'host' => env('DB_READ', '127.0.0.1')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE', '127.0.0.1')
+            ],
+            'sticky' => true,
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -62,8 +69,15 @@ return [
         ],
 
         'wordpress' => [ // for WordPress database (used by Corcel)
+            'read' => [
+                'host' => env('DB_READ', '127.0.0.1')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE', '127.0.0.1')
+            ],
+            'sticky' => true,
             'driver'    => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database'  => 'ccb-wp',
             'username' => env('DB_USERNAME', 'forge'),
@@ -77,8 +91,15 @@ return [
         ],
 
         'discord' => [
+            'read' => [
+                'host' => env('DB_READ', '127.0.0.1')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE', '127.0.0.1')
+            ],
+            'sticky' => true,
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => 'discord-bot',
             'username' => env('DB_USERNAME', 'forge'),
@@ -96,8 +117,15 @@ return [
         ],
 
         'ccbbot' => [
+            'read' => [
+                'host' => env('DB_READ', '127.0.0.1')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE', '127.0.0.1')
+            ],
+            'sticky' => true,
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => 'ccb-bot',
             'username' => env('DB_USERNAME', 'forge'),
@@ -115,8 +143,15 @@ return [
         ],
 
         'telegrambot' => [
+            'read' => [
+                'host' => env('DB_READ', '127.0.0.1')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE', '127.0.0.1')
+            ],
+            'sticky' => true,
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => 'telegram-bot',
             'username' => env('DB_USERNAME', 'forge'),

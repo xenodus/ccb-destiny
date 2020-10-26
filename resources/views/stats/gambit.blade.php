@@ -17,6 +17,10 @@
   </div>
 
   <div class="stats-container mt-1"></div>
+
+  <div class="overflow-hidden">
+    @include('ads.horizontal')
+  </div>
 </section>
 @endsection
 

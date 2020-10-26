@@ -21,6 +21,10 @@
       </div>
     </div>
   </div>
+
+  <div class="overflow-hidden">
+    @include('ads.horizontal')
+  </div>
 </section>
 @endsection
 
