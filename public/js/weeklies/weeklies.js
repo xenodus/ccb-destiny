@@ -139,6 +139,8 @@ $(document).ready(function(){
           weekliesItems.push( getVendorStr(raid_bounties, 'Hawthorne\'s Raid ' + (raid_bounties.length > 1 ? 'Bounties' : 'Bounty') ) );
         }
 
+        /* Beyond Light Removal
+
         // Leviathan
         var leviOrder = milestonesData['milestones'].filter(function(d){ return d.type == 'levi_order' });
 
@@ -174,6 +176,8 @@ $(document).ready(function(){
         if( menagerieModifiers.length > 0 ) {
           weekliesItems.push( getVendorStr( menagerieModifiers, "The Menagerie (Heroic)") );
         }
+
+        */
 
         if( weekliesItems.length > 0 ) {
 
@@ -218,11 +222,13 @@ $(document).ready(function(){
         }
 
         // Weekly Flashpoint
+        /*
         var flashpoint = milestonesData['milestones'].filter(function(d){ return d.type == 'flashpoint' });
 
         if( flashpoint.length > 0 ) {
           weekliesItems.push( getVendorStr(flashpoint, 'Flashpoint') );
         }
+        */
 
         // Nightmare Hunts
         var nmHunts = milestonesData['milestones'].filter(function(d){ return d.type == 'nightmare_hunt' });
@@ -239,7 +245,7 @@ $(document).ready(function(){
         weekliesItems.push( getVendorStr( dreamingCity, "Dreaming City") );
 
         // Escalation Protocol
-        weekliesItems.push( getVendorStr( [milestonesData['escalation_protocol']], "Escalation Protocol") );
+        // weekliesItems.push( getVendorStr( [milestonesData['escalation_protocol']], "Escalation Protocol") );
 
         // Whisper of the worm
         weekliesItems.push( getVendorStr( [milestonesData['whisper_singe']], "Whisper of the Worm (Heroic)") );

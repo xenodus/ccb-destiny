@@ -29,7 +29,7 @@
 
     <div id="weeklies-vanguard-item-container-wrapper">
       <div class="weeklies-sub-header text-left d-flex align-items-center">
-        <img src="https://bungie.net/common/destiny2_content/icons/DestinyPresentationNodeDefinition_f45a98686356e678499ee79cef5e8e02.png" style="height: 40px; margin-right: 10px;">
+        <img src="https://www.bungie.net/common/destiny2_content/icons/f2154b781b36b19760efcb23695c66fe.png" style="height: 40px; margin-right: 10px;">
         Vanguard / World PvE
       </div>
       <div id="weeklies-vanguard-item-container" class="grid row"></div>
@@ -53,7 +53,7 @@
 
     <div id="weeklies-vendors-item-container-wrapper">
       <div class="weeklies-sub-header text-left d-flex align-items-center">
-        <img src="https://bungie.net/common/destiny2_content/icons/8e5c144a90a5b6ec351daf875096bf5b.png" style="height: 40px; margin-left: -5px; margin-right: 5px;">
+        <img src="https://bungie.net/common/destiny2_content/icons/8268ac4d55d49dc166c10408576da464.png" style="height: 40px; margin-left: -5px; margin-right: 5px;">
         Vendors
       </div>
       <div id="weeklies-vendors-item-container" class="grid row"></div>

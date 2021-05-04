@@ -195,7 +195,7 @@
           <small class="text-white">&copy; <?=date('Y')?> {{ env('APP_DISPLAY_URL') }}</small>
         </div>
         <div>
-          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/3/4611686018474971535" target="_blank">xenodus</a> (Retired from Destiny)</small>
+          <small class="text-white">Developed by <a href="https://www.bungie.net/en/Profile/3/4611686018474971535" target="_blank">xenodus</a> | 3D6rPSmgxhvuo5hZSVzjAQ4XT66VH7R3i2</small>
         </div>
       </div>
 

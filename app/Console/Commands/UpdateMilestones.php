@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Console\Commands;
+
+ini_set("memory_limit","-1");
 
 use Illuminate\Console\Command;
 use GuzzleHttp\Exception\GuzzleException;
