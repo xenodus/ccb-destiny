@@ -66,11 +66,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('update:lockouts')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'lockouts.log');
 
         // Stats
-        $schedule->command('update:raidStats')->hourly(); //->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:PVEStats')->hourly(); //->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:PVPStats')->hourly(); //->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:GambitStats')->hourly(); //->appendOutputTo($baseFilePath . 'stats.log');
-        $schedule->command('update:GambitPrimeStats')->hourly(); //->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:raidStats')->daily(); //->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVEStats')->daily(); //->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:PVPStats')->daily(); //->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitStats')->daily(); //->appendOutputTo($baseFilePath . 'stats.log');
+        $schedule->command('update:GambitPrimeStats')->daily(); //->appendOutputTo($baseFilePath . 'stats.log');
         // $schedule->command('update:TrialsStats')->everyFifteenMinutes()->appendOutputTo($baseFilePath . 'stats.log');
     }
 
