@@ -29,7 +29,7 @@
         "masonry-layout": "^4.2.2",
         "minimist": ">=1.2.2",
         "moment": "^2.27.0",
-        "node-forge": ">=0.10.0",
+        "node-forge": ">=1.3.0",
         "object-path": ">=0.11.5",
         "rpg-awesome": "^0.2.0",
         "tabulator-tables": "^4.7.0",
